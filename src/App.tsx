@@ -5,12 +5,7 @@ import HomeBanner from "./components/layout/HomeBanner";
 import DownLayout from "./components/layout/DownLayout";
 import HeaderLayout from "./components/layout/HeaderLayout";
 
-
 class App extends React.Component {
-
-    // public componentDidUpdate() {
-    //     checkIfSameHtmlId();
-    // }
 
     public render() {
         return (
