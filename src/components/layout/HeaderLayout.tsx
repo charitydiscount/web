@@ -11,7 +11,7 @@ const HeaderLayout = () => {
                     <div className="float-right">
                         <ul className="right_side">
                             <li>
-                                <a href="login.html">
+                                <a href="/login">
                                     Login/Register
                                 </a>
                             </li>
