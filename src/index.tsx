@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import HeaderLayout from "./components/layout/HeaderLayout";
 import HomeBanner from "./components/layout/HomeBanner";
-import HotDeals from "./components/layout/HotDeals";
-import ClientsLogo from "./components/layout/ClientsLogo";
+import DownLayout from "./components/layout/DownLayout";
+import Products from "./components/layout/Products";
 
 ReactDOM.render(<HeaderLayout />,
     document.getElementById('headerLayout'));
@@ -12,11 +12,11 @@ ReactDOM.render(<HeaderLayout />,
 ReactDOM.render(<HomeBanner />,
     document.getElementById('homeBanner'));
 
-ReactDOM.render(<HotDeals />,
-    document.getElementById('hotDeals'));
+ReactDOM.render(<Products />,
+    document.getElementById('products'));
 
-ReactDOM.render(<ClientsLogo />,
-    document.getElementById('clientsLogo'));
+ReactDOM.render(<DownLayout />,
+    document.getElementById('downLayout'));
 
 
 

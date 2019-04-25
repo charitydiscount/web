@@ -62,34 +62,6 @@ const HeaderLayout = () => {
                                                 <li className="nav-item">
                                                     <a className="nav-link" href="cart.html">Shopping Cart</a>
                                                 </li>
-                                                <li className="nav-item">
-                                                    <a className="nav-link" href="confirmation.html">Confirmation</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li className="nav-item submenu dropdown">
-                                            <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown"
-                                               role="button" aria-haspopup="true" aria-expanded="false">Blog</a>
-                                            <ul className="dropdown-menu">
-                                                <li className="nav-item">
-                                                    <a className="nav-link" href="blog.html">Blog</a>
-                                                </li>
-                                                <li className="nav-item">
-                                                    <a className="nav-link" href="single-blog.html">Blog Details</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li className="nav-item submenu dropdown">
-                                            <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown"
-                                               role="button" aria-haspopup="true" aria-expanded="false">Pages</a>
-                                            <ul className="dropdown-menu">
-                                                <li className="nav-item"/>
-                                                <a className="nav-link" href="login.html">Login</a>
-                                                <li className="nav-item"/>
-                                                <a className="nav-link" href="tracking.html">Tracking</a>
-                                                <li className="nav-item">
-                                                    <a className="nav-link" href="elements.html">Elements</a>
-                                                </li>
                                             </ul>
                                         </li>
                                         <li className="nav-item">
