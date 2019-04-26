@@ -10,8 +10,42 @@ class HomeBanner extends React.Component<IHomeBannerProps> {
 
     public render() {
         const isLogin = (this.props.view === Stages.LOGIN);
+        const isContact = (this.props.view === Stages.CONTACT);
+        const isCategories = (this.props.view === Stages.CATEGORIES);
 
-        if (isLogin) {
+        if (isCategories) {
+            return (
+                <section className="banner_area">
+                    <div className="banner_inner d-flex align-items-center">
+                        <div className="container">
+                            <div className="banner_content text-center">
+                                <h2>Shop Category Page</h2>
+                                <div className="page_link">
+                                    <a href="/">Home</a>
+                                    <a href="/categories">Categories</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )
+        } else if (isContact) {
+            return (
+                <section className="banner_area">
+                    <div className="banner_inner d-flex align-items-center">
+                        <div className="container">
+                            <div className="banner_content text-center">
+                                <h2>Contact Us</h2>
+                                <div className="page_link">
+                                    <a href="/">Home</a>
+                                    <a href="/contact">Contact</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            )
+        } else if (isLogin) {
             return (
                 <section className="banner_area">
                     <div className="banner_inner d-flex align-items-center">
@@ -19,8 +53,8 @@ class HomeBanner extends React.Component<IHomeBannerProps> {
                             <div className="banner_content text-center">
                                 <h2>Login/Register</h2>
                                 <div className="page_link">
-                                    <a href="index.html">Home</a>
-                                    <a href="login.html">Login</a>
+                                    <a href="/">Home</a>
+                                    <a href="/login">Login</a>
                                 </div>
                             </div>
                         </div>

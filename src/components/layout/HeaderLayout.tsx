@@ -21,7 +21,7 @@ const HeaderLayout = () => {
                                 </a>
                             </li>
                             <li>
-                                <a href="contact.html">
+                                <a href="/contact">
                                     Contact Us
                                 </a>
                             </li>
@@ -49,23 +49,11 @@ const HeaderLayout = () => {
                                         <li className="nav-item active">
                                             <a className="nav-link" href="index.html">Home</a>
                                         </li>
-                                        <li className="nav-item submenu dropdown">
-                                            <a href="#" className="nav-link dropdown-toggle" data-toggle="dropdown"
-                                               role="button" aria-haspopup="true" aria-expanded="false">Shop</a>
-                                            <ul className="dropdown-menu">
-                                                <li className="nav-item"/>
-                                                <a className="nav-link" href="category.html">Shop Category</a>
-                                                <li className="nav-item"/>
-                                                <a className="nav-link" href="single-product.html">Product Details</a>
-                                                <li className="nav-item"/>
-                                                <a className="nav-link" href="checkout.html">Product Checkout</a>
-                                                <li className="nav-item">
-                                                    <a className="nav-link" href="cart.html">Shopping Cart</a>
-                                                </li>
-                                            </ul>
+                                        <li className="nav-item">
+                                            <a className="nav-link" href="/categories">Categories</a>
                                         </li>
                                         <li className="nav-item">
-                                            <a className="nav-link" href="contact.html">Contact</a>
+                                            <a className="nav-link" href="/contact">Contact</a>
                                         </li>
                                     </ul>
                                 </div>
