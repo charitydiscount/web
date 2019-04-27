@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import PageLayout from "./components/layout/PageLayout";
-import HomeBanner from "./components/layout/HomeBanner";
 import DownLayout from "./components/layout/DownLayout";
 import HeaderLayout from "./components/layout/HeaderLayout";
 
@@ -11,7 +10,8 @@ class App extends React.Component {
         return (
             <React.Fragment>
                 <HeaderLayout/>
-                <HomeBanner/>
+                <section className="banner_area">
+                </section>
                 <PageLayout/>
                 <DownLayout/>
             </React.Fragment>
