@@ -7,6 +7,7 @@ import {BrowserRouter} from "react-router-dom";
 import Contact from "../contact/Contact";
 import Categories from "../products/Categories";
 import Register from "../login/Register";
+import Product from "../products/Product";
 
 const PageLayout = () => {
     return (
@@ -18,6 +19,7 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.CATEGORIES} component={Categories}/>
                     <Route exact={true} path={Routes.HOME} component={Products}/>
                     <Route exact={true} path={Routes.REGISTER} component={Register}/>
+                    <Route exact={true} path={Routes.PRODUCT} component={Product}/>
                     <Route render={() => <Redirect to={Routes.HOME}/>}/>
                 </Switch>
             </BrowserRouter>

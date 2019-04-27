@@ -16,14 +16,11 @@ const Products = () => {
                             <div className="f_p_item">
                                 <div className="f_p_img">
                                     <img className="img-fluid" src="img/product/feature-product/f-p-1.jpg" alt=""/>
-                                        <div className="p_icon">
-                                            <a href="#">
-                                                <i className="lnr lnr-heart"></i>
-                                            </a>
-                                            <a href="#">
-                                                <i className="lnr lnr-cart"></i>
-                                            </a>
-                                        </div>
+                                    <div className="p_icon">
+                                        <a href="/product">
+                                            <i className="lnr lnr-magic-wand"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <a href="#">
                                     <h4>Long Sleeve TShirt</h4>
@@ -35,14 +32,11 @@ const Products = () => {
                             <div className="f_p_item">
                                 <div className="f_p_img">
                                     <img className="img-fluid" src="img/product/feature-product/f-p-2.jpg" alt=""/>
-                                        <div className="p_icon">
-                                            <a href="#">
-                                                <i className="lnr lnr-heart"></i>
-                                            </a>
-                                            <a href="#">
-                                                <i className="lnr lnr-cart"></i>
-                                            </a>
-                                        </div>
+                                    <div className="p_icon">
+                                        <a href="/product">
+                                            <i className="lnr lnr-magic-wand"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <a href="#">
                                     <h4>Long Sleeve TShirt</h4>
@@ -54,14 +48,11 @@ const Products = () => {
                             <div className="f_p_item">
                                 <div className="f_p_img">
                                     <img className="img-fluid" src="img/product/feature-product/f-p-3.jpg" alt=""/>
-                                        <div className="p_icon">
-                                            <a href="#">
-                                                <i className="lnr lnr-heart"></i>
-                                            </a>
-                                            <a href="#">
-                                                <i className="lnr lnr-cart"></i>
-                                            </a>
-                                        </div>
+                                    <div className="p_icon">
+                                        <a href="/product">
+                                            <i className="lnr lnr-magic-wand"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <a href="#">
                                     <h4>Long Sleeve TShirt</h4>
@@ -73,14 +64,11 @@ const Products = () => {
                             <div className="f_p_item">
                                 <div className="f_p_img">
                                     <img className="img-fluid" src="img/product/feature-product/f-p-4.jpg" alt=""/>
-                                        <div className="p_icon">
-                                            <a href="#">
-                                                <i className="lnr lnr-heart"></i>
-                                            </a>
-                                            <a href="#">
-                                                <i className="lnr lnr-cart"></i>
-                                            </a>
-                                        </div>
+                                    <div className="p_icon">
+                                        <a href="/product">
+                                            <i className="lnr lnr-magic-wand"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <a href="#">
                                     <h4>Long Sleeve TShirt</h4>
@@ -92,14 +80,11 @@ const Products = () => {
                             <div className="f_p_item">
                                 <div className="f_p_img">
                                     <img className="img-fluid" src="img/product/feature-product/f-p-5.jpg" alt=""/>
-                                        <div className="p_icon">
-                                            <a href="#">
-                                                <i className="lnr lnr-heart"></i>
-                                            </a>
-                                            <a href="#">
-                                                <i className="lnr lnr-cart"></i>
-                                            </a>
-                                        </div>
+                                    <div className="p_icon">
+                                        <a href="/product">
+                                            <i className="lnr lnr-magic-wand"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <a href="#">
                                     <h4>Long Sleeve TShirt</h4>
@@ -112,14 +97,11 @@ const Products = () => {
                             <div className="f_p_item">
                                 <div className="f_p_img">
                                     <img className="img-fluid" src="img/product/feature-product/f-p-5.jpg" alt=""/>
-                                        <div className="p_icon">
-                                            <a href="#">
-                                                <i className="lnr lnr-heart"></i>
-                                            </a>
-                                            <a href="#">
-                                                <i className="lnr lnr-cart"></i>
-                                            </a>
-                                        </div>
+                                    <div className="p_icon">
+                                        <a href="/product">
+                                            <i className="lnr lnr-magic-wand"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <a href="#">
                                     <h4>Long Sleeve TShirt</h4>
@@ -132,14 +114,11 @@ const Products = () => {
                             <div className="f_p_item">
                                 <div className="f_p_img">
                                     <img className="img-fluid" src="img/product/feature-product/f-p-4.jpg" alt=""/>
-                                        <div className="p_icon">
-                                            <a href="#">
-                                                <i className="lnr lnr-heart"></i>
-                                            </a>
-                                            <a href="#">
-                                                <i className="lnr lnr-cart"></i>
-                                            </a>
-                                        </div>
+                                    <div className="p_icon">
+                                        <a href="/product">
+                                            <i className="lnr lnr-magic-wand"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <a href="#">
                                     <h4>Long Sleeve TShirt</h4>
@@ -152,14 +131,11 @@ const Products = () => {
                             <div className="f_p_item">
                                 <div className="f_p_img">
                                     <img className="img-fluid" src="img/product/feature-product/f-p-5.jpg" alt=""/>
-                                        <div className="p_icon">
-                                            <a href="#">
-                                                <i className="lnr lnr-heart"></i>
-                                            </a>
-                                            <a href="#">
-                                                <i className="lnr lnr-cart"></i>
-                                            </a>
-                                        </div>
+                                    <div className="p_icon">
+                                        <a href="/product">
+                                            <i className="lnr lnr-magic-wand"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <a href="#">
                                     <h4>Long Sleeve TShirt</h4>
@@ -171,14 +147,11 @@ const Products = () => {
                             <div className="f_p_item">
                                 <div className="f_p_img">
                                     <img className="img-fluid" src="img/product/feature-product/f-p-1.jpg" alt=""/>
-                                        <div className="p_icon">
-                                            <a href="#">
-                                                <i className="lnr lnr-heart"></i>
-                                            </a>
-                                            <a href="#">
-                                                <i className="lnr lnr-cart"></i>
-                                            </a>
-                                        </div>
+                                    <div className="p_icon">
+                                        <a href="/product">
+                                            <i className="lnr lnr-magic-wand"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <a href="#">
                                     <h4>Long Sleeve TShirt</h4>
@@ -190,14 +163,11 @@ const Products = () => {
                             <div className="f_p_item">
                                 <div className="f_p_img">
                                     <img className="img-fluid" src="img/product/feature-product/f-p-4.jpg" alt=""/>
-                                        <div className="p_icon">
-                                            <a href="#">
-                                                <i className="lnr lnr-heart"></i>
-                                            </a>
-                                            <a href="#">
-                                                <i className="lnr lnr-cart"></i>
-                                            </a>
-                                        </div>
+                                    <div className="p_icon">
+                                        <a href="/product">
+                                            <i className="lnr lnr-magic-wand"></i>
+                                        </a>
+                                    </div>
                                 </div>
                                 <a href="#">
                                     <h4>Long Sleeve TShirt</h4>
