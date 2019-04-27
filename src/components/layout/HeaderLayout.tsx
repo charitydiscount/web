@@ -22,7 +22,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                         <div className="float-right">
                             <ul className="right_side">
                                 <li>
-                                    <a href="/login">
+                                    <a href="/">
                                         Login/Register
                                     </a>
                                 </li>
@@ -73,19 +73,10 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                         <ul className="nav navbar-nav navbar-right right_nav pull-right">
                                             <hr/>
                                             <li className="nav-item">
-                                                <a href="#" className="icons">
-                                                    <i className="fa fa-search" aria-hidden="true"></i>
-                                                </a>
-                                            </li>
-
-                                            <hr/>
-
-                                            <li className="nav-item">
                                                 <a href="/login" className="icons">
                                                     <i className="fa fa-user" aria-hidden="true"></i>
                                                 </a>
                                             </li>
-
                                             <hr/>
                                         </ul>
                                     </div>

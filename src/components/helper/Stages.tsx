@@ -1,6 +1,5 @@
 export enum Stages {
-    EMPTY = "",
-    LOGIN = "stage-login",
+    EMPTY = "stage-home",
     PRODUCT = "stage-product",
     REGISTER = "stage-register",
     CONTACT = "stage-contact",

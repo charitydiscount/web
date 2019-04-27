@@ -63,10 +63,6 @@ class Product extends React.Component {
                                         <a className="active" href="#">
                                             <span>Category</span> : Household</a>
                                     </li>
-                                    <li>
-                                        <a href="#">
-                                            <span>Availibility</span> : In Stock</a>
-                                    </li>
                                 </ul>
                                 <p>Mill Oil is an innovative oil filled radiator with the most modern technology. If you
                                     are looking

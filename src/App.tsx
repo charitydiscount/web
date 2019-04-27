@@ -10,8 +10,7 @@ class App extends React.Component {
         return (
             <React.Fragment>
                 <HeaderLayout/>
-                    <section className="banner_area">  {/*used to show a small gap between header and content*/}
-                    </section>
+                <div className="banner_area"/>
                 <PageLayout/>
                 <DownLayout/>
             </React.Fragment>

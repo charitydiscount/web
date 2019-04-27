@@ -20,18 +20,7 @@ class Categories extends React.Component {
                     <div className="row flex-row-reverse">
                         <div className="col-lg-9">
                             <div className="product_top_bar">
-                                <div className="left_dorp">
-                                    <select className="sorting">
-                                        <option value="1">Default sorting</option>
-                                        <option value="2">Default sorting 01</option>
-                                        <option value="4">Default sorting 02</option>
-                                    </select>
-                                    <select className="show">
-                                        <option value="1">Show 12</option>
-                                        <option value="2">Show 14</option>
-                                        <option value="4">Show 16</option>
-                                    </select>
-                                </div>
+                                <input type={"textfield"} className={"single-input"} placeholder={"Search..."}/>
                                 <div className="right_page ml-auto">
                                     <nav className="cat_page" aria-label="Page navigation example">
                                         <ul className="pagination">
