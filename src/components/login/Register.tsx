@@ -3,14 +3,14 @@ import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 
-class Login extends React.Component{
+class Register extends React.Component {
 
     public componentDidMount() {
-        store.dispatch(NavigationsAction.setStageAction(Stages.LOGIN));
+        store.dispatch(NavigationsAction.setStageAction(Stages.REGISTER));
     }
 
     public componentWillUnmount() {
-        store.dispatch(NavigationsAction.resetStageAction(Stages.LOGIN));
+        store.dispatch(NavigationsAction.resetStageAction(Stages.REGISTER));
     }
 
     public render() {
@@ -25,21 +25,29 @@ class Login extends React.Component{
                                     <h4>New to our website?</h4>
                                     <p>There are advances being made in science and technology everyday, and a good
                                         example of this is the</p>
-                                    <a className="main_btn" href="/register">Create an Account</a>
+                                    <a className="main_btn" href="#">Create an Account</a>
                                 </div>
                             </div>
                         </div>
                         <div className="col-lg-6">
-                            <div className="login_form_inner">
-                                <h3>Log in to enter</h3>
+                            <div className="login_form_inner reg_form">
+                                <h3>Create an Account</h3>
                                 <form className="row login_form">
                                     <div className="col-md-12 form-group">
                                         <input type="text" className="form-control" id="name" name="name"
-                                               placeholder="Username"/>
+                                               placeholder="Name"/>
                                     </div>
                                     <div className="col-md-12 form-group">
-                                        <input type="text" className="form-control" id="name" name="name"
+                                        <input type="email" className="form-control" id="email" name="email"
+                                               placeholder="Email Address"/>
+                                    </div>
+                                    <div className="col-md-12 form-group">
+                                        <input type="text" className="form-control" id="password" name="password"
                                                placeholder="Password"/>
+                                    </div>
+                                    <div className="col-md-12 form-group">
+                                        <input type="password" className="form-control" id="pass" name="pass"
+                                               placeholder="Confirm password"/>
                                     </div>
                                     <div className="col-md-12 form-group">
                                         <div className="creat_account">
@@ -50,8 +58,8 @@ class Login extends React.Component{
                                         </div>
                                     </div>
                                     <div className="col-md-12 form-group">
-                                        <button type="submit" value="submit" className="btn submit_btn">Log In</button>
-                                        <a href="#">Forgot Password?</a>
+                                        <button type="submit" value="submit" className="btn submit_btn">Register
+                                        </button>
                                     </div>
                                 </form>
                             </div>
@@ -65,5 +73,4 @@ class Login extends React.Component{
 
 }
 
-
-export default Login;
+export default Register;

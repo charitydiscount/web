@@ -6,6 +6,7 @@ import Products from "../products/Products";
 import {BrowserRouter} from "react-router-dom";
 import Contact from "../contact/Contact";
 import Categories from "../products/Categories";
+import Register from "../login/Register";
 
 const PageLayout = () => {
     return (
@@ -16,6 +17,7 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.CONTACT} component={Contact}/>
                     <Route exact={true} path={Routes.CATEGORIES} component={Categories}/>
                     <Route exact={true} path={Routes.HOME} component={Products}/>
+                    <Route exact={true} path={Routes.REGISTER} component={Register}/>
                     <Route render={() => <Redirect to={Routes.HOME}/>}/>
                 </Switch>
             </BrowserRouter>

@@ -6,7 +6,6 @@ const HeaderLayout = () => {
             <div className="top_menu row m0">
                 <div className="container-fluid">
                     <div className="float-left">
-                        <p>Call Us: 012 44 5698 7456 896</p>
                     </div>
                     <div className="float-right">
                         <ul className="right_side">
@@ -15,11 +14,11 @@ const HeaderLayout = () => {
                                     Login/Register
                                 </a>
                             </li>
-                            <li>
-                                <a href="#">
-                                    My Account
-                                </a>
-                            </li>
+                            {/*<li>*/}
+                                {/*<a href="#">*/}
+                                    {/*My Account*/}
+                                {/*</a>*/}
+                            {/*</li>*/}
                             <li>
                                 <a href="/contact">
                                     Contact Us
@@ -70,24 +69,8 @@ const HeaderLayout = () => {
                                         <hr/>
 
                                         <li className="nav-item">
-                                            <a href="#" className="icons">
+                                            <a href="/login" className="icons">
                                                 <i className="fa fa-user" aria-hidden="true"></i>
-                                            </a>
-                                        </li>
-
-                                        <hr/>
-
-                                        <li className="nav-item">
-                                            <a href="#" className="icons">
-                                                <i className="fa fa-heart-o" aria-hidden="true"></i>
-                                            </a>
-                                        </li>
-
-                                        <hr/>
-
-                                        <li className="nav-item">
-                                            <a href="#" className="icons">
-                                                <i className="lnr lnr lnr-cart"></i>
                                             </a>
                                         </li>
 
