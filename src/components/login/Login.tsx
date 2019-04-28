@@ -2,9 +2,45 @@ import * as React from "react";
 import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
-import ClientsLogo from "../clients/ClientsLogo";
+import GenericInput from "../input/GenericInput";
+import {connect} from "react-redux";
+import {doLoginAction, doLogoutAction} from "./UserActions";
 
-class Login extends React.Component {
+interface ILoginFormState {
+    username: string,
+    password: string
+}
+
+interface ILoginFormProps {
+    logout: () => void,
+    login: any,
+    status: number | undefined,
+}
+
+
+class Login extends React.Component<ILoginFormProps, ILoginFormState> {
+
+    constructor(props: ILoginFormProps) {
+        super(props);
+        this.state = {
+            username: '',
+            password: ''
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    public handleChange(event: any) {
+        this.setState({
+            ...this.state,
+            [event.target.id]: event.target.value
+        })
+    }
+
+    public handleSubmit(event: any) {
+        event.preventDefault();
+        this.props.login(this.state.username, this.state.password);
+    }
 
     public componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.EMPTY));
@@ -30,12 +66,12 @@ class Login extends React.Component {
                                     <h3>Log in to enter</h3>
                                     <form className="row login_form">
                                         <div className="col-md-12 form-group">
-                                            <input type="text" className="form-control" id="name" name="name"
-                                                   placeholder="Username"/>
+                                            <GenericInput type={"text"} id={'username'} placeholder={"Username"}
+                                                          className={"form-control"} handleChange={this.handleChange}/>
                                         </div>
                                         <div className="col-md-12 form-group">
-                                            <input type="text" className="form-control" id="name" name="name"
-                                                   placeholder="Password"/>
+                                            <GenericInput type={"text"} id={'password'} placeholder={"Password"}
+                                                          className={"form-control"} handleChange={this.handleChange}/>
                                         </div>
                                         <div className="col-md-12 form-group">
                                             <div className="creat_account">
@@ -46,12 +82,12 @@ class Login extends React.Component {
                                             </div>
                                         </div>
                                         <div className="col-md-12 form-group">
-                                            <button type="submit" value="submit" className="btn submit_btn">Log In
-                                            </button>
-                                            <br/>
-                                            <button type="submit" value="submit" className="btn submit_btn">Register
+                                            <button type="submit" value="submit" className="btn submit_btn"
+                                                    onClick={this.handleSubmit}>
+                                                Log In
                                             </button>
                                             <a href="#">Forgot Password?</a>
+                                            <a href="/register">Register</a>
                                         </div>
                                     </form>
                                 </div>
@@ -66,4 +102,13 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        login: (user: string, pass: string) => dispatch(doLoginAction(user, pass)),
+        logout: () => dispatch(doLogoutAction()),
+    };
+};
+
+export default connect(null, mapDispatchToProps)(Login);
+
+
