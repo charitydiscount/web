@@ -2,7 +2,7 @@ import * as React from "react";
 import GenericInput from "../input/GenericInput";
 import {connect} from "react-redux";
 import {doLoginAction, doLogoutAction} from "./UserActions";
-import {InputType} from "../helper/Constants";
+import {InputType} from "../../helper/Constants";
 
 
 interface ILoginFormState {

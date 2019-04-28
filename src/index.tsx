@@ -11,6 +11,9 @@ import config from "./config/FirebaseConfig";
 import firebase from "firebase/app";
 import "firebase/auth";
 import * as serviceWorker from './serviceWorker';
+import {UserActions} from "./components/login/UserActions";
+import {Constants} from "./helper/Constants";
+import {getLocalStorage} from "./helper/WebHelper";
 
 
 export const publicUrl = process.env.PUBLIC_URL || "";
@@ -35,6 +38,10 @@ export const providers = {
     mailProvider: new firebase.auth.EmailAuthProvider(),
 };
 //----------------------------------------------------------------------------------------------------------------------
+
+if (getLocalStorage(Constants.USER) !== undefined) {
+    UserActions.setLoggedUserAction(JSON.parse(getLocalStorage(Constants.USER) || '{}'));
+}
 
 ReactDOM.render(
     <Provider store={store}>
