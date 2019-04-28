@@ -16,7 +16,7 @@ class LoginActor extends React.Component {
 
     public render() {
         return (
-            <Login/>
+            <Login isLogin={true}/>
         )
     }
 }

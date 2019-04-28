@@ -11,7 +11,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
     render() {
         const isCategories = (this.props.view === Stages.CATEGORIES);
         const isContact = (this.props.view === Stages.CONTACT);
-        const isHome = (this.props.view === Stages.EMPTY);
 
         return (
             <header className="header_area">
@@ -43,7 +42,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                 <div className="main_menu">
                     <nav className="navbar navbar-expand-lg navbar-light">
                         <div className="container-fluid">
-                            <a className="navbar-brand logo_h" href="index.html">
+                            <a className="navbar-brand logo_h" href="#">
                                 <img src="img/logo.png" alt=""/>
                             </a>
                             <button className="navbar-toggler" type="button" data-toggle="collapse"
@@ -57,9 +56,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                 <div className="row w-100">
                                     <div className="col-lg-7 pr-0">
                                         <ul className="nav navbar-nav center_nav pull-right">
-                                            <li className={"nav-item " + (isHome ? "active" : "")}>
-                                                <a className="nav-link" href="index.html">Home</a>
-                                            </li>
                                             <li className={"nav-item " + (isCategories ? "active" : "")}>
                                                 <a className="nav-link" href="/categories">Categories</a>
                                             </li>

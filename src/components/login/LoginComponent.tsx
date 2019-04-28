@@ -4,12 +4,14 @@ import {connect} from "react-redux";
 import {doLoginAction, doLogoutAction} from "./UserActions";
 import {InputType} from "../helper/Constants";
 
+
 interface ILoginFormState {
     username: string,
     password: string
 }
 
 interface ILoginFormProps {
+    isLogin: boolean,
     logout: () => void,
     login: any
 }
@@ -51,32 +53,66 @@ class LoginComponent extends React.Component<ILoginFormProps, ILoginFormState> {
                             </div>
                             <div className="col-lg-6">
                                 <div className="login_form_inner">
-                                    <h3>Log in to enter</h3>
+                                    {this.props.isLogin ?
+                                        <h3>Log in to enter</h3>
+                                        :
+                                        <h3>Create an Account</h3>
+                                    }
                                     <form className="row login_form">
+                                        {!this.props.isLogin ?
+                                            <div className="col-md-12 form-group">
+                                                <GenericInput type={InputType.TEXT} id={'name'} placeholder={"Name"}
+                                                              className={"form-control"}
+                                                              handleChange={this.handleChange}/>
+                                            </div>
+                                            : ""
+                                        }
                                         <div className="col-md-12 form-group">
                                             <GenericInput type={InputType.TEXT} id={'username'} placeholder={"Username"}
                                                           className={"form-control"} handleChange={this.handleChange}/>
                                         </div>
                                         <div className="col-md-12 form-group">
-                                            <GenericInput type={InputType.PASSWORD} id={'password'} placeholder={"Password"}
+                                            <GenericInput type={InputType.PASSWORD} id={'password'}
+                                                          placeholder={"Password"}
                                                           className={"form-control"} handleChange={this.handleChange}/>
                                         </div>
-                                        <div className="col-md-12 form-group">
-                                            <div className="creat_account">
-                                                <input type="checkbox" id="f-option2" name="selector"/>
-                                                <label>
-                                                    Keep me logged in
-                                                </label>
+                                        {!this.props.isLogin ?
+                                            <div className="col-md-12 form-group">
+                                                <GenericInput type={InputType.PASSWORD} id={'password'}
+                                                              placeholder={"Confirm password"}
+                                                              className={"form-control"}
+                                                              handleChange={this.handleChange}/>
                                             </div>
-                                        </div>
-                                        <div className="col-md-12 form-group">
-                                            <button type="submit" value="submit" className="btn submit_btn"
-                                                    onClick={this.handleSubmit}>
-                                                Log In
-                                            </button>
-                                            <a href="#">Forgot Password?</a>
-                                            <a href="/register">Register</a>
-                                        </div>
+                                            : ""
+                                        }
+                                        {this.props.isLogin ?
+                                            <div className="col-md-12 form-group">
+                                                <div className="creat_account">
+                                                    <input type="checkbox" id="f-option2" name="selector"/>
+                                                    <label>
+                                                        Keep me logged in
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            : ""
+                                        }
+                                        {this.props.isLogin ?
+                                            <div className="col-md-12 form-group">
+                                                <button type="submit" value="submit" className="btn submit_btn"
+                                                        onClick={this.handleSubmit}>
+                                                    Log In
+                                                </button>
+                                                <a href="#">Forgot Password?</a>
+                                                <a href="/register">Register</a>
+                                            </div>
+                                            :
+                                            <div className="col-md-12 form-group">
+                                                <button type="submit" value="submit" className="btn submit_btn"
+                                                        onClick={this.handleSubmit}>
+                                                    Register
+                                                </button>
+                                            </div>
+                                        }
                                     </form>
                                 </div>
                             </div>
