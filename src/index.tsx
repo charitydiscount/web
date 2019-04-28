@@ -4,7 +4,7 @@ import App from "./App";
 import {Provider} from "react-redux";
 import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
-import {routerMiddleware} from 'connected-react-router';
+import {ConnectedRouter, routerMiddleware} from 'connected-react-router';
 import {createBrowserHistory} from "history";
 import createRootReducer from './redux/reducer/RootReducer';
 import config from "./config/FirebaseConfig";
@@ -38,7 +38,9 @@ export const providers = {
 
 ReactDOM.render(
     <Provider store={store}>
-        <App/>
+        <ConnectedRouter history={history}>
+            <App/>
+        </ConnectedRouter>
     </Provider>,
     document.getElementById('root'));
 

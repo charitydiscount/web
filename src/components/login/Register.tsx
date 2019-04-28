@@ -5,6 +5,7 @@ import {Stages} from "../helper/Stages";
 import GenericInput from "../input/GenericInput";
 import {doRegisterAction} from "./UserActions";
 import {connect} from "react-redux";
+import {InputType} from "../helper/Constants";
 
 interface IRegisterFormState {
     username: string,
@@ -65,19 +66,19 @@ class Register extends React.Component<IRegisterFormProps, IRegisterFormState> {
                                 <h3>Create an Account</h3>
                                 <form className="row login_form">
                                     <div className="col-md-12 form-group">
-                                        <GenericInput type={"text"} id={'name'} placeholder={"Name"}
+                                        <GenericInput type={InputType.TEXT} id={'name'} placeholder={"Name"}
                                                       className={"form-control"} handleChange={this.handleChange}/>
                                     </div>
                                     <div className="col-md-12 form-group">
-                                        <GenericInput type={"text"} id={'username'} placeholder={"Email Address"}
+                                        <GenericInput type={InputType.TEXT} id={'username'} placeholder={"Email Address"}
                                                       className={"form-control"} handleChange={this.handleChange}/>
                                     </div>
                                     <div className="col-md-12 form-group">
-                                        <GenericInput type={"text"} id={'password'} placeholder={"Password"}
+                                        <GenericInput type={InputType.PASSWORD} id={'password'} placeholder={"Password"}
                                                       className={"form-control"} handleChange={this.handleChange}/>
                                     </div>
                                     <div className="col-md-12 form-group">
-                                        <GenericInput type={"text"} id={'password'} placeholder={"Confirm password"}
+                                        <GenericInput type={InputType.PASSWORD} id={'password'} placeholder={"Confirm password"}
                                                       className={"form-control"} handleChange={this.handleChange}/>
                                     </div>
                                     <div className="col-md-12 form-group">

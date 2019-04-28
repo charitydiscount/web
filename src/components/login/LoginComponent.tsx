@@ -1,10 +1,8 @@
 import * as React from "react";
-import {store} from "../../index";
-import {NavigationsAction} from "../../redux/actions/NavigationsAction";
-import {Stages} from "../helper/Stages";
 import GenericInput from "../input/GenericInput";
 import {connect} from "react-redux";
 import {doLoginAction, doLogoutAction} from "./UserActions";
+import {InputType} from "../helper/Constants";
 
 interface ILoginFormState {
     username: string,
@@ -13,12 +11,10 @@ interface ILoginFormState {
 
 interface ILoginFormProps {
     logout: () => void,
-    login: any,
-    status: number | undefined,
+    login: any
 }
 
-
-class Login extends React.Component<ILoginFormProps, ILoginFormState> {
+class LoginComponent extends React.Component<ILoginFormProps, ILoginFormState> {
 
     constructor(props: ILoginFormProps) {
         super(props);
@@ -42,14 +38,6 @@ class Login extends React.Component<ILoginFormProps, ILoginFormState> {
         this.props.login(this.state.username, this.state.password);
     }
 
-    public componentDidMount() {
-        store.dispatch(NavigationsAction.setStageAction(Stages.EMPTY));
-    }
-
-    public componentWillUnmount() {
-        store.dispatch(NavigationsAction.resetStageAction(Stages.EMPTY));
-    }
-
     public render() {
         return (
             <React.Fragment>
@@ -66,11 +54,11 @@ class Login extends React.Component<ILoginFormProps, ILoginFormState> {
                                     <h3>Log in to enter</h3>
                                     <form className="row login_form">
                                         <div className="col-md-12 form-group">
-                                            <GenericInput type={"text"} id={'username'} placeholder={"Username"}
+                                            <GenericInput type={InputType.TEXT} id={'username'} placeholder={"Username"}
                                                           className={"form-control"} handleChange={this.handleChange}/>
                                         </div>
                                         <div className="col-md-12 form-group">
-                                            <GenericInput type={"text"} id={'password'} placeholder={"Password"}
+                                            <GenericInput type={InputType.PASSWORD} id={'password'} placeholder={"Password"}
                                                           className={"form-control"} handleChange={this.handleChange}/>
                                         </div>
                                         <div className="col-md-12 form-group">
@@ -109,6 +97,6 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(LoginComponent);
 
 
