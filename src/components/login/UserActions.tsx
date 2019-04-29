@@ -28,13 +28,19 @@ export function doLoginAction(username: string, password: string): any {
     }
 }
 
-export function doRegisterAction(username: string, password: string): any {
+export function doRegisterAction(username: string, password: string, fullname: string): any {
     return (dispatch: any) => {
         register(username, password)
             .then(function (response) {
-                    dispatch(UserActions.setLoggedUserAction(response.user));
-                    setLocalStorage(Constants.USER, JSON.stringify(response.user));
-                    dispatch(push(Routes.CATEGORIES));
+                    if (response.user) {
+                        response.user.updateProfile({
+                            displayName: fullname
+                        }).then(function () {
+                            dispatch(UserActions.setLoggedUserAction(response.user));
+                            setLocalStorage(Constants.USER, JSON.stringify(response.user));
+                            dispatch(push(Routes.CATEGORIES));
+                        })
+                    }
                 }
             )
             .catch(function (error) {

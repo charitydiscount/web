@@ -1,19 +1,21 @@
 import * as React from "react";
 import GenericInput from "../input/GenericInput";
 import {connect} from "react-redux";
-import {doLoginAction, doLogoutAction} from "./UserActions";
+import {doLoginAction, doLogoutAction, doRegisterAction} from "./UserActions";
 import {InputType} from "../../helper/Constants";
 
 
 interface ILoginFormState {
     username: string,
-    password: string
+    password: string,
+    name: string
 }
 
 interface ILoginFormProps {
     isLogin: boolean,
     logout: () => void,
-    login: any
+    login: any,
+    signUp: any
 }
 
 class LoginComponent extends React.Component<ILoginFormProps, ILoginFormState> {
@@ -22,7 +24,8 @@ class LoginComponent extends React.Component<ILoginFormProps, ILoginFormState> {
         super(props);
         this.state = {
             username: '',
-            password: ''
+            password: '',
+            name: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,7 +40,11 @@ class LoginComponent extends React.Component<ILoginFormProps, ILoginFormState> {
 
     public handleSubmit(event: any) {
         event.preventDefault();
-        this.props.login(this.state.username, this.state.password);
+        if(this.props.isLogin) {
+            this.props.login(this.state.username, this.state.password);
+        }else{
+            this.props.signUp(this.state.username, this.state.password, this.state.name);
+        }
     }
 
     public render() {
@@ -129,6 +136,7 @@ class LoginComponent extends React.Component<ILoginFormProps, ILoginFormState> {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         login: (user: string, pass: string) => dispatch(doLoginAction(user, pass)),
+        signUp: (user: string, pass: string, name: string) => dispatch(doRegisterAction(user, pass, name)),
         logout: () => dispatch(doLogoutAction()),
     };
 };
