@@ -117,6 +117,7 @@ class LoginComponent extends React.Component<ILoginFormProps, ILoginFormState> {
                                                         onClick={this.handleSubmit}>
                                                     Register
                                                 </button>
+                                                <a href="/=">Login</a>
                                             </div>
                                         }
                                     </form>

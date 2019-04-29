@@ -39,9 +39,11 @@ export const providers = {
 };
 //----------------------------------------------------------------------------------------------------------------------
 
+//verify if client logged in -------------------------------------------------------------------------------------------
 if (getLocalStorage(Constants.USER) !== undefined && getLocalStorage(Constants.USER) !== null) {
     store.dispatch(UserActions.setLoggedUserAction(JSON.parse(getLocalStorage(Constants.USER) || '{}')));
 }
+//----------------------------------------------------------------------------------------------------------------------
 
 ReactDOM.render(
     <Provider store={store}>
