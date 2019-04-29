@@ -1,7 +1,7 @@
 import * as React from "react";
 import GenericInput from "../input/GenericInput";
 import {connect} from "react-redux";
-import {doLoginAction, doLogoutAction, doRegisterAction} from "./UserActions";
+import {doLoginAction, doRegisterAction} from "./UserActions";
 import {InputType} from "../../helper/Constants";
 
 
@@ -13,7 +13,6 @@ interface ILoginFormState {
 
 interface ILoginFormProps {
     isLogin: boolean,
-    logout: () => void,
     login: any,
     signUp: any
 }
@@ -136,8 +135,7 @@ class LoginComponent extends React.Component<ILoginFormProps, ILoginFormState> {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         login: (user: string, pass: string) => dispatch(doLoginAction(user, pass)),
-        signUp: (user: string, pass: string, name: string) => dispatch(doRegisterAction(user, pass, name)),
-        logout: () => dispatch(doLogoutAction()),
+        signUp: (user: string, pass: string, name: string) => dispatch(doRegisterAction(user, pass, name))
     };
 };
 

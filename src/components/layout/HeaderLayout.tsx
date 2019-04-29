@@ -1,13 +1,25 @@
 import * as React from "react";
 import {Stages} from "../helper/Stages";
 import {connect} from "react-redux";
+import {doLogoutAction} from "../login/UserActions";
 
 interface IHeaderLayoutProps {
     isLoggedIn: boolean,
+    logout: () => void,
     view: string,
 }
 
 class HeaderLayout extends React.Component<IHeaderLayoutProps> {
+
+    constructor(props: IHeaderLayoutProps) {
+        super(props);
+        this.handleLogOut = this.handleLogOut.bind(this);
+    }
+
+    public handleLogOut(event: any) {
+        event.preventDefault();
+        this.props.logout();
+    }
 
     render() {
         const isCategories = (this.props.view === Stages.CATEGORIES);
@@ -25,7 +37,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                 {isLoggedIn
                                 &&
                                 <li>
-                                    <a href="/">
+                                    <a href="#" onClick={this.handleLogOut}>
                                         Logout
                                     </a>
                                 </li>
@@ -106,4 +118,10 @@ const mapStateToProps = (state: any) => {
     }
 };
 
-export default connect(mapStateToProps)(HeaderLayout);
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        logout: () => dispatch(doLogoutAction())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderLayout);

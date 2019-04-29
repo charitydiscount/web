@@ -22,7 +22,10 @@ class LoginActor extends React.Component<ILoginRendererProps> {
     }
 
     public render() {
-        return this.props.isUserLogged ? <Redirect to={Routes.CATEGORIES}/> : <Login isLogin={true}/>
+        return this.props.isUserLogged ?
+            <Redirect to={Routes.CATEGORIES}/>
+            :
+            <Login isLogin={true}/>
     }
 }
 

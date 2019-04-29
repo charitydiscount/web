@@ -11,12 +11,12 @@ const PageLayout = () => {
     return (
         <main>
                 <Switch>
-                    <Route exact={true} path={Routes.HOME} component={LoginActor}/>
+                    <Route exact={true} path={Routes.LOGIN} component={LoginActor}/>
                     <Route exact={true} path={Routes.REGISTER} component={RegisterActor}/>
                     <Route exact={true} path={Routes.CONTACT} component={Contact}/>
                     <Route exact={true} path={Routes.CATEGORIES} component={Categories}/>
                     <Route exact={true} path={Routes.PRODUCT} component={Product}/>
-                    <Route render={() => <Redirect to={Routes.HOME}/>}/>
+                    <Route render={() => <Redirect to={Routes.LOGIN}/>}/>
                 </Switch>
         </main>
     )

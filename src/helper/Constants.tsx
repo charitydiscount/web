@@ -1,6 +1,6 @@
 export enum Constants {
-    USER = "user",
-    JW_TOKEN = "jwToken",
+    USER = "CDuser",
+    JW_TOKEN = "CDjwToken",
     AUTHORIZATION_HEADER = 'Authorization',
 }
 

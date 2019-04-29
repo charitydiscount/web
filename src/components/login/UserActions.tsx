@@ -53,7 +53,7 @@ export function doLogoutAction(): any {
     return (dispatch: any) => {
         dispatch(UserActions.resetLoggedUserAction());
         removeLocalStorage(Constants.USER);
-        dispatch(push(Routes.HOME));
+        dispatch(push(Routes.LOGIN));
     }
 }
 
