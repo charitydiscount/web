@@ -3,5 +3,6 @@ export enum Routes {
     REGISTER = "/register",
     PRODUCT = "/product",
     CONTACT = "/contact",
+    USER = "/user",
     CATEGORIES = "/categories"
 }

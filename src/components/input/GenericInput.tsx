@@ -22,6 +22,7 @@ interface IInputProps {
     className?: string
     placeholder?: string
     handleChangeBlur?: any;
+    handleChangeFocus?: any;
     readonly ?: boolean
 }
 
@@ -29,8 +30,8 @@ const GenericInput = (props: IInputProps) => {
     const autocomplete = props.autocomplete ? "on" : "off";
     return (
         <input id={props.id} type={props.type} required={props.isRequired} onChange={props.handleChange} onKeyUp={props.onKeyUp} onBlur={props.handleChangeBlur}
-               value={props.value} className={props.className} name={props.groupName} min={props.min} max={props.max} checked={props.checked}
-               autoComplete={autocomplete} placeholder={props.placeholder} readOnly={props.readonly}/>
+               onFocus={props.handleChangeFocus} value={props.value} className={props.className} name={props.groupName} min={props.min} max={props.max}
+               checked={props.checked} autoComplete={autocomplete} placeholder={props.placeholder} readOnly={props.readonly}/>
     );
 };
 

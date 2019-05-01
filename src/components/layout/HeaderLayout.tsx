@@ -45,8 +45,8 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                 {isLoggedIn
                                 &&
                                 <li>
-                                    <a href="/contact">
-                                        Contact Us
+                                    <a href="/user">
+                                        My account
                                     </a>
                                 </li>
                                 }
@@ -93,7 +93,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                             <hr/>
 
                                             <li className="nav-item">
-                                                <a href="/" className="icons">
+                                                <a href="/user" className="icons">
                                                     <i className="fa fa-user" aria-hidden="true"></i>
                                                 </a>
                                             </li>
