@@ -8,8 +8,9 @@ import {ConnectedRouter, routerMiddleware} from 'connected-react-router';
 import {createBrowserHistory} from "history";
 import createRootReducer from './redux/reducer/RootReducer';
 import config from "./config/FirebaseConfig";
-import firebase from "firebase/app";
-import "firebase/auth";
+import firebase from "firebase";
+import "firebase/auth"; // for DB auth
+import 'firebase/firestore'; //for DB connection
 import * as serviceWorker from './serviceWorker';
 import {UserActions} from "./components/login/UserActions";
 import {Constants} from "./helper/Constants";
@@ -32,6 +33,7 @@ export const store = createStore(createRootReducer(history), initialState,
 
 // Firebase connection--------------------------------------------------------------------------------------------------
 export const firebaseApp = firebase.initializeApp(config);
+export const DB = firebaseApp.firestore();
 export const auth = firebaseApp.auth();
 export const providers = {
     googleProvider: new firebase.auth.GoogleAuthProvider(),
@@ -40,9 +42,11 @@ export const providers = {
 //----------------------------------------------------------------------------------------------------------------------
 
 //verify if client logged in -------------------------------------------------------------------------------------------
-if (getLocalStorage(Constants.USER) !== undefined && getLocalStorage(Constants.USER) !== null) {
-    store.dispatch(UserActions.setLoggedUserAction(JSON.parse(getLocalStorage(Constants.USER) || '{}')));
-}
+auth.onAuthStateChanged(function(user) {
+    if (user) {
+        store.dispatch(UserActions.setLoggedUserAction(auth.currentUser));
+    }
+});
 //----------------------------------------------------------------------------------------------------------------------
 
 ReactDOM.render(
