@@ -23,6 +23,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
 
     render() {
         const isCategories = (this.props.view === Stages.CATEGORIES);
+        const isDeals = (this.props.view === Stages.DEALS);
         const isContact = (this.props.view === Stages.CONTACT);
         const isLoggedIn = this.props.isLoggedIn;
 
@@ -75,6 +76,12 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                             &&
                                             <li className={"nav-item " + (isCategories ? "active" : "")}>
                                                 <a className="nav-link" href="/categories">Categories</a>
+                                            </li>
+                                            }
+                                            {isLoggedIn
+                                            &&
+                                            <li className={"nav-item " + (isDeals ? "active" : "")}>
+                                                <a className="nav-link" href="/deals">Deals</a>
                                             </li>
                                             }
                                             {isLoggedIn

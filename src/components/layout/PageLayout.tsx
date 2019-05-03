@@ -6,6 +6,7 @@ import Categories from "../products/Categories";
 import LoginActor from "../login/LoginActor";
 import RegisterActor from "../login/RegisterActor";
 import UserInfo from "../login/UserInfo";
+import HotDeals from "../deals/HotDeals";
 
 const PageLayout = () => {
     return (
@@ -15,6 +16,7 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.REGISTER} component={RegisterActor}/>
                     <Route exact={true} path={Routes.CONTACT} component={Contact}/>
                     <Route exact={true} path={Routes.CATEGORIES} component={Categories}/>
+                    <Route exact={true} path={Routes.DEALS} component={HotDeals}/>
                     <Route exact={true} path={Routes.USER} component={UserInfo}/>
                     <Route render={() => <Redirect to={Routes.LOGIN}/>}/>
                 </Switch>
