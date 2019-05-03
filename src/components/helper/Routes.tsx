@@ -4,5 +4,6 @@ export enum Routes {
     CONTACT = "/contact",
     USER = "/user",
     CATEGORIES = "/categories",
+    CAUSES = "/causes",
     DEALS = "/deals"
 }
