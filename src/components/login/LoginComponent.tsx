@@ -3,6 +3,7 @@ import GenericInput from "../input/GenericInput";
 import {connect} from "react-redux";
 import {doLoginAction, doRegisterAction} from "./UserActions";
 import {InputType} from "../../helper/Constants";
+import ClientsLogo from "../clients/ClientsLogo";
 
 
 interface ILoginFormState {
@@ -127,7 +128,7 @@ class LoginComponent extends React.Component<ILoginFormProps, ILoginFormState> {
                     </div>
                 </section>
 
-                {/*<ClientsLogo/>*/}
+                <ClientsLogo/>
             </React.Fragment>
         )
     }
