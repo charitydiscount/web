@@ -25,25 +25,8 @@ class Categories extends React.Component {
                                 <input type={"textfield"} className={"single-input"} placeholder={"Search..."}/>
                             </div>
                             <div className="latest_product_inner row">
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product linkHref={"/product"} logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
+                                <Product logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
+                                <Product logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
                             </div>
                         </div>
                         <div className="col-lg-3">

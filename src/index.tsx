@@ -13,8 +13,6 @@ import "firebase/auth"; // for DB auth
 import 'firebase/firestore'; //for DB connection
 import * as serviceWorker from './serviceWorker';
 import {UserActions} from "./components/login/UserActions";
-import {Constants} from "./helper/Constants";
-import {getLocalStorage} from "./helper/WebHelper";
 
 
 export const publicUrl = process.env.PUBLIC_URL || "";
