@@ -2,7 +2,7 @@ import * as React from "react";
 import {DB, store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
-import BrowseCategories from "./BrowseCategories";
+import Categories from "./Categories";
 import Shop from "./Shop";
 
 
@@ -45,7 +45,7 @@ class Shops extends React.Component {
                         </div>
                         <div className="col-lg-3">
                             <div className="left_sidebar_area">
-                                <BrowseCategories/>
+                                <Categories/>
                             </div>
                         </div>
                     </div>

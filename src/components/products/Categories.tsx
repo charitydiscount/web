@@ -3,7 +3,7 @@ import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 
-class BrowseCategories extends React.Component {
+class Categories extends React.Component {
 
     public componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
@@ -44,4 +44,4 @@ class BrowseCategories extends React.Component {
 }
 
 
-export default BrowseCategories;
+export default Categories;
