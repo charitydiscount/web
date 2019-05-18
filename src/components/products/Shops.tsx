@@ -1,14 +1,28 @@
 import * as React from "react";
-import {store} from "../../index";
+import {DB, store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import BrowseCategories from "./BrowseCategories";
-import Product from "./Product";
+import Shop from "./Shop";
 
-class Categories extends React.Component {
+
+
+
+class Shops extends React.Component {
 
     public componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
+
+        const shops = DB.collection('shops')
+            .get().then(
+
+            );
+
+
+        // docRef.get().then();
+
+
+
     }
 
     public componentWillUnmount() {
@@ -25,8 +39,8 @@ class Categories extends React.Component {
                                 <input type={"textfield"} className={"single-input"} placeholder={"Search..."}/>
                             </div>
                             <div className="latest_product_inner row">
-                                <Product logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
-                                <Product logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
+                                <Shop logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
+                                <Shop logoSrc={"img/product/feature-product/f-p-2.jpg"} name={"Elefant"}/>
                             </div>
                         </div>
                         <div className="col-lg-3">
@@ -41,4 +55,4 @@ class Categories extends React.Component {
     }
 }
 
-export default Categories;
+export default Shops;

@@ -10,7 +10,7 @@ interface IProductProps {
     name: string
 }
 
-class Product extends React.Component<IProductProps, IProductInfoState> {
+class Shop extends React.Component<IProductProps, IProductInfoState> {
 
     constructor(props: IProductProps) {
         super(props);
@@ -94,4 +94,4 @@ class Product extends React.Component<IProductProps, IProductInfoState> {
     }
 }
 
-export default Product;
+export default Shop;

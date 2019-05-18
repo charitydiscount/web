@@ -2,7 +2,6 @@ import * as React from "react";
 import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
-import Categories from "./Categories";
 
 class BrowseCategories extends React.Component {
 
