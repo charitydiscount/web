@@ -1,13 +1,43 @@
 import * as React from "react";
-import {store} from "../../index";
+import {DB, store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
+import {CategoryDto} from "./CategoryDto";
+import Category from "./Category";
 
-class Categories extends React.Component {
+interface ICategoryProps {
+
+}
+
+interface ICategoryState {
+    categories: CategoryDto[]
+}
+
+class Categories extends React.Component<ICategoryProps, ICategoryState> {
+
+    constructor(props: ICategoryProps) {
+        super(props);
+        this.state = {
+            categories: []
+        };
+        this.fetchCategories = this.fetchCategories.bind(this);
+    }
 
     public componentDidMount() {
+        this.fetchCategories()
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
+
+
+    public fetchCategories() {
+        DB.collection("categories")
+            .get()
+            .then(querySnapshot => {
+                const data = querySnapshot.docs.map(doc => doc.data() as CategoryDto);
+                this.setState({categories: data});
+            });
+    }
+
 
     public componentWillUnmount() {
         store.dispatch(NavigationsAction.resetStageAction(Stages.CATEGORIES));
@@ -17,25 +47,15 @@ class Categories extends React.Component {
         return (
             <aside className="left_widgets cat_widgets">
                 <div className="l_w_title">
-                    <h3>Browse Categories</h3>
+                    <h3>Categories</h3>
                 </div>
                 <div className="widgets_inner">
                     <ul className="list">
-                        <li>
-                            <a href="#">Fruits and Vegetables</a>
-                        </li>
-                        <li>
-                            <a href="#">Meat and Fish</a>
-                        </li>
-                        <li>
-                            <a href="#">Cooking</a>
-                        </li>
-                        <li>
-                            <a href="#">Beverages</a>
-                        </li>
-                        <li>
-                            <a href="#">Home and Cleaning</a>
-                        </li>
+                        {
+                            this.state.categories.map(category => {
+                                return <Category name={category.category}/>
+                            })
+                        }
                     </ul>
                 </div>
             </aside>
