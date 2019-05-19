@@ -6,11 +6,10 @@ import {CategoryDto} from "./CategoryDto";
 import Category from "./Category";
 
 interface ICategoryProps {
-
 }
 
 interface ICategoryState {
-    categories: CategoryDto[]
+    categories: CategoryDto[],
 }
 
 class Categories extends React.Component<ICategoryProps, ICategoryState> {
@@ -24,10 +23,9 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
     }
 
     public componentDidMount() {
-        this.fetchCategories()
+        this.fetchCategories();
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
-
 
     public fetchCategories() {
         DB.collection("categories")
@@ -62,6 +60,5 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
         )
     }
 }
-
 
 export default Categories;
