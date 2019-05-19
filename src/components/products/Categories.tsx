@@ -50,8 +50,8 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
                 <div className="widgets_inner">
                     <ul className="list">
                         {
-                            this.state.categories.map(category => {
-                                return <Category name={category.category}/>
+                            this.state.categories.map(data => {
+                                return <Category name={data.category}/>
                             })
                         }
                     </ul>

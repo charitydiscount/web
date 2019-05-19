@@ -3019,17 +3019,26 @@ h6 {
     line-height: 60px; }
 
 .cat_widgets .list li {
-  margin-bottom: 13px; }
-  .cat_widgets .list li a {
+  margin-bottom: 13px;
+}
+
+.cat_widgets .list li a {
     font-size: 14px;
     font-family: "Roboto", sans-serif;
-    color: #222222; }
-  .cat_widgets .list li .list {
+    color: #222222;
+}
+
+.cat_widgets .list li a:hover {
+    color: #1641ff;
+}
+
+.cat_widgets .list li .list {
     margin-top: 10px;
     padding-left: 35px;
     border-top: 1px solid #eeeeee;
     padding-top: 10px;
-    display: none; }
+    display: none;
+}
 
 .p_filter_widgets .widgets_inner {
   border-bottom: 1px solid #eeeeee; }
