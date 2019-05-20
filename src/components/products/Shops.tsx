@@ -7,6 +7,7 @@ import {ShopDtoWrapper} from "./ShopDto";
 import {connect} from "react-redux";
 import Shop from "./Shop";
 import {resetShops, setShops} from "../../redux/actions/ShopsAction";
+import GenericInput from "../input/GenericInput";
 
 interface IShopsProps {
     shops: ShopDtoWrapper[],
@@ -29,6 +30,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             isLoading: true
         };
         this.fetchShops = this.fetchShops.bind(this);
+        this.onSearchUpdate = this.onSearchUpdate.bind(this);
     }
 
     public componentDidMount() {
@@ -43,6 +45,20 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
                 this.props.setShops(data);
             });
+    }
+
+    public onSearchUpdate(event) {
+        if (!event.target.value) {
+            this.fetchShops();
+        } else {
+            DB.collection("shops")
+                .where("batch.name", ">=", event.target.value)
+                .get()
+                .then(querySnapshot => {
+                    const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
+                    this.props.setShops(data);
+                });
+        }
     }
 
     public componentWillUnmount() {
@@ -63,7 +79,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                         <div className="row flex-row-reverse">
                             <div className="col-lg-9">
                                 <div className="product_top_bar">
-                                    <input type={"textfield"} className={"single-input"} placeholder={"Search..."}/>
+                                    <GenericInput type={"textfield"} id={"search"} className={"single-input"}
+                                                  placeholder={"Search..."} onKeyUp={this.onSearchUpdate}/>
                                 </div>
                                 <div className="latest_product_inner row">
                                     {shopsList}
