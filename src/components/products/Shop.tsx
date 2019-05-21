@@ -93,7 +93,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                     <div className="f_p_item">
                         <div className="f_p_img">
                             <a href="javascript:void(0);" onClick={() => this.openModal()}>
-                                <img className="img-fluid" src={this.props.logoSrc} alt=""/>
+                                <img className="img-fluid img-min img" src={this.props.logoSrc} alt=""/>
                             </a>
                             <div className="p_icon">
                                 <a href="#">

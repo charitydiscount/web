@@ -515,6 +515,11 @@ mark {
     height: auto
 }
 
+
+.img-min{
+    min-height: 70px;
+}
+
 .img-thumbnail {
     padding: .25rem;
     background-color: #fff;
