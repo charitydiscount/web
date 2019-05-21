@@ -38,19 +38,19 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                             <ul className="right_side">
                                 {isLoggedIn
                                 &&
-                                <li>
-                                    <a href="#" onClick={this.handleLogOut}>
-                                        Logout
-                                    </a>
-                                </li>
-                                }
-                                {isLoggedIn
-                                &&
-                                <li>
-                                    <a href="/user">
-                                        My account
-                                    </a>
-                                </li>
+                                <React.Fragment>
+                                    <li>
+                                        <a href="#" onClick={this.handleLogOut}>
+                                            Logout
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="/user">
+                                            My account
+                                        </a>
+                                    </li>
+                                </React.Fragment>
                                 }
                             </ul>
                         </div>
@@ -75,27 +75,23 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                         <ul className="nav navbar-nav center_nav pull-right">
                                             {isLoggedIn
                                             &&
-                                            <li className={"nav-item " + (isCategories ? "active" : "")}>
-                                                <a className="nav-link" href="/categories">Categories</a>
-                                            </li>
-                                            }
-                                            {isLoggedIn
-                                            &&
-                                            <li className={"nav-item " + (isDeals ? "active" : "")}>
-                                                <a className="nav-link" href="/deals">Deals</a>
-                                            </li>
-                                            }
-                                            {isLoggedIn
-                                            &&
-                                            <li className={"nav-item " + (isCauses ? "active" : "")}>
-                                                <a className="nav-link" href="/causes">Causes</a>
-                                            </li>
-                                            }
-                                            {isLoggedIn
-                                            &&
-                                            < li className={"nav-item " + (isContact ? "active" : "")}>
-                                                <a className="nav-link" href="/contact">Contact</a>
-                                            </li>
+                                            <React.Fragment>
+                                                <li className={"nav-item " + (isCategories ? "active" : "")}>
+                                                    <a className="nav-link" href="/categories">Categories</a>
+                                                </li>
+
+                                                <li className={"nav-item " + (isDeals ? "active" : "")}>
+                                                    <a className="nav-link" href="/deals">Deals</a>
+                                                </li>
+
+                                                <li className={"nav-item " + (isCauses ? "active" : "")}>
+                                                    <a className="nav-link" href="/causes">Causes</a>
+                                                </li>
+
+                                                < li className={"nav-item " + (isContact ? "active" : "")}>
+                                                    <a className="nav-link" href="/contact">Contact</a>
+                                                </li>
+                                            </React.Fragment>
                                             }
                                         </ul>
                                     </div>
@@ -107,10 +103,17 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                             <hr/>
 
                                             <li className="nav-item">
+                                                <a href="#" className="icons">
+                                                    <i className="fa fa-heart-o" aria-hidden="true"></i>
+                                                </a>
+                                            </li>
+
+                                            <li className="nav-item">
                                                 <a href="/user" className="icons">
                                                     <i className="fa fa-user" aria-hidden="true"></i>
                                                 </a>
                                             </li>
+
                                             <hr/>
                                         </ul>
                                     </div>
