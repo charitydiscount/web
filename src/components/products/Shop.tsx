@@ -8,7 +8,8 @@ interface IProductInfoState {
 interface IProductProps {
     logoSrc: string,
     name: string,
-    category: string
+    category: string,
+    mainUrl: string
 }
 
 class Shop extends React.Component<IProductProps, IProductInfoState> {
@@ -36,7 +37,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     public render() {
         return (
             <React.Fragment>
-                <Modal visible={this.state.visible}  effect="fadeInUp"
+                <Modal visible={this.state.visible} effect="fadeInUp"
                        onClickAway={() => this.closeModal()}>
                     <div className={"container-fluid "}>
                         <article className="row blog_item">
@@ -81,7 +82,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                             why you should have to spend money on boot camp when you can get the MCSE
                                             study
                                             materials yourself at a fraction.</p>
-                                        <a href="single-blog.html" className="white_bg_btn">Access</a>
+                                        <a href={this.props.mainUrl} className="white_bg_btn">Access</a>
                                     </div>
                                 </div>
                             </div>
@@ -90,10 +91,17 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                 </Modal>
                 <div className="col-lg-3 col-md-3 col-sm-6">
                     <div className="f_p_item">
-                        <a href="javascript:void(0);" onClick={() => this.openModal()}>
-                            <div className="f_p_img">
+                        <div className="f_p_img">
+                            <a href="javascript:void(0);" onClick={() => this.openModal()}>
                                 <img className="img-fluid" src={this.props.logoSrc} alt=""/>
+                            </a>
+                            <div className="p_icon">
+                                <a href="#">
+                                    <i className="lnr lnr-heart"></i>
+                                </a>
                             </div>
+                        </div>
+                        <a href="javascript:void(0);" onClick={() => this.openModal()}>
                             <h4>{this.props.name}</h4>
                         </a>
                     </div>
