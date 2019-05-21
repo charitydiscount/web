@@ -7,7 +7,8 @@ interface IProductInfoState {
 
 interface IProductProps {
     logoSrc: string,
-    name: string
+    name: string,
+    category: string
 }
 
 class Shop extends React.Component<IProductProps, IProductInfoState> {
@@ -35,55 +36,63 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     public render() {
         return (
             <React.Fragment>
-                <Modal visible={this.state.visible} width="1024" height="550" effect="fadeInUp"
+                <Modal visible={this.state.visible}  effect="fadeInUp"
                        onClickAway={() => this.closeModal()}>
-                    <div className="product_image_area">
-                        <div className="container">
-                            <div className="row s_product_inner">
-                                <div className="col-lg-5 offset-lg-1">
-                                    <div className="s_product_text">
-                                        <h3>Faded SkyBlu Denim Jeans</h3>
-                                        <ul className="list">
-                                            <li>
-                                                <a className="active" href="#">
-                                                    <span>Category</span> : Household</a>
-                                            </li>
-                                        </ul>
-                                        <p>Mill Oil is an innovative oil filled radiator with the most modern
-                                            technology. If
-                                            you
-                                            are looking
-                                            for something that
-                                            can make your interior look awesome, and at the same time give you the
-                                            pleasant
-                                            warm
-                                            feeling   can make your interior look awesome, and at the same time give you the
-                                            pleasant
-                                            warm
-                                            feeling    can make your interior look awesome, and at the same time give you the
-                                            pleasant
-                                        </p>
-                                        <div className="card_area">
-                                            <a className="main_btn" href="#">Access</a>
-                                        </div>
+                    <div className={"container-fluid "}>
+                        <article className="row blog_item">
+                            <div className="col-md-3">
+                                <div className="blog_info text-right">
+                                    <div className="post_tag">
+                                        <a className="active" href="#">{this.props.category}</a>
                                     </div>
+                                    <ul className="blog_meta list">
+                                        <li>
+                                            <a href="#">Mark wiens
+                                                <i className="lnr lnr-user"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">12 Dec, 2017
+                                                <i className="lnr lnr-calendar-full"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">1.2M Views
+                                                <i className="lnr lnr-eye"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">06 Comments
+                                                <i className="lnr lnr-bubble"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div className="col-lg-6">
-                                    <div className="s_product_img">
-                                        <img className="d-block w-100" width={300} height={500}
-                                             src="img/product/single-product/s-product-1.jpg"
-                                             alt="Third slide"/>
+                            </div>
+                            <div className="col-md-9">
+                                <div className="blog_post p_30">
+                                    <img src={this.props.logoSrc} alt=""/>
+                                    <div className="blog_details">
+                                        <a href="#">
+                                            <h2>{this.props.name}</h2>
+                                        </a>
+                                        <p>MCSE boot camps have its supporters and its detractors. Some people do not
+                                            understand
+                                            why you should have to spend money on boot camp when you can get the MCSE
+                                            study
+                                            materials yourself at a fraction.</p>
+                                        <a href="single-blog.html" className="white_bg_btn">Access</a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </article>
                     </div>
                 </Modal>
                 <div className="col-lg-3 col-md-3 col-sm-6">
                     <div className="f_p_item">
                         <a href="javascript:void(0);" onClick={() => this.openModal()}>
                             <div className="f_p_img">
-                                <img className="img-fluid" src={this.props.logoSrc} alt="" />
+                                <img className="img-fluid" src={this.props.logoSrc} alt=""/>
                             </div>
                             <h4>{this.props.name}</h4>
                         </a>

@@ -71,7 +71,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         const shopsList = this.props.shops !== undefined ? this.props.shops.map(shopWrapper => {
             if (shopWrapper.batch !== undefined) {
                 return shopWrapper.batch.map(shop => {
-                    return <Shop logoSrc={shop.logoPath} name={shop.name}/>
+                    return <Shop logoSrc={shop.logoPath} name={shop.name} category={shop.category}/>
                 })
             }
         }) : null;
