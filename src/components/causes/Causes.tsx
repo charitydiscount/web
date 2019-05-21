@@ -17,8 +17,7 @@ class Causes extends React.Component {
     public render() {
         return (
             <React.Fragment>
-                <div className="whole-wrap">
-                    <div className="container">
+                    <div className="container p_120">
                         <Cause/>
                         <Cause/>
                         <Cause/>
@@ -26,7 +25,6 @@ class Causes extends React.Component {
                         <Cause/>
                         <Cause/>
                     </div>
-                </div>
             </React.Fragment>
         )
     }

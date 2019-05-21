@@ -16,18 +16,16 @@ class HotDeals extends React.Component {
 
     public render() {
         return (
-            <section className="blog_categorie_area">
-                <div className="container">
-                    <div className="row">
-                        <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
-                        <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
-                        <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
-                        <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
-                        <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
-                        <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
-                    </div>
+            <div className="container p_120">
+                <div className="row">
+                    <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
+                    <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
+                    <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
+                    <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
+                    <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
+                    <Deal title={"Social Life"} description={"Enjoy your social life together"}/>
                 </div>
-            </section>
+            </div>
         )
     }
 }

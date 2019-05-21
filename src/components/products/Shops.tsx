@@ -43,7 +43,9 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             .get()
             .then(querySnapshot => {
                 const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
-                this.props.setShops(data);
+                if (data !== undefined) {
+                    this.props.setShops(data);
+                }
             });
     }
 
@@ -66,11 +68,13 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     }
 
     public render() {
-        const shopsList = this.props.shops.map(shopWrapper => {
-            return shopWrapper.batch.map(shop => {
-                return <Shop logoSrc={shop.logoPath} name={shop.name}/>
-            })
-        });
+        const shopsList = this.props.shops !== undefined ? this.props.shops.map(shopWrapper => {
+            if (shopWrapper.batch !== undefined) {
+                return shopWrapper.batch.map(shop => {
+                    return <Shop logoSrc={shop.logoPath} name={shop.name}/>
+                })
+            }
+        }) : null;
 
         return (
             <React.Fragment>
