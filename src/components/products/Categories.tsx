@@ -67,7 +67,7 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
                             <React.Fragment>
                                 {
                                     this.state.categories.map(data => {
-                                        return <Category name={data.category}/>
+                                        return <Category key = {data.category} name={data.category}/>
                                     })
                                 }
                             </React.Fragment>}

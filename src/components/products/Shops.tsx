@@ -98,7 +98,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
     public render() {
         const shopsList = this.props.shops ? this.props.shops.map(shop => {
-            return <Shop logoSrc={shop.logoPath} name={shop.name} category={shop.category}
+            return <Shop key= {shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
                          mainUrl={shop.mainUrl}/>
         }) : null;
 
