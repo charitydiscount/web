@@ -2,7 +2,9 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {ShopDtoWrapper} from "./ShopDto";
 import {setShops} from "../../redux/actions/ShopsAction";
-import {DB} from "../../index";
+import {getLocalStorage} from "../../helper/WebHelper";
+import {StorageKey} from "../../helper/Constants";
+import {CategoryDto} from "./CategoryDto";
 
 interface ICategoryState {
     isActive: boolean
@@ -25,19 +27,22 @@ class Category extends React.Component<ICategoryProps, ICategoryState> {
         this.updateShops = this.updateShops.bind(this);
     }
 
-    public updateShops(event: any) {
-        DB.collection("categories")
-            .where('category', '==', this.props.name)
-            .get()
-            .then(querySnapshot => {
-                const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
-                this.props.setShops(data);
-                this.setState(
-                    {
-                        isActive: true
-                    }
-                );
-            });
+    public updateShops() {
+        const storage = getLocalStorage(StorageKey.CATEGORIES);
+        if (storage) {
+            const categories = JSON.parse(storage) as Array<CategoryDto>;
+            if (categories) {
+                const resultedCategory = categories.filter(category => category.category == this.props.name);
+                if (resultedCategory) {
+                    this.props.setShops(resultedCategory);
+                    this.setState(
+                        {
+                            isActive: true
+                        }
+                    );
+                }
+            }
+        }
     }
 
     public render() {
