@@ -1,7 +1,4 @@
 export enum Constants {
-    USER = "CDuser",
-    JW_TOKEN = "CDjwToken",
-    AUTHORIZATION_HEADER = 'Authorization',
 }
 
 export enum ButtonType {
@@ -16,4 +13,9 @@ export enum InputType {
     CHECKBOX = "checkbox",
     DATE = "date",
     TIME = "time"
+}
+
+export enum StorageKey {
+   CATEGORIES = "categories",
+   SHOPS = "shops"
 }

@@ -4,7 +4,10 @@ import {ActionTypesUnion} from "../../redux/helper/TypesHelper";
 import {createAction} from "../../redux/helper/ActionHelper";
 import {LoginActionTypes} from "../../redux/actions/Actions";
 import {login, register} from "../../rest/LoginService";
-import {auth} from "../../index";
+import {auth, DB} from "../../index";
+import {removeLocalStorage} from "../../helper/WebHelper";
+import {StorageKey} from "../../helper/Constants";
+import {fetchCategories} from "../../rest/CategoriesService";
 
 export const UserActions = {
     setLoggedUserAction: (loginInfo: firebase.User | null) => createAction(LoginActionTypes.SET_LOGGED_USER_ACTION, loginInfo),
@@ -16,6 +19,8 @@ export function doLoginAction(username: string, password: string): any {
     return (dispatch: any) => {
         login(username, password)
             .then(function (response) {
+                    //gather data
+                    fetchCategories();
                     dispatch(UserActions.setLoggedUserAction(response.user));
                     dispatch(push(Routes.CATEGORIES));
                 }
@@ -50,6 +55,7 @@ export function doLogoutAction(): any {
     return (dispatch: any) => {
         dispatch(UserActions.resetLoggedUserAction());
         auth.signOut();
+        removeLocalStorage(StorageKey.CATEGORIES);
         dispatch(push(Routes.LOGIN));
     }
 }

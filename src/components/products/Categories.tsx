@@ -4,12 +4,15 @@ import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import {CategoryDto} from "./CategoryDto";
 import Category from "./Category";
+import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
+import {StorageKey} from "../../helper/Constants";
 
 interface ICategoryProps {
 }
 
 interface ICategoryState {
     categories: CategoryDto[],
+    isLoading: boolean
 }
 
 class Categories extends React.Component<ICategoryProps, ICategoryState> {
@@ -17,23 +20,32 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
     constructor(props: ICategoryProps) {
         super(props);
         this.state = {
+            isLoading: true,
             categories: []
         };
-        this.fetchCategories = this.fetchCategories.bind(this);
     }
 
     public componentDidMount() {
-        this.fetchCategories();
-        store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
-    }
-
-    public fetchCategories() {
-        DB.collection("categories")
-            .get()
-            .then(querySnapshot => {
-                const data = querySnapshot.docs.map(doc => doc.data() as CategoryDto);
-                this.setState({categories: data});
+        const categories = getLocalStorage(StorageKey.CATEGORIES);
+        if (categories) {
+            this.setState({
+                categories: JSON.parse(categories),
+                isLoading: false,
             });
+        } else {
+            DB.collection("categories")
+                .get()
+                .then(querySnapshot => {
+                    const data = querySnapshot.docs.map(doc => doc.data() as CategoryDto);
+                    if (data) {
+                        this.setState({
+                            categories: data,
+                            isLoading: false,
+                        });
+                    }
+                });
+        }
+        store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
 
 
@@ -43,20 +55,25 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
 
     public render() {
         return (
-            <aside className="left_widgets cat_widgets">
-                <div className="l_w_title">
-                    <h3>Categories</h3>
-                </div>
-                <div className="widgets_inner">
-                    <ul className="list">
-                        {
-                            this.state.categories.map(data => {
-                                return <Category name={data.category}/>
-                            })
-                        }
-                    </ul>
-                </div>
-            </aside>
+            <React.Fragment>
+                <aside className="left_widgets cat_widgets">
+                    <div className="l_w_title">
+                        <h3>Categories</h3>
+                    </div>
+                    <div className="widgets_inner">
+                        <ul className="list">
+                            {!this.state.isLoading &&
+                            <React.Fragment>
+                                {
+                                    this.state.categories.map(data => {
+                                        return <Category name={data.category}/>
+                                    })
+                                }
+                            </React.Fragment>}
+                        </ul>
+                    </div>
+                </aside>
+            </React.Fragment>
         )
     }
 }
