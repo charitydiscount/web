@@ -34,7 +34,12 @@ class Category extends React.Component<ICategoryProps, ICategoryState> {
             if (categories) {
                 const resultedCategory = categories.filter(category => category.category == this.props.name);
                 if (resultedCategory) {
-                    this.props.setShops(resultedCategory);
+                    let shops;
+                    resultedCategory.forEach(element => {
+                        shops = element.batch;
+                        return;
+                    });
+                    this.props.setShops(shops);
                     this.setState(
                         {
                             isActive: true

@@ -58,6 +58,7 @@ export function doLogoutAction(): any {
         dispatch(UserActions.resetLoggedUserAction());
         auth.signOut();
         removeLocalStorage(StorageKey.CATEGORIES);
+        removeLocalStorage(StorageKey.SHOPS);
         dispatch(push(Routes.LOGIN));
     }
 }
