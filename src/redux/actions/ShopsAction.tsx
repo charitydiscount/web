@@ -1,17 +1,17 @@
-import {ShopDtoWrapper} from "../../components/products/ShopDto";
+import {ShopDto} from "../../components/products/ShopDto";
 import {createAction} from "../helper/ActionHelper";
 import {ShopsActionTypes} from "./Actions";
 import {ActionTypesUnion} from "../helper/TypesHelper";
 
 export const ShopsActions = {
-    setShops: (shopWrapper: ShopDtoWrapper[]) => createAction(ShopsActionTypes.SET_SHOPS_ACTION, shopWrapper),
+    setShops: (shops: Array<ShopDto>) => createAction(ShopsActionTypes.SET_SHOPS_ACTION, shops),
     resetShops: () => createAction(ShopsActionTypes.RESET_SHOPS_ACTION),
 };
 
-export function setShops(shopWrapper: ShopDtoWrapper[]): any {
-    if (shopWrapper !== null) {
+export function setShops(shops: Array<ShopDto>): any {
+    if (shops) {
         return (dispatch: any) => {
-            dispatch(ShopsActions.setShops(shopWrapper));
+            dispatch(ShopsActions.setShops(shops));
         }
     }
 }

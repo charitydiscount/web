@@ -37,6 +37,7 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
                 .get()
                 .then(querySnapshot => {
                     const data = querySnapshot.docs.map(doc => doc.data() as CategoryDto);
+                    setLocalStorage(StorageKey.CATEGORIES, JSON.stringify(data));
                     if (data) {
                         this.setState({
                             categories: data,

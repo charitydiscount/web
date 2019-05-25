@@ -1,9 +1,9 @@
 import {ShopsActionTypes} from "../actions/Actions";
-import {ShopDtoWrapper} from "../../components/products/ShopDto";
+import {ShopDto} from "../../components/products/ShopDto";
 import {ShopsActions} from "../actions/ShopsAction";
 
 interface IShopsState {
-    shops: ShopDtoWrapper[]
+    shops: Array<ShopDto>
 }
 
 const initialState: IShopsState = {

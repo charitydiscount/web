@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {ShopDtoWrapper} from "./ShopDto";
+import {ShopDto} from "./ShopDto";
 import {setShops} from "../../redux/actions/ShopsAction";
 import {getLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
@@ -63,8 +63,8 @@ class Category extends React.Component<ICategoryProps, ICategoryState> {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        setShops: (shopWrapper: ShopDtoWrapper[]) =>
-            dispatch(setShops(shopWrapper)),
+        setShops: (shops: Array<ShopDto>) =>
+            dispatch(setShops(shops)),
     };
 };
 
