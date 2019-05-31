@@ -30,7 +30,8 @@ class Category extends React.Component<ICategoryProps, ICategoryState> {
     /**
      * Used to update shops list after a category is selected
      */
-    public updateShops() {
+    public updateShops(e) {
+        e.preventDefault(); // prevent default to not point to href location
         const storage = getLocalStorage(StorageKey.CATEGORIES);
         if (storage) {
             const categories = JSON.parse(storage) as Array<CategoryDto>;
