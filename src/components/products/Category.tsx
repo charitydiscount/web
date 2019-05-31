@@ -6,25 +6,29 @@ import {getLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
 import {CategoryDto} from "./CategoryDto";
 
-interface ICategoryState {
-    isActive: boolean
-}
 
 interface ICategoryProps {
     name: String,
-
+    selected: boolean,
+    id: string,
+    onToggle: (String)  => void,
     // global state
-    setShops: any
+    setShops: any,
 }
 
-class Category extends React.Component<ICategoryProps, ICategoryState> {
+class Category extends React.Component<ICategoryProps> {
 
     constructor(props: ICategoryProps) {
         super(props);
-        this.state = {
-            isActive: false
-        };
         this.updateShops = this.updateShops.bind(this);
+        this.onToggle = this.onToggle.bind(this);
+    }
+
+    /**
+     * This is a function which will trigger parent function to change state
+     */
+    public onToggle() {
+        this.props.onToggle(this.props.id);
     }
 
     /**
@@ -47,25 +51,17 @@ class Category extends React.Component<ICategoryProps, ICategoryState> {
                     } else { //load shops from selected category in this case
                         this.props.setShops(resultedCategory.batch);
                     }
-                    this.setState(
-                        {
-                            isActive: true
-                        }
-                    );
+                    this.onToggle();
                 }
             }
         }
     }
 
     public render() {
-        const divStyle = {
-            color: 'blue'
-        };
-
         return (
             <React.Fragment>
                 <li>
-                    <a href={"#"} style={this.state.isActive ? divStyle : undefined}
+                    <a href={"#"} id={this.props.name.toString()} style={this.props.selected ? {color: 'blue'} : undefined}
                        onClick={this.updateShops}>{this.props.name}</a>
                 </li>
             </React.Fragment>

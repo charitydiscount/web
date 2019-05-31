@@ -6,14 +6,14 @@ import {CategoryDto} from "./CategoryDto";
 import Category from "./Category";
 import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
 import {allCategoriesKey, StorageKey} from "../../helper/Constants";
-import {ShopDto} from "./ShopDto";
 
 interface ICategoryProps {
 }
 
 interface ICategoryState {
     categories: CategoryDto[],
-    isLoading: boolean
+    isLoading: boolean,
+    selections: boolean[]
 }
 
 class Categories extends React.Component<ICategoryProps, ICategoryState> {
@@ -22,8 +22,10 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
         super(props);
         this.state = {
             isLoading: true,
-            categories: []
+            categories: [],
+            selections: []
         };
+        this.onChildToggle = this.onChildToggle.bind(this);
     }
 
     public componentDidMount() {
@@ -32,6 +34,7 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
             this.setState({
                 categories: JSON.parse(categories),
                 isLoading: false,
+                selections: []
             });
         } else {
             DB.collection("categories")
@@ -39,12 +42,13 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
                 .then(querySnapshot => {
                     let data = [] as CategoryDto[];
                     data.push(allCategoriesKey as CategoryDto);
-                    querySnapshot.docs.forEach( doc => data.push(doc.data() as CategoryDto))
+                    querySnapshot.docs.forEach(doc => data.push(doc.data() as CategoryDto));
                     setLocalStorage(StorageKey.CATEGORIES, JSON.stringify(data));
                     if (data) {
                         this.setState({
                             categories: data,
                             isLoading: false,
+                            selections: []
                         });
                     }
                 });
@@ -52,6 +56,18 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
 
+    /**
+     * This is a callback function, it is invoked from Category.tsx
+     * @param id - the id of the child which will be activated
+     */
+    public onChildToggle(id) {
+        let selections = [] as boolean[];
+        selections[id] = true;
+
+        this.setState({
+            selections: selections
+        });
+    }
 
     public componentWillUnmount() {
         store.dispatch(NavigationsAction.resetStageAction(Stages.CATEGORIES));
@@ -70,7 +86,9 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
                             <React.Fragment>
                                 {
                                     this.state.categories.map(data => {
-                                        return <Category key = {data.category} name={data.category}/>
+                                        return <Category key={data.category} name={data.category}
+                                                         selected={this.state.selections[data.category]}
+                                                         id={data.category} onToggle={this.onChildToggle}/>
                                     })
                                 }
                             </React.Fragment>}
