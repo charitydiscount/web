@@ -9,6 +9,7 @@ import {removeLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
 import {fetchCategories} from "../../rest/CategoriesService";
 import {fetchShops} from "../../rest/ShopsService";
+import {fetchFavoriteShops} from "../../rest/FavoriteShops";
 
 export const UserActions = {
     setLoggedUserAction: (loginInfo: firebase.User | null) => createAction(LoginActionTypes.SET_LOGGED_USER_ACTION, loginInfo),
@@ -23,6 +24,7 @@ export function doLoginAction(username: string, password: string): any {
                     //gather data
                     fetchCategories();
                     fetchShops();
+                    fetchFavoriteShops();
                     dispatch(UserActions.setLoggedUserAction(response.user));
                     dispatch(push(Routes.CATEGORIES));
                 }
@@ -59,6 +61,7 @@ export function doLogoutAction(): any {
         auth.signOut();
         removeLocalStorage(StorageKey.CATEGORIES);
         removeLocalStorage(StorageKey.SHOPS);
+        removeLocalStorage(StorageKey.FAVORITE_SHOPS);
         dispatch(push(Routes.LOGIN));
     }
 }

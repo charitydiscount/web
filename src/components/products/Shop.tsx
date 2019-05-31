@@ -5,6 +5,7 @@ import {getLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
 import {auth, DB} from "../../index";
 import {FavoriteShopsDto} from "./FavoriteShopsDto";
+import {fetchFavoriteShops} from "../../rest/FavoriteShops";
 
 interface IProductInfoState {
     visible: boolean;
@@ -58,10 +59,13 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                         if (docSnapshot.exists) {
                                             let wholeObject = docSnapshot.data() as FavoriteShopsDto;
                                             var favoriteShops = wholeObject.programs as ShopDto[];
-                                            favoriteShops.push(favoriteShop);
-                                            docRef.update({
-                                                programs: favoriteShops
-                                            })
+                                            var alreadyExists = favoriteShops.find(shop => shop.name == favoriteShop.name);
+                                            if (!alreadyExists) {
+                                                favoriteShops.push(favoriteShop);
+                                                docRef.update({
+                                                    programs: favoriteShops
+                                                });
+                                            }
                                         } else {
                                             // create the document as a list
                                             var favShops = [] as ShopDto[];
@@ -72,6 +76,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                             })
                                         }
                                     });
+                                fetchFavoriteShops();
                             }
                         }
                     }
@@ -141,9 +146,9 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                             <a href="javascript:void(0);" onClick={() => this.openModal()}>
                                 <img className="img-fluid img-min img" src={this.props.logoSrc} alt=""/>
                             </a>
-                            <div className="p_icon">
-                                <a href="#">
-                                    <i className="lnr lnr-heart" onChange={this.updateFavoriteShops}/>
+                            <div className="p_icon" onClick={this.updateFavoriteShops}>
+                                <a href="javascript:void(0);">
+                                    <i className="lnr lnr-heart"/>
                                 </a>
                             </div>
                         </div>
