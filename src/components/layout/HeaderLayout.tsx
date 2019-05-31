@@ -2,11 +2,20 @@ import * as React from "react";
 import {Stages} from "../helper/Stages";
 import {connect} from "react-redux";
 import {doLogoutAction} from "../login/UserActions";
+import {ShopDto} from "../products/ShopDto";
+import {setShops} from "../../redux/actions/ShopsAction";
+import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
+import {StorageKey} from "../../helper/Constants";
+import {auth, DB} from "../../index";
+import {FavoriteShopsDto} from "../products/FavoriteShopsDto";
 
 interface IHeaderLayoutProps {
     isLoggedIn: boolean,
     logout: () => void,
     view: string,
+
+    // global state
+    setShops: any
 }
 
 class HeaderLayout extends React.Component<IHeaderLayoutProps> {
@@ -14,11 +23,40 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
     constructor(props: IHeaderLayoutProps) {
         super(props);
         this.handleLogOut = this.handleLogOut.bind(this);
+        this.loadFavoriteShops = this.loadFavoriteShops.bind(this);
     }
 
     public handleLogOut(event: any) {
         event.preventDefault();
         this.props.logout();
+    }
+
+    loadFavoriteShops() {
+        var favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
+        if (favoriteShops) {
+            this.props.setShops(JSON.parse(favoriteShops));
+        } else {
+            auth.onAuthStateChanged(function (user) {
+                    if (user) {
+                        var docRef = DB.doc("favoriteShops/" + user.uid);
+                        docRef
+                            .get()
+                            .then(querySnapshot => {
+                                const data = querySnapshot.data() as FavoriteShopsDto;
+                                if (data) {
+                                    if (data.programs) {
+                                        setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(data.programs));
+                                        favoriteShops = JSON.stringify(data.programs);
+                                    }
+                                }
+                            });
+                    }
+                }
+            );
+            if (favoriteShops) {
+                this.props.setShops(JSON.parse(favoriteShops));
+            }
+        }
     }
 
     render() {
@@ -88,7 +126,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                                     <a className="nav-link" href="/causes">Causes</a>
                                                 </li>
 
-                                                < li className={"nav-item " + (isContact ? "active" : "")}>
+                                                <li className={"nav-item " + (isContact ? "active" : "")}>
                                                     <a className="nav-link" href="/contact">Contact</a>
                                                 </li>
                                             </React.Fragment>
@@ -103,14 +141,14 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                             <hr/>
 
                                             <li className="nav-item">
-                                                <a href="#" className="icons">
-                                                    <i className="fa fa-heart-o" aria-hidden="true"></i>
+                                                <a href="#" className="icons" onClick={this.loadFavoriteShops}>
+                                                    <i className="fa fa-heart-o" aria-hidden="true"/>
                                                 </a>
                                             </li>
 
                                             <li className="nav-item">
                                                 <a href="/user" className="icons">
-                                                    <i className="fa fa-user" aria-hidden="true"></i>
+                                                    <i className="fa fa-user" aria-hidden="true"/>
                                                 </a>
                                             </li>
 
@@ -128,17 +166,25 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
     }
 }
 
-const mapStateToProps = (state: any) => {
-    return {
-        view: state.navigation.stageName,
-        isLoggedIn: state.user.isLoggedIn
-    }
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        logout: () => dispatch(doLogoutAction())
+const
+    mapStateToProps = (state: any) => {
+        return {
+            view: state.navigation.stageName,
+            isLoggedIn: state.user.isLoggedIn
+        }
     };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(HeaderLayout);
+const
+    mapDispatchToProps = (dispatch: any) => {
+        return {
+            logout: () => dispatch(doLogoutAction()),
+            setShops: (shops: Array<ShopDto>) =>
+                dispatch(setShops(shops)),
+        };
+    };
+
+export default connect(mapStateToProps, mapDispatchToProps)
+
+(
+    HeaderLayout
+);

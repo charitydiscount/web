@@ -22,5 +22,6 @@ export enum InputType {
 
 export enum StorageKey {
    CATEGORIES = "categories",
-   SHOPS = "shops"
+   SHOPS = "shops",
+   FAVORITE_SHOPS = "favoriteShops"
 }
