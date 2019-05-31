@@ -80,7 +80,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             if (storage) {
                 const shops = JSON.parse(storage) as Array<ShopDto>;
                 if (shops) {
-                    const data = shops.filter(shop => shop.name.startsWith(event.target.value))
+                    const data = shops.filter(shop => shop.name.startsWith(event.target.value));
                     if (data) {
                         this.props.setShops(data);
                         this.setState({

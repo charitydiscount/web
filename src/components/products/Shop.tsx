@@ -1,5 +1,10 @@
 import * as React from "react";
 import Modal from 'react-awesome-modal';
+import {ShopDto} from "./ShopDto";
+import {getLocalStorage} from "../../helper/WebHelper";
+import {StorageKey} from "../../helper/Constants";
+import {auth, DB} from "../../index";
+import {FavoriteShopsDto} from "./FavoriteShopsDto";
 
 interface IProductInfoState {
     visible: boolean;
@@ -19,6 +24,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
         this.state = {
             visible: false
         };
+        this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
 
     closeModal() {
@@ -33,6 +39,46 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
         });
     }
 
+    /**
+     * Used to add favorite shops to DB
+     */
+    public updateFavoriteShops() {
+        let name = this.props.name;
+        auth.onAuthStateChanged(function (user) {
+                if (user) {
+                    const storage = getLocalStorage(StorageKey.SHOPS);
+                    if (storage) {
+                        const shops = JSON.parse(storage) as Array<ShopDto>;
+                        if (shops) {
+                            let favoriteShop = shops.find(shop => shop.name == name) as ShopDto;
+                            if (favoriteShop) {
+                                var docRef = DB.doc("favoriteShops/" + user.uid);
+                                docRef.get()
+                                    .then((docSnapshot) => {
+                                        if (docSnapshot.exists) {
+                                            let wholeObject = docSnapshot.data() as FavoriteShopsDto;
+                                            var favoriteShops = wholeObject.programs as ShopDto[];
+                                            favoriteShops.push(favoriteShop);
+                                            docRef.update({
+                                                programs: favoriteShops
+                                            })
+                                        } else {
+                                            // create the document as a list
+                                            var favShops = [] as ShopDto[];
+                                            favShops.push(favoriteShop);
+                                            docRef.set({
+                                                programs: favShops,
+                                                userId: user.uid
+                                            })
+                                        }
+                                    });
+                            }
+                        }
+                    }
+                }
+            }
+        );
+    }
 
     public render() {
         return (
@@ -49,22 +95,22 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                     <ul className="blog_meta list">
                                         <li>
                                             <a href="#">Mark wiens
-                                                <i className="lnr lnr-user"></i>
+                                                <i className="lnr lnr-user"/>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#">12 Dec, 2017
-                                                <i className="lnr lnr-calendar-full"></i>
+                                                <i className="lnr lnr-calendar-full"/>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#">1.2M Views
-                                                <i className="lnr lnr-eye"></i>
+                                                <i className="lnr lnr-eye"/>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="#">06 Comments
-                                                <i className="lnr lnr-bubble"></i>
+                                                <i className="lnr lnr-bubble"/>
                                             </a>
                                         </li>
                                     </ul>
@@ -97,7 +143,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                             </a>
                             <div className="p_icon">
                                 <a href="#">
-                                    <i className="lnr lnr-heart"></i>
+                                    <i className="lnr lnr-heart" onChange={this.updateFavoriteShops}/>
                                 </a>
                             </div>
                         </div>

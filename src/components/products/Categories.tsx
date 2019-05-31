@@ -13,7 +13,7 @@ interface ICategoryProps {
 interface ICategoryState {
     categories: CategoryDto[],
     isLoading: boolean,
-    selections: boolean[]
+    selections: boolean[]  // used for showing a blue color when a category is activated
 }
 
 class Categories extends React.Component<ICategoryProps, ICategoryState> {
