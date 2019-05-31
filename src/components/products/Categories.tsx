@@ -5,7 +5,8 @@ import {Stages} from "../helper/Stages";
 import {CategoryDto} from "./CategoryDto";
 import Category from "./Category";
 import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
-import {StorageKey} from "../../helper/Constants";
+import {allCategoriesKey, StorageKey} from "../../helper/Constants";
+import {ShopDto} from "./ShopDto";
 
 interface ICategoryProps {
 }
@@ -36,7 +37,9 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
             DB.collection("categories")
                 .get()
                 .then(querySnapshot => {
-                    const data = querySnapshot.docs.map(doc => doc.data() as CategoryDto);
+                    let data = [] as CategoryDto[];
+                    data.push(allCategoriesKey as CategoryDto);
+                    querySnapshot.docs.forEach( doc => data.push(doc.data() as CategoryDto))
                     setLocalStorage(StorageKey.CATEGORIES, JSON.stringify(data));
                     if (data) {
                         this.setState({

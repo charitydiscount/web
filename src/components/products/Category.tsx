@@ -27,19 +27,25 @@ class Category extends React.Component<ICategoryProps, ICategoryState> {
         this.updateShops = this.updateShops.bind(this);
     }
 
+    /**
+     * Used to update shops list after a category is selected
+     */
     public updateShops() {
         const storage = getLocalStorage(StorageKey.CATEGORIES);
         if (storage) {
             const categories = JSON.parse(storage) as Array<CategoryDto>;
             if (categories) {
-                const resultedCategory = categories.filter(category => category.category == this.props.name);
+                //find the category matching this.props.name
+                let resultedCategory = categories.find(category => category.category == this.props.name);
                 if (resultedCategory) {
-                    let shops;
-                    resultedCategory.forEach(element => {
-                        shops = element.batch;
-                        return;
-                    });
-                    this.props.setShops(shops);
+                    if (resultedCategory.category == "All") { // load all shops in this case
+                        const shops = getLocalStorage(StorageKey.SHOPS);
+                        if (shops) {
+                            this.props.setShops(JSON.parse(shops));
+                        }
+                    } else { //load shops from selected category in this case
+                        this.props.setShops(resultedCategory.batch);
+                    }
                     this.setState(
                         {
                             isActive: true
