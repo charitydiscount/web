@@ -35,7 +35,7 @@ export const DB = firebaseApp.firestore();
 export const auth = firebaseApp.auth();
 export const providers = {
     googleProvider: new firebase.auth.GoogleAuthProvider(),
-    mailProvider: new firebase.auth.EmailAuthProvider(),
+    facebookProvider: new firebase.auth.FacebookAuthProvider()
 };
 //----------------------------------------------------------------------------------------------------------------------
 

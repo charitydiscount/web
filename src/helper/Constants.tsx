@@ -25,3 +25,9 @@ export enum StorageKey {
    SHOPS = "shops",
    FAVORITE_SHOPS = "favoriteShops"
 }
+
+export enum LoginType {
+    MAIL = "mail",
+    FACEBOOK = "facebook",
+    GOOGLE = "google"
+}

@@ -59,7 +59,7 @@ export function doLogoutAction(): any {
         auth.signOut();
         removeLocalStorage(StorageKey.CATEGORIES);
         removeLocalStorage(StorageKey.SHOPS);
-        removeLocalStorage(StorageKey.FAVORITE_SHOPS)
+        removeLocalStorage(StorageKey.FAVORITE_SHOPS);
         dispatch(push(Routes.LOGIN));
     }
 }
