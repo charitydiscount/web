@@ -55,6 +55,7 @@ class Category extends React.Component<ICategoryProps> {
                 }
             }
         }
+        window.scrollTo(0,0);
     }
 
     public render() {
