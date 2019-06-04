@@ -41,7 +41,7 @@ class Category extends React.Component<ICategoryProps> {
             const categories = JSON.parse(storage) as Array<CategoryDto>;
             if (categories) {
                 //find the category matching this.props.name
-                let resultedCategory = categories.find(category => category.category == this.props.name);
+                let resultedCategory = categories.find(category => category.category.toLowerCase() == this.props.name.toLowerCase());
                 if (resultedCategory) {
                     if (resultedCategory.category == "All") { // load all shops in this case
                         const shops = getLocalStorage(StorageKey.SHOPS);
