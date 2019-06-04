@@ -31,7 +31,8 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
         this.props.logout();
     }
 
-    loadFavoriteShops() {
+    loadFavoriteShops(e) {
+        e.preventDefault();
         var favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
         if (favoriteShops) {
             this.props.setShops(JSON.parse(favoriteShops));
