@@ -47,9 +47,10 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 .then(querySnapshot => {
                     const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
                     if (data) {
-                        let shops;
+                        var shops = new Array<ShopDto>();
                         data.forEach(element => {
-                            shops = element.batch;
+                            element.batch.forEach(
+                                shop => shops.push(shop))
                             return;
                         });
                         if (shops) {
