@@ -23,11 +23,6 @@ export enum InputType {
 export enum StorageKey {
    CATEGORIES = "categories",
    SHOPS = "shops",
-   FAVORITE_SHOPS = "favoriteShops"
-}
-
-export enum LoginType {
-    MAIL = "mail",
-    FACEBOOK = "facebook",
-    GOOGLE = "google"
+   FAVORITE_SHOPS = "favoriteShops",
+   USER = "CDuser"
 }
