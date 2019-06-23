@@ -43,8 +43,6 @@ export const auth = firebaseApp.auth();
 const user = getLocalStorage(StorageKey.USER);
 if (user) {
     store.dispatch(UserActions.setLoggedUserAction(JSON.parse(user) as firebase.User));
-}else{
-    doLogoutAction();
 }
 
 //----------------------------------------------------------------------------------------------------------------------

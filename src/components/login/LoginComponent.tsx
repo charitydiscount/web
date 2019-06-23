@@ -10,7 +10,7 @@ import {push} from "connected-react-router";
 import {Routes} from "../helper/Routes";
 import {store} from "../../index";
 import {UserActions} from "./UserActions";
-import {removeLocalStorage, setLocalStorage} from "../../helper/WebHelper";
+import {setLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
 
 class LoginComponent extends React.Component {
@@ -35,7 +35,7 @@ class LoginComponent extends React.Component {
             auth.FacebookAuthProvider.PROVIDER_ID
         ],
         callbacks: {
-            signInSuccess: LoginComponent.onSignInSuccess
+            signInSuccessWithAuthResult: LoginComponent.onSignInSuccess
         }
     };
 
