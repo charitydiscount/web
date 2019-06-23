@@ -26,3 +26,7 @@ export enum StorageKey {
    FAVORITE_SHOPS = "favoriteShops",
    USER = "CDuser"
 }
+
+export const emptyHrefLink = '#';
+export const noActionHrefLink = 'javascript:void(0)';
+

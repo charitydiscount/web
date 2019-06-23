@@ -1,4 +1,5 @@
 import * as React from "react";
+import {emptyHrefLink} from "../../helper/Constants";
 
 interface IDealProps {
     title: string,
@@ -14,7 +15,7 @@ class Deal extends React.Component<IDealProps> {
                     <img src="img/blog/cat-post/cat-post-3.jpg" alt="post"/>
                     <div className="categories_details">
                         <div className="categories_text">
-                            <a href="#">
+                            <a href={emptyHrefLink}>
                                 <h5>{this.props.title}</h5>
                             </a>
                             <div className="border_line"></div>

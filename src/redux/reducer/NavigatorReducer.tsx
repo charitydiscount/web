@@ -1,5 +1,4 @@
 import {NavigationActionTypes} from "../actions/Actions";
-import * as React from "react";
 import {Stages} from "../../components/helper/Stages";
 import {NavigationsAction} from "../actions/NavigationsAction";
 

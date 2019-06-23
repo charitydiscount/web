@@ -4,18 +4,17 @@ import App from "./App";
 import {Provider} from "react-redux";
 import {applyMiddleware, createStore} from "redux";
 import thunk from "redux-thunk";
-import {ConnectedRouter, push, routerMiddleware} from 'connected-react-router';
+import {ConnectedRouter, routerMiddleware} from 'connected-react-router';
 import {createBrowserHistory} from "history";
 import createRootReducer from './redux/reducer/RootReducer';
 import config from "./config/FirebaseConfig";
 import firebase from "firebase";
-import "firebase/auth"; // for DB auth
-import 'firebase/firestore'; //for DB connection
+import "firebase/auth";
+import 'firebase/firestore';
 import * as serviceWorker from './serviceWorker';
-import {doLogoutAction, UserActions} from "./components/login/UserActions";
+import {UserActions} from "./components/login/UserActions";
 import {getLocalStorage} from "./helper/WebHelper";
 import {StorageKey} from "./helper/Constants";
-import {Routes} from "./components/helper/Routes";
 
 
 export const publicUrl = process.env.PUBLIC_URL || "";

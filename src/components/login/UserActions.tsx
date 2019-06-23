@@ -3,12 +3,9 @@ import {Routes} from '../helper/Routes';
 import {ActionTypesUnion} from '../../redux/helper/TypesHelper';
 import {createAction} from '../../redux/helper/ActionHelper';
 import {LoginActionTypes} from '../../redux/actions/Actions';
-import {login, register} from '../../rest/LoginService';
 import {auth} from '../../index';
 import {removeLocalStorage} from '../../helper/WebHelper';
 import {StorageKey} from '../../helper/Constants';
-import {fetchCategories} from '../../rest/CategoriesService';
-import {fetchShops} from '../../rest/ShopsService';
 
 export const UserActions = {
     setLoggedUserAction: (loginInfo: firebase.User | null) =>

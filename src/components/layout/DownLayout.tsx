@@ -1,4 +1,5 @@
 import * as React from "react";
+import {emptyHrefLink} from "../../helper/Constants";
 
 const DownLayout = () => {
     return (
@@ -62,16 +63,16 @@ const DownLayout = () => {
                             <h6 className="footer_title">Follow Us</h6>
                             <p>Let us be social</p>
                             <div className="f_social">
-                                <a href="#">
+                                <a href={emptyHrefLink}>
                                     <i className="fa fa-facebook"></i>
                                 </a>
-                                <a href="#">
+                                <a href={emptyHrefLink}>
                                     <i className="fa fa-twitter"></i>
                                 </a>
-                                <a href="#">
+                                <a href={emptyHrefLink}>
                                     <i className="fa fa-dribbble"></i>
                                 </a>
-                                <a href="#">
+                                <a href={emptyHrefLink}>
                                     <i className="fa fa-behance"></i>
                                 </a>
                             </div>

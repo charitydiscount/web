@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {ShopDto} from "./ShopDto";
 import {setShops} from "../../redux/actions/ShopsAction";
 import {getLocalStorage} from "../../helper/WebHelper";
-import {StorageKey} from "../../helper/Constants";
+import {emptyHrefLink, StorageKey} from "../../helper/Constants";
 import {CategoryDto} from "./CategoryDto";
 
 
@@ -62,7 +62,7 @@ class Category extends React.Component<ICategoryProps> {
         return (
             <React.Fragment>
                 <li>
-                    <a href={"#"} id={this.props.name.toString()} style={this.props.selected ? {color: 'blue'} : undefined}
+                    <a href={emptyHrefLink} id={this.props.name.toString()} style={this.props.selected ? {color: 'blue'} : undefined}
                        onClick={this.updateShops}>{this.props.name}</a>
                 </li>
             </React.Fragment>
