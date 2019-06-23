@@ -13,7 +13,7 @@ class LoginComponent extends React.Component {
 
     static onSignInSuccess(response) {
         //refresh user uid
-        setLocalStorage(StorageKey.USER, JSON.stringify(response));
+        setLocalStorage(StorageKey.USER, JSON.stringify(response.user));
         //gather data
         fetchCategories();
         fetchShops();
