@@ -25,8 +25,7 @@ interface IShopsState {
     currentPage: number
 }
 
-const pageLimit = 50; //50 products per page
-
+const pageLimit = 30; // products per page
 
 class Shops extends React.Component<IShopsProps, IShopsState> {
 
@@ -37,7 +36,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             currentPage: 0
         };
         this.onSearchUpdate = this.onSearchUpdate.bind(this);
-        this.updatePageState = this.updatePageState.bind(this);
+        this.updatePageNumber = this.updatePageNumber.bind(this);
     }
 
     public componentDidMount() {
@@ -80,6 +79,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 this.props.setShops(JSON.parse(shops));
                 this.setState({
                     isLoading: false,
+                    currentPage: 0
                 });
             }
         } else {
@@ -92,6 +92,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                         this.props.setShops(data);
                         this.setState({
                             isLoading: false,
+                            currentPage: 0
                         });
                     }
                 }
@@ -103,23 +104,32 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         store.dispatch(NavigationsAction.resetStageAction(Stages.CATEGORIES));
     }
 
-    public updatePageState(){
-
-
+    public updatePageNumber(data) {
+        this.setState({
+            currentPage: data.selected
+        });
     }
 
     public render() {
-        const shopsList = this.props.shops ? this.props.shops.map(shop => {
+        var shopsList = this.props.shops ? this.props.shops.map(shop => {
             return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
                          mainUrl={shop.mainUrl}/>
         }) : null;
 
-        var paginationLimit = 0;
         var pageCount = 0;
-        if(shopsList) {
-            paginationLimit = shopsList.length;
-            pageCount = paginationLimit / pageLimit + 1;
+        if (this.props.shops) {
+            if (this.props.shops.length > pageLimit) {
+                pageCount = this.props.shops.length / pageLimit;
+                var offset = this.state.currentPage;
+                shopsList = this.props.shops.slice(offset * pageLimit, (offset + 1) * pageLimit).map(shop => {
+                    return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
+                                 mainUrl={shop.mainUrl}/>
+                });
+            } else {
+                pageCount = 1;
+            }
         }
+
 
         return (
             <React.Fragment>
@@ -132,21 +142,23 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                                   placeholder={"Search..."} onKeyUp={this.onSearchUpdate}/>
                                     <div className="right_page ml-auto">
                                         <nav className="cat_page" aria-label="Page navigation example">
-                                                <ReactPaginate
-                                                    previousLabel={''}
-                                                    nextLabel={''}
-                                                    breakLabel={'...'}
-                                                    breakClassName={'blank'}
-                                                    breakLinkClassName={'page-link'}
-                                                    pageCount={pageCount}
-                                                    marginPagesDisplayed={2}
-                                                    pageRangeDisplayed={5}
-                                                    onPageChange={this.updatePageState}
-                                                    containerClassName={'pagination'}
-                                                    pageClassName={'page-item'}
-                                                    pageLinkClassName={'page-link'}
-                                                    activeClassName={'active'}
-                                                />
+                                            <ReactPaginate
+                                                previousLabel={'<'}
+                                                previousLinkClassName={'page-link'}
+                                                nextLabel={'>'}
+                                                nextLinkClassName={'page-link'}
+                                                breakLabel={'...'}
+                                                breakClassName={'blank'}
+                                                breakLinkClassName={'page-link'}
+                                                pageCount={pageCount}
+                                                marginPagesDisplayed={1}
+                                                pageRangeDisplayed={2}
+                                                onPageChange={this.updatePageNumber}
+                                                containerClassName={'pagination'}
+                                                pageClassName={'page-item'}
+                                                pageLinkClassName={'page-link'}
+                                                activeClassName={'active'}
+                                            />
                                         </nav>
                                     </div>
                                 </div>
