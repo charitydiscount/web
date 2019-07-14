@@ -10,6 +10,7 @@ import {resetShops, setShops} from "../../redux/actions/ShopsAction";
 import GenericInput from "../input/GenericInput";
 import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
+import ReactPaginate from 'react-paginate';
 
 interface IShopsProps {
     shops: Array<ShopDto>,
@@ -20,8 +21,11 @@ interface IShopsProps {
 }
 
 interface IShopsState {
-    isLoading: boolean
+    isLoading: boolean,
+    currentPage: number
 }
+
+const pageLimit = 50; //50 products per page
 
 
 class Shops extends React.Component<IShopsProps, IShopsState> {
@@ -29,9 +33,11 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     constructor(props: IShopsProps) {
         super(props);
         this.state = {
-            isLoading: true
+            isLoading: true,
+            currentPage: 0
         };
         this.onSearchUpdate = this.onSearchUpdate.bind(this);
+        this.updatePageState = this.updatePageState.bind(this);
     }
 
     public componentDidMount() {
@@ -97,11 +103,23 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         store.dispatch(NavigationsAction.resetStageAction(Stages.CATEGORIES));
     }
 
+    public updatePageState(){
+
+
+    }
+
     public render() {
         const shopsList = this.props.shops ? this.props.shops.map(shop => {
             return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
                          mainUrl={shop.mainUrl}/>
         }) : null;
+
+        var paginationLimit = 0;
+        var pageCount = 0;
+        if(shopsList) {
+            paginationLimit = shopsList.length;
+            pageCount = paginationLimit / pageLimit + 1;
+        }
 
         return (
             <React.Fragment>
@@ -112,6 +130,25 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                 <div className="product_top_bar">
                                     <GenericInput type={"textfield"} id={"search"} className={"single-input"}
                                                   placeholder={"Search..."} onKeyUp={this.onSearchUpdate}/>
+                                    <div className="right_page ml-auto">
+                                        <nav className="cat_page" aria-label="Page navigation example">
+                                                <ReactPaginate
+                                                    previousLabel={''}
+                                                    nextLabel={''}
+                                                    breakLabel={'...'}
+                                                    breakClassName={'blank'}
+                                                    breakLinkClassName={'page-link'}
+                                                    pageCount={pageCount}
+                                                    marginPagesDisplayed={2}
+                                                    pageRangeDisplayed={5}
+                                                    onPageChange={this.updatePageState}
+                                                    containerClassName={'pagination'}
+                                                    pageClassName={'page-item'}
+                                                    pageLinkClassName={'page-link'}
+                                                    activeClassName={'active'}
+                                                />
+                                        </nav>
+                                    </div>
                                 </div>
                                 <div className="latest_product_inner row">
                                     {
