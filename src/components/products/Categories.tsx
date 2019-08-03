@@ -4,8 +4,7 @@ import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import {CategoryDto} from "./CategoryDto";
 import Category from "./Category";
-import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
-import {allCategoriesKey, StorageKey} from "../../helper/Constants";
+import {fetchCategoriesForUi} from "../../rest/CategoriesService";
 
 interface ICategoryProps {
 }
@@ -29,30 +28,7 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
     }
 
     public componentDidMount() {
-        const categories = getLocalStorage(StorageKey.CATEGORIES);
-        if (categories) {
-            this.setState({
-                categories: JSON.parse(categories),
-                isLoading: false,
-                selections: []
-            });
-        } else {
-            DB.collection("categories")
-                .get()
-                .then(querySnapshot => {
-                    let data = [] as CategoryDto[];
-                    data.push(allCategoriesKey as CategoryDto);
-                    querySnapshot.docs.forEach(doc => data.push(doc.data() as CategoryDto));
-                    setLocalStorage(StorageKey.CATEGORIES, JSON.stringify(data));
-                    if (data) {
-                        this.setState({
-                            categories: data,
-                            isLoading: false,
-                            selections: []
-                        });
-                    }
-                });
-        }
+        fetchCategoriesForUi(this);
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
 
@@ -91,7 +67,8 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
                                                          id={data.category} onToggle={this.onChildToggle}/>
                                     })
                                 }
-                            </React.Fragment>}
+                            </React.Fragment>
+                            }
                         </ul>
                     </div>
                 </aside>

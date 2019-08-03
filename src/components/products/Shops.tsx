@@ -130,7 +130,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             }
         }
 
-
         return (
             <React.Fragment>
                 <section className="cat_product_area section_gap">
