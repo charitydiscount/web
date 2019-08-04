@@ -11,6 +11,7 @@ import GenericInput from "../input/GenericInput";
 import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
 import ReactPaginate from 'react-paginate';
+import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 
 interface IShopsProps {
     shops: Array<ShopDto>,
@@ -18,6 +19,10 @@ interface IShopsProps {
     // global state
     setShops: any,
     resetShops: any,
+
+    //used to refresh categories
+    setCurrentCategory: any
+    setSelections: any
 }
 
 interface IShopsState {
@@ -77,6 +82,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             const shops = getLocalStorage(StorageKey.SHOPS);
             if (shops) {
                 this.props.setShops(JSON.parse(shops));
+                this.props.setSelections([]);
+                this.props.setCurrentCategory(new String(''));
                 this.setState({
                     isLoading: false,
                     currentPage: 0
@@ -90,6 +97,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                     const data = shops.filter(shop => shop.name.toLowerCase().includes(event.target.value.toLowerCase()));
                     if (data) {
                         this.props.setShops(data);
+                        this.props.setSelections([]);
+                        this.props.setCurrentCategory(new String(''));
                         this.setState({
                             isLoading: false,
                             currentPage: 0
@@ -194,6 +203,10 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         setShops: (shopWrapper: Array<ShopDto>) =>
             dispatch(setShops(shopWrapper)),
+        setCurrentCategory: (currentCategory: String) =>
+            dispatch(setCurrentCategory(currentCategory)),
+        setSelections: (selections: boolean[]) =>
+            dispatch(setSelections(selections)),
         resetIncidents: () => dispatch(resetShops()),
     };
 };
