@@ -22,7 +22,6 @@ export function fetchCategoriesForUi(element) {
         element.setState({
             categories: JSON.parse(categories),
             isLoading: false,
-            currentCategory: '',
             selections: []
         });
     } else {
@@ -37,7 +36,6 @@ export function fetchCategoriesForUi(element) {
                     element.setState({
                         categories: data,
                         isLoading: false,
-                        currentCategory: '',
                         selections: []
                     });
                 }

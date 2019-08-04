@@ -1,18 +1,23 @@
 import * as React from "react";
-import {DB, store} from "../../index";
+import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import {CategoryDto} from "./CategoryDto";
 import Category from "./Category";
 import {fetchCategoriesForUi} from "../../rest/CategoriesService";
+import {connect} from "react-redux";
+import {setCurrentCategory} from "../../redux/actions/CategoriesAction";
 
 interface ICategoryProps {
+    currentCategory?: String,
+
+    //global state
+    setCurrentCategory?: any
 }
 
 interface ICategoryState {
     categories: CategoryDto[],
     isLoading: boolean,
-    currentCategory: String,
     selections: boolean[]  // used for showing a blue color when a category is activated
 }
 
@@ -23,7 +28,6 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
         this.state = {
             isLoading: true,
             categories: [],
-            currentCategory: '',
             selections: []
         };
         this.onChildToggle = this.onChildToggle.bind(this);
@@ -45,8 +49,8 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
 
         this.setState({
             selections: selections,
-            currentCategory: name
         });
+        this.props.setCurrentCategory(name);
     }
 
     public componentWillUnmount() {
@@ -58,7 +62,8 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
             <React.Fragment>
                 <aside className="left_widgets cat_widgets">
                     <div className="l_w_title">
-                        <h3>Categories {this.state.currentCategory.length > 0 ? ' -> ' + this.state.currentCategory : null}</h3>
+                        <h3>Categories {this.props.currentCategory &&
+                        this.props.currentCategory.length > 0 ? ' -> ' + this.props.currentCategory : null}</h3>
                     </div>
                     <div className="widgets_inner">
                         <ul className="list">
@@ -81,4 +86,18 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
     }
 }
 
-export default Categories;
+const mapStateToProps = (state: any) => {
+    return {
+        currentCategory: state.categoryReducer.currentCategory
+    };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        setCurrentCategory: (currentCategory: String) =>
+            dispatch(setCurrentCategory(currentCategory)),
+
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Categories);

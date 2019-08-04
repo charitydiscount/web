@@ -12,3 +12,7 @@ export enum ShopsActionTypes {
     SET_SHOPS_ACTION = 'SET_SHOPS_ACTION',
     RESET_SHOPS_ACTION = 'RESET_SHOPS_ACTION',
 }
+
+export enum CategoryActionTypes {
+    SET_CURRENT_CATEGORY_ACTION = 'SET_CURRENT_CATEGORY_ACTION'
+}

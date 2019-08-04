@@ -3,12 +3,14 @@ import {connectRouter} from "connected-react-router";
 import NavigatorReducer from "./NavigatorReducer";
 import UserReducer from "./UserReducer";
 import ShopsReducer from "./ShopsReducer";
+import CategoryReducer from "./CategoryReducer";
 
 // Used to combine all reducers for full functionality
 export default (history: any) => combineReducers({
     router: connectRouter(history),
     navigation: NavigatorReducer,
-    user : UserReducer,
-    shopReducer : ShopsReducer
+    user: UserReducer,
+    shopReducer: ShopsReducer,
+    categoryReducer: CategoryReducer
 });
 

@@ -7,6 +7,7 @@ import {setShops} from "../../redux/actions/ShopsAction";
 import {getLocalStorage} from "../../helper/WebHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
 import {fetchFavoriteShops} from "../../rest/ShopsService";
+import {setCurrentCategory} from "../../redux/actions/CategoriesAction";
 
 interface IHeaderLayoutProps {
     isLoggedIn: boolean,
@@ -15,6 +16,7 @@ interface IHeaderLayoutProps {
 
     // global state
     setShops: any
+    setCurrentCategory: any
 }
 
 class HeaderLayout extends React.Component<IHeaderLayoutProps> {
@@ -43,6 +45,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                 this.props.setShops(new Array<ShopDto>());
             }
         }
+        this.props.setCurrentCategory('Favorite Shops');
     }
 
     render() {
@@ -170,6 +173,8 @@ const
             logout: () => dispatch(doLogoutAction()),
             setShops: (shops: Array<ShopDto>) =>
                 dispatch(setShops(shops)),
+            setCurrentCategory: (currentCategory: String) =>
+                dispatch(setCurrentCategory(currentCategory))
         };
     };
 
