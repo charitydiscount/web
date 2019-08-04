@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {ShopDto} from "./ShopDto";
-import {setShops} from "../../redux/actions/ShopsAction";
+import {setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
 import {getLocalStorage} from "../../helper/WebHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
 import {CategoryDto} from "./CategoryDto";
@@ -12,8 +12,10 @@ interface ICategoryProps {
     selected: boolean,
     id: string,
     onToggle: (id: String, categoryName: String) => void,
-    // global state
+
+    // global state refresh shops
     setShops: any,
+    setCurrentPage: any
 }
 
 class Category extends React.Component<ICategoryProps> {
@@ -47,9 +49,11 @@ class Category extends React.Component<ICategoryProps> {
                         const shops = getLocalStorage(StorageKey.SHOPS);
                         if (shops) {
                             this.props.setShops(JSON.parse(shops));
+                            this.props.setCurrentPage(0);
                         }
                     } else { //load shops from selected category in this case
                         this.props.setShops(resultedCategory.batch);
+                        this.props.setCurrentPage(0);
                     }
                     this.onToggle();
                 }
@@ -75,6 +79,8 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         setShops: (shops: Array<ShopDto>) =>
             dispatch(setShops(shops)),
+        setCurrentPage: (currentPage: number) =>
+            dispatch(setCurrentPage(currentPage))
     };
 };
 

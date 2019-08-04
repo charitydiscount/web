@@ -10,6 +10,7 @@ export enum LoginActionTypes {
 
 export enum ShopsActionTypes {
     SET_SHOPS_ACTION = 'SET_SHOPS_ACTION',
+    SET_CURRENT_PAGE_ACTION = 'SET_CURRENT_PAGE_ACTION',
     RESET_SHOPS_ACTION = 'RESET_SHOPS_ACTION',
 }
 

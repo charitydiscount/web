@@ -6,7 +6,7 @@ import Categories from "./Categories";
 import {ShopDto, ShopDtoWrapper} from "./ShopDto";
 import {connect} from "react-redux";
 import Shop from "./Shop";
-import {resetShops, setShops} from "../../redux/actions/ShopsAction";
+import {resetShops, setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
 import GenericInput from "../input/GenericInput";
 import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
@@ -15,10 +15,12 @@ import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesA
 
 interface IShopsProps {
     shops: Array<ShopDto>,
+    currentPage: number
 
     // global state
     setShops: any,
     resetShops: any,
+    setCurrentPage: any,
 
     //used to refresh categories
     setCurrentCategory: any
@@ -27,7 +29,6 @@ interface IShopsProps {
 
 interface IShopsState {
     isLoading: boolean,
-    currentPage: number
 }
 
 const pageLimit = 30; // products per page
@@ -38,7 +39,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         super(props);
         this.state = {
             isLoading: true,
-            currentPage: 0
         };
         this.onSearchUpdate = this.onSearchUpdate.bind(this);
         this.updatePageNumber = this.updatePageNumber.bind(this);
@@ -84,9 +84,9 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 this.props.setShops(JSON.parse(shops));
                 this.props.setSelections([]);
                 this.props.setCurrentCategory(new String(''));
+                this.props.setCurrentPage(0);
                 this.setState({
                     isLoading: false,
-                    currentPage: 0
                 });
             }
         } else {
@@ -99,9 +99,9 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                         this.props.setShops(data);
                         this.props.setSelections([]);
                         this.props.setCurrentCategory(new String(''));
+                        this.props.setCurrentPage(0);
                         this.setState({
                             isLoading: false,
-                            currentPage: 0
                         });
                     }
                 }
@@ -114,9 +114,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     }
 
     public updatePageNumber(data) {
-        this.setState({
-            currentPage: data.selected
-        });
+        this.props.setCurrentPage(data.selected);
     }
 
     public render() {
@@ -129,7 +127,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         if (this.props.shops) {
             if (this.props.shops.length > pageLimit) {
                 pageCount = this.props.shops.length / pageLimit;
-                var offset = this.state.currentPage;
+                var offset = this.props.currentPage;
                 shopsList = this.props.shops.slice(offset * pageLimit, (offset + 1) * pageLimit).map(shop => {
                     return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
                                  mainUrl={shop.mainUrl}/>
@@ -161,6 +159,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                                 pageCount={pageCount}
                                                 marginPagesDisplayed={1}
                                                 pageRangeDisplayed={2}
+                                                forcePage={this.props.currentPage}
                                                 onPageChange={this.updatePageNumber}
                                                 containerClassName={'pagination'}
                                                 pageClassName={'page-item'}
@@ -194,7 +193,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
 const mapStateToProps = (state: any) => {
     return {
-        shops: state.shopReducer.shops
+        shops: state.shopReducer.shops,
+        currentPage: state.shopReducer.currentPage
     };
 };
 
@@ -203,6 +203,8 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         setShops: (shopWrapper: Array<ShopDto>) =>
             dispatch(setShops(shopWrapper)),
+        setCurrentPage: (currentPage: number) =>
+            dispatch(setCurrentPage(currentPage)),
         setCurrentCategory: (currentCategory: String) =>
             dispatch(setCurrentCategory(currentCategory)),
         setSelections: (selections: boolean[]) =>

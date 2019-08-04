@@ -5,6 +5,7 @@ import {ActionTypesUnion} from "../helper/TypesHelper";
 
 export const ShopsActions = {
     setShops: (shops: Array<ShopDto>) => createAction(ShopsActionTypes.SET_SHOPS_ACTION, shops),
+    setCurrentPage: (currentPage: number) => createAction(ShopsActionTypes.SET_CURRENT_PAGE_ACTION, currentPage),
     resetShops: () => createAction(ShopsActionTypes.RESET_SHOPS_ACTION),
 };
 
@@ -15,6 +16,15 @@ export function setShops(shops: Array<ShopDto>): any {
         }
     }
 }
+
+export function setCurrentPage(currentPage: number): any {
+    if (currentPage !== undefined) {
+        return (dispatch: any) => {
+            dispatch(ShopsActions.setCurrentPage(currentPage));
+        }
+    }
+}
+
 
 export function resetShops() {
     return (dispatch: any) => {
