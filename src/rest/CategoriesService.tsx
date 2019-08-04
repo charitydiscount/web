@@ -22,7 +22,6 @@ export function fetchCategoriesForUi(element) {
         element.setState({
             categories: JSON.parse(categories),
             isLoading: false,
-            selections: []
         });
     } else {
         DB.collection("categories")
@@ -36,7 +35,6 @@ export function fetchCategoriesForUi(element) {
                     element.setState({
                         categories: data,
                         isLoading: false,
-                        selections: []
                     });
                 }
             });

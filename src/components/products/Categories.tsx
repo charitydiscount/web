@@ -6,19 +6,20 @@ import {CategoryDto} from "./CategoryDto";
 import Category from "./Category";
 import {fetchCategoriesForUi} from "../../rest/CategoriesService";
 import {connect} from "react-redux";
-import {setCurrentCategory} from "../../redux/actions/CategoriesAction";
+import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 
 interface ICategoryProps {
     currentCategory?: String,
+    selections?: boolean[]
 
     //global state
     setCurrentCategory?: any
+    setSelections?: any // used for showing a blue color when a category is activated
 }
 
 interface ICategoryState {
     categories: CategoryDto[],
     isLoading: boolean,
-    selections: boolean[]  // used for showing a blue color when a category is activated
 }
 
 class Categories extends React.Component<ICategoryProps, ICategoryState> {
@@ -28,7 +29,6 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
         this.state = {
             isLoading: true,
             categories: [],
-            selections: []
         };
         this.onChildToggle = this.onChildToggle.bind(this);
     }
@@ -47,9 +47,7 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
         let selections = [] as boolean[];
         selections[id] = true;
 
-        this.setState({
-            selections: selections,
-        });
+        this.props.setSelections(selections);
         this.props.setCurrentCategory(name);
     }
 
@@ -72,7 +70,7 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
                                 {
                                     this.state.categories.map(data => {
                                         return <Category key={data.category} name={data.category}
-                                                         selected={this.state.selections[data.category]}
+                                                         selected={this.props.selections && this.props.selections[data.category]}
                                                          id={data.category} onToggle={this.onChildToggle}/>
                                     })
                                 }
@@ -88,7 +86,8 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
 
 const mapStateToProps = (state: any) => {
     return {
-        currentCategory: state.categoryReducer.currentCategory
+        currentCategory: state.categoryReducer.currentCategory,
+        selections: state.categoryReducer.selections
     };
 };
 
@@ -96,7 +95,8 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         setCurrentCategory: (currentCategory: String) =>
             dispatch(setCurrentCategory(currentCategory)),
-
+        setSelections: (selections: boolean[]) =>
+            dispatch(setSelections(selections))
     };
 };
 
