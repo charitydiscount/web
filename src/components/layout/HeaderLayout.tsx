@@ -4,10 +4,9 @@ import {connect} from "react-redux";
 import {doLogoutAction} from "../login/UserActions";
 import {ShopDto} from "../products/ShopDto";
 import {setShops} from "../../redux/actions/ShopsAction";
-import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
+import {getLocalStorage} from "../../helper/WebHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
-import {auth, DB} from "../../index";
-import {FavoriteShopsDto} from "../products/FavoriteShopsDto";
+import {fetchFavoriteShops} from "../../rest/ShopsService";
 
 interface IHeaderLayoutProps {
     isLoggedIn: boolean,
@@ -31,31 +30,17 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
         this.props.logout();
     }
 
-    loadFavoriteShops(e) {
-        e.preventDefault();
+    public loadFavoriteShops(event) {
+        event.preventDefault();
         var favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
         if (favoriteShops) {
             this.props.setShops(JSON.parse(favoriteShops));
         } else {
-            auth.onAuthStateChanged(function (user) {
-                    if (user) {
-                        var docRef = DB.doc("favoriteShops/" + user.uid);
-                        docRef
-                            .get()
-                            .then(querySnapshot => {
-                                const data = querySnapshot.data() as FavoriteShopsDto;
-                                if (data) {
-                                    if (data.programs) {
-                                        setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(data.programs));
-                                        favoriteShops = JSON.stringify(data.programs);
-                                    }
-                                }
-                            });
-                    }
-                }
-            );
+            favoriteShops = fetchFavoriteShops();
             if (favoriteShops) {
                 this.props.setShops(JSON.parse(favoriteShops));
+            } else {
+                this.props.setShops(new Array<ShopDto>());
             }
         }
     }
@@ -145,7 +130,8 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                             <hr/>
 
                                             <li className="nav-item">
-                                                <a href={emptyHrefLink} className="icons" onClick={this.loadFavoriteShops}>
+                                                <a href={emptyHrefLink} className="icons"
+                                                   onClick={this.loadFavoriteShops}>
                                                     <i className="fa fa-heart-o" aria-hidden="true"/>
                                                 </a>
                                             </li>

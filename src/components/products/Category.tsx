@@ -11,7 +11,7 @@ interface ICategoryProps {
     name: String,
     selected: boolean,
     id: string,
-    onToggle: (String)  => void,
+    onToggle: (id: String, categoryName: String) => void,
     // global state
     setShops: any,
 }
@@ -28,7 +28,7 @@ class Category extends React.Component<ICategoryProps> {
      * This is a function which will trigger parent function to change state
      */
     public onToggle() {
-        this.props.onToggle(this.props.id);
+        this.props.onToggle(this.props.id, this.props.name);
     }
 
     /**
@@ -55,14 +55,15 @@ class Category extends React.Component<ICategoryProps> {
                 }
             }
         }
-        window.scrollTo(0,0);
+        window.scrollTo(0, 0);
     }
 
     public render() {
         return (
             <React.Fragment>
                 <li>
-                    <a href={emptyHrefLink} id={this.props.name.toString()} style={this.props.selected ? {color: 'blue'} : undefined}
+                    <a href={emptyHrefLink} id={this.props.name.toString()}
+                       style={this.props.selected ? {color: 'blue'} : undefined}
                        onClick={this.updateShops}>{this.props.name}</a>
                 </li>
             </React.Fragment>
