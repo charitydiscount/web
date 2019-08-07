@@ -2,6 +2,7 @@ import * as React from "react";
 import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
+import {emptyHrefLink} from "../../helper/Constants";
 
 class Contact extends React.Component{
 
@@ -28,14 +29,14 @@ class Contact extends React.Component{
                                 <div className="info_item">
                                     <i className="lnr lnr-phone-handset"></i>
                                     <h6>
-                                        <a href="#">00 (440) 9865 562</a>
+                                        <a href={emptyHrefLink}>00 (440) 9865 562</a>
                                     </h6>
                                     <p>Mon to Fri 9am to 6 pm</p>
                                 </div>
                                 <div className="info_item">
                                     <i className="lnr lnr-envelope"></i>
                                     <h6>
-                                        <a href="#">support@colorlib.com</a>
+                                        <a href={emptyHrefLink}>support@colorlib.com</a>
                                     </h6>
                                     <p>Send us your query anytime!</p>
                                 </div>

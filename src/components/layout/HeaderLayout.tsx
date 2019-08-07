@@ -4,10 +4,10 @@ import {connect} from "react-redux";
 import {doLogoutAction} from "../login/UserActions";
 import {ShopDto} from "../products/ShopDto";
 import {setShops} from "../../redux/actions/ShopsAction";
-import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
-import {StorageKey} from "../../helper/Constants";
-import {auth, DB} from "../../index";
-import {FavoriteShopsDto} from "../products/FavoriteShopsDto";
+import {getLocalStorage} from "../../helper/WebHelper";
+import {emptyHrefLink, StorageKey} from "../../helper/Constants";
+import {fetchFavoriteShops} from "../../rest/ShopsService";
+import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 
 interface IHeaderLayoutProps {
     isLoggedIn: boolean,
@@ -15,7 +15,12 @@ interface IHeaderLayoutProps {
     view: string,
 
     // global state
+    // used to refresh shops
     setShops: any
+
+    //used to refresh categories
+    setCurrentCategory: any
+    setSelections: any
 }
 
 class HeaderLayout extends React.Component<IHeaderLayoutProps> {
@@ -31,32 +36,21 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
         this.props.logout();
     }
 
-    loadFavoriteShops() {
+    public loadFavoriteShops(event) {
+        event.preventDefault();
         var favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
         if (favoriteShops) {
             this.props.setShops(JSON.parse(favoriteShops));
         } else {
-            auth.onAuthStateChanged(function (user) {
-                    if (user) {
-                        var docRef = DB.doc("favoriteShops/" + user.uid);
-                        docRef
-                            .get()
-                            .then(querySnapshot => {
-                                const data = querySnapshot.data() as FavoriteShopsDto;
-                                if (data) {
-                                    if (data.programs) {
-                                        setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(data.programs));
-                                        favoriteShops = JSON.stringify(data.programs);
-                                    }
-                                }
-                            });
-                    }
-                }
-            );
+            favoriteShops = fetchFavoriteShops();
             if (favoriteShops) {
                 this.props.setShops(JSON.parse(favoriteShops));
+            } else {
+                this.props.setShops(new Array<ShopDto>());
             }
         }
+        this.props.setCurrentCategory('Favorite Shops');
+        this.props.setSelections([]);
     }
 
     render() {
@@ -78,7 +72,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                 &&
                                 <React.Fragment>
                                     <li>
-                                        <a href="#" onClick={this.handleLogOut}>
+                                        <a href={emptyHrefLink} onClick={this.handleLogOut}>
                                             Logout
                                         </a>
                                     </li>
@@ -97,9 +91,11 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                 <div className="main_menu">
                     <nav className="navbar navbar-expand-lg navbar-light">
                         <div className="container-fluid">
-                            <a className="navbar-brand logo_h" href="#">
+                            <a className="navbar-brand logo_h" href={emptyHrefLink}>
                                 <img src="img/logo.png" alt=""/>
                             </a>
+                            {isLoggedIn
+                            &&
                             <button className="navbar-toggler" type="button" data-toggle="collapse"
                                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                     aria-expanded="false" aria-label="Toggle navigation">
@@ -107,6 +103,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                 <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>
                             </button>
+                            }
                             <div className="collapse navbar-collapse offset" id="navbarSupportedContent">
                                 <div className="row w-100">
                                     <div className="col-lg-7 pr-0">
@@ -141,7 +138,8 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                             <hr/>
 
                                             <li className="nav-item">
-                                                <a href="#" className="icons" onClick={this.loadFavoriteShops}>
+                                                <a href={emptyHrefLink} className="icons"
+                                                   onClick={this.loadFavoriteShops}>
                                                     <i className="fa fa-heart-o" aria-hidden="true"/>
                                                 </a>
                                             </li>
@@ -180,11 +178,11 @@ const
             logout: () => dispatch(doLogoutAction()),
             setShops: (shops: Array<ShopDto>) =>
                 dispatch(setShops(shops)),
+            setCurrentCategory: (currentCategory: String) =>
+                dispatch(setCurrentCategory(currentCategory)),
+            setSelections: (selections: boolean[]) =>
+                dispatch(setSelections(selections))
         };
     };
 
-export default connect(mapStateToProps, mapDispatchToProps)
-
-(
-    HeaderLayout
-);
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderLayout);

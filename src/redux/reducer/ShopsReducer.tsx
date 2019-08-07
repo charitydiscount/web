@@ -3,11 +3,13 @@ import {ShopDto} from "../../components/products/ShopDto";
 import {ShopsActions} from "../actions/ShopsAction";
 
 interface IShopsState {
-    shops: Array<ShopDto>
+    shops: Array<ShopDto>,
+    currentPage: number
 }
 
 const initialState: IShopsState = {
-    shops: []
+    shops: [],
+    currentPage: 0
 };
 
 export default function (state: IShopsState = initialState, action: ShopsActions): IShopsState {
@@ -16,6 +18,11 @@ export default function (state: IShopsState = initialState, action: ShopsActions
             return {
                 ...state,
                 shops: action.payload
+            };
+        case ShopsActionTypes.SET_CURRENT_PAGE_ACTION:
+            return{
+                ...state,
+                currentPage: action.payload
             };
         case ShopsActionTypes.RESET_SHOPS_ACTION:
             return initialState;

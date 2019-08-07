@@ -2,10 +2,9 @@ import * as React from "react";
 import Modal from 'react-awesome-modal';
 import {ShopDto} from "./ShopDto";
 import {getLocalStorage} from "../../helper/WebHelper";
-import {StorageKey} from "../../helper/Constants";
+import {emptyHrefLink, noActionHrefLink, StorageKey} from "../../helper/Constants";
 import {auth, DB} from "../../index";
 import {FavoriteShopsDto} from "./FavoriteShopsDto";
-import {fetchFavoriteShops} from "../../rest/FavoriteShops";
 
 interface IProductInfoState {
     visible: boolean;
@@ -51,7 +50,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                     if (storage) {
                         const shops = JSON.parse(storage) as Array<ShopDto>;
                         if (shops) {
-                            let favoriteShop = shops.find(shop => shop.name == name) as ShopDto;
+                            let favoriteShop = shops.find(shop => shop.name === name) as ShopDto;
                             if (favoriteShop) {
                                 var docRef = DB.doc("favoriteShops/" + user.uid);
                                 docRef.get()
@@ -59,13 +58,10 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                         if (docSnapshot.exists) {
                                             let wholeObject = docSnapshot.data() as FavoriteShopsDto;
                                             var favoriteShops = wholeObject.programs as ShopDto[];
-                                            var alreadyExists = favoriteShops.find(shop => shop.name == favoriteShop.name);
-                                            if (!alreadyExists) {
-                                                favoriteShops.push(favoriteShop);
-                                                docRef.update({
-                                                    programs: favoriteShops
-                                                });
-                                            }
+                                            favoriteShops.push(favoriteShop);
+                                            docRef.update({
+                                                programs: favoriteShops
+                                            })
                                         } else {
                                             // create the document as a list
                                             var favShops = [] as ShopDto[];
@@ -76,7 +72,6 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                             })
                                         }
                                     });
-                                fetchFavoriteShops();
                             }
                         }
                     }
@@ -95,26 +90,26 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                             <div className="col-md-3">
                                 <div className="blog_info text-right">
                                     <div className="post_tag">
-                                        <a className="active" href="#">{this.props.category}</a>
+                                        <a className="active" href={emptyHrefLink}>{this.props.category}</a>
                                     </div>
                                     <ul className="blog_meta list">
                                         <li>
-                                            <a href="#">Mark wiens
+                                            <a href={emptyHrefLink}>Mark wiens
                                                 <i className="lnr lnr-user"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">12 Dec, 2017
+                                            <a href={emptyHrefLink}>12 Dec, 2017
                                                 <i className="lnr lnr-calendar-full"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">1.2M Views
+                                            <a href={emptyHrefLink}>1.2M Views
                                                 <i className="lnr lnr-eye"/>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">06 Comments
+                                            <a href={emptyHrefLink}>06 Comments
                                                 <i className="lnr lnr-bubble"/>
                                             </a>
                                         </li>
@@ -125,7 +120,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                 <div className="blog_post p_30">
                                     <img src={this.props.logoSrc} alt=""/>
                                     <div className="blog_details">
-                                        <a href="#">
+                                        <a href={emptyHrefLink}>
                                             <h2>{this.props.name}</h2>
                                         </a>
                                         <p>MCSE boot camps have its supporters and its detractors. Some people do not
@@ -143,16 +138,16 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                 <div className="col-lg-3 col-md-3 col-sm-6">
                     <div className="f_p_item">
                         <div className="f_p_img">
-                            <a href="javascript:void(0);" onClick={() => this.openModal()}>
+                            <a href={noActionHrefLink} onClick={() => this.openModal()}>
                                 <img className="img-fluid img-min img" src={this.props.logoSrc} alt=""/>
                             </a>
-                            <div className="p_icon" onClick={this.updateFavoriteShops}>
-                                <a href="javascript:void(0);">
-                                    <i className="lnr lnr-heart"/>
+                            <div className="p_icon">
+                                <a href={emptyHrefLink}>
+                                    <i className="lnr lnr-heart" onChange={this.updateFavoriteShops}/>
                                 </a>
                             </div>
                         </div>
-                        <a href="javascript:void(0);" onClick={() => this.openModal()}>
+                        <a href={noActionHrefLink} onClick={() => this.openModal()}>
                             <h4>{this.props.name}</h4>
                         </a>
                     </div>
