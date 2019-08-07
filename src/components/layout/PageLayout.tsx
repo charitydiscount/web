@@ -11,8 +11,8 @@ import {getLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
 
 const PageLayout = () => {
-    const user = getLocalStorage(StorageKey.USER);
-    if (user) {
+    const userKeyExists = getLocalStorage(StorageKey.USER);
+    if (userKeyExists) {
         return (
             <main>
                 <Switch>

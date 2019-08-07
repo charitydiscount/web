@@ -42,12 +42,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
         if (favoriteShops) {
             this.props.setShops(JSON.parse(favoriteShops));
         } else {
-            favoriteShops = fetchFavoriteShops();
-            if (favoriteShops) {
-                this.props.setShops(JSON.parse(favoriteShops));
-            } else {
-                this.props.setShops(new Array<ShopDto>());
-            }
+            fetchFavoriteShops(this);
         }
         this.props.setCurrentCategory('Favorite Shops');
         this.props.setSelections([]);

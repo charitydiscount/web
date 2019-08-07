@@ -8,7 +8,7 @@ import {removeLocalStorage} from '../../helper/WebHelper';
 import {StorageKey} from '../../helper/Constants';
 
 export const UserActions = {
-    setLoggedUserAction: (loginInfo: firebase.User | null) =>
+    setLoggedUserAction: (loginInfo: string | null) =>
         createAction(LoginActionTypes.SET_LOGGED_USER_ACTION, loginInfo),
     resetLoggedUserAction: () =>
         createAction(LoginActionTypes.RESET_LOGGED_USER_ACTION)
