@@ -21,10 +21,10 @@ export enum InputType {
 }
 
 export enum StorageKey {
-   CATEGORIES = "categories",
-   SHOPS = "shops",
-   FAVORITE_SHOPS = "favoriteShops",
-   USER = "CDuser"
+   CATEGORIES = "/categoriesCD",
+   SHOPS = "/shopsCD",
+   FAVORITE_SHOPS = "/favoriteShopsCD",
+   USER = "/userCD"
 }
 
 export const emptyHrefLink = '#';

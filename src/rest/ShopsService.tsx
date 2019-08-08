@@ -1,6 +1,6 @@
-import {auth, DB} from "../index";
+import {DB} from "../index";
 import {ShopDto, ShopDtoWrapper} from "../components/products/ShopDto";
-import {setLocalStorage} from "../helper/WebHelper";
+import {getLocalStorage, setLocalStorage} from "../helper/WebHelper";
 import {StorageKey} from "../helper/Constants";
 import {FavoriteShopsDto} from "../components/products/FavoriteShopsDto";
 
@@ -13,7 +13,7 @@ export function fetchShops() {
                 var shops = new Array<ShopDto>();
                 data.forEach(element => {
                     element.batch.forEach(
-                        shop => shops.push(shop))
+                        shop => shops.push(shop));
                     return;
                 });
                 if (shops) {
@@ -23,24 +23,25 @@ export function fetchShops() {
         });
 }
 
-export function fetchFavoriteShops() {
-    auth.onAuthStateChanged(function (user) {
-            if (user) {
-                var docRef = DB.doc("favoriteShops/" + user.uid);
-                docRef
-                    .get()
-                    .then(querySnapshot => {
-                        const data = querySnapshot.data() as FavoriteShopsDto;
-                        if (data) {
-                            if (data.programs) {
-                                var favoriteShops = JSON.stringify(data.programs);
-                                setLocalStorage(StorageKey.FAVORITE_SHOPS, favoriteShops);
-                                return favoriteShops
-                            }
-                        }
-                    });
-            }
-        }
-    );
-    return null;
+export function fetchFavoriteShops(headerLayout) {
+    var keyExist = getLocalStorage(StorageKey.USER);
+    if (keyExist) {
+        var docRef = DB.doc("favoriteShops/" + keyExist);
+        docRef
+            .get()
+            .then(querySnapshot => {
+                const data = querySnapshot.data() as FavoriteShopsDto;
+                if (data) {
+                    if (data.programs) {
+                        var favoriteShops = JSON.stringify(data.programs);
+                        setLocalStorage(StorageKey.FAVORITE_SHOPS, favoriteShops);
+                        headerLayout.props.setShops(JSON.parse(favoriteShops));
+                        return;
+                    }
+                }
+            });
+    }
+    headerLayout.props.setShops(new Array<ShopDto>());
 }
+
+

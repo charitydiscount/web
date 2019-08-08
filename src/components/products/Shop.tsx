@@ -1,7 +1,7 @@
 import * as React from "react";
 import Modal from 'react-awesome-modal';
 import {ShopDto} from "./ShopDto";
-import {getLocalStorage} from "../../helper/WebHelper";
+import {getLocalStorage, removeLocalStorage} from "../../helper/WebHelper";
 import {emptyHrefLink, noActionHrefLink, StorageKey} from "../../helper/Constants";
 import {auth, DB} from "../../index";
 import {FavoriteShopsDto} from "./FavoriteShopsDto";
@@ -71,6 +71,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                                 userId: user.uid
                                             })
                                         }
+                                        removeLocalStorage(StorageKey.FAVORITE_SHOPS)
                                     });
                             }
                         }
@@ -142,8 +143,8 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                 <img className="img-fluid img-min img" src={this.props.logoSrc} alt=""/>
                             </a>
                             <div className="p_icon">
-                                <a href={emptyHrefLink}>
-                                    <i className="lnr lnr-heart" onChange={this.updateFavoriteShops}/>
+                                <a href={emptyHrefLink} onClick={this.updateFavoriteShops}>
+                                    <i className="lnr lnr-heart"/>
                                 </a>
                             </div>
                         </div>

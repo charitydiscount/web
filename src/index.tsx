@@ -39,9 +39,9 @@ export const auth = firebaseApp.auth();
 //----------------------------------------------------------------------------------------------------------------------
 
 //verify if client logged in -------------------------------------------------------------------------------------------
-const user = getLocalStorage(StorageKey.USER);
-if (user) {
-    store.dispatch(UserActions.setLoggedUserAction(JSON.parse(user) as firebase.User));
+const userKey = getLocalStorage(StorageKey.USER);
+if (userKey) {
+    store.dispatch(UserActions.setLoggedUserAction(userKey));
 }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -3,12 +3,12 @@ import {UserActions} from "../../components/login/UserActions";
 
 interface IUserState {
     isLoggedIn: boolean;
-    userDetails: firebase.User | null;
+    userKey: string | null;
 }
 
 const initialState: IUserState = {
     isLoggedIn: false,
-    userDetails: null
+    userKey: null
 };
 
 export default function (state: IUserState = initialState, action: UserActions): IUserState {
@@ -17,7 +17,7 @@ export default function (state: IUserState = initialState, action: UserActions):
             return {
                 ...state,
                 isLoggedIn: true,
-                userDetails: action.payload
+                userKey: action.payload
             };
         case LoginActionTypes.RESET_LOGGED_USER_ACTION:
             return initialState;

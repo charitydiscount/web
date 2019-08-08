@@ -42,12 +42,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
         if (favoriteShops) {
             this.props.setShops(JSON.parse(favoriteShops));
         } else {
-            favoriteShops = fetchFavoriteShops();
-            if (favoriteShops) {
-                this.props.setShops(JSON.parse(favoriteShops));
-            } else {
-                this.props.setShops(new Array<ShopDto>());
-            }
+            fetchFavoriteShops(this);
         }
         this.props.setCurrentCategory('Favorite Shops');
         this.props.setSelections([]);
@@ -137,12 +132,14 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                         <ul className="nav navbar-nav navbar-right right_nav pull-right">
                                             <hr/>
 
+                                            {isCategories &&
                                             <li className="nav-item">
                                                 <a href={emptyHrefLink} className="icons"
                                                    onClick={this.loadFavoriteShops}>
                                                     <i className="fa fa-heart-o" aria-hidden="true"/>
                                                 </a>
                                             </li>
+                                            }
 
                                             <li className="nav-item">
                                                 <a href="/user" className="icons">
