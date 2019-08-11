@@ -8,6 +8,7 @@ import {FavoriteShopsDto} from "./FavoriteShopsDto";
 
 interface IProductInfoState {
     visible: boolean;
+    fShopVisible: boolean;
 }
 
 interface IProductProps {
@@ -22,7 +23,8 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     constructor(props: IProductProps) {
         super(props);
         this.state = {
-            visible: false
+            visible: false,
+            fShopVisible: false
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
@@ -30,6 +32,18 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     closeModal() {
         this.setState({
             visible: false
+        });
+    }
+
+    closeFShopModal() {
+        this.setState({
+            fShopVisible: false
+        });
+    }
+
+    openFShopModal() {
+        this.setState({
+            fShopVisible: true
         });
     }
 
@@ -43,6 +57,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
      * Used to add favorite shops to DB
      */
     public updateFavoriteShops() {
+        this.openFShopModal();
         let name = this.props.name;
         auth.onAuthStateChanged(function (user) {
                 if (user) {
@@ -71,7 +86,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                                 userId: user.uid
                                             })
                                         }
-                                        removeLocalStorage(StorageKey.FAVORITE_SHOPS)
+                                        removeLocalStorage(StorageKey.FAVORITE_SHOPS);
                                     });
                             }
                         }
@@ -84,6 +99,10 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     public render() {
         return (
             <React.Fragment>
+                <Modal visible={this.state.fShopVisible} effect="fadeInUp"
+                       onClickAway={() => this.closeFShopModal()}>
+                    <h3 style={{padding: 15}}>Favorite shop: {this.props.name} added</h3>
+                </Modal>
                 <Modal visible={this.state.visible} effect="fadeInUp"
                        onClickAway={() => this.closeModal()}>
                     <div className={"container-fluid "}>
