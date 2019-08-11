@@ -5,7 +5,7 @@ import {auth} from 'firebase/app';
 import firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
 import {fetchCategories} from "../../rest/CategoriesService";
-import {fetchShops} from "../../rest/ShopsService";
+import {fetchShopsFromLogin} from "../../rest/ShopsService";
 import {setLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
 
@@ -16,7 +16,7 @@ class LoginComponent extends React.Component {
         setLocalStorage(StorageKey.USER, response.user.uid);
         //gather data
         fetchCategories();
-        fetchShops();
+        fetchShopsFromLogin();
         return true; // redirects to signInSuccessUrl
     };
 

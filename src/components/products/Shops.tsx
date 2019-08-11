@@ -49,7 +49,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         if (shops) {
             this.props.setShops(JSON.parse(shops));
             this.setState({
-                isLoading: false,
+                isLoading: false
             });
         } else {
             DB.collection("shops")
@@ -60,14 +60,14 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                         var shops = new Array<ShopDto>();
                         data.forEach(element => {
                             element.batch.forEach(
-                                shop => shops.push(shop))
+                                shop => shops.push(shop));
                             return;
                         });
                         if (shops) {
                             setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
                             this.props.setShops(shops);
                             this.setState({
-                                isLoading: false,
+                                isLoading: false
                             });
                         }
                     }

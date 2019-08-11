@@ -5,6 +5,7 @@ import {getLocalStorage, removeLocalStorage} from "../../helper/WebHelper";
 import {emptyHrefLink, noActionHrefLink, StorageKey} from "../../helper/Constants";
 import {auth, DB} from "../../index";
 import {FavoriteShopsDto} from "./FavoriteShopsDto";
+import {isInFavoriteShops} from "../../rest/ShopsService";
 
 interface IProductInfoState {
     visible: boolean;
@@ -39,6 +40,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
         this.setState({
             fShopVisible: false
         });
+        window.location.reload();
     }
 
     openFShopModal() {
@@ -87,6 +89,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                             })
                                         }
                                         removeLocalStorage(StorageKey.FAVORITE_SHOPS);
+                                        removeLocalStorage(StorageKey.FAVORITE_SHOPS_NAME);
                                     });
                             }
                         }
@@ -161,11 +164,20 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                             <a href={noActionHrefLink} onClick={() => this.openModal()}>
                                 <img className="img-fluid img-min img" src={this.props.logoSrc} alt=""/>
                             </a>
-                            <div className="p_icon">
-                                <a href={emptyHrefLink} onClick={this.updateFavoriteShops}>
-                                    <i className="lnr lnr-heart"/>
-                                </a>
-                            </div>
+
+                            {isInFavoriteShops(this.props.name) === true ?
+                                <div className="p_iconUpdate">
+                                    <a href={emptyHrefLink}>
+                                        <i className="lnr lnr-heart"/>
+                                    </a>
+                                </div>
+                                :
+                                <div className="p_icon">
+                                    <a href={emptyHrefLink} onClick={this.updateFavoriteShops}>
+                                        <i className="lnr lnr-heart"/>
+                                    </a>
+                                </div>
+                            }
                         </div>
                         <a href={noActionHrefLink} onClick={() => this.openModal()}>
                             <h4>{this.props.name}</h4>

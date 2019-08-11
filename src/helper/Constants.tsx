@@ -24,6 +24,7 @@ export enum StorageKey {
    CATEGORIES = "/categoriesCD",
    SHOPS = "/shopsCD",
    FAVORITE_SHOPS = "/favoriteShopsCD",
+   FAVORITE_SHOPS_NAME = "/favoriteShopsNameCD",
    USER = "/userCD"
 }
 
