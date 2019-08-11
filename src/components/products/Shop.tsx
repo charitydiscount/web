@@ -6,6 +6,7 @@ import {emptyHrefLink, noActionHrefLink, StorageKey} from "../../helper/Constant
 import {auth, DB} from "../../index";
 import {FavoriteShopsDto} from "./FavoriteShopsDto";
 import {isInFavoriteShops} from "../../rest/ShopsService";
+import {fetchAffiliateCode} from "../../rest/ConfigService";
 
 interface IProductInfoState {
     visible: boolean;
@@ -18,7 +19,8 @@ interface IProductProps {
     name: string,
     id: number,
     category: string,
-    mainUrl: string
+    mainUrl: string,
+    uniqueCode: string
 }
 
 class Shop extends React.Component<IProductProps, IProductInfoState> {
@@ -31,6 +33,16 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
             addedToFavShop: false
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
+    }
+
+    computeUrl(uniqueId, url) {
+        var baseUrl = 'https://event.2performant.com/events/click?ad_type=quicklink';
+        var theCode = fetchAffiliateCode();
+        var affCode = '&aff_code=' + theCode;
+        var unique = '&unique=' + uniqueId;
+        var redirect = '&redirect_to=' + url;
+        var tag = '&st=' + getLocalStorage(StorageKey.USER);
+        return baseUrl + affCode + unique + redirect + tag;
     }
 
     closeModal() {
@@ -118,7 +130,8 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                 <h2>{this.props.name}</h2>
                             </a>
                             <h2>{"Category: " + this.props.category}</h2>
-                            <a href={this.props.mainUrl} className="white_bg_btn">Access</a>
+                            <a href={this.computeUrl(this.props.uniqueCode, this.props.mainUrl)}
+                               className="white_bg_btn">Access</a>
                         </div>
                     </div>
                 </Modal>

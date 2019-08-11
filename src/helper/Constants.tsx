@@ -25,7 +25,8 @@ export enum StorageKey {
    SHOPS = "/shopsCD",
    FAVORITE_SHOPS = "/favoriteShopsCD",
    FAVORITE_SHOPS_ID = "/favoriteShopsIdCD",
-   USER = "/userCD"
+   USER = "/userCD",
+   AFFILIATE_CODE = "/affiliateCodeCD"
 }
 
 export const emptyHrefLink = '#';
