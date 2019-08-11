@@ -120,7 +120,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     public render() {
         var shopsList = this.props.shops ? this.props.shops.map(shop => {
             return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
-                         mainUrl={shop.mainUrl}/>
+                         mainUrl={shop.mainUrl} id={shop.id}/>
         }) : null;
 
         var pageCount = 0;
@@ -130,7 +130,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 var offset = this.props.currentPage;
                 shopsList = this.props.shops.slice(offset * pageLimit, (offset + 1) * pageLimit).map(shop => {
                     return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
-                                 mainUrl={shop.mainUrl}/>
+                                 mainUrl={shop.mainUrl} id={shop.id}/>
                 });
             } else {
                 pageCount = 1;

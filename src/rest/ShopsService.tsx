@@ -44,11 +44,11 @@ export function fetchFavoriteShops(headerLayout) {
     headerLayout.props.setShops(new Array<ShopDto>());
 }
 
-export function isInFavoriteShops(shopName) {
-    var storageItems = getLocalStorage(StorageKey.FAVORITE_SHOPS_NAME);
-    var favoriteShopsName;
+export function isInFavoriteShops(shopdId) {
+    var storageItems = getLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
+    var fShopsId;
     if (storageItems) {
-        favoriteShopsName = storageItems.split(",");
+        fShopsId = storageItems.split(",");
     } else {
         var keyExist = getLocalStorage(StorageKey.USER);
         if (keyExist) {
@@ -59,16 +59,16 @@ export function isInFavoriteShops(shopName) {
                     const data = querySnapshot.data() as FavoriteShopsDto;
                     if (data) {
                         if (data.programs) {
-                            favoriteShopsName = data.programs.map(a => a.name);
-                            setLocalStorage(StorageKey.FAVORITE_SHOPS_NAME, favoriteShopsName);
+                            fShopsId = data.programs.map(fs => fs.id);
+                            setLocalStorage(StorageKey.FAVORITE_SHOPS_ID, fShopsId);
                         }
                     }
                 });
         }
     }
 
-    if (favoriteShopsName) {
-        return favoriteShopsName.includes(shopName);
+    if (fShopsId) {
+        return fShopsId.includes("" + shopdId);
     }
 
     return false;

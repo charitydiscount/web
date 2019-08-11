@@ -8,6 +8,7 @@ export interface ShopDto {
     defaultSaleCommissionRate: number,
     logoPath: string,
     mainUrl: string,
+    id: number,
     name: string,
     status: string,
     uniqueCode: string

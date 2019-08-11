@@ -10,11 +10,13 @@ import {isInFavoriteShops} from "../../rest/ShopsService";
 interface IProductInfoState {
     visible: boolean;
     fShopVisible: boolean;
+    addedToFavShop: boolean
 }
 
 interface IProductProps {
     logoSrc: string,
     name: string,
+    id: number,
     category: string,
     mainUrl: string
 }
@@ -25,7 +27,8 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
         super(props);
         this.state = {
             visible: false,
-            fShopVisible: false
+            fShopVisible: false,
+            addedToFavShop: false
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
@@ -38,9 +41,9 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
 
     closeFShopModal() {
         this.setState({
-            fShopVisible: false
+            fShopVisible: false,
+            addedToFavShop: true
         });
-        window.location.reload();
     }
 
     openFShopModal() {
@@ -89,7 +92,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                             })
                                         }
                                         removeLocalStorage(StorageKey.FAVORITE_SHOPS);
-                                        removeLocalStorage(StorageKey.FAVORITE_SHOPS_NAME);
+                                        removeLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
                                     });
                             }
                         }
@@ -165,7 +168,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                 <img className="img-fluid img-min img" src={this.props.logoSrc} alt=""/>
                             </a>
 
-                            {isInFavoriteShops(this.props.name) === true ?
+                            {isInFavoriteShops(this.props.id) === true || this.state.addedToFavShop === true ?
                                 <div className="p_iconUpdate">
                                     <a href={emptyHrefLink}>
                                         <i className="lnr lnr-heart"/>
