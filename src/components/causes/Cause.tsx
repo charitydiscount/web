@@ -4,7 +4,7 @@ class Cause extends React.Component {
 
     public render() {
         return (
-            <div className="section-top-border">
+            <div>
                 <h3 className="mb-30 title_color">Left Aligned</h3>
                 <div className="row">
                     <div className="col-md-3">

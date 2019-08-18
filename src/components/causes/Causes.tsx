@@ -17,14 +17,14 @@ class Causes extends React.Component {
     public render() {
         return (
             <React.Fragment>
-                    <div className="container p_120">
+                <div className="container p_120">
                         <Cause/>
                         <Cause/>
                         <Cause/>
                         <Cause/>
                         <Cause/>
                         <Cause/>
-                    </div>
+                </div>
             </React.Fragment>
         )
     }

@@ -14,3 +14,15 @@ export interface ShopDto {
     uniqueCode: string
 }
 
+export var ShopDtoMap = {
+    category: "category",
+        defaultLeadCommissionAmount: "defaultLeadCommissionAmount",
+        defaultSaleCommissionRate: "defaultSaleCommissionRate",
+        logoPath: "logoPath",
+        mainUrl: "mainUrl",
+        id: "id",
+        name: "name",
+        status: "status",
+        uniqueCode: "uniqueCode"
+};
+

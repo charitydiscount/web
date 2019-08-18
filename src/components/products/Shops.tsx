@@ -3,7 +3,7 @@ import {DB, store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import Categories from "./Categories";
-import {ShopDto, ShopDtoWrapper} from "./ShopDto";
+import {ShopDto, ShopDtoMap, ShopDtoWrapper} from "./ShopDto";
 import {connect} from "react-redux";
 import Shop from "./Shop";
 import {resetShops, setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
@@ -58,9 +58,12 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                     const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
                     if (data) {
                         var shops = new Array<ShopDto>();
+                        var objectMapper = require('object-mapper');
                         data.forEach(element => {
                             element.batch.forEach(
-                                shop => shops.push(shop));
+                                shop => {
+                                    let parsedShop = objectMapper(shop, ShopDtoMap);
+                                    shops.push(parsedShop)});
                             return;
                         });
                         if (shops) {

@@ -4,8 +4,6 @@ import ClientsLogo from '../clients/ClientsLogo';
 import {auth} from 'firebase/app';
 import firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
-import {fetchCategories} from "../../rest/CategoriesService";
-import {fetchShopsFromLogin} from "../../rest/ShopsService";
 import {setLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
 
@@ -14,9 +12,6 @@ class LoginComponent extends React.Component {
     static onSignInSuccess(response) {
         //refresh user uid
         setLocalStorage(StorageKey.USER, response.user.uid);
-        //gather data
-        fetchCategories();
-        fetchShopsFromLogin();
         return true; // redirects to signInSuccessUrl
     };
 
