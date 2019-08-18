@@ -117,10 +117,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                                 <li className={"nav-item " + (isCauses ? "active" : "")}>
                                                     <a className="nav-link" href="/causes">Causes</a>
                                                 </li>
-
-                                                <li className={"nav-item " + (isContact ? "active" : "")}>
-                                                    <a className="nav-link" href="/contact">Contact</a>
-                                                </li>
                                             </React.Fragment>
                                             }
                                         </ul>
@@ -140,6 +136,12 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                                 </a>
                                             </li>
                                             }
+
+                                            <li className="nav-item">
+                                                <a href="/contact" className="icons">
+                                                    <i className="fa fa-envelope" aria-hidden="true"/>
+                                                </a>
+                                            </li>
 
                                             <li className="nav-item">
                                                 <a href="/user" className="icons">

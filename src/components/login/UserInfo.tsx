@@ -40,27 +40,6 @@ class UserInfo extends React.Component {
                                                   className={"single-input"}/>
                                 </div>
                             </div>
-
-                            <div className="col-lg-3 col-md-4 mt-sm-30 element-wrap">
-                                <div className="single-element-widget">
-                                    <h3 className="mb-30 title_color">Donate options</h3>
-                                    <div className="switch-wrap d-flex justify-content-between">
-                                        <p>Take money</p>
-                                        <div className="primary-radio">
-                                            <input type="checkbox" id="radio-take-money"/>
-                                            <label htmlFor="radio-take-money"></label>
-                                        </div>
-                                    </div>
-
-                                    <div className="switch-wrap d-flex justify-content-between">
-                                        <p>Donate money</p>
-                                        <div className="primary-radio">
-                                            <input type="checkbox" id="radio-donate-money"/>
-                                            <label htmlFor="radio-donate-money"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <br/>
                         <div className="col-md-12 text-center">
