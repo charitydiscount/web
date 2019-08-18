@@ -44,7 +44,7 @@ export function fetchFavoriteShops(headerLayout) {
     headerLayout.props.setShops(new Array<ShopDto>());
 }
 
-export function isInFavoriteShops(shopdId) {
+export function isInFavoriteShops(shopdId, shopLayout) {
     var storageItems = getLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
     var fShopsId;
     if (storageItems) {
@@ -53,24 +53,28 @@ export function isInFavoriteShops(shopdId) {
         var keyExist = getLocalStorage(StorageKey.USER);
         if (keyExist) {
             var docRef = DB.doc("favoriteShops/" + keyExist);
-            docRef
-                .get()
+            docRef.get()
                 .then(querySnapshot => {
                     const data = querySnapshot.data() as FavoriteShopsDto;
                     if (data) {
                         if (data.programs) {
                             fShopsId = data.programs.map(fs => fs.id);
                             setLocalStorage(StorageKey.FAVORITE_SHOPS_ID, fShopsId);
+                            if (fShopsId && fShopsId.includes(shopdId)) {
+                                shopLayout.setState({
+                                    favShop: true
+                                });
+                            }
                         }
                     }
                 });
         }
     }
 
-    if (fShopsId) {
-        return fShopsId.includes("" + shopdId);
+    if (fShopsId && fShopsId.includes("" + shopdId)) {
+        shopLayout.state = {
+            favShop: true
+        };
     }
-
-    return false;
 }
 

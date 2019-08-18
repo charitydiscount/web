@@ -11,7 +11,7 @@ import {fetchAffiliateCode} from "../../rest/ConfigService";
 interface IProductInfoState {
     visible: boolean;
     fShopVisible: boolean;
-    addedToFavShop: boolean
+    favShop: boolean
 }
 
 interface IProductProps {
@@ -30,9 +30,10 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
         this.state = {
             visible: false,
             fShopVisible: false,
-            addedToFavShop: false
+            favShop: false
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
+        isInFavoriteShops(this.props.id, this);
     }
 
     computeUrl(uniqueId, url) {
@@ -54,7 +55,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     closeFShopModal() {
         this.setState({
             fShopVisible: false,
-            addedToFavShop: true
+            favShop: true
         });
     }
 
@@ -142,19 +143,11 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                 <img className="img-fluid img-min img" src={this.props.logoSrc} alt=""/>
                             </a>
 
-                            {isInFavoriteShops(this.props.id) === true || this.state.addedToFavShop === true ?
-                                <div className="p_iconUpdate">
-                                    <a href={emptyHrefLink}>
-                                        <i className="lnr lnr-heart"/>
-                                    </a>
-                                </div>
-                                :
-                                <div className="p_icon">
-                                    <a href={emptyHrefLink} onClick={this.updateFavoriteShops}>
-                                        <i className="lnr lnr-heart"/>
-                                    </a>
-                                </div>
-                            }
+                            <div className={this.state.favShop === true ? "p_iconUpdate" : "p_icon"}>
+                                <a href={emptyHrefLink} onClick={this.state.favShop === true ? undefined : this.updateFavoriteShops}>
+                                    <i className="lnr lnr-heart"/>
+                                </a>
+                            </div>
                         </div>
                         <a href={noActionHrefLink} onClick={() => this.openModal()}>
                             <h4>{this.props.name}</h4>
