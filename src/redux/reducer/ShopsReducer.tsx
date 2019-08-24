@@ -1,6 +1,6 @@
 import {ShopsActionTypes} from "../actions/Actions";
-import {ShopDto} from "../../components/products/ShopDto";
 import {ShopsActions} from "../actions/ShopsAction";
+import {ShopDto} from "../../rest/ShopsService";
 
 interface IShopsState {
     shops: Array<ShopDto>,

@@ -1,4 +1,4 @@
-import {getSessionStorage, setSessionStorage} from "../helper/WebHelper";
+import {getSessionStorage, setSessionStorage} from "../helper/StorageHelper";
 import {StorageKey} from "../helper/Constants";
 import {DB} from "../index";
 

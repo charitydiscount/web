@@ -1,5 +1,5 @@
 import {fetchAffiliateCode} from "../rest/ConfigService";
-import {getLocalStorage} from "./WebHelper";
+import {getLocalStorage} from "./StorageHelper";
 import {StorageKey} from "./Constants";
 
 /**

@@ -1,9 +1,9 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {ShopDto} from "./ShopDto";
 import {setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
-import {getLocalStorage} from "../../helper/WebHelper";
+import {getLocalStorage} from "../../helper/StorageHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
+import {ShopDto} from "../../rest/ShopsService";
 
 interface ICategoryProps {
     name: String,

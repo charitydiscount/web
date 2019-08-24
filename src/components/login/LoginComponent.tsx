@@ -4,7 +4,7 @@ import ClientsLogo from '../clients/ClientsLogo';
 import {auth} from 'firebase/app';
 import firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
-import {setLocalStorage} from "../../helper/WebHelper";
+import {setLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
 
 class LoginComponent extends React.Component {

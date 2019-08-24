@@ -1,7 +1,7 @@
-import {ShopDto} from "../../components/products/ShopDto";
 import {createAction} from "../helper/ActionHelper";
 import {ShopsActionTypes} from "./Actions";
 import {ActionTypesUnion} from "../helper/TypesHelper";
+import {ShopDto} from "../../rest/ShopsService";
 
 export const ShopsActions = {
     setShops: (shops: Array<ShopDto>) => createAction(ShopsActionTypes.SET_SHOPS_ACTION, shops),

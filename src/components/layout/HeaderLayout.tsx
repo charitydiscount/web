@@ -2,11 +2,10 @@ import * as React from "react";
 import {Stages} from "../helper/Stages";
 import {connect} from "react-redux";
 import {doLogoutAction} from "../login/UserActions";
-import {ShopDto} from "../products/ShopDto";
 import {setShops} from "../../redux/actions/ShopsAction";
-import {getLocalStorage} from "../../helper/WebHelper";
+import {getLocalStorage} from "../../helper/StorageHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
-import {fetchFavoriteShops} from "../../rest/ShopsService";
+import {fetchFavoriteShops, ShopDto} from "../../rest/ShopsService";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 
 interface IHeaderLayoutProps {

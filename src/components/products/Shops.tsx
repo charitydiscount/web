@@ -3,16 +3,15 @@ import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import Categories from "./Categories";
-import {ShopDto} from "./ShopDto";
 import {connect} from "react-redux";
 import Shop from "./Shop";
 import {resetShops, setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
 import GenericInput from "../input/GenericInput";
-import {getLocalStorage} from "../../helper/WebHelper";
+import {getLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
 import ReactPaginate from 'react-paginate';
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
-import {fetchShops} from "../../rest/ShopsService";
+import {fetchShops, ShopDto} from "../../rest/ShopsService";
 
 interface IShopsProps {
     shops: Array<ShopDto>,

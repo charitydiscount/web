@@ -13,7 +13,7 @@ import "firebase/auth";
 import 'firebase/firestore';
 import * as serviceWorker from './serviceWorker';
 import {UserActions} from "./components/login/UserActions";
-import {getLocalStorage} from "./helper/WebHelper";
+import {getLocalStorage} from "./helper/StorageHelper";
 import {StorageKey} from "./helper/Constants";
 
 

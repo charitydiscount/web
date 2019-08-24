@@ -1,4 +1,4 @@
-import {getLocalStorage, setLocalStorage} from "../helper/WebHelper";
+import {getLocalStorage, setLocalStorage} from "../helper/StorageHelper";
 import {StorageKey} from "../helper/Constants";
 import {DB} from "../index";
 

@@ -7,7 +7,7 @@ import LoginActor from '../login/LoginActor';
 import UserInfo from '../login/UserInfo';
 import HotDeals from '../deals/HotDeals';
 import Causes from '../causes/Causes';
-import {getLocalStorage} from "../../helper/WebHelper";
+import {getLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
 import Wallet from "../wallet/Wallet";
 
