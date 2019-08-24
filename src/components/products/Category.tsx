@@ -4,8 +4,6 @@ import {ShopDto} from "./ShopDto";
 import {setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
 import {getLocalStorage} from "../../helper/WebHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
-import {CategoryDto} from "../../rest/CategoriesService";
-
 
 interface ICategoryProps {
     name: String,
@@ -36,27 +34,23 @@ class Category extends React.Component<ICategoryProps> {
     /**
      * Used to update shops list after a category is selected
      */
-    public updateShops(e) {
-        e.preventDefault(); // prevent default to not point to href location
-        const storage = getLocalStorage(StorageKey.CATEGORIES);
-        if (storage) {
-            const categories = JSON.parse(storage) as Array<CategoryDto>;
-            if (categories) {
-                //find the category matching this.props.name
-                let resultedCategory = categories.find(category => category.category.toLowerCase() === this.props.name.toLowerCase());
-                if (resultedCategory) {
-                    if (resultedCategory.category === "All") { // load all shops in this case
-                        const shops = getLocalStorage(StorageKey.SHOPS);
-                        if (shops) {
-                            this.props.setShops(JSON.parse(shops));
-                            this.props.setCurrentPage(0);
-                        }
-                    } else { //load shops from selected category in this case
-                        // this.props.setShops(resultedCategory.batch);
+    public updateShops(event) {
+        event.preventDefault(); // prevent default to not point to href location
+        const shopStorage = getLocalStorage(StorageKey.SHOPS);
+        if (shopStorage) {
+            const shops = JSON.parse(shopStorage) as Array<ShopDto>;
+            if (shops) {
+                if (this.props.name === "All") { // load all shops in this case
+                    if (shops) {
+                        this.props.setShops(shops);
                         this.props.setCurrentPage(0);
                     }
-                    this.onToggle();
+                } else { //load shops from selected category in this case
+                    const result = shops.filter(value => value.category.toLowerCase() === this.props.name.toLowerCase());
+                    this.props.setShops(result);
+                    this.props.setCurrentPage(0);
                 }
+                this.onToggle();
             }
         }
         window.scrollTo(0, 0);
