@@ -1,11 +1,6 @@
 export enum Constants {
 }
 
-export const allCategoriesKey = {
-    batch: {},
-    category: "All"
-};
-
 export enum ButtonType {
     SUBMIT = "submit",
     BUTTON = "button"

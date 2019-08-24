@@ -2,9 +2,8 @@ import * as React from "react";
 import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
-import {CategoryDto} from "./CategoryDto";
 import Category from "./Category";
-import {fetchCategoriesForUi} from "../../rest/CategoriesService";
+import {CategoryDto, fetchCategories} from "../../rest/CategoriesService";
 import {connect} from "react-redux";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 
@@ -34,7 +33,7 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
     }
 
     public componentDidMount() {
-        fetchCategoriesForUi(this);
+        fetchCategories(this);
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
 

@@ -4,12 +4,12 @@ import {ShopDto} from "./ShopDto";
 import {setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
 import {getLocalStorage} from "../../helper/WebHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
-import {CategoryDto} from "./CategoryDto";
+import {CategoryDto} from "../../rest/CategoriesService";
 
 
 interface ICategoryProps {
     name: String,
-    selected: boolean,
+    selected : boolean,
     id: string,
     onToggle: (id: String, categoryName: String) => void,
 
@@ -52,7 +52,7 @@ class Category extends React.Component<ICategoryProps> {
                             this.props.setCurrentPage(0);
                         }
                     } else { //load shops from selected category in this case
-                        this.props.setShops(resultedCategory.batch);
+                        // this.props.setShops(resultedCategory.batch);
                         this.props.setCurrentPage(0);
                     }
                     this.onToggle();
