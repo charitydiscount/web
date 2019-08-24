@@ -8,7 +8,7 @@ import {connect} from "react-redux";
 import Shop from "./Shop";
 import {resetShops, setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
 import GenericInput from "../input/GenericInput";
-import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
+import {getLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
 import ReactPaginate from 'react-paginate';
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
