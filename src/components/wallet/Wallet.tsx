@@ -13,6 +13,7 @@ interface IWalletState {
     cashbackPending: Number,
     pointsApproved: Number,
     pointsPending: Number,
+    totalTransactions: Number
 }
 
 class Wallet extends React.Component<IWalletProps, IWalletState> {
@@ -23,7 +24,8 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
             cashbackApproved: 0,
             cashbackPending: 0,
             pointsApproved: 0,
-            pointsPending: 0
+            pointsPending: 0,
+            totalTransactions: 0
         };
     }
 
@@ -46,10 +48,11 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                  aria-labelledby="review-tab">
                                 <div className="row">
                                     <WalletBlock title={"Cashback"} approved={this.state.cashbackApproved}
-                                                 pending={this.state.cashbackPending}/>
+                                                 pending={this.state.cashbackPending} pendingExists={true}/>
                                     <WalletBlock title={"Charity points"} approved={this.state.pointsApproved}
-                                                 pending={this.state.pointsPending}/>
-                                    <WalletBlock title={"Transactions"} approved={0} pending={0}/>
+                                                 pending={this.state.pointsPending} pendingExists={true}/>
+                                    <WalletBlock title={"Transactions"} approved={this.state.totalTransactions}
+                                                 pendingExists={false}/>
                                 </div>
                             </div>
                         </div>

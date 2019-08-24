@@ -3,7 +3,8 @@ import * as React from "react";
 interface IWalletBlockProps {
     title: String,
     approved: Number,
-    pending: Number,
+    pending?: Number,
+    pendingExists: boolean
 }
 
 class WalletBlock extends React.Component<IWalletBlockProps> {
@@ -15,7 +16,10 @@ class WalletBlock extends React.Component<IWalletBlockProps> {
                     <div className="box_total">
                         <h5>{this.props.title}</h5>
                         <h4>{this.props.approved ? this.props.approved : 0}</h4>
-                        <h6>Pending:{this.props.pending ? this.props.pending : 0}</h6>
+                        {this.props.pendingExists ?
+                            <h6>Pending:{this.props.pending ? this.props.pending : 0}</h6>
+                            : null
+                        }
                     </div>
                 </div>
             </React.Fragment>
