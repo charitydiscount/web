@@ -34,22 +34,19 @@ export function isInFavoriteShops(shopdId, shopLayout) {
     } else {
         var keyExist = getLocalStorage(StorageKey.USER);
         if (keyExist) {
-            var docRef = DB.doc("favoriteShops/" + keyExist);
-            docRef.get()
-                .then(querySnapshot => {
-                    const data = querySnapshot.data() as FavoriteShopsDto;
-                    if (data) {
-                        if (data.programs) {
-                            fShopsId = data.programs.map(fs => fs.id);
-                            setLocalStorage(StorageKey.FAVORITE_SHOPS_ID, fShopsId);
-                            if (fShopsId && fShopsId.includes(shopdId)) {
-                                shopLayout.setState({
-                                    favShop: true
-                                });
-                            }
-                        }
+            var docRef = DB.collection("favoriteShops").doc(keyExist);
+            docRef.get().then(function (doc) {
+                if (doc.exists) {
+                    const data = doc.data() as FavoriteShopsDto;
+                    fShopsId = data.programs.map(fs => fs.id);
+                    setLocalStorage(StorageKey.FAVORITE_SHOPS_ID, fShopsId);
+                    if (fShopsId && fShopsId.includes(shopdId)) {
+                        shopLayout.setState({
+                            favShop: true
+                        });
                     }
-                });
+                }
+            });
         }
     }
 
