@@ -2,11 +2,34 @@ import * as React from "react";
 import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
+import WalletBlock from "./WalletBlock";
+import {fetchWalletInfo} from "../../rest/WalletService";
 
-class Wallet extends React.Component {
+interface IWalletProps {
+}
+
+interface IWalletState {
+    cashbackApproved: Number,
+    cashbackPending: Number,
+    pointsApproved: Number,
+    pointsPending: Number,
+}
+
+class Wallet extends React.Component<IWalletProps, IWalletState> {
+
+    constructor(props: IWalletProps) {
+        super(props);
+        this.state = {
+            cashbackApproved: 0,
+            cashbackPending: 0,
+            pointsApproved: 0,
+            pointsPending: 0
+        };
+    }
 
     public componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.WALLET));
+        fetchWalletInfo(this);
     }
 
     public componentWillUnmount() {
@@ -22,27 +45,11 @@ class Wallet extends React.Component {
                             <div className="tab-pane fade show active" id="review" role="tabpanel"
                                  aria-labelledby="review-tab">
                                 <div className="row">
-                                    <div className="col-4 total_rate">
-                                        <div className="box_total">
-                                            <h5>Cashback</h5>
-                                            <h4>4.0</h4>
-                                            <h6>Pending:112.4</h6>
-                                        </div>
-                                    </div>
-                                    <div className="col-4 total_rate">
-                                        <div className="box_total">
-                                            <h5>Charity points</h5>
-                                            <h4>4.0</h4>
-                                            <h6>Pending:112.4</h6>
-                                        </div>
-                                    </div>
-                                    <div className="col-4 total_rate">
-                                        <div className="box_total">
-                                            <h5>Transactions</h5>
-                                            <h4>11</h4>
-                                            <h6>Pending:112</h6>
-                                        </div>
-                                    </div>
+                                    <WalletBlock title={"Cashback"} approved={this.state.cashbackApproved}
+                                                 pending={this.state.cashbackPending}/>
+                                    <WalletBlock title={"Charity points"} approved={this.state.pointsApproved}
+                                                 pending={this.state.pointsPending}/>
+                                    <WalletBlock title={"Transactions"} approved={0} pending={0}/>
                                 </div>
                             </div>
                         </div>
