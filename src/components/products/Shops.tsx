@@ -86,7 +86,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             if (shops) {
                 this.props.setShops(JSON.parse(shops));
                 this.props.setSelections([]);
-                this.props.setCurrentCategory(new String(''));
+                this.props.setCurrentCategory(String(''));
                 this.props.setCurrentPage(0);
                 this.setState({
                     isLoading: false,
@@ -101,7 +101,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                     if (data) {
                         this.props.setShops(data);
                         this.props.setSelections([]);
-                        this.props.setCurrentCategory(new String(''));
+                        this.props.setCurrentCategory(String(''));
                         this.props.setCurrentPage(0);
                         this.setState({
                             isLoading: false,

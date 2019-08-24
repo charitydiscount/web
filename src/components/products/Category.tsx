@@ -14,8 +14,8 @@ interface ICategoryProps {
     onToggle: (id: String, categoryName: String) => void,
 
     // global state refresh shops
-    setShops: any,
-    setCurrentPage: any
+    setShops?: any,
+    setCurrentPage?: any
 }
 
 class Category extends React.Component<ICategoryProps> {

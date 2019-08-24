@@ -8,10 +8,8 @@ export const CategoriesAction = {
 };
 
 export function setCurrentCategory(currentCategory: String): any {
-    if (currentCategory) {
-        return (dispatch: any) => {
-            dispatch(CategoriesAction.setCurrentCategory(currentCategory));
-        }
+    return (dispatch: any) => {
+        dispatch(CategoriesAction.setCurrentCategory(currentCategory));
     }
 }
 

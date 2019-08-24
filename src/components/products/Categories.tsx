@@ -9,8 +9,8 @@ import {connect} from "react-redux";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 
 interface ICategoryProps {
-    currentCategory?: String,
-    selections?: boolean[]
+    currentCategory ?: String,
+    selections ?: boolean[]
 
     //global state
     setCurrentCategory?: any
