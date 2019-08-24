@@ -4,8 +4,7 @@ import {ShopDto} from "./ShopDto";
 import {getLocalStorage, removeLocalStorage} from "../../helper/WebHelper";
 import {emptyHrefLink, noActionHrefLink, StorageKey} from "../../helper/Constants";
 import {auth, DB} from "../../index";
-import {FavoriteShopsDto} from "./FavoriteShopsDto";
-import {isInFavoriteShops} from "../../rest/ShopsService";
+import {FavoriteShopsDto, isInFavoriteShops} from "../../rest/ShopsService";
 import {fetchAffiliateCode} from "../../rest/ConfigService";
 
 interface IProductInfoState {

@@ -2,25 +2,26 @@ import {DB} from "../index";
 import {ShopDto, ShopDtoMap, ShopDtoWrapper} from "../components/products/ShopDto";
 import {getLocalStorage, setLocalStorage} from "../helper/WebHelper";
 import {StorageKey} from "../helper/Constants";
-import {FavoriteShopsDto} from "../components/products/FavoriteShopsDto";
+
+export interface FavoriteShopsDto {
+    programs: ShopDto[],
+    userId: string
+}
 
 export function fetchFavoriteShops(headerLayout) {
     var keyExist = getLocalStorage(StorageKey.USER);
     if (keyExist) {
-        var docRef = DB.doc("favoriteShops/" + keyExist);
-        docRef
-            .get()
-            .then(querySnapshot => {
-                const data = querySnapshot.data() as FavoriteShopsDto;
-                if (data) {
-                    if (data.programs) {
-                        var favoriteShops = JSON.stringify(data.programs);
-                        setLocalStorage(StorageKey.FAVORITE_SHOPS, favoriteShops);
-                        headerLayout.props.setShops(JSON.parse(favoriteShops));
-                        return;
-                    }
-                }
-            });
+        var docRef = DB.collection("favoriteShops").doc(keyExist);
+        docRef.get().then(function (doc) {
+            if (doc.exists) {
+                const data = doc.data() as FavoriteShopsDto;
+                setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(data.programs));
+                headerLayout.props.setShops(data.programs);
+                return;
+            }
+        }).catch(function (error) {
+            console.log("Error getting document:", error);
+        });
     }
     headerLayout.props.setShops(new Array<ShopDto>());
 }
