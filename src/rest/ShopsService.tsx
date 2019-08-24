@@ -1,6 +1,6 @@
 import {DB} from "../index";
 import {ShopDto, ShopDtoMap, ShopDtoWrapper} from "../components/products/ShopDto";
-import {getLocalStorage, setLocalStorage} from "../helper/WebHelper";
+import {getLocalStorage, removeLocalStorage, setLocalStorage} from "../helper/WebHelper";
 import {StorageKey} from "../helper/Constants";
 
 export interface FavoriteShopsDto {
@@ -54,6 +54,42 @@ export function isInFavoriteShops(shopdId, shopLayout) {
         shopLayout.state = {
             favShop: true
         };
+    }
+}
+
+export function updateFavoriteShops(name) {
+    var keyExist = getLocalStorage(StorageKey.USER);
+    if (keyExist) {
+        const shopsStorage = getLocalStorage(StorageKey.SHOPS);
+        if (shopsStorage) {
+            const shops = JSON.parse(shopsStorage) as Array<ShopDto>;
+            if (shops) {
+                let favoriteShop = shops.find(shop => shop.name === name) as ShopDto;
+                if (favoriteShop) {
+                    var docRef = DB.collection("favoriteShops").doc(keyExist);
+                    docRef.get().then(function (doc) {
+                        if (doc.exists) {
+                            let wholeObject = doc.data() as FavoriteShopsDto;
+                            var favoriteShops = wholeObject.programs as ShopDto[];
+                            favoriteShops.push(favoriteShop);
+                            docRef.update({
+                                programs: favoriteShops
+                            })
+                        } else {
+                            // create the document as a list
+                            var favShops = [] as ShopDto[];
+                            favShops.push(favoriteShop);
+                            docRef.set({
+                                programs: favShops,
+                                userId: keyExist
+                            })
+                        }
+                        removeLocalStorage(StorageKey.FAVORITE_SHOPS);
+                        removeLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
+                    });
+                }
+            }
+        }
     }
 }
 

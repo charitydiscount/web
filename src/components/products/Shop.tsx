@@ -1,11 +1,8 @@
 import * as React from "react";
 import Modal from 'react-awesome-modal';
-import {ShopDto} from "./ShopDto";
-import {getLocalStorage, removeLocalStorage} from "../../helper/WebHelper";
-import {emptyHrefLink, noActionHrefLink, StorageKey} from "../../helper/Constants";
-import {auth, DB} from "../../index";
-import {FavoriteShopsDto, isInFavoriteShops} from "../../rest/ShopsService";
-import {fetchAffiliateCode} from "../../rest/ConfigService";
+import {emptyHrefLink, noActionHrefLink} from "../../helper/Constants";
+import {isInFavoriteShops, updateFavoriteShops} from "../../rest/ShopsService";
+import {computeUrl} from "../../helper/AppHelper";
 
 interface IProductInfoState {
     visible: boolean;
@@ -33,16 +30,6 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
         isInFavoriteShops(this.props.id, this);
-    }
-
-    computeUrl(uniqueId, url) {
-        var baseUrl = 'https://event.2performant.com/events/click?ad_type=quicklink';
-        var theCode = fetchAffiliateCode();
-        var affCode = '&aff_code=' + theCode;
-        var unique = '&unique=' + uniqueId;
-        var redirect = '&redirect_to=' + url;
-        var tag = '&st=' + getLocalStorage(StorageKey.USER);
-        return baseUrl + affCode + unique + redirect + tag;
     }
 
     closeModal() {
@@ -75,43 +62,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
      */
     public updateFavoriteShops() {
         this.openFShopModal();
-        let name = this.props.name;
-        auth.onAuthStateChanged(function (user) {
-                if (user) {
-                    const storage = getLocalStorage(StorageKey.SHOPS);
-                    if (storage) {
-                        const shops = JSON.parse(storage) as Array<ShopDto>;
-                        if (shops) {
-                            let favoriteShop = shops.find(shop => shop.name === name) as ShopDto;
-                            if (favoriteShop) {
-                                var docRef = DB.doc("favoriteShops/" + user.uid);
-                                docRef.get()
-                                    .then((docSnapshot) => {
-                                        if (docSnapshot.exists) {
-                                            let wholeObject = docSnapshot.data() as FavoriteShopsDto;
-                                            var favoriteShops = wholeObject.programs as ShopDto[];
-                                            favoriteShops.push(favoriteShop);
-                                            docRef.update({
-                                                programs: favoriteShops
-                                            })
-                                        } else {
-                                            // create the document as a list
-                                            var favShops = [] as ShopDto[];
-                                            favShops.push(favoriteShop);
-                                            docRef.set({
-                                                programs: favShops,
-                                                userId: user.uid
-                                            })
-                                        }
-                                        removeLocalStorage(StorageKey.FAVORITE_SHOPS);
-                                        removeLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
-                                    });
-                            }
-                        }
-                    }
-                }
-            }
-        );
+        updateFavoriteShops(this.props.name);
     }
 
     public render() {
@@ -130,7 +81,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                 <h2>{this.props.name}</h2>
                             </a>
                             <h2>{"Category: " + this.props.category}</h2>
-                            <a href={this.computeUrl(this.props.uniqueCode, this.props.mainUrl)}
+                            <a href={computeUrl(this.props.uniqueCode, this.props.mainUrl)}
                                className="white_bg_btn">Access</a>
                         </div>
                     </div>
@@ -143,7 +94,8 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                             </a>
 
                             <div className={this.state.favShop === true ? "p_iconUpdate" : "p_icon"}>
-                                <a href={emptyHrefLink} onClick={this.state.favShop === true ? undefined : this.updateFavoriteShops}>
+                                <a href={emptyHrefLink}
+                                   onClick={this.state.favShop === true ? undefined : this.updateFavoriteShops}>
                                     <i className="lnr lnr-heart"/>
                                 </a>
                             </div>
