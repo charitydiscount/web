@@ -9,10 +9,10 @@ import HotDeals from '../deals/HotDeals';
 import Causes from '../causes/Causes';
 import {getLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
+import Wallet from "../wallet/Wallet";
 
 const PageLayout = () => {
-    const userKeyExists = getLocalStorage(StorageKey.USER);
-    if (userKeyExists) {
+    if (getLocalStorage(StorageKey.USER)) {
         return (
             <main>
                 <Switch>
@@ -22,6 +22,7 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.USER} component={UserInfo}/>
                     <Route exact={true} path={Routes.CAUSES} component={Causes}/>
                     <Route exact={true} path={Routes.LOGIN} component={LoginActor}/>
+                    <Route exact={true} path={Routes.WALLET} component={Wallet}/>
                     <Route render={() => <Redirect to={Routes.LOGIN}/>}/>
                 </Switch>
             </main>

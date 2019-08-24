@@ -3,7 +3,7 @@ import {DB, store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import Categories from "./Categories";
-import {ShopDto, ShopDtoWrapper} from "./ShopDto";
+import {ShopDto, ShopDtoMap, ShopDtoWrapper} from "./ShopDto";
 import {connect} from "react-redux";
 import Shop from "./Shop";
 import {resetShops, setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
@@ -49,7 +49,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         if (shops) {
             this.props.setShops(JSON.parse(shops));
             this.setState({
-                isLoading: false,
+                isLoading: false
             });
         } else {
             DB.collection("shops")
@@ -58,16 +58,19 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                     const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
                     if (data) {
                         var shops = new Array<ShopDto>();
+                        var objectMapper = require('object-mapper');
                         data.forEach(element => {
                             element.batch.forEach(
-                                shop => shops.push(shop))
+                                shop => {
+                                    let parsedShop = objectMapper(shop, ShopDtoMap);
+                                    shops.push(parsedShop)});
                             return;
                         });
                         if (shops) {
                             setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
                             this.props.setShops(shops);
                             this.setState({
-                                isLoading: false,
+                                isLoading: false
                             });
                         }
                     }
@@ -120,7 +123,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     public render() {
         var shopsList = this.props.shops ? this.props.shops.map(shop => {
             return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
-                         mainUrl={shop.mainUrl}/>
+                         mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}/>
         }) : null;
 
         var pageCount = 0;
@@ -130,7 +133,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 var offset = this.props.currentPage;
                 shopsList = this.props.shops.slice(offset * pageLimit, (offset + 1) * pageLimit).map(shop => {
                     return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
-                                 mainUrl={shop.mainUrl}/>
+                                 mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}/>
                 });
             } else {
                 pageCount = 1;

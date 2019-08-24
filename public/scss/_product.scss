@@ -99,6 +99,28 @@
                 }
             }
         }
+        .p_iconUpdate {
+            position: absolute;
+            right: -90px;
+            bottom: 30px;
+            transition: all 400ms ease;
+            a {
+                display: inline-block;
+                height: 40px;
+                width: 40px;
+                text-align: center;
+                border-radius: 3px;
+                background: #fff;
+                line-height: 40px;
+                color: $baseColor;
+                margin-bottom: 5px;
+                margin-right: 5px;
+                &:last-child {
+                    margin-bottom: 0px;
+                    margin-right: 0px;
+                }
+            }
+        }
     }
     h4 {
         color: $dip;

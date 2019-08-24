@@ -22,6 +22,7 @@ export function doLogoutAction(): any {
         removeLocalStorage(StorageKey.CATEGORIES);
         removeLocalStorage(StorageKey.SHOPS);
         removeLocalStorage(StorageKey.FAVORITE_SHOPS);
+        removeLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
         removeLocalStorage(StorageKey.USER);
         dispatch(push(Routes.LOGIN));
     };
