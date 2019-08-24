@@ -1,5 +1,5 @@
 import {DB} from "../index";
-import {ShopDto} from "../components/products/ShopDto";
+import {ShopDto, ShopDtoMap, ShopDtoWrapper} from "../components/products/ShopDto";
 import {getLocalStorage, setLocalStorage} from "../helper/WebHelper";
 import {StorageKey} from "../helper/Constants";
 import {FavoriteShopsDto} from "../components/products/FavoriteShopsDto";
@@ -56,6 +56,41 @@ export function isInFavoriteShops(shopdId, shopLayout) {
         shopLayout.state = {
             favShop: true
         };
+    }
+}
+
+export function fetchShops(shopLayout) {
+    const shops = getLocalStorage(StorageKey.SHOPS);
+    if (shops) {
+        shopLayout.props.setShops(JSON.parse(shops));
+        shopLayout.setState({
+            isLoading: false
+        });
+    } else {
+        DB.collection("shops")
+            .get()
+            .then(querySnapshot => {
+                const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
+                if (data) {
+                    var shops = new Array<ShopDto>();
+                    var objectMapper = require('object-mapper');
+                    data.forEach(element => {
+                        element.batch.forEach(
+                            shop => {
+                                let parsedShop = objectMapper(shop, ShopDtoMap);
+                                shops.push(parsedShop)
+                            });
+                        return;
+                    });
+                    if (shops) {
+                        setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
+                        shopLayout.props.setShops(shops);
+                        shopLayout.setState({
+                            isLoading: false
+                        });
+                    }
+                }
+            });
     }
 }
 

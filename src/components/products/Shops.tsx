@@ -1,9 +1,9 @@
 import * as React from "react";
-import {DB, store} from "../../index";
+import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import Categories from "./Categories";
-import {ShopDto, ShopDtoMap, ShopDtoWrapper} from "./ShopDto";
+import {ShopDto} from "./ShopDto";
 import {connect} from "react-redux";
 import Shop from "./Shop";
 import {resetShops, setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
@@ -12,6 +12,7 @@ import {getLocalStorage, setLocalStorage} from "../../helper/WebHelper";
 import {StorageKey} from "../../helper/Constants";
 import ReactPaginate from 'react-paginate';
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
+import {fetchShops} from "../../rest/ShopsService";
 
 interface IShopsProps {
     shops: Array<ShopDto>,
@@ -45,37 +46,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     }
 
     public componentDidMount() {
-        const shops = getLocalStorage(StorageKey.SHOPS);
-        if (shops) {
-            this.props.setShops(JSON.parse(shops));
-            this.setState({
-                isLoading: false
-            });
-        } else {
-            DB.collection("shops")
-                .get()
-                .then(querySnapshot => {
-                    const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
-                    if (data) {
-                        var shops = new Array<ShopDto>();
-                        var objectMapper = require('object-mapper');
-                        data.forEach(element => {
-                            element.batch.forEach(
-                                shop => {
-                                    let parsedShop = objectMapper(shop, ShopDtoMap);
-                                    shops.push(parsedShop)});
-                            return;
-                        });
-                        if (shops) {
-                            setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
-                            this.props.setShops(shops);
-                            this.setState({
-                                isLoading: false
-                            });
-                        }
-                    }
-                });
-        }
+        fetchShops(this);
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
 
