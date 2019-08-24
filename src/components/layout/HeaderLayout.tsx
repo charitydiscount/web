@@ -51,8 +51,8 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
     render() {
         const isCategories = (this.props.view === Stages.CATEGORIES);
         const isCauses = (this.props.view === Stages.CAUSES);
+        const isWallet = (this.props.view === Stages.WALLET);
         const isDeals = (this.props.view === Stages.DEALS);
-        const isContact = (this.props.view === Stages.CONTACT);
         const isLoggedIn = this.props.isLoggedIn;
 
         return (
@@ -116,6 +116,10 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
 
                                                 <li className={"nav-item " + (isCauses ? "active" : "")}>
                                                     <a className="nav-link" href="/causes">Causes</a>
+                                                </li>
+
+                                                <li className={"nav-item " + (isWallet ? "active" : "")}>
+                                                    <a className="nav-link" href="/wallet">Wallet</a>
                                                 </li>
                                             </React.Fragment>
                                             }
