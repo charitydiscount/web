@@ -3,10 +3,13 @@ import {NavigationsAction} from '../../redux/actions/NavigationsAction';
 import {Stages} from '../helper/Stages';
 import * as React from 'react';
 import {getLocalStorage} from "../../helper/StorageHelper";
-import {StorageKey} from "../../helper/Constants";
+import {emptyHrefLink, StorageKey} from "../../helper/Constants";
 import {LoginDto} from "./LoginComponent";
+import {doLogoutAction} from "./UserActions";
+import {connect} from "react-redux";
 
 interface IUserInfoProps {
+    logout: () => void
 }
 
 interface IUserInfoState {
@@ -24,6 +27,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             displayName: "",
             email: ""
         };
+        this.handleLogOut = this.handleLogOut.bind(this);
     }
 
     public componentDidMount() {
@@ -41,6 +45,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
 
     public componentWillUnmount() {
         store.dispatch(NavigationsAction.resetStageAction(Stages.USER));
+    }
+
+    public handleLogOut(event: any) {
+        event.preventDefault();
+        this.props.logout();
     }
 
     public render() {
@@ -67,6 +76,12 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                         <div className="col-md-12 text-center p_05">
                                             <a href={"/contact"} className="btn submit_btn">Contact us</a>
                                         </div>
+                                        <div className="col-md-12 text-center p_05">
+                                            <a href={emptyHrefLink} className="btn submit_btn"
+                                               onClick={this.handleLogOut}>
+                                                Logout
+                                            </a>
+                                        </div>
                                     </aside>
                                 </div>
                             </div>
@@ -78,4 +93,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     }
 }
 
-export default UserInfo;
+const
+    mapDispatchToProps = (dispatch: any) => {
+        return {
+            logout: () => dispatch(doLogoutAction())
+        };
+    };
+
+export default connect(null, mapDispatchToProps)(UserInfo);

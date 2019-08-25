@@ -77,7 +77,10 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                 <div className="top_menu row m0">
                     <div className="container-fluid">
                         <div className="float-left">
+                            {isLoggedIn
+                            &&
                             <p>{this.state.username ? "Welcome: " + this.state.username : ""}</p>
+                            }
                         </div>
                         <div className="float-right">
                             <ul className="right_side">
