@@ -3884,15 +3884,7 @@ h6 {
     background: #1641ff;
 }
 
-.f_p_item .f_p_img .p_iconUpdate {
-    position: absolute;
-    right: -90px;
-    bottom: 30px;
-    transition: all 400ms ease;
-}
-
-
-.f_p_item .f_p_img .p_iconUpdate a {
+.p_iconUpdate a {
     display: inline-block;
     height: 40px;
     width: 40px;
@@ -3904,18 +3896,14 @@ h6 {
     margin-right: 5px;
 }
 
-.f_p_item .f_p_img .p_iconUpdate a:last-child {
+.p_iconUpdate a:last-child {
     margin-bottom: 0px;
     margin-right: 0px;
 }
 
-.f_p_item .f_p_img .p_iconUpdate a:hover {
+.p_iconUpdate a:hover {
     color: #fff;
     background: #1641ff;
-}
-
-.f_p_item:hover .f_p_img .p_iconUpdate {
-    right: 35px;
 }
 
 .f_p_item h4 {
