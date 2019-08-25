@@ -112,9 +112,9 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                                     <a className="nav-link" href="/categories">Shops</a>
                                                 </li>
 
-                                                <li className={"nav-item " + (isDeals ? "active" : "")}>
-                                                    <a className="nav-link" href="/deals">Deals</a>
-                                                </li>
+                                                {/*<li className={"nav-item " + (isDeals ? "active" : "")}>*/}
+                                                    {/*<a className="nav-link" href="/deals">Deals</a>*/}
+                                                {/*</li>*/}
 
                                                 <li className={"nav-item " + (isCauses ? "active" : "")}>
                                                     <a className="nav-link" href="/causes">Causes</a>
