@@ -7,27 +7,45 @@ import {getLocalStorage} from "../../helper/StorageHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
 import {fetchFavoriteShops, ShopDto} from "../../rest/ShopsService";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
+import {LoginDto} from "../login/LoginComponent";
 
 interface IHeaderLayoutProps {
-    isLoggedIn: boolean,
+    isLoggedIn?: boolean,
     logout: () => void,
-    view: string,
+    view?: string,
 
     // global state
     // used to refresh shops
-    setShops: any
+    setShops?: any
 
     //used to refresh categories
-    setCurrentCategory: any
-    setSelections: any
+    setCurrentCategory?: any
+    setSelections?: any
 }
 
-class HeaderLayout extends React.Component<IHeaderLayoutProps> {
+interface IHeaderLayoutState {
+    username: string
+}
+
+class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutState> {
 
     constructor(props: IHeaderLayoutProps) {
         super(props);
+        this.state = {
+            username: ""
+        };
         this.handleLogOut = this.handleLogOut.bind(this);
         this.loadFavoriteShops = this.loadFavoriteShops.bind(this);
+    }
+
+    public componentDidMount() {
+        var user = getLocalStorage(StorageKey.USER);
+        if (user) {
+            var userParsed = JSON.parse(user) as LoginDto;
+            this.setState({
+                username: userParsed.displayName
+            })
+        }
     }
 
     public handleLogOut(event: any) {
@@ -59,6 +77,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                 <div className="top_menu row m0">
                     <div className="container-fluid">
                         <div className="float-left">
+                            <p>{this.state.username ? "Welcome: " + this.state.username : ""}</p>
                         </div>
                         <div className="float-right">
                             <ul className="right_side">
@@ -113,7 +132,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                                 </li>
 
                                                 {/*<li className={"nav-item " + (isDeals ? "active" : "")}>*/}
-                                                    {/*<a className="nav-link" href="/deals">Deals</a>*/}
+                                                {/*<a className="nav-link" href="/deals">Deals</a>*/}
                                                 {/*</li>*/}
 
                                                 <li className={"nav-item " + (isCauses ? "active" : "")}>
