@@ -17,3 +17,7 @@ export function setSessionStorage(key: string, object: any) {
 export function getSessionStorage(key: string) {
     return sessionStorage.getItem(process.env.PUBLIC_URL + key);
 }
+
+export function removeSessionStorage(key: string) {
+    return sessionStorage.removeItem(process.env.PUBLIC_URL + key);
+}

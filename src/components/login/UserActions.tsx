@@ -4,7 +4,7 @@ import {ActionTypesUnion} from '../../redux/helper/TypesHelper';
 import {createAction} from '../../redux/helper/ActionHelper';
 import {LoginActionTypes} from '../../redux/actions/Actions';
 import {auth} from '../../index';
-import {removeLocalStorage} from '../../helper/StorageHelper';
+import {removeLocalStorage, removeSessionStorage} from '../../helper/StorageHelper';
 import {StorageKey} from '../../helper/Constants';
 
 export const UserActions = {
@@ -23,7 +23,9 @@ export function doLogoutAction(): any {
         removeLocalStorage(StorageKey.SHOPS);
         removeLocalStorage(StorageKey.FAVORITE_SHOPS);
         removeLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
+        removeLocalStorage(StorageKey.CAUSES);
         removeLocalStorage(StorageKey.USER);
+        removeSessionStorage(StorageKey.AFFILIATE_CODE);
         dispatch(push(Routes.LOGIN));
     };
 }

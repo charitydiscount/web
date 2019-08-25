@@ -181,8 +181,7 @@ const mapDispatchToProps = (dispatch: any) => {
         setCurrentCategory: (currentCategory: String) =>
             dispatch(setCurrentCategory(currentCategory)),
         setSelections: (selections: boolean[]) =>
-            dispatch(setSelections(selections)),
-        resetIncidents: () => dispatch(resetShops()),
+            dispatch(setSelections(selections))
     };
 };
 
