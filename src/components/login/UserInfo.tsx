@@ -65,10 +65,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                             <a href={"#"} className="btn submit_btn">Change password</a>
                                         </div>
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={"#"} className="btn submit_btn">Change password</a>
-                                        </div>
-                                        <div className="col-md-12 text-center p_05">
-                                            <a href={"#"} className="btn submit_btn">Change password</a>
+                                            <a href={"/contact"} className="btn submit_btn">Contact us</a>
                                         </div>
                                     </aside>
                                 </div>

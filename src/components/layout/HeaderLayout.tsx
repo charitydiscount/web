@@ -95,6 +95,12 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                             My account
                                         </a>
                                     </li>
+
+                                    <li>
+                                        <a href="/contact">
+                                            Contact us
+                                        </a>
+                                    </li>
                                 </React.Fragment>
                                 }
                             </ul>
@@ -161,12 +167,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                                 </a>
                                             </li>
                                             }
-
-                                            <li className="nav-item">
-                                                <a href="/contact" className="icons">
-                                                    <i className="fa fa-envelope" aria-hidden="true"/>
-                                                </a>
-                                            </li>
 
                                             <li className="nav-item">
                                                 <a href="/user" className="icons">
