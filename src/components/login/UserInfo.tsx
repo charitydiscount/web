@@ -2,10 +2,41 @@ import {store} from '../../index';
 import {NavigationsAction} from '../../redux/actions/NavigationsAction';
 import {Stages} from '../helper/Stages';
 import * as React from 'react';
+import {getLocalStorage} from "../../helper/StorageHelper";
+import {StorageKey} from "../../helper/Constants";
+import {LoginDto} from "./LoginComponent";
 
-class UserInfo extends React.Component {
+interface IUserInfoProps {
+}
+
+interface IUserInfoState {
+    photoURL: string;
+    displayName: string;
+    email: string
+}
+
+class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
+
+    constructor(props: IUserInfoProps) {
+        super(props);
+        this.state = {
+            photoURL: "",
+            displayName: "",
+            email: ""
+        };
+    }
+
     public componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
+        var user = getLocalStorage(StorageKey.USER);
+        if (user) {
+            var userParsed = JSON.parse(user) as LoginDto;
+            this.setState({
+                photoURL: userParsed.photoURL,
+                displayName: userParsed.displayName,
+                email: userParsed.email
+            })
+        }
     }
 
     public componentWillUnmount() {
@@ -16,17 +47,17 @@ class UserInfo extends React.Component {
         return (
 
             <div className="product_image_area">
-                <div className="container p_120">
+                <div className="container p_90">
                     <div className="row s_product_inner">
                         <div className="col-lg-4"/>
                         <div className="col-lg-4">
                             <div className="s_product_img">
                                 <div className="blog_right_sidebar">
                                     <aside className="single_sidebar_widget author_widget">
-                                        <img className="author_img rounded-circle" src="img/blog/author.png"
-                                             alt=""/>
-                                        <h4>Charlie Barber</h4>
-                                        <p>Senior blog writer</p>
+                                        <img className="author_img rounded-circle" src={this.state.photoURL}
+                                             alt="No image" width={200} height={200}/>
+                                        <h4>{this.state.displayName}</h4>
+                                        <p>{this.state.email}</p>
                                         <div className="br"></div>
                                     </aside>
                                     <aside className="single_sidebar_widget popular_post_widget">

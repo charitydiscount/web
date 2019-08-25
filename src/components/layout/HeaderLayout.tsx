@@ -106,7 +106,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                                             &&
                                             <React.Fragment>
                                                 <li className={"nav-item " + (isCategories ? "active" : "")}>
-                                                    <a className="nav-link" href="/categories">Categories</a>
+                                                    <a className="nav-link" href="/categories">Shops</a>
                                                 </li>
 
                                                 <li className={"nav-item " + (isDeals ? "active" : "")}>
