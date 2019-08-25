@@ -85,9 +85,12 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps> {
                 <div className="main_menu">
                     <nav className="navbar navbar-expand-lg navbar-light">
                         <div className="container-fluid">
+                            {isLoggedIn
+                            &&
                             <a className="navbar-brand logo_h" href={emptyHrefLink}>
                                 <img src="img/logo.png" alt=""/>
                             </a>
+                            }
                             {isLoggedIn
                             &&
                             <button className="navbar-toggler" type="button" data-toggle="collapse"

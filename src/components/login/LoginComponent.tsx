@@ -60,7 +60,7 @@ class LoginComponent extends React.Component {
     public render() {
         return (
             <React.Fragment>
-                <section className="login_box_area p_120">
+                <section className="login_box_area p_90">
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-6">
