@@ -3854,14 +3854,8 @@ h6 {
     overflow: hidden;
 }
 
-.f_p_item .f_p_img .p_icon {
-    position: absolute;
-    right: -90px;
-    bottom: 30px;
-    transition: all 400ms ease;
-}
 
-.f_p_item .f_p_img .p_icon a {
+.p_icon a {
     display: inline-block;
     height: 40px;
     width: 40px;
@@ -3874,12 +3868,12 @@ h6 {
     margin-right: 5px;
 }
 
-.f_p_item .f_p_img .p_icon a:last-child {
+.p_icon a:last-child {
     margin-bottom: 0px;
     margin-right: 0px;
 }
 
-.f_p_item .f_p_img .p_icon a:hover {
+.p_icon a:hover {
     color: #fff;
     background: #1641ff;
 }
@@ -4405,14 +4399,12 @@ h6 {
 }
 
 .s_product_text .card_area .icon_btn {
-    margin-right: 10px;
     background: #f9f9ff;
     border-radius: 3px;
     color: #222222;
     display: inline-block;
     line-height: 40px;
     text-align: center;
-    padding: 0px 13px;
     font-size: 14px;
 }
 
