@@ -3860,11 +3860,12 @@ h6 {
     height: 40px;
     width: 40px;
     text-align: center;
-    border-radius: 3px;
+    border-radius: 6px;
     background: #fff;
     line-height: 40px;
-    color: #222222;
+    color: #1641ff;
     margin-bottom: 5px;
+    border: 1px solid #1641ff;
     margin-right: 5px;
 }
 
@@ -3883,11 +3884,13 @@ h6 {
     height: 40px;
     width: 40px;
     text-align: center;
-    border-radius: 3px;
+    border-radius: 6px;
     line-height: 40px;
     background: #1641ff;
     margin-bottom: 5px;
     margin-right: 5px;
+    border: 1px solid #1641ff;
+    color: #fff;
 }
 
 .p_iconUpdate a:last-child {
@@ -3896,8 +3899,8 @@ h6 {
 }
 
 .p_iconUpdate a:hover {
-    color: #fff;
-    background: #1641ff;
+    background: transparent;
+    color: #1641ff;
 }
 
 .f_p_item h4 {
