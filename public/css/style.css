@@ -5903,6 +5903,10 @@ h6 {
 .p_05{
     padding: 5px;
 }
+
+.userInfo_btn{
+    min-width: 100%;
+}
 /*---------------------------------------------------- */
 
 /*# sourceMappingURL=style.css.map */

@@ -71,13 +71,13 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                     </aside>
                                     <aside className="single_sidebar_widget popular_post_widget">
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={"#"} className="btn submit_btn">Change password</a>
+                                            <a href={"#"} className="btn submit_btn userInfo_btn">Change password</a>
                                         </div>
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={"/contact"} className="btn submit_btn">Contact us</a>
+                                            <a href={"/contact"} className="btn submit_btn userInfo_btn">Contact us</a>
                                         </div>
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={emptyHrefLink} className="btn submit_btn"
+                                            <a href={emptyHrefLink} className="btn submit_btn userInfo_btn"
                                                onClick={this.handleLogOut}>
                                                 Logout
                                             </a>
