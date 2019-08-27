@@ -92,7 +92,7 @@ export function isInFavoriteShops(shopdId, shopLayout) {
     }
 }
 
-export function updateFavoriteShops(name) {
+export function updateFavoriteShops(name, remove) {
     var user = getLocalStorage(StorageKey.USER);
     if (user) {
         var keyExist = (JSON.parse(user) as LoginDto).uid;
@@ -108,7 +108,11 @@ export function updateFavoriteShops(name) {
                             if (doc.exists) {
                                 let wholeObject = doc.data() as FavoriteShopsDto;
                                 var favoriteShops = wholeObject.programs as ShopDto[];
-                                favoriteShops.push(favoriteShop);
+                                if (remove) {
+                                    favoriteShops = favoriteShops.filter(value => value.name !== favoriteShop.name);
+                                } else {
+                                    favoriteShops.push(favoriteShop);
+                                }
                                 docRef.update({
                                     programs: favoriteShops
                                 })

@@ -30,42 +30,57 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
             fShopVisible: false,
             favShop: false,
         };
-        this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
+        this.updateFavoriteShopsTrue = this.updateFavoriteShopsTrue.bind(this);
+        this.updateFavoriteShopsFalse = this.updateFavoriteShopsFalse.bind(this);
         isInFavoriteShops(this.props.id, this);
     }
 
     closeModal() {
         this.setState({
-            visible: false,
+            visible: false
         });
     }
 
     closeFShopModal() {
         this.setState({
-            fShopVisible: false,
-            favShop: true,
+            fShopVisible: false
         });
     }
 
     openFShopModal() {
         this.setState({
-            fShopVisible: true,
+            fShopVisible: true
         });
     }
 
     openModal() {
         this.setState({
-            visible: true,
+            visible: true
         });
     }
 
     /**
      * Used to add favorite shops to DB
      */
-    public updateFavoriteShops() {
-        this.closeModal()
+    public updateFavoriteShopsTrue() {
+        this.closeModal();
         this.openFShopModal();
-        updateFavoriteShops(this.props.name);
+        this.setState({
+            favShop: true
+        });
+        updateFavoriteShops(this.props.name, false);
+    }
+
+    /**
+     * Used to remove favorite shops from DB
+     */
+    public updateFavoriteShopsFalse() {
+        this.closeModal();
+        this.openFShopModal();
+        this.setState({
+            favShop: false
+        });
+        updateFavoriteShops(this.props.name, true);
     }
 
     public render() {
@@ -77,7 +92,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                     onClickAway={() => this.closeFShopModal()}
                 >
                     <h3 style={{padding: 15}}>
-                        Favorite shop: {this.props.name} added
+                        Favorite shop: {this.props.name} {this.state.favShop ? 'added' : 'removed'}
                     </h3>
                 </Modal>
                 <Modal
@@ -100,12 +115,13 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                        className="main_btn">
                                         Access
                                     </a>
-                                    <div className={this.state.favShop === true ? 'icon_btn p_iconUpdate' : 'icon_btn p_icon'}>
+                                    <div
+                                        className={this.state.favShop === true ? 'icon_btn p_iconUpdate' : 'icon_btn p_icon'}>
                                         <a href={emptyHrefLink} onClick={
-                                                this.state.favShop === true
-                                                    ? undefined
-                                                    : this.updateFavoriteShops
-                                            }
+                                            this.state.favShop === true
+                                                ? this.updateFavoriteShopsFalse
+                                                : this.updateFavoriteShopsTrue
+                                        }
                                         >
                                             <i className="lnr lnr-heart"/>
                                         </a>
