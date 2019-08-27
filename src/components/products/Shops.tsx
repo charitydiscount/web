@@ -31,7 +31,7 @@ interface IShopsState {
     isLoading: boolean,
 }
 
-const pageLimit = 30; // products per page
+const pageLimit = 28; // products per page
 
 class Shops extends React.Component<IShopsProps, IShopsState> {
 
