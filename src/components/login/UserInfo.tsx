@@ -3,7 +3,7 @@ import {NavigationsAction} from '../../redux/actions/NavigationsAction';
 import {Stages} from '../helper/Stages';
 import * as React from 'react';
 import {getLocalStorage} from "../../helper/StorageHelper";
-import {emptyHrefLink, StorageKey} from "../../helper/Constants";
+import {emptyHrefLink, ProviderType, StorageKey} from "../../helper/Constants";
 import {LoginDto} from "./LoginComponent";
 import {doLogoutAction} from "./UserActions";
 import {connect} from "react-redux";
@@ -15,7 +15,8 @@ interface IUserInfoProps {
 interface IUserInfoState {
     photoURL: string;
     displayName: string;
-    email: string
+    email: string;
+    providerType: ProviderType;
 }
 
 class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
@@ -25,7 +26,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         this.state = {
             photoURL: "",
             displayName: "",
-            email: ""
+            email: "",
+            providerType: ProviderType.NORMAL
         };
         this.handleLogOut = this.handleLogOut.bind(this);
     }
@@ -36,9 +38,10 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         if (user) {
             var userParsed = JSON.parse(user) as LoginDto;
             this.setState({
-                photoURL: userParsed.photoURL,
+                photoURL: userParsed.photoURL ? userParsed.photoURL : '',
                 displayName: userParsed.displayName,
-                email: userParsed.email
+                email: userParsed.email,
+                providerType: userParsed.providerType
             })
         }
     }
@@ -70,9 +73,12 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                         <div className="br"></div>
                                     </aside>
                                     <aside className="single_sidebar_widget popular_post_widget">
+                                        {this.state.providerType === ProviderType.NORMAL
+                                        &&
                                         <div className="col-md-12 text-center p_05">
                                             <a href={"#"} className="btn submit_btn userInfo_btn">Change password</a>
                                         </div>
+                                        }
                                         <div className="col-md-12 text-center p_05">
                                             <a href={"/contact"} className="btn submit_btn userInfo_btn">Contact us</a>
                                         </div>
@@ -84,7 +90,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                         </div>
                                         <div className="br"></div>
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={"/tos"} className="btn submit_btn userInfo_btn">Terms of agreement</a>
+                                            <a href={"/tos"} className="btn submit_btn userInfo_btn">Terms of
+                                                agreement</a>
                                         </div>
                                         <div className="col-md-12 text-center p_05">
                                             <a href={"/privacy"} className="btn submit_btn userInfo_btn">Privacy</a>

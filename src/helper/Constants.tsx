@@ -25,4 +25,10 @@ export enum StorageKey {
   AFFILIATE_CODE = '/affiliateCodeCD',
 }
 
+export enum ProviderType {
+  GOOGLE,
+  FACEBOOK,
+  NORMAL
+}
+
 export const emptyHrefLink = '#';

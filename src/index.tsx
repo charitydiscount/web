@@ -40,8 +40,7 @@ export const auth = firebaseApp.auth();
 const user = getLocalStorage(StorageKey.USER);
 if (user && user.length > 0) {
     //validate json present in storage
-    if (user.includes("uid") && user.includes("photoURL")
-        && user.includes("displayName") && user.includes("email")) {
+    if (user.includes("uid") && user.includes("displayName") && user.includes("email")) {
         store.dispatch(UserActions.setLoggedUserAction(user));
     }
 }

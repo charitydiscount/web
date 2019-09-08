@@ -5,9 +5,17 @@ import {auth} from 'firebase/app';
 import * as firebaseui from 'firebaseui';
 import 'firebaseui/dist/firebaseui.css';
 import {setLocalStorage} from '../../helper/StorageHelper';
-import {StorageKey} from '../../helper/Constants';
+import {ProviderType, StorageKey} from '../../helper/Constants';
 
 export interface LoginDto {
+    uid: string;
+    photoURL: string | null;
+    displayName: string;
+    email: string;
+    providerType: ProviderType
+}
+
+export interface LoginRequestDto {
     uid: string;
     photoURL: string;
     displayName: string;
@@ -27,7 +35,15 @@ class LoginComponent extends React.Component {
     static onSignInSuccess(response) {
         //refresh user
         var objectMapper = require('object-mapper');
-        let parsedUser = objectMapper(response.user as LoginDto, LoginMapper);
+        let parsedUser = objectMapper(response.user as LoginRequestDto, LoginMapper) as LoginDto;
+        let providerId = response.user.providerData[0].providerId;
+        if (providerId.startsWith("google")) {
+            parsedUser.providerType = ProviderType.GOOGLE;
+        } else if (providerId.startsWith("facebook")) {
+            parsedUser.providerType = ProviderType.FACEBOOK;
+        } else {
+            parsedUser.providerType = ProviderType.NORMAL;
+        }
         setLocalStorage(StorageKey.USER, JSON.stringify(parsedUser));
         return true; // redirects to signInSuccessUrl
     }

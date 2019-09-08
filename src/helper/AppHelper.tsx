@@ -22,13 +22,3 @@ export function computeUrl(uniqueId, url) {
     }
     return baseUrl + affCode + unique + redirect + tag;
 }
-
-export function setLoggedInUser() {
-    auth.onAuthStateChanged(function (user) {
-        if (user) {
-            var objectMapper = require('object-mapper');
-            let parsedUser = objectMapper(user as LoginDto, LoginMapper);
-            setLocalStorage(StorageKey.USER, JSON.stringify(parsedUser));
-        }
-    });
-}
