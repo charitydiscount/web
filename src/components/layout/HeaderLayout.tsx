@@ -67,6 +67,8 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
 
     render() {
         const isCategories = (this.props.view === Stages.CATEGORIES);
+        const isTos = (this.props.view === Stages.TOS);
+        const isPrivacy = (this.props.view === Stages.PRIVACY);
         const isCauses = (this.props.view === Stages.CAUSES);
         const isWallet = (this.props.view === Stages.WALLET);
         const isDeals = (this.props.view === Stages.DEALS);
@@ -113,7 +115,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                 <div className="main_menu">
                     <nav className="navbar navbar-expand-lg navbar-light">
                         <div className="container-fluid">
-                            {isLoggedIn
+                            {(isLoggedIn || (!isLoggedIn && (isTos || isPrivacy)))
                             &&
                             <a className="navbar-brand logo_h" href={emptyHrefLink}>
                                 <img src="img/logo.png" alt=""/>

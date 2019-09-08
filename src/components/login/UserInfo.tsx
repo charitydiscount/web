@@ -82,6 +82,13 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                 Logout
                                             </a>
                                         </div>
+                                        <div className="br"></div>
+                                        <div className="col-md-12 text-center p_05">
+                                            <a href={"/tos"} className="btn submit_btn userInfo_btn">Terms of agreement</a>
+                                        </div>
+                                        <div className="col-md-12 text-center p_05">
+                                            <a href={"/privacy"} className="btn submit_btn userInfo_btn">Privacy</a>
+                                        </div>
                                     </aside>
                                 </div>
                             </div>
