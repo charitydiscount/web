@@ -26,6 +26,6 @@ export function doLogoutAction(): any {
         removeLocalStorage(StorageKey.CAUSES);
         removeLocalStorage(StorageKey.USER);
         removeSessionStorage(StorageKey.AFFILIATE_CODE);
-        dispatch(push(Routes.LOGIN));
+        window.location.reload();
     };
 }
