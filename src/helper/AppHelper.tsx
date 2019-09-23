@@ -1,8 +1,7 @@
 import {fetchAffiliateCode} from "../rest/ConfigService";
-import {getLocalStorage, setLocalStorage} from "./StorageHelper";
+import {getLocalStorage} from "./StorageHelper";
 import {StorageKey} from "./Constants";
-import {LoginDto, LoginMapper} from "../components/login/LoginComponent";
-import {auth} from "../index";
+import {LoginDto} from "../components/login/LoginComponent";
 
 /**
  * Used to compute 2performant rest call and redirect

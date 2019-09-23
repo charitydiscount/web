@@ -33,7 +33,6 @@ export var LoginMapper = {
 class LoginComponent extends React.Component {
 
     static onSignInSuccess(response) {
-        //refresh user
         var objectMapper = require('object-mapper');
         let parsedUser = objectMapper(response.user as LoginRequestDto, LoginMapper) as LoginDto;
         let providerId = response.user.providerData[0].providerId;

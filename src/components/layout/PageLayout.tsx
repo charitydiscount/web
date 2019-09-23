@@ -12,6 +12,7 @@ import {StorageKey} from "../../helper/Constants";
 import Wallet from "../wallet/Wallet";
 import Tos from "../tos/Tos";
 import Privacy from "../privacy/Privacy";
+import ShopReview from "../products/ShopReview";
 
 const PageLayout = () => {
     if (getLocalStorage(StorageKey.USER)) {
@@ -25,6 +26,7 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.CAUSES} component={Causes}/>
                     <Route exact={true} path={Routes.LOGIN} component={LoginActor}/>
                     <Route exact={true} path={Routes.WALLET} component={Wallet}/>
+                    <Route exact={true} path={Routes.REVIEW + "/:id"} component={ShopReview}/>
                     <Route exact={true} path={Routes.TOS} component={Tos}/>
                     <Route exact={true} path={Routes.PRIVACY} component={Privacy}/>
                     <Route render={() => <Redirect to={Routes.LOGIN}/>}/>

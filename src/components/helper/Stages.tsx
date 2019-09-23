@@ -6,6 +6,7 @@ export enum Stages {
     CAUSES = "stage-causes",
     CATEGORIES = "stage-categories",
     TOS = "stage-tos",
+    REVIEW = "stage-review",
     PRIVACY = "stage-privacy",
     WALLET = "stage-wallet"
 }

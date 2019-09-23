@@ -6,6 +6,8 @@ import {
     updateFavoriteShops,
 } from '../../rest/ShopsService';
 import {computeUrl} from '../../helper/AppHelper';
+import {Link} from "react-router-dom";
+import {Routes} from "../helper/Routes";
 
 interface IProductInfoState {
     visible: boolean;
@@ -108,13 +110,18 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                             </a>
                             <h3>{'Category: ' + this.props.category}</h3>
                             <div className="s_product_text">
-                                <div className="card_area">
+                                <div className="card_area p_20">
                                     <a href={computeUrl(this.props.uniqueCode, this.props.mainUrl)}
                                        target="_blank"
                                        rel="noopener noreferrer"
                                        className="main_btn">
                                         Access
                                     </a>
+                                    <Link to={Routes.REVIEW + "/" + this.props.id}>
+                                        <a href={emptyHrefLink} className="main_btn">
+                                            Open
+                                        </a>
+                                    </Link>
                                     <div
                                         className={this.state.favShop === true ? 'icon_btn p_iconUpdate' : 'icon_btn p_icon'}>
                                         <a href={emptyHrefLink} onClick={

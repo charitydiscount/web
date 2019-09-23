@@ -170,3 +170,12 @@ export function fetchShops(shopLayout) {
     }
 }
 
+export function getShopById(id) {
+    const shops = getLocalStorage(StorageKey.SHOPS);
+    if (shops) {
+        const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
+        return shopsParsed.find(shop => {
+            return shop.id == id
+        });
+    }
+}
