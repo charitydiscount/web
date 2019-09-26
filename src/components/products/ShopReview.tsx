@@ -3,12 +3,15 @@ import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import {computeUrl} from "../../helper/AppHelper";
-import {emptyHrefLink} from "../../helper/Constants";
+import {emptyHrefLink, StorageKey} from "../../helper/Constants";
 import Modal from 'react-awesome-modal';
 import {getShopById, ShopDto, updateFavoriteShops} from "../../rest/ShopsService";
 import Review from "./Review";
+import {fetchReviews, ReviewDto, updateReview} from "../../rest/ReviewService";
+import {getLocalStorage} from "../../helper/StorageHelper";
+import {LoginDto} from "../login/LoginComponent";
 
-interface IProductReviewStateProps {
+interface IProductReviewState {
     fShopVisible: boolean;
     favShop: boolean;
     logoSrc: string;
@@ -16,29 +19,37 @@ interface IProductReviewStateProps {
     id: number;
     category: string;
     mainUrl: string;
-    uniqueCode: string;
+    uniqueCode: string,
+    description: string,
+    modalMessage: string,
+    reviews: Array<ReviewDto>
 }
 
 interface IProductReviewProps {
     match: any
 }
 
-class ShopReview extends React.Component<IProductReviewProps, IProductReviewStateProps> {
+class ShopReview extends React.Component<IProductReviewProps, IProductReviewState> {
 
     constructor(props: IProductReviewProps) {
         super(props);
         this.state = {
             fShopVisible: false,
-            favShop: false,
             logoSrc: '',
+            favShop: false,
             name: '',
             id: 0,
             category: '',
             mainUrl: '',
-            uniqueCode: ''
+            uniqueCode: '',
+            description: '',
+            modalMessage: '',
+            reviews: []
         };
         this.updateFavoriteShopsTrue = this.updateFavoriteShopsTrue.bind(this);
         this.updateFavoriteShopsFalse = this.updateFavoriteShopsFalse.bind(this);
+        this.updateCurrentReview = this.updateCurrentReview.bind(this);
+        this.handleTextAreaChange = this.handleTextAreaChange.bind(this);
     }
 
 
@@ -46,10 +57,11 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
      * Used to add favorite shops to DB
      */
     public updateFavoriteShopsTrue() {
-        this.openFShopModal();
         this.setState({
+            modalMessage: "Favorite shop: " + this.state.name + "added",
             favShop: true
         });
+        this.openModal();
         updateFavoriteShops(this.state.name, false);
     }
 
@@ -57,20 +69,21 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
      * Used to remove favorite shops from DB
      */
     public updateFavoriteShopsFalse() {
-        this.openFShopModal();
         this.setState({
+            modalMessage: "Favorite shop: " + this.state.name + "removed",
             favShop: false
         });
+        this.openModal();
         updateFavoriteShops(this.state.name, true);
     }
 
 
     public componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
+
         const shop = getShopById(this.props.match.params.id) as ShopDto;
         this.setState({
                 fShopVisible: false,
-                favShop: false,
                 logoSrc: shop.logoPath,
                 name: shop.name,
                 id: shop.id,
@@ -79,35 +92,63 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                 uniqueCode: shop.uniqueCode
             }
         );
+        fetchReviews(shop.uniqueCode, this);
     }
 
     public componentWillUnmount() {
         store.dispatch(NavigationsAction.resetStageAction(Stages.REVIEW));
     }
 
-    closeFShopModal() {
+    closeModal() {
         this.setState({
             fShopVisible: false
         });
     }
 
-    openFShopModal() {
+    openModal() {
         this.setState({
             fShopVisible: true
         });
     }
 
+    updateCurrentReview() {
+        if (this.state.description && this.state.description.length > 0) {
+            const userSt = getLocalStorage(StorageKey.USER);
+            if (userSt) {
+                var user = JSON.parse(userSt) as LoginDto;
+                if (user) {
+                    updateReview(this.state.uniqueCode, user.uid, user.photoURL, user.displayName, this.state.description);
+                    this.setState({
+                        modalMessage: "Review added"
+                    });
+                    this.openModal();
+                }
+            }
+        }
+    }
+
+    handleTextAreaChange(event) {
+        this.setState(
+            {
+                description: event.target.value
+            });
+    }
 
     public render() {
+        var reviewsList = this.state.reviews ? this.state.reviews.map(review => {
+            return <Review photoUrl={review.reviewer.photoUrl} name={review.reviewer.name}
+                           description={review.description}/>
+        }) : null;
+
         return (
             <React.Fragment>
                 <Modal
                     visible={this.state.fShopVisible}
                     effect="fadeInUp"
-                    onClickAway={() => this.closeFShopModal()}
+                    onClickAway={() => this.closeModal()}
                 >
                     <h3 style={{padding: 15}}>
-                        Favorite shop: {this.state.name} {this.state.favShop ? 'added' : 'removed'}
+                        {this.state.modalMessage}
                     </h3>
                 </Modal>
                 <section className={"product_description_area"}>
@@ -135,8 +176,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                                         this.state.favShop === true
                                                             ? this.updateFavoriteShopsFalse
                                                             : this.updateFavoriteShopsTrue
-                                                    }
-                                                    >
+                                                    }>
                                                         <i className="lnr lnr-heart"/>
                                                     </a>
                                                 </div>
@@ -176,24 +216,22 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                                 </a>
                                             </li>
                                         </ul>
-                                        <p>Outstanding</p>
-
                                         <div className="form-group">
-                                             <textarea className="form-control" name="message" id="message"
-                                                       placeholder="Review"/>
+                                             <textarea className="form-control"
+                                                       value={this.state.description}
+                                                       onChange={this.handleTextAreaChange}
+                                                       placeholder={"Review"}>
+                                             </textarea>
                                         </div>
 
                                         <div className="col-md-12 text-right">
-                                            <button type="submit" value="submit"
-                                                    className="btn submit_btn">Submit Now
-                                            </button>
+                                            <a href={emptyHrefLink} onClick={this.updateCurrentReview}
+                                               className="btn submit_btn">Submit Now
+                                            </a>
                                         </div>
                                     </div>
                                     <div className="review_list p_20">
-                                        <Review/>
-                                        <Review/>
-                                        <Review/>
-                                        <Review/>
+                                        {reviewsList}
                                     </div>
                                 </div>
                             </div>

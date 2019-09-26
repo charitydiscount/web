@@ -1,7 +1,9 @@
 import * as React from "react";
 
 interface IReviewProps {
-
+    photoUrl: string,
+    name: string,
+    description: string
 }
 
 class Review extends React.Component<IReviewProps> {
@@ -12,10 +14,10 @@ class Review extends React.Component<IReviewProps> {
                 <div className="review_item">
                     <div className="media">
                         <div className="d-flex">
-                            <img src="img/product/single-product/review-1.png" alt=""/>
+                            <img src={this.props.photoUrl} alt="" width={80} height={80} style={{borderRadius: 70}}/>
                         </div>
                         <div className="media-body">
-                            <h4>Blake Ruiz</h4>
+                            <h4>{this.props.name}</h4>
                             <i className="fa fa-star"></i>
                             <i className="fa fa-star"></i>
                             <i className="fa fa-star"></i>
@@ -23,11 +25,7 @@ class Review extends React.Component<IReviewProps> {
                             <i className="fa fa-star"></i>
                         </div>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                        eiusmod tempor incididunt ut labore et dolore magna
-                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                        ullamco
-                        laboris nisi ut aliquip ex ea commodo</p>
+                    <p>{this.props.description}</p>
                 </div>
             </React.Fragment>
         )
