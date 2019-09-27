@@ -119,7 +119,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                     </a>
                                     <Link to={Routes.REVIEW + "/" + this.props.id}>
                                         <a href={emptyHrefLink} className="main_btn">
-                                            Open
+                                            Reviews
                                         </a>
                                     </Link>
                                     <div

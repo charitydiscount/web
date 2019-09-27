@@ -1,6 +1,6 @@
 import {DB} from "../index";
 
-export interface ReviewsDto {
+export interface ReviewAnswerDto {
     reviews: ReviewDto[]
 }
 
@@ -22,9 +22,9 @@ export function fetchReviews(shopUniqueCode, reviewLayout) {
     var docRef = DB.collection("reviews").doc(shopUniqueCode);
     docRef.get().then(function (doc) {
         if (doc.exists) {
-            const data = doc.data() as ReviewsDto;
+            const data = doc.data() as ReviewAnswerDto;
             var reviews = new Array<ReviewDto>();
-            data.reviews.forEach(value => {
+            new Map(Object.entries(data.reviews)).forEach( value =>{
                 reviews.push(value);
             });
             if (reviews) {
@@ -51,19 +51,18 @@ export function updateReview(uniqueCode, userId, photoUrl, name, description) {
     var docRef = DB.collection("reviews").doc(uniqueCode);
     docRef.get().then(function (doc) {
         if (doc.exists) {
-            let wholeObject = doc.data() as ReviewsDto;
-            var reviews = wholeObject.reviews as ReviewDto[];
-            reviews.push(review as ReviewDto);
-            docRef.update({
-                reviews: reviews
-            })
-        } else {
-            // create the document as a list
-            var reviews = [] as ReviewDto[];
-            reviews.push(review as ReviewDto);
             docRef.set({
-                reviews: reviews,
-                shopUniqueCode: uniqueCode
+                'reviews' : {
+                    [review.reviewer.userId]: review
+                }
+            }, {merge:true});
+        } else {
+            // create the first entry for the document
+            docRef.set({
+                shopUniqueCode: uniqueCode,
+                'reviews' : {
+                    [review.reviewer.userId]: review
+                }
             })
         }
     });
