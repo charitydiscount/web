@@ -117,11 +117,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
             if (userSt) {
                 var user = JSON.parse(userSt) as LoginDto;
                 if (user) {
-                    updateReview(this.state.uniqueCode, user.uid, user.photoURL, user.displayName, this.state.description);
-                    this.setState({
-                        modalMessage: "Review added"
-                    });
-                    this.openModal();
+                    updateReview(this.state.uniqueCode, user.uid, user.photoURL, user.displayName, this.state.description, this);
                 }
             }
         }

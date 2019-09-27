@@ -24,7 +24,7 @@ export function fetchReviews(shopUniqueCode, reviewLayout) {
         if (doc.exists) {
             const data = doc.data() as ReviewAnswerDto;
             var reviews = new Array<ReviewDto>();
-            new Map(Object.entries(data.reviews)).forEach( value =>{
+            new Map(Object.entries(data.reviews)).forEach(value => {
                 reviews.push(value);
             });
             if (reviews) {
@@ -36,7 +36,7 @@ export function fetchReviews(shopUniqueCode, reviewLayout) {
     });
 }
 
-export function updateReview(uniqueCode, userId, photoUrl, name, description) {
+export function updateReview(uniqueCode, userId, photoUrl, name, description, shopRewiewLayout) {
     var review = {
         createdAt: new Date(),
         rating: 0,
@@ -52,17 +52,30 @@ export function updateReview(uniqueCode, userId, photoUrl, name, description) {
     docRef.get().then(function (doc) {
         if (doc.exists) {
             docRef.set({
-                'reviews' : {
+                'reviews': {
                     [review.reviewer.userId]: review
                 }
-            }, {merge:true});
+            }, {merge: true})
+                .then(function () {
+                    shopRewiewLayout.setState({
+                        modalMessage: "Review updated"
+                    });
+                    shopRewiewLayout.openModal();
+                    fetchReviews(uniqueCode, shopRewiewLayout);
+                })
         } else {
             // create the first entry for the document
             docRef.set({
                 shopUniqueCode: uniqueCode,
-                'reviews' : {
+                'reviews': {
                     [review.reviewer.userId]: review
                 }
+            }).then(function () {
+                shopRewiewLayout.setState({
+                    modalMessage: "Review created"
+                });
+                shopRewiewLayout.openModal();
+                fetchReviews(uniqueCode, shopRewiewLayout);
             })
         }
     });
