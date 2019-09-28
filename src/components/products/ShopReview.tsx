@@ -186,6 +186,16 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                            description={review.description} rating={review.rating}/>
         }) : null;
 
+        var reviewAverage = 0;
+        if (this.state.reviews) {
+            var reviewNumber = 0;
+            this.state.reviews.forEach(value => {
+                reviewAverage += value.rating;
+                reviewNumber += 1;
+            });
+            reviewAverage = reviewAverage / reviewNumber;
+        }
+
         return (
             <React.Fragment>
                 <Modal
@@ -207,6 +217,11 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                         <a href={emptyHrefLink}>
                                             <h2>{this.state.name}</h2>
                                         </a>
+                                        {reviewAverage >= 1 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star"></i> }
+                                        {reviewAverage >= 2 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star"></i> }
+                                        {reviewAverage >= 3 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star"></i> }
+                                        {reviewAverage >= 4 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star"></i> }
+                                        {reviewAverage >= 5 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star"></i> }
                                         <h3>{'Category: ' + this.state.category}</h3>
                                         <div className="s_product_text">
                                             <div className="card_area">
