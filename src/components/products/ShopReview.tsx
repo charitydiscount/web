@@ -22,6 +22,7 @@ interface IProductReviewState {
     uniqueCode: string,
     description: string,
     modalMessage: string,
+    rating: number,
     reviews: Array<ReviewDto>
 }
 
@@ -44,12 +45,15 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
             uniqueCode: '',
             description: '',
             modalMessage: '',
+            rating: 0,
             reviews: []
         };
         this.updateFavoriteShopsTrue = this.updateFavoriteShopsTrue.bind(this);
         this.updateFavoriteShopsFalse = this.updateFavoriteShopsFalse.bind(this);
         this.updateCurrentReview = this.updateCurrentReview.bind(this);
         this.handleTextAreaChange = this.handleTextAreaChange.bind(this);
+        this.handleStarFocusEnter = this.handleStarFocusEnter.bind(this);
+        this.handleStarFocusRemove = this.handleStarFocusRemove.bind(this);
     }
 
 
@@ -112,14 +116,20 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
     }
 
     updateCurrentReview() {
-        if (this.state.description && this.state.description.length > 0) {
+        if ((this.state.description && this.state.description.length > 0) && this.state.rating > 0) {
             const userSt = getLocalStorage(StorageKey.USER);
             if (userSt) {
                 var user = JSON.parse(userSt) as LoginDto;
                 if (user) {
-                    updateReview(this.state.uniqueCode, user.uid, user.photoURL, user.displayName, this.state.description, this);
+                    updateReview(this.state.uniqueCode, this.state.rating, user.uid,
+                        user.photoURL, user.displayName, this.state.description, this);
                 }
             }
+        } else {
+            this.setState({
+                modalMessage: "Description and rating must not be empty"
+            });
+            this.openModal();
         }
     }
 
@@ -130,10 +140,50 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
             });
     }
 
+    handleStarClicked(event, starLevel) {
+        for (var i = 1; i <= 5; i++) {
+            var element = document.getElementById("star-" + i);
+            if (i <= starLevel) {
+                if (element) {
+                    element.className = "fa fa-star star-focus";
+                    this.setState({
+                        rating: starLevel
+                    })
+                }
+            } else {
+                if (element) {
+                    element.className = "fa fa-star";
+                }
+            }
+        }
+    }
+
+    handleStarFocusEnter(event, starLevel) {
+        for (var i = 1; i <= starLevel; i++) {
+            var element = document.getElementById("star-" + i);
+            if (element) {
+                if (this.state.rating === 0 || this.state.rating < i) {
+                    element.className = "fa fa-star star-focus";
+                }
+            }
+        }
+    }
+
+    handleStarFocusRemove(event, starLevel) {
+        for (var i = 1; i <= starLevel; i++) {
+            var element = document.getElementById("star-" + i);
+            if (element) {
+                if (this.state.rating === 0 || this.state.rating < i) {
+                    element.className = "fa fa-star";
+                }
+            }
+        }
+    }
+
     public render() {
-        var reviewsList = this.state.reviews ? this.state.reviews.map(review => {
+        const reviewsList = this.state.reviews ? this.state.reviews.map(review => {
             return <Review photoUrl={review.reviewer.photoUrl} name={review.reviewer.name}
-                           description={review.description}/>
+                           description={review.description} rating={review.rating}/>
         }) : null;
 
         return (
@@ -188,27 +238,42 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                         <ul className="list">
                                             <li>
                                                 <a href="#">
-                                                    <i className="fa fa-star"></i>
+                                                    <i id={'star-1'} className="fa fa-star"
+                                                       onClick={() => this.handleStarClicked(this, 1)}
+                                                       onMouseEnter={() => this.handleStarFocusEnter(this, 1)}
+                                                       onMouseLeave={() => this.handleStarFocusRemove(this, 1)}/>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#">
-                                                    <i className="fa fa-star"></i>
+                                                    <i id={'star-2'} className="fa fa-star"
+                                                       onClick={() => this.handleStarClicked(this, 2)}
+                                                       onMouseEnter={() => this.handleStarFocusEnter(this, 2)}
+                                                       onMouseLeave={() => this.handleStarFocusRemove(this, 2)}/>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#">
-                                                    <i className="fa fa-star"></i>
+                                                    <i id={'star-3'} className="fa fa-star"
+                                                       onClick={() => this.handleStarClicked(this, 3)}
+                                                       onMouseEnter={() => this.handleStarFocusEnter(this, 3)}
+                                                       onMouseLeave={() => this.handleStarFocusRemove(this, 3)}/>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#">
-                                                    <i className="fa fa-star"></i>
+                                                    <i id={'star-4'} className="fa fa-star"
+                                                       onClick={() => this.handleStarClicked(this, 4)}
+                                                       onMouseEnter={() => this.handleStarFocusEnter(this, 4)}
+                                                       onMouseLeave={() => this.handleStarFocusRemove(this, 4)}/>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="#">
-                                                    <i className="fa fa-star"></i>
+                                                    <i id={'star-5'} className="fa fa-star"
+                                                       onClick={() => this.handleStarClicked(this, 5)}
+                                                       onMouseEnter={() => this.handleStarFocusEnter(this, 5)}
+                                                       onMouseLeave={() => this.handleStarFocusRemove(this, 5)}/>
                                                 </a>
                                             </li>
                                         </ul>
@@ -222,7 +287,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
 
                                         <div className="col-md-12 text-right">
                                             <a href={emptyHrefLink} onClick={this.updateCurrentReview}
-                                               className="btn submit_btn">Submit Now
+                                               className="btn submit_btn">Submit Review
                                             </a>
                                         </div>
                                     </div>

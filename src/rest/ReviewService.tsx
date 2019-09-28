@@ -36,10 +36,10 @@ export function fetchReviews(shopUniqueCode, reviewLayout) {
     });
 }
 
-export function updateReview(uniqueCode, userId, photoUrl, name, description, shopRewiewLayout) {
+export function updateReview(uniqueCode, rating, userId, photoUrl, name, description, shopRewiewLayout) {
     var review = {
         createdAt: new Date(),
-        rating: 0,
+        rating: rating,
         description: description,
         reviewer: {
             name: name,

@@ -4676,7 +4676,10 @@ h6 {
 }
 
 .review_box .list li a {
-    display: inline-block;
+    color: #1641ff;
+}
+
+.star-focus{
     color: #fbd600;
 }
 
