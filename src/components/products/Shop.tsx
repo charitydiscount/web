@@ -12,7 +12,7 @@ import {Routes} from "../helper/Routes";
 interface IProductInfoState {
     visible: boolean;
     fShopVisible: boolean;
-    favShop: boolean;
+    favShop: boolean
 }
 
 interface IProductProps {
@@ -22,6 +22,7 @@ interface IProductProps {
     category: string;
     mainUrl: string;
     uniqueCode: string;
+    reviewRating: number;
 }
 
 class Shop extends React.Component<IProductProps, IProductInfoState> {
@@ -108,6 +109,11 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                             <a href={emptyHrefLink}>
                                 <h2>{this.props.name}</h2>
                             </a>
+                            {this.props.reviewRating >= 1 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star"></i> }
+                            {this.props.reviewRating >= 2 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star"></i> }
+                            {this.props.reviewRating >= 3 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star"></i> }
+                            {this.props.reviewRating >= 4 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star"></i> }
+                            {this.props.reviewRating >= 5 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star"></i> }
                             <h3>{'Category: ' + this.props.category}</h3>
                             <div className="s_product_text">
                                 <div className="card_area p_20">

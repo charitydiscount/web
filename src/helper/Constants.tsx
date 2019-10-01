@@ -22,7 +22,7 @@ export enum StorageKey {
   USER = '/userCD',
 
   //SESSION STORAGE
-  AFFILIATE_CODE = '/affiliateCodeCD',
+  AFFILIATE_CODE = '/affiliateCodeCD'
 }
 
 export enum ProviderType {

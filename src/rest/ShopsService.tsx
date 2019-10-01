@@ -75,9 +75,10 @@ export function isInFavoriteShops(shopdId, shopLayout) {
                         fShopsId = data.programs.map(fs => fs.id);
                         setLocalStorage(StorageKey.FAVORITE_SHOPS_ID, fShopsId);
                         if (fShopsId && fShopsId.includes(shopdId)) {
-                            shopLayout.setState({
+                            shopLayout.state = ({
                                 favShop: true
                             });
+                            return;
                         }
                     }
                 });
@@ -135,11 +136,11 @@ export function updateFavoriteShops(name, remove) {
     }
 }
 
-export function fetchShops(shopLayout) {
+export function fetchShops(shopsLayout) {
     const shops = getLocalStorage(StorageKey.SHOPS);
     if (shops) {
-        shopLayout.props.setShops(JSON.parse(shops));
-        shopLayout.setState({
+        shopsLayout.props.setShops(JSON.parse(shops));
+        shopsLayout.setState({
             isLoading: false
         });
     } else {
@@ -160,8 +161,8 @@ export function fetchShops(shopLayout) {
                     });
                     if (shops) {
                         setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
-                        shopLayout.props.setShops(shops);
-                        shopLayout.setState({
+                        shopsLayout.props.setShops(shops);
+                        shopsLayout.setState({
                             isLoading: false
                         });
                     }
@@ -174,8 +175,8 @@ export function getShopById(id) {
     const shops = getLocalStorage(StorageKey.SHOPS);
     if (shops) {
         const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
-        return shopsParsed.find(shop => {
-            return shop.id == id
+        return shopsParsed.find(value => {
+            return value.id == id
         });
     }
 }

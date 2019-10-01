@@ -5,22 +5,25 @@ import {Stages} from "../helper/Stages";
 import Categories from "./Categories";
 import {connect} from "react-redux";
 import Shop from "./Shop";
-import {resetShops, setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
+import {setCurrentPage, setRatings, setShops} from "../../redux/actions/ShopsAction";
 import GenericInput from "../input/GenericInput";
 import {getLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
 import ReactPaginate from 'react-paginate';
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 import {fetchShops, ShopDto} from "../../rest/ShopsService";
+import {fetchReviewRatings, ReviewRating} from "../../rest/ReviewService";
 
 interface IShopsProps {
     shops: Array<ShopDto>,
+    ratings: Map<String, ReviewRating>,
     currentPage: number
 
     // global state
     setShops: any,
     resetShops: any,
     setCurrentPage: any,
+    setRatings: any
 
     //used to refresh categories
     setCurrentCategory: any
@@ -29,6 +32,7 @@ interface IShopsProps {
 
 interface IShopsState {
     isLoading: boolean,
+    isLoadingRating: boolean
 }
 
 const pageLimit = 24; // products per page
@@ -39,6 +43,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         super(props);
         this.state = {
             isLoading: true,
+            isLoadingRating: true
         };
         this.onSearchUpdate = this.onSearchUpdate.bind(this);
         this.updatePageNumber = this.updatePageNumber.bind(this);
@@ -46,6 +51,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
     public componentDidMount() {
         fetchShops(this);
+        fetchReviewRatings(this);
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
 
@@ -91,19 +97,34 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     }
 
     public render() {
-        var shopsList = this.props.shops ? this.props.shops.map(shop => {
+        var shopsList = this.props.shops && this.props.ratings &&
+        this.props.shops.length > 0 && this.props.ratings.size > 0 ? this.props.shops.map(shop => {
+            let ratingObj = this.props.ratings.get(shop.uniqueCode);
+            let rr = 0;
+            if (ratingObj !== undefined) {
+                rr = ratingObj.rating;
+            }
+
             return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
-                         mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}/>
+                         mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}
+                         reviewRating={rr}/>
         }) : null;
 
         var pageCount = 0;
-        if (this.props.shops) {
+        if (this.props.shops && this.props.ratings && this.props.shops.length > 0 && this.props.ratings.size > 0) {
             if (this.props.shops.length > pageLimit) {
                 pageCount = this.props.shops.length / pageLimit;
                 var offset = this.props.currentPage;
                 shopsList = this.props.shops.slice(offset * pageLimit, (offset + 1) * pageLimit).map(shop => {
+                    let ratingObj = this.props.ratings.get(shop.uniqueCode);
+                    let rr = 0;
+                    if (ratingObj !== undefined) {
+                        rr = ratingObj.rating;
+                    }
+
                     return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
-                                 mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}/>
+                                 mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}
+                                 reviewRating={rr}/>
                 });
             } else {
                 pageCount = 1;
@@ -144,7 +165,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                 </div>
                                 <div className="latest_product_inner row">
                                     {
-                                        !this.state.isLoading &&
+                                        !this.state.isLoading && !this.state.isLoadingRating &&
                                         <React.Fragment>
                                             {shopsList}
                                         </React.Fragment>
@@ -167,6 +188,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 const mapStateToProps = (state: any) => {
     return {
         shops: state.shopReducer.shops,
+        ratings: state.shopReducer.ratings,
         currentPage: state.shopReducer.currentPage
     };
 };
@@ -176,6 +198,8 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         setShops: (shopWrapper: Array<ShopDto>) =>
             dispatch(setShops(shopWrapper)),
+        setRatings: (ratings: Map<String, ReviewRating>) =>
+            dispatch(setRatings(ratings)),
         setCurrentPage: (currentPage: number) =>
             dispatch(setCurrentPage(currentPage)),
         setCurrentCategory: (currentCategory: String) =>
