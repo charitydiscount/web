@@ -110,15 +110,23 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                 <h2>{this.props.name}</h2>
                             </a>
                             {this.props.reviewRating >= 1 ? <i className="fa fa-star star-focus"></i> :
-                                <i className="fa fa-star-o"></i>}
+                                <i className="fa fa-star-o star-focus"></i>}
                             {this.props.reviewRating >= 2 ? <i className="fa fa-star star-focus"></i> :
-                                <i className="fa fa-star-o"></i>}
+                                this.props.reviewRating > 1 && this.props.reviewRating < 2 ?
+                                    <i className="fa fa-star-half-o star-focus"></i> :
+                                    <i className="fa fa-star-o star-focus"></i>}
                             {this.props.reviewRating >= 3 ? <i className="fa fa-star star-focus"></i> :
-                                <i className="fa fa-star-o"></i>}
+                                this.props.reviewRating > 2 && this.props.reviewRating < 3 ?
+                                    <i className="fa fa-star-half-o star-focus"></i> :
+                                    <i className="fa fa-star-o star-focus"></i>}
                             {this.props.reviewRating >= 4 ? <i className="fa fa-star star-focus"></i> :
-                                <i className="fa fa-star-o"></i>}
+                                this.props.reviewRating > 3 && this.props.reviewRating < 4 ?
+                                    <i className="fa fa-star-half-o star-focus"></i> :
+                                    <i className="fa fa-star-o star-focus"></i>}
                             {this.props.reviewRating >= 5 ? <i className="fa fa-star star-focus"></i> :
-                                <i className="fa fa-star-o"></i>}
+                                this.props.reviewRating > 4 && this.props.reviewRating < 5 ?
+                                    <i className="fa fa-star-half-o star-focus"></i> :
+                                    <i className="fa fa-star-o star-focus"></i>}
                             <h3>{'Category: ' + this.props.category}</h3>
                             <div className="s_product_text">
                                 <div className="card_area p_20">

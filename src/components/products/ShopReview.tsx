@@ -217,11 +217,24 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                         <a href={emptyHrefLink}>
                                             <h2>{this.state.name}</h2>
                                         </a>
-                                        {reviewAverage >= 1 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star-o"></i> }
-                                        {reviewAverage >= 2 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star-o"></i> }
-                                        {reviewAverage >= 3 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star-o"></i> }
-                                        {reviewAverage >= 4 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star-o"></i> }
-                                        {reviewAverage >= 5 ? <i className="fa fa-star star-focus"></i> :  <i className="fa fa-star-o"></i> }
+                                        {reviewAverage >= 1 ? <i className="fa fa-star star-focus"></i> :
+                                            <i className="fa fa-star-o star-focus"></i>}
+                                        {reviewAverage >= 2 ? <i className="fa fa-star star-focus"></i> :
+                                            reviewAverage > 1 && reviewAverage < 2 ?
+                                                <i className="fa fa-star-half-o star-focus"></i> :
+                                                <i className="fa fa-star-o star-focus"></i>}
+                                        {reviewAverage >= 3 ? <i className="fa fa-star star-focus"></i> :
+                                            reviewAverage > 2 && reviewAverage < 3 ?
+                                                <i className="fa fa-star-half-o star-focus"></i> :
+                                                <i className="fa fa-star-o star-focus"></i>}
+                                        {reviewAverage >= 4 ? <i className="fa fa-star star-focus"></i> :
+                                            reviewAverage > 3 && reviewAverage < 4 ?
+                                                <i className="fa fa-star-half-o star-focus"></i> :
+                                                <i className="fa fa-star-o star-focus"></i>}
+                                        {reviewAverage >= 5 ? <i className="fa fa-star star-focus"></i> :
+                                            reviewAverage > 4 && reviewAverage < 5 ?
+                                                <i className="fa fa-star-half-o star-focus"></i> :
+                                                <i className="fa fa-star-o star-focus"></i>}
                                         <h3>{'Category: ' + this.state.category}</h3>
                                         <div className="s_product_text">
                                             <div className="card_area">
