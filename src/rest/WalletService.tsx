@@ -2,6 +2,7 @@ import {getLocalStorage} from "../helper/StorageHelper";
 import {StorageKey} from "../helper/Constants";
 import {DB} from "../index";
 import {LoginDto} from "../components/login/LoginComponent";
+import firebase from "firebase";
 
 export interface WalletWrapper {
     cashback: WalletInfoDto,
@@ -10,15 +11,15 @@ export interface WalletWrapper {
 }
 
 export interface WalletInfoDto {
-    approved: Number,
-    pending: Number
+    approved: number,
+    pending: number
 }
 
 export interface TransactionDto {
-    amount: Number,
-    type: String,
-    currency: String,
-    date: Date
+    amount: number,
+    createdAt: firebase.firestore.Timestamp,
+    target: string,
+    type: string,
 }
 
 export function fetchWalletInfo(walletLayout) {
@@ -35,7 +36,8 @@ export function fetchWalletInfo(walletLayout) {
                         cashbackPending: data.cashback.pending,
                         pointsApproved: data.points.approved,
                         pointsPending: data.points.pending,
-                        totalTransactions: data.transactions.length
+                        totalTransactions: data.transactions.length,
+                        transactions: data.transactions
                     });
                 }
             }).catch(function (error) {

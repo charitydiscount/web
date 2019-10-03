@@ -3,18 +3,20 @@ import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import WalletBlock from "./WalletBlock";
-import {fetchWalletInfo} from "../../rest/WalletService";
+import {fetchWalletInfo, TransactionDto} from "../../rest/WalletService";
 import WalletTableRow from "./WalletTableRow";
 
 interface IWalletProps {
+
 }
 
 interface IWalletState {
-    cashbackApproved: Number,
-    cashbackPending: Number,
-    pointsApproved: Number,
-    pointsPending: Number,
-    totalTransactions: Number
+    cashbackApproved: number,
+    cashbackPending: number,
+    pointsApproved: number,
+    pointsPending: number,
+    totalTransactions: number,
+    transactions: TransactionDto[]
 }
 
 class Wallet extends React.Component<IWalletProps, IWalletState> {
@@ -26,7 +28,8 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
             cashbackPending: 0,
             pointsApproved: 0,
             pointsPending: 0,
-            totalTransactions: 0
+            totalTransactions: 0,
+            transactions: []
         };
     }
 
@@ -40,6 +43,11 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
     }
 
     public render() {
+        const transactionsHistory = this.state.transactions ? this.state.transactions.map(value => {
+            return <WalletTableRow date={value.createdAt.toDate().toDateString()} type={value.type} amount={value.amount} target={value.target}/>
+        }) : null;
+
+
         return (
             <React.Fragment>
                 <section className={"product_description_area"}>
@@ -51,7 +59,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                     <WalletBlock title={"Cashback"} approved={this.state.cashbackApproved}
                                                  pending={this.state.cashbackPending} pendingExists={true}/>
                                     <WalletBlock title={"Charity points"} approved={this.state.pointsApproved}
-                                                 pending={this.state.pointsPending} pendingExists={true}/>
+                                                 pendingExists={false}/>
                                     <WalletBlock title={"Transactions"} approved={this.state.totalTransactions}
                                                  pendingExists={false}/>
                                 </div>
@@ -59,18 +67,30 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                         </div>
 
                         <div className={"tab-content"}>
-                            <h3 className="mb-30 title_color">History</h3>
+                            <h3 className="mb-30 title_color">Comissions History</h3>
                             <div className="progress-table-wrap">
                                 <div className="progress-table">
                                     <div className="table-head">
-                                        <div className="country">Shop</div>
-                                        <div className="country">Creation Date</div>
-                                        <div className="country">Bonus</div>
-                                        <div className="country">Status</div>
+                                        <div className="country">Date</div>
+                                        <div className="country">Type</div>
+                                        <div className="country">Amount</div>
+                                        <div className="country">Target</div>
                                     </div>
-                                    <WalletTableRow shop={"01"} date={"dada"} bonus={10.2} status={"da"}/>
-                                    <WalletTableRow shop={"01"} date={"dada"} bonus={10.3} status={"da"}/>
-                                    <WalletTableRow shop={"01"} date={"Ddada"} bonus={10.4} status={"da"}/>
+                                    {transactionsHistory}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={"tab-content"}>
+                            <h3 className="mb-30 title_color">Transaction History</h3>
+                            <div className="progress-table-wrap">
+                                <div className="progress-table">
+                                    <div className="table-head">
+                                        <div className="country">Date</div>
+                                        <div className="country">Amount</div>
+                                        <div className="country">Type</div>
+                                        <div className="country">Target</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
