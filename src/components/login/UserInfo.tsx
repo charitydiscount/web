@@ -56,6 +56,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     }
 
     public render() {
+        let photoUrl = this.state.photoURL;
+        if (this.state.providerType == ProviderType.FACEBOOK) {
+            photoUrl += '?height=200';
+        }
+
         return (
 
             <div className="product_image_area">
@@ -66,7 +71,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                             <div className="s_product_img">
                                 <div className="blog_right_sidebar">
                                     <aside className="single_sidebar_widget author_widget">
-                                        <img className="author_img rounded-circle" src={this.state.photoURL}
+                                        <img className="author_img rounded-circle" src={photoUrl}
                                              alt="Missing" width={200} height={200}/>
                                         <h4>{this.state.displayName}</h4>
                                         <p>{this.state.email}</p>
