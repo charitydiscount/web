@@ -1,4 +1,7 @@
 import * as React from "react";
+import {ProviderType, StorageKey} from "../../helper/Constants";
+import {getLocalStorage} from "../../helper/StorageHelper";
+import {LoginDto} from "../login/LoginComponent";
 
 interface IReviewProps {
     photoUrl: string,
@@ -10,12 +13,21 @@ interface IReviewProps {
 class Review extends React.Component<IReviewProps> {
 
     public render() {
+        let photoUrl = this.props.photoUrl;
+        const userSt = getLocalStorage(StorageKey.USER);
+        if (userSt) {
+            var user = JSON.parse(userSt) as LoginDto;
+            if (user && user.providerType == ProviderType.FACEBOOK) {
+                photoUrl += '?height=200';
+            }
+        }
+
         return (
             <React.Fragment>
                 <div className="review_item">
                     <div className="media">
                         <div className="d-flex">
-                            <img src={this.props.photoUrl} alt="No content" width={80} height={80} style={{borderRadius: 70}}/>
+                            <img src={photoUrl} alt="No content" width={80} height={80} style={{borderRadius: 70}}/>
                         </div>
                         <div className="media-body">
                             <h4>{this.props.name}</h4>
