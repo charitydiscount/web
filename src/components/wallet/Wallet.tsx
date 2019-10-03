@@ -78,7 +78,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                         <div className="country">Amount</div>
                                         <div className="country">Target</div>
                                     </div>
-                                    {transactionsHistory}
+                                    {}
                                 </div>
                             </div>
                         </div>
@@ -89,10 +89,11 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                 <div className="progress-table">
                                     <div className="table-head">
                                         <div className="country">Date</div>
-                                        <div className="country">Amount</div>
                                         <div className="country">Type</div>
+                                        <div className="country">Amount</div>
                                         <div className="country">Target</div>
                                     </div>
+                                    {transactionsHistory}
                                 </div>
                             </div>
                         </div>

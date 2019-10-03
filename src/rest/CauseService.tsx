@@ -6,11 +6,16 @@ export interface ImageDto {
     url: string
 }
 
-export interface CauseDto {
+export interface CauseDetailDto {
     description: String,
     images: ImageDto[],
     site: String,
     title: String
+}
+
+export interface CauseDto {
+    id: string,
+    details: CauseDetailDto
 }
 
 export function fetchCauses(causesLayout) {
@@ -23,7 +28,13 @@ export function fetchCauses(causesLayout) {
     var dbRef = DB.collection("cases");
     dbRef.get()
         .then(querySnapshot => {
-                const data = querySnapshot.docs.map(doc => doc.data() as CauseDto[]);
+                let data = [] as CauseDto[];
+                querySnapshot.docs.forEach(value => {
+                    data.push({
+                        id: value.id,
+                        details: value.data() as CauseDetailDto
+                    });
+                });
                 setLocalStorage(StorageKey.CAUSES, JSON.stringify(data));
                 causesLayout.setState({
                     causes: data

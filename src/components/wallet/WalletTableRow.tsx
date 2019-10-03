@@ -1,5 +1,7 @@
 import * as React from "react";
-import {TxType} from "../../helper/Constants";
+import {StorageKey, TxType} from "../../helper/Constants";
+import {getLocalStorage} from "../../helper/StorageHelper";
+import {CauseDto} from "../../rest/CauseService";
 
 interface IWalletTableRowProps {
     date: string,
@@ -11,6 +13,22 @@ interface IWalletTableRowProps {
 class WalletTableRow extends React.Component<IWalletTableRowProps> {
 
     public render() {
+        let target;
+        if (this.props.type === TxType.DONATION) {
+            let causesIdSt = getLocalStorage(StorageKey.CAUSES);
+            let causes = [] as CauseDto[];
+            if (causesIdSt) {
+                causes = JSON.parse(causesIdSt) as CauseDto[];
+            }
+            let cause = causes.find(value => value.id === this.props.target);
+            if (cause) {
+                target = cause.details.title;
+            }
+        }
+        if (this.props.type === TxType.BONUS) {
+            target = 'Charity points';
+        }
+
         return (
             <React.Fragment>
                 <div className="table-row">
@@ -25,7 +43,13 @@ class WalletTableRow extends React.Component<IWalletTableRowProps> {
                         }
                     </div>
                     <div className="country">{this.props.amount}</div>
-                    <div className="country">{this.props.target}</div>
+                    <div className="country">
+                        {this.props.type === TxType.DONATION ?
+                            <a href={"/causes"}>
+                                {target}
+                            </a>
+                            : target}
+                    </div>
                 </div>
             </React.Fragment>
         )

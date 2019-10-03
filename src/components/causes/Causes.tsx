@@ -32,7 +32,8 @@ class Causes extends React.Component<ICausesProps, ICausesState> {
 
     public render() {
         var causesList = this.state.causes ? this.state.causes.map(cause => {
-            return <Cause description={cause.description} images={cause.images} site={cause.site} title={cause.title}/>
+            return <Cause description={cause.details.description} images={cause.details.images}
+                          site={cause.details.site} title={cause.details.title}/>
         }) : null;
 
         return (
