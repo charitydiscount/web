@@ -12,6 +12,12 @@ export enum InputType {
   TIME = 'time',
 }
 
+export enum TxType{
+  CASHOUT,
+  BONUS,
+  DONATION
+}
+
 export enum StorageKey {
   //LOCAL STORAGE
   CATEGORIES = '/categoriesCD',

@@ -5,6 +5,7 @@ import {Stages} from "../helper/Stages";
 import WalletBlock from "./WalletBlock";
 import {fetchWalletInfo, TransactionDto} from "../../rest/WalletService";
 import WalletTableRow from "./WalletTableRow";
+import {TxType} from "../../helper/Constants";
 
 interface IWalletProps {
 
@@ -44,7 +45,8 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
 
     public render() {
         const transactionsHistory = this.state.transactions ? this.state.transactions.map(value => {
-            return <WalletTableRow date={value.createdAt.toDate().toDateString()} type={value.type} amount={value.amount} target={value.target}/>
+            return <WalletTableRow date={value.createdAt.toDate().toDateString()} type={TxType[value.type]}
+                                   amount={value.amount} target={value.target}/>
         }) : null;
 
 
