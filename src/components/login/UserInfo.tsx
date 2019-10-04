@@ -57,7 +57,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
 
     public render() {
         let photoUrl = this.state.photoURL;
-        if (this.state.providerType == ProviderType.FACEBOOK) {
+        if (photoUrl.includes("facebook")) {
             photoUrl += '?height=200';
         }
 

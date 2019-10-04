@@ -1,7 +1,4 @@
 import * as React from "react";
-import {ProviderType, StorageKey} from "../../helper/Constants";
-import {getLocalStorage} from "../../helper/StorageHelper";
-import {LoginDto} from "../login/LoginComponent";
 
 interface IReviewProps {
     photoUrl: string,
@@ -14,12 +11,8 @@ class Review extends React.Component<IReviewProps> {
 
     public render() {
         let photoUrl = this.props.photoUrl;
-        const userSt = getLocalStorage(StorageKey.USER);
-        if (userSt) {
-            var user = JSON.parse(userSt) as LoginDto;
-            if (user && user.providerType == ProviderType.FACEBOOK) {
-                photoUrl += '?height=200';
-            }
+        if (photoUrl.includes("facebook")) {
+            photoUrl += '?height=200';
         }
 
         return (
