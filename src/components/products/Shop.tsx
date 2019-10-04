@@ -138,7 +138,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                     </a>
                                     <div className={"icon_btn p_icon p_05"}>
                                         <Link to={Routes.REVIEW + "/" + this.props.id}>
-                                            <i className="lnr lnr-envelope"/>
+                                            <i className="lnr lnr-bubble"/>
                                         </Link>
                                     </div>
 
