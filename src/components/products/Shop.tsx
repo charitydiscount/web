@@ -136,11 +136,12 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                        className="main_btn">
                                         Access
                                     </a>
-                                    <Link to={Routes.REVIEW + "/" + this.props.id}>
-                                        <a href={emptyHrefLink} className="main_btn">
-                                            Reviews
-                                        </a>
-                                    </Link>
+                                    <div className={"icon_btn p_icon p_05"}>
+                                        <Link to={Routes.REVIEW + "/" + this.props.id}>
+                                            <i className="lnr lnr-envelope"/>
+                                        </Link>
+                                    </div>
+
                                     <div
                                         className={this.state.favShop === true ? 'icon_btn p_iconUpdate' : 'icon_btn p_icon'}>
                                         <a href={emptyHrefLink} onClick={
