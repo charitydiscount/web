@@ -92,7 +92,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                         </div>
 
                         <div className={"tab-content"}>
-                            <h3 className="mb-30 title_color">User history</h3>
+                            <h3 className="mb-30 title_color">History</h3>
                             <div className="progress-table-wrap">
                                 <div className="progress-table">
                                     <div className="table-head">

@@ -34,6 +34,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                 <div className="table-row">
                     <div className="country">{this.props.date}</div>
                     <div className="country">
+                        <h3>
                         {
                             this.props.type === TxType.DONATION ?
                                 <i className="fa fa-heart" aria-hidden="true" title={"Donation"}></i> :
@@ -41,6 +42,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                                     <i className="fa fa-thumbs-up" aria-hidden="true" title={'Bonus'}></i> :
                                     <i className="fa fa-money" aria-hidden="true" title={'Cashout'}></i>
                         }
+                        </h3>
                     </div>
                     <div className="country">{this.props.amount}</div>
                     <div className="country">
