@@ -3,9 +3,10 @@ import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import WalletBlock from "./WalletBlock";
-import {fetchWalletInfo, TransactionDto} from "../../rest/WalletService";
-import WalletTableRow from "./WalletTableRow";
-import {TxType} from "../../helper/Constants";
+import {CommissionDto, fetchCommissions, fetchWalletInfo, TransactionDto} from "../../rest/WalletService";
+import WalletTransactionRow from "./WalletTransactionRow";
+import {CommissionStatus, TxType} from "../../helper/Constants";
+import WalletCommissionRow from "./WalletCommissionRow";
 
 interface IWalletProps {
 
@@ -17,7 +18,8 @@ interface IWalletState {
     pointsApproved: number,
     pointsPending: number,
     totalTransactions: number,
-    transactions: TransactionDto[]
+    transactions: TransactionDto[],
+    commissions: CommissionDto[]
 }
 
 class Wallet extends React.Component<IWalletProps, IWalletState> {
@@ -30,13 +32,15 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
             pointsApproved: 0,
             pointsPending: 0,
             totalTransactions: 0,
-            transactions: []
+            transactions: [],
+            commissions: []
         };
     }
 
     public componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.WALLET));
         fetchWalletInfo(this);
+        fetchCommissions(this);
     }
 
     public componentWillUnmount() {
@@ -45,10 +49,14 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
 
     public render() {
         const transactionsHistory = this.state.transactions ? this.state.transactions.map(value => {
-            return <WalletTableRow date={value.createdAt.toDate().toDateString()} type={TxType[value.type]}
-                                   amount={value.amount} target={value.target}/>
+            return <WalletTransactionRow date={value.createdAt.toDate().toDateString()} type={TxType[value.type]}
+                                         amount={value.amount} target={value.target}/>
         }) : null;
 
+        const commissionsHistory = this.state.commissions ? this.state.commissions.map(value => {
+            return <WalletCommissionRow amount={value.amount} date={value.createdAt.toDate().toDateString()}
+                                        shopUniqueCode={value.shopId} status={CommissionStatus[value.status]}/>
+        }) : null;
 
         return (
             <React.Fragment>
@@ -69,22 +77,22 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                         </div>
 
                         <div className={"tab-content"}>
-                            <h3 className="mb-30 title_color">Comissions History</h3>
+                            <h3 className="mb-30 title_color">Cashback History</h3>
                             <div className="progress-table-wrap">
                                 <div className="progress-table">
                                     <div className="table-head">
                                         <div className="country">Date</div>
-                                        <div className="country">Type</div>
+                                        <div className="country">Status</div>
                                         <div className="country">Amount</div>
-                                        <div className="country">Target</div>
+                                        <div className="country">Shop</div>
                                     </div>
-                                    {}
+                                    {commissionsHistory}
                                 </div>
                             </div>
                         </div>
 
                         <div className={"tab-content"}>
-                            <h3 className="mb-30 title_color">Transaction History</h3>
+                            <h3 className="mb-30 title_color">User history</h3>
                             <div className="progress-table-wrap">
                                 <div className="progress-table">
                                     <div className="table-head">

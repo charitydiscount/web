@@ -46,3 +46,34 @@ export function fetchWalletInfo(walletLayout) {
         }
     }
 }
+
+export interface CommissionWrapper {
+    transactions: CommissionDto[]
+}
+
+export interface CommissionDto {
+    amount: number,
+    createdAt: firebase.firestore.Timestamp,
+    shopId: string,
+    status: string
+}
+
+export function fetchCommissions(walletLayout) {
+    var user = getLocalStorage(StorageKey.USER);
+    if (user) {
+        var keyExist = (JSON.parse(user) as LoginDto).uid;
+        if (keyExist) {
+            var docRef = DB.collection("commissions").doc(keyExist);
+            docRef.get().then(function (doc) {
+                if (doc.exists) {
+                    const data = doc.data() as CommissionWrapper;
+                    walletLayout.setState({
+                        commissions: data.transactions
+                    });
+                }
+            }).catch(function (error) {
+                console.log("Error getting document:", error);
+            });
+        }
+    }
+}

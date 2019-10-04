@@ -1,40 +1,47 @@
 export enum ButtonType {
-  SUBMIT = 'submit',
-  BUTTON = 'button',
+    SUBMIT = 'submit',
+    BUTTON = 'button',
 }
 
 export enum InputType {
-  TEXT = 'text',
-  PASSWORD = 'password',
-  RADIO = 'radio',
-  CHECKBOX = 'checkbox',
-  DATE = 'date',
-  TIME = 'time',
+    TEXT = 'text',
+    PASSWORD = 'password',
+    RADIO = 'radio',
+    CHECKBOX = 'checkbox',
+    DATE = 'date',
+    TIME = 'time',
 }
 
-export enum TxType{
-  CASHOUT,
-  BONUS,
-  DONATION
+export enum TxType {
+    CASHOUT,
+    BONUS,
+    DONATION
+}
+
+export enum CommissionStatus {
+    pending,
+    rejected,
+    approved,
+    paid
 }
 
 export enum StorageKey {
-  //LOCAL STORAGE
-  CATEGORIES = '/categoriesCD',
-  SHOPS = '/shopsCD',
-  FAVORITE_SHOPS = '/favoriteShopsCD',
-  FAVORITE_SHOPS_ID = '/favoriteShopsIdCD',
-  CAUSES = '/causesCD',
-  USER = '/userCD',
+    //LOCAL STORAGE
+    CATEGORIES = '/categoriesCD',
+    SHOPS = '/shopsCD',
+    FAVORITE_SHOPS = '/favoriteShopsCD',
+    FAVORITE_SHOPS_ID = '/favoriteShopsIdCD',
+    CAUSES = '/causesCD',
+    USER = '/userCD',
 
-  //SESSION STORAGE
-  AFFILIATE_CODE = '/affiliateCodeCD'
+    //SESSION STORAGE
+    AFFILIATE_CODE = '/affiliateCodeCD'
 }
 
 export enum ProviderType {
-  GOOGLE,
-  FACEBOOK,
-  NORMAL
+    GOOGLE,
+    FACEBOOK,
+    NORMAL
 }
 
 export const emptyHrefLink = '#';

@@ -3,14 +3,14 @@ import {StorageKey, TxType} from "../../helper/Constants";
 import {getLocalStorage} from "../../helper/StorageHelper";
 import {CauseDto} from "../../rest/CauseService";
 
-interface IWalletTableRowProps {
+interface IWalletTransactionRowProps {
     date: string,
     type: TxType,
     amount: number,
     target: string
 }
 
-class WalletTableRow extends React.Component<IWalletTableRowProps> {
+class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
 
     public render() {
         let target;
@@ -56,5 +56,5 @@ class WalletTableRow extends React.Component<IWalletTableRowProps> {
     }
 }
 
-export default WalletTableRow;
+export default WalletTransactionRow;
 

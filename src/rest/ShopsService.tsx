@@ -180,3 +180,14 @@ export function getShopById(id) {
         });
     }
 }
+
+export function getShopByUniqueCode(uniquedCode) {
+    const shops = getLocalStorage(StorageKey.SHOPS);
+    if (shops) {
+        const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
+        return shopsParsed.find(value => {
+            return value.uniqueCode == uniquedCode
+        });
+    }
+}
+

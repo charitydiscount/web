@@ -109,24 +109,24 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                             <a href={emptyHrefLink}>
                                 <h2>{this.props.name}</h2>
                             </a>
-                            {this.props.reviewRating >= 1 ? <i className="fa fa-star star-focus"></i> :
-                                <i className="fa fa-star-o star-focus"></i>}
-                            {this.props.reviewRating >= 2 ? <i className="fa fa-star star-focus"></i> :
+                            {this.props.reviewRating >= 1 ? <i className="fa fa-star star-focus"/> :
+                                <i className="fa fa-star-o star-focus"/>}
+                            {this.props.reviewRating >= 2 ? <i className="fa fa-star star-focus"/> :
                                 this.props.reviewRating > 1 && this.props.reviewRating < 2 ?
-                                    <i className="fa fa-star-half-o star-focus"></i> :
-                                    <i className="fa fa-star-o star-focus"></i>}
-                            {this.props.reviewRating >= 3 ? <i className="fa fa-star star-focus"></i> :
+                                    <i className="fa fa-star-half-o star-focus"/> :
+                                    <i className="fa fa-star-o star-focus"/>}
+                            {this.props.reviewRating >= 3 ? <i className="fa fa-star star-focus"/> :
                                 this.props.reviewRating > 2 && this.props.reviewRating < 3 ?
-                                    <i className="fa fa-star-half-o star-focus"></i> :
-                                    <i className="fa fa-star-o star-focus"></i>}
-                            {this.props.reviewRating >= 4 ? <i className="fa fa-star star-focus"></i> :
+                                    <i className="fa fa-star-half-o star-focus"/> :
+                                    <i className="fa fa-star-o star-focus"/>}
+                            {this.props.reviewRating >= 4 ? <i className="fa fa-star star-focus"/> :
                                 this.props.reviewRating > 3 && this.props.reviewRating < 4 ?
-                                    <i className="fa fa-star-half-o star-focus"></i> :
-                                    <i className="fa fa-star-o star-focus"></i>}
-                            {this.props.reviewRating >= 5 ? <i className="fa fa-star star-focus"></i> :
+                                    <i className="fa fa-star-half-o star-focus"/> :
+                                    <i className="fa fa-star-o star-focus"/>}
+                            {this.props.reviewRating >= 5 ? <i className="fa fa-star star-focus"/> :
                                 this.props.reviewRating > 4 && this.props.reviewRating < 5 ?
-                                    <i className="fa fa-star-half-o star-focus"></i> :
-                                    <i className="fa fa-star-o star-focus"></i>}
+                                    <i className="fa fa-star-half-o star-focus"/> :
+                                    <i className="fa fa-star-o star-focus"/>}
                             <h3>{'Category: ' + this.props.category}</h3>
                             <div className="s_product_text">
                                 <div className="card_area p_20">
@@ -142,14 +142,12 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                         </Link>
                                     </div>
 
-                                    <div
-                                        className={this.state.favShop === true ? 'icon_btn p_iconUpdate' : 'icon_btn p_icon'}>
+                                    <div className={this.state.favShop === true ? 'icon_btn p_iconUpdate' : 'icon_btn p_icon'}>
                                         <a href={emptyHrefLink} onClick={
                                             this.state.favShop === true
                                                 ? this.updateFavoriteShopsFalse
                                                 : this.updateFavoriteShopsTrue
-                                        }
-                                        >
+                                        }>
                                             <i className="lnr lnr-heart"/>
                                         </a>
                                     </div>
