@@ -103,7 +103,31 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                     </a>
                 </Modal>
                 <Modal visible={this.state.cashoutVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
-
+                    <div className="container cart_inner">
+                        <table className="table">
+                            <tbody>
+                            <tr className="shipping_area">
+                                <td>
+                                    <div className="shipping_box">
+                                        <h6>
+                                            Available amount: <i className="blue-color">{this.props.approved.toFixed(1)}</i>
+                                        </h6>
+                                        <GenericInput type={InputType.NUMBER} id={'amount-text-field'}
+                                                      max={this.props.approved.toString()}
+                                                      min={"10"}
+                                                      step={0.1}
+                                                      placeholder={"Amount"}/>
+                                        <h3>
+                                            <a href={emptyHrefLink}>
+                                                <i className="fa fa-money blue-color" aria-hidden="true">Cashout</i>
+                                            </a>
+                                        </h3>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </Modal>
                 <Modal visible={this.state.donateVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="container cart_inner">
