@@ -1,5 +1,4 @@
 import * as React from "react";
-import {emptyHrefLink} from "../../helper/Constants";
 
 interface IWalletBlockProps {
     title: String,
@@ -13,7 +12,7 @@ class WalletBlock extends React.Component<IWalletBlockProps> {
     public render() {
         return (
             <React.Fragment>
-                <div className="col-4 total_rate">
+                <div className="col-lg-4 total_rate">
                     <div className="box_total">
                         <h5>{this.props.title}</h5>
                         <h4>{this.props.approved ? this.props.approved : 0}</h4>

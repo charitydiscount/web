@@ -64,8 +64,6 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                 <section className={"product_description_area"}>
                     <div className={"container"}>
                         <div className={"tab-content"}>
-                            <div className="tab-pane fade show active" id="review" role="tabpanel"
-                                 aria-labelledby="review-tab">
                                 <div className="row">
                                     <WalletBlock title={"Cashback"} approved={this.state.cashbackApproved}
                                                  pending={this.state.cashbackPending} pendingExists={true}/>
@@ -74,7 +72,6 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                     <WalletBlock title={"History"} approved={this.state.totalTransactions}
                                                  pendingExists={false}/>
                                 </div>
-                            </div>
                         </div>
 
                         <div className={"tab-content"}>
