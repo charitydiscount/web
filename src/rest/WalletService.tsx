@@ -95,7 +95,9 @@ export function donate(amount, targetId) {
             DB.collection('requests').add(
                 data
             ).then(ref => {
-                window.location.reload();
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1000);
             });
         }
     }

@@ -22,7 +22,8 @@ interface IWalletBlockProps {
     title: string,
     approved: number,
     pending?: number,
-    pendingExists: boolean
+    pendingExists: boolean,
+    money: boolean
 }
 
 class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> {
@@ -82,21 +83,21 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
         });
     }
 
-    onAmountChange(event){
+    onAmountChange(event) {
         this.setState({
             amount: event.target.value
         });
     }
 
     donate() {
-        if(!this.state.amount
+        if (!this.state.amount
             || this.state.amount.length < 1
             || parseFloat(this.state.amount) < 1
-            || parseFloat(this.state.amount) > this.props.approved){
+            || parseFloat(this.state.amount) > this.props.approved) {
             alert("Please select a correct amount");
             return;
         }
-        if(!this.state.targetId){
+        if (!this.state.targetId) {
             alert("Please select a cause");
             return;
         }
@@ -146,7 +147,7 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                                         </h6>
                                         <GenericInput type={InputType.NUMBER} id={'amount-text-field'}
                                                       max={this.props.approved.toString()}
-                                                     handleChange={this.onAmountChange}
+                                                      handleChange={this.onAmountChange}
                                                       min={"10"}
                                                       step={0.1}
                                                       placeholder={"Amount"}/>
@@ -203,14 +204,15 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                         {this.props.pendingExists ?
                             <div>
                                 <h6>Pending:{this.props.pending ? this.props.pending : 0}</h6>
-                                <br/>
-                                {this.props.approved > 0 ?
-                                    <a href={emptyHrefLink} onClick={() => this.openModal()}
-                                       className="btn submit_btn genric-btn circle">Withdraw
-                                    </a>
-                                    : null}
-                            </div>
-                            : null
+                                {this.props.money ?
+                                    <div>
+                                        <br/>
+                                        {this.props.approved > 0 ?
+                                            <a href={emptyHrefLink} onClick={() => this.openModal()}
+                                               className="btn submit_btn genric-btn circle">Withdraw
+                                            </a> : null}
+                                    </div> : null}
+                            </div> : null
                         }
                     </div>
                 </div>

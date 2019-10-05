@@ -48,14 +48,16 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
     }
 
     public render() {
+        var dateOptions = {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
+
         const transactionsHistory = this.state.transactions ? this.state.transactions.map((value, index) => {
-            return <WalletTransactionRow key={"tx" + index} date={value.date.toDate().toDateString()}
+            return <WalletTransactionRow key={"tx" + index} date={value.date.toDate().toLocaleDateString("ro-RO", dateOptions)}
                                          type={TxType[value.type]} amount={value.amount} target={value.target}/>
         }) : null;
 
         const commissionsHistory = this.state.commissions ? this.state.commissions.map((value, index) => {
             return <WalletCommissionRow key={"cm" + index} amount={value.amount}
-                                        date={value.createdAt.toDate().toDateString()}
+                                        date={value.createdAt.toDate().toLocaleDateString("ro-RO", dateOptions)}
                                         shopUniqueCode={value.shopId} status={CommissionStatus[value.status]}/>
         }) : null;
 
@@ -64,14 +66,14 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                 <section className={"product_description_area"}>
                     <div className={"container"}>
                         <div className={"tab-content"}>
-                                <div className="row">
-                                    <WalletBlock title={"Cashback"} approved={this.state.cashbackApproved}
-                                                 pending={this.state.cashbackPending} pendingExists={true}/>
-                                    <WalletBlock title={"Charity points"} approved={this.state.pointsApproved}
-                                                 pendingExists={false}/>
-                                    <WalletBlock title={"History"} approved={this.state.totalTransactions}
-                                                 pendingExists={false}/>
-                                </div>
+                            <div className="row">
+                                <WalletBlock title={"Cashback"} approved={this.state.cashbackApproved}
+                                             pending={this.state.cashbackPending} pendingExists={true} money={true}/>
+                                <WalletBlock title={"Charity points"} approved={this.state.pointsApproved}
+                                             pending={this.state.pointsPending} pendingExists={true} money={false}/>
+                                <WalletBlock title={"History"} approved={this.state.totalTransactions}
+                                             pendingExists={false} money={false}/>
+                            </div>
                         </div>
 
                         <div className={"tab-content"}>
