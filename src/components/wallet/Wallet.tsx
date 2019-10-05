@@ -48,13 +48,15 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
     }
 
     public render() {
-        const transactionsHistory = this.state.transactions ? this.state.transactions.map(value => {
-            return <WalletTransactionRow date={value.createdAt.toDate().toDateString()} type={TxType[value.type]}
+        const transactionsHistory = this.state.transactions ? this.state.transactions.map((value, index) => {
+            return <WalletTransactionRow key={"tx" + index} date={value.createdAt.toDate().toDateString()}
+                                         type={TxType[value.type]}
                                          amount={value.amount} target={value.target}/>
         }) : null;
 
-        const commissionsHistory = this.state.commissions ? this.state.commissions.map(value => {
-            return <WalletCommissionRow amount={value.amount} date={value.createdAt.toDate().toDateString()}
+        const commissionsHistory = this.state.commissions ? this.state.commissions.map((value, index) => {
+            return <WalletCommissionRow key={"cm" + index} amount={value.amount}
+                                        date={value.createdAt.toDate().toDateString()}
                                         shopUniqueCode={value.shopId} status={CommissionStatus[value.status]}/>
         }) : null;
 

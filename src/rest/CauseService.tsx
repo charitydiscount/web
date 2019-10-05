@@ -7,10 +7,10 @@ export interface ImageDto {
 }
 
 export interface CauseDetailDto {
-    description: String,
+    description: string,
     images: ImageDto[],
-    site: String,
-    title: String
+    site: string,
+    title: string
 }
 
 export interface CauseDto {

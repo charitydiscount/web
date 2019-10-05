@@ -119,7 +119,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
         if ((this.state.description && this.state.description.length > 0) && this.state.rating > 0) {
             const userSt = getLocalStorage(StorageKey.USER);
             if (userSt) {
-                var user = JSON.parse(userSt) as LoginDto;
+                const user = JSON.parse(userSt) as LoginDto;
                 if (user) {
                     updateReview(this.state.uniqueCode, this.state.rating, user.uid,
                         user.photoURL, user.displayName, this.state.description, this);
@@ -141,8 +141,8 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
     }
 
     handleStarClicked(event, starLevel) {
-        for (var i = 1; i <= 5; i++) {
-            var element = document.getElementById("star-" + i);
+        for (let i = 1; i <= 5; i++) {
+            let element = document.getElementById("star-" + i);
             if (i <= starLevel) {
                 if (element) {
                     element.className = "fa fa-star star-focus";
@@ -159,8 +159,8 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
     }
 
     handleStarFocusEnter(event, starLevel) {
-        for (var i = 1; i <= starLevel; i++) {
-            var element = document.getElementById("star-" + i);
+        for (let i = 1; i <= starLevel; i++) {
+            const element = document.getElementById("star-" + i);
             if (element) {
                 if (this.state.rating === 0 || this.state.rating < i) {
                     element.className = "fa fa-star star-focus";
@@ -170,8 +170,8 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
     }
 
     handleStarFocusRemove(event, starLevel) {
-        for (var i = 1; i <= starLevel; i++) {
-            var element = document.getElementById("star-" + i);
+        for (let i = 1; i <= starLevel; i++) {
+            let element = document.getElementById("star-" + i);
             if (element) {
                 if (this.state.rating === 0 || this.state.rating < i) {
                     element.className = "fa fa-star-o";
@@ -182,13 +182,13 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
 
     public render() {
         const reviewsList = this.state.reviews && this.state.reviews.length > 0 ? this.state.reviews.map(review => {
-            return <Review photoUrl={review.reviewer.photoUrl} name={review.reviewer.name}
+            return <Review key={review.reviewer.name} photoUrl={review.reviewer.photoUrl} name={review.reviewer.name}
                            description={review.description} rating={review.rating}/>
         }) : 'No reviews yet';
 
-        var reviewAverage = 0;
+        let reviewAverage = 0;
         if (this.state.reviews) {
-            var reviewNumber = 0;
+            let reviewNumber = 0;
             this.state.reviews.forEach(value => {
                 reviewAverage += value.rating;
                 reviewNumber += 1;

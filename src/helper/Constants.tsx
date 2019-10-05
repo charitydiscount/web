@@ -45,3 +45,4 @@ export enum ProviderType {
 }
 
 export const emptyHrefLink = '#';
+export const logoSrc = 'img/logo.png';

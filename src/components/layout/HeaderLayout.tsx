@@ -4,10 +4,11 @@ import {connect} from "react-redux";
 import {doLogoutAction} from "../login/UserActions";
 import {setShops} from "../../redux/actions/ShopsAction";
 import {getLocalStorage} from "../../helper/StorageHelper";
-import {emptyHrefLink, StorageKey} from "../../helper/Constants";
+import {emptyHrefLink, logoSrc, StorageKey} from "../../helper/Constants";
 import {fetchFavoriteShops, ShopDto} from "../../rest/ShopsService";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 import {LoginDto} from "../login/LoginComponent";
+import {Routes} from "../helper/Routes";
 
 interface IHeaderLayoutProps {
     isLoggedIn?: boolean,
@@ -39,9 +40,9 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
     }
 
     public componentDidMount() {
-        var user = getLocalStorage(StorageKey.USER);
+        const user = getLocalStorage(StorageKey.USER);
         if (user) {
-            var userParsed = JSON.parse(user) as LoginDto;
+            const userParsed = JSON.parse(user) as LoginDto;
             this.setState({
                 username: userParsed.displayName
             })
@@ -55,7 +56,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
 
     public loadFavoriteShops(event) {
         event.preventDefault();
-        var favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
+        const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
         if (favoriteShops) {
             this.props.setShops(JSON.parse(favoriteShops));
         } else {
@@ -71,7 +72,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
         const isPrivacy = (this.props.view === Stages.PRIVACY);
         const isCauses = (this.props.view === Stages.CAUSES);
         const isWallet = (this.props.view === Stages.WALLET);
-        const isDeals = (this.props.view === Stages.DEALS);
         const isLoggedIn = this.props.isLoggedIn;
 
         return (
@@ -96,13 +96,13 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                     </li>
 
                                     <li>
-                                        <a href="/user">
+                                        <a href={Routes.USER}>
                                             My account
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a href="/contact">
+                                        <a href={Routes.CONTACT}>
                                             Contact us
                                         </a>
                                     </li>
@@ -118,7 +118,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                             {(isLoggedIn || (!isLoggedIn && (isTos || isPrivacy)))
                             &&
                             <a className="navbar-brand logo_h" href={emptyHrefLink}>
-                                <img src="img/logo.png" alt=""/>
+                                <img src={logoSrc} alt=""/>
                             </a>
                             }
                             {isLoggedIn
@@ -126,9 +126,9 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                             <button className="navbar-toggler" type="button" data-toggle="collapse"
                                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                                     aria-expanded="false" aria-label="Toggle navigation">
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
-                                <span className="icon-bar"></span>
+                                <span className="icon-bar"/>
+                                <span className="icon-bar"/>
+                                <span className="icon-bar"/>
                             </button>
                             }
                             <div className="collapse navbar-collapse offset" id="navbarSupportedContent">
@@ -139,19 +139,15 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                             &&
                                             <React.Fragment>
                                                 <li className={"nav-item " + (isCategories ? "active" : "")}>
-                                                    <a className="nav-link" href="/categories">Shops</a>
+                                                    <a className="nav-link" href={Routes.CATEGORIES}>Shops</a>
                                                 </li>
 
-                                                {/*<li className={"nav-item " + (isDeals ? "active" : "")}>*/}
-                                                {/*<a className="nav-link" href="/deals">Deals</a>*/}
-                                                {/*</li>*/}
-
                                                 <li className={"nav-item " + (isCauses ? "active" : "")}>
-                                                    <a className="nav-link" href="/causes">Causes</a>
+                                                    <a className="nav-link" href={Routes.CAUSES}>Causes</a>
                                                 </li>
 
                                                 <li className={"nav-item " + (isWallet ? "active" : "")}>
-                                                    <a className="nav-link" href="/wallet">Wallet</a>
+                                                    <a className="nav-link" href={Routes.WALLET}>Wallet</a>
                                                 </li>
                                             </React.Fragment>
                                             }
@@ -174,7 +170,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                             }
 
                                             <li className="nav-item">
-                                                <a href="/user" className="icons">
+                                                <a href={Routes.USER} className="icons">
                                                     <i className="fa fa-user" aria-hidden="true"/>
                                                 </a>
                                             </li>

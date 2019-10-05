@@ -34,9 +34,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
 
     public componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
-        var user = getLocalStorage(StorageKey.USER);
+        const user = getLocalStorage(StorageKey.USER);
         if (user) {
-            var userParsed = JSON.parse(user) as LoginDto;
+            const userParsed = JSON.parse(user) as LoginDto;
             this.setState({
                 photoURL: userParsed.photoURL ? userParsed.photoURL : '',
                 displayName: userParsed.displayName,
@@ -75,19 +75,19 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                              alt="Missing" width={200} height={200}/>
                                         <h4>{this.state.displayName}</h4>
                                         <p>{this.state.email}</p>
-                                        <div className="br"></div>
+                                        <div className="br"/>
                                     </aside>
                                     <aside className="single_sidebar_widget popular_post_widget">
                                         {this.state.providerType === ProviderType.NORMAL
                                         &&
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={"#"} className="btn submit_btn userInfo_btn">Change password</a>
+                                            <a href={emptyHrefLink} className="btn submit_btn userInfo_btn">Change password</a>
                                         </div>
                                         }
                                         <div className="col-md-12 text-center p_05">
                                             <a href={"/contact"} className="btn submit_btn userInfo_btn">Contact us</a>
                                         </div>
-                                        <div className="br"></div>
+                                        <div className="br"/>
                                         <div className="col-md-12 text-center p_05">
                                             <a href={"/tos"} className="btn submit_btn userInfo_btn">Terms of
                                                 agreement</a>

@@ -2,17 +2,17 @@ import * as React from "react";
 import {ImageDto} from "../../rest/CauseService";
 
 interface ICauseProps {
-    description: String;
+    description: string;
     images: ImageDto[]
-    site: String;
-    title: String;
+    site: string;
+    title: string;
 }
 
 class Cause extends React.Component<ICauseProps> {
 
     public render() {
-        var imagesList = this.props.images ? this.props.images.map(image => {
-            return <img src={image.url} alt="" width={300} height={300} className="img-fluid"/>
+        const imagesList = this.props.images ? this.props.images.map((image, index) => {
+            return <img key={this.props.title + index} src={image.url} alt="" width={300} height={300} className="img-fluid"/>
         }) : null;
 
         return (
