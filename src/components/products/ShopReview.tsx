@@ -217,24 +217,24 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                         <a href={emptyHrefLink}>
                                             <h2>{this.state.name}</h2>
                                         </a>
-                                        {reviewAverage >= 1 ? <i className="fa fa-star star-focus"></i> :
-                                            <i className="fa fa-star-o star-focus"></i>}
-                                        {reviewAverage >= 2 ? <i className="fa fa-star star-focus"></i> :
+                                        {reviewAverage >= 1 ? <i className="fa fa-star star-focus"/> :
+                                            <i className="fa fa-star-o star-focus"/>}
+                                        {reviewAverage >= 2 ? <i className="fa fa-star star-focus"/> :
                                             reviewAverage > 1 && reviewAverage < 2 ?
-                                                <i className="fa fa-star-half-o star-focus"></i> :
-                                                <i className="fa fa-star-o star-focus"></i>}
-                                        {reviewAverage >= 3 ? <i className="fa fa-star star-focus"></i> :
+                                                <i className="fa fa-star-half-o star-focus"/> :
+                                                <i className="fa fa-star-o star-focus"/>}
+                                        {reviewAverage >= 3 ? <i className="fa fa-star star-focus"/> :
                                             reviewAverage > 2 && reviewAverage < 3 ?
-                                                <i className="fa fa-star-half-o star-focus"></i> :
-                                                <i className="fa fa-star-o star-focus"></i>}
-                                        {reviewAverage >= 4 ? <i className="fa fa-star star-focus"></i> :
+                                                <i className="fa fa-star-half-o star-focus"/> :
+                                                <i className="fa fa-star-o star-focus"/>}
+                                        {reviewAverage >= 4 ? <i className="fa fa-star star-focus"/> :
                                             reviewAverage > 3 && reviewAverage < 4 ?
-                                                <i className="fa fa-star-half-o star-focus"></i> :
-                                                <i className="fa fa-star-o star-focus"></i>}
-                                        {reviewAverage >= 5 ? <i className="fa fa-star star-focus"></i> :
+                                                <i className="fa fa-star-half-o star-focus"/> :
+                                                <i className="fa fa-star-o star-focus"/>}
+                                        {reviewAverage >= 5 ? <i className="fa fa-star star-focus"/> :
                                             reviewAverage > 4 && reviewAverage < 5 ?
-                                                <i className="fa fa-star-half-o star-focus"></i> :
-                                                <i className="fa fa-star-o star-focus"></i>}
+                                                <i className="fa fa-star-half-o star-focus"/> :
+                                                <i className="fa fa-star-o star-focus"/>}
                                         <h3>{'Category: ' + this.state.category}</h3>
                                         <div className="s_product_text">
                                             <div className="card_area">
@@ -265,7 +265,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                         <p>Your Rating:</p>
                                         <ul className="list">
                                             <li>
-                                                <a href="#">
+                                                <a href={emptyHrefLink}>
                                                     <i id={'star-1'} className="fa fa-star-o"
                                                        onClick={() => this.handleStarClicked(this, 1)}
                                                        onMouseEnter={() => this.handleStarFocusEnter(this, 1)}
@@ -273,7 +273,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <a href={emptyHrefLink}>
                                                     <i id={'star-2'} className="fa fa-star-o"
                                                        onClick={() => this.handleStarClicked(this, 2)}
                                                        onMouseEnter={() => this.handleStarFocusEnter(this, 2)}
@@ -281,7 +281,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <a href={emptyHrefLink}>
                                                     <i id={'star-3'} className="fa fa-star-o"
                                                        onClick={() => this.handleStarClicked(this, 3)}
                                                        onMouseEnter={() => this.handleStarFocusEnter(this, 3)}
@@ -289,7 +289,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <a href={emptyHrefLink}>
                                                     <i id={'star-4'} className="fa fa-star-o"
                                                        onClick={() => this.handleStarClicked(this, 4)}
                                                        onMouseEnter={() => this.handleStarFocusEnter(this, 4)}
@@ -297,7 +297,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <a href={emptyHrefLink}>
                                                     <i id={'star-5'} className="fa fa-star-o"
                                                        onClick={() => this.handleStarClicked(this, 5)}
                                                        onMouseEnter={() => this.handleStarFocusEnter(this, 5)}
