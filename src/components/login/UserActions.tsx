@@ -2,7 +2,7 @@ import {ActionTypesUnion} from '../../redux/helper/TypesHelper';
 import {createAction} from '../../redux/helper/ActionHelper';
 import {LoginActionTypes} from '../../redux/actions/Actions';
 import {auth} from '../../index';
-import {removeLocalStorage, removeSessionStorage} from '../../helper/StorageHelper';
+import {removeLocalStorage} from '../../helper/StorageHelper';
 import {StorageKey} from '../../helper/Constants';
 
 export const UserActions = {
