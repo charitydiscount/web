@@ -22,16 +22,16 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                         <h3>
                             {
                                 this.props.status === CommissionStatus.paid ?
-                                    <i className="fa fa-money" aria-hidden="true" title={'Paid'}></i> :
+                                    <i className="fa fa-money" aria-hidden="true" title={'Paid'}/> :
                                     this.props.status === CommissionStatus.approved ?
-                                        <i className="fa fa-thumbs-up" aria-hidden="true" title={'Approved'}></i> :
+                                        <i className="fa fa-thumbs-up" aria-hidden="true" title={'Approved'}/> :
                                         this.props.status === CommissionStatus.rejected ?
-                                            <i className="fa fa-ban" aria-hidden="true" title={'Rejected'}></i> :
-                                            <i className="fa fa-clock-o" aria-hidden="true" title={'Pending'}></i>
+                                            <i className="fa fa-ban" aria-hidden="true" title={'Rejected'}/> :
+                                            <i className="fa fa-clock-o" aria-hidden="true" title={'Pending'}/>
                             }
                         </h3>
                     </div>
-                    <div className="country">{this.props.amount}</div>
+                    <div className="country">{this.props.amount.toFixed(1)}</div>
                     <div className="country">
                         {shop ? shop.name : ''}
                     </div>

@@ -18,10 +18,10 @@ export interface CauseDto {
     details: CauseDetailDto
 }
 
-export function fetchCauses(causesLayout) {
+export function fetchCauses(layout) {
     const causes = getLocalStorage(StorageKey.CAUSES);
     if (causes) {
-        causesLayout.setState({
+        layout.setState({
             causes: JSON.parse(causes)
         });
     }
@@ -36,7 +36,7 @@ export function fetchCauses(causesLayout) {
                     });
                 });
                 setLocalStorage(StorageKey.CAUSES, JSON.stringify(data));
-                causesLayout.setState({
+                layout.setState({
                     causes: data
                 });
             }

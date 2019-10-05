@@ -81,22 +81,22 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                         {this.state.providerType === ProviderType.NORMAL
                                         &&
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={emptyHrefLink} className="btn submit_btn userInfo_btn">Change password</a>
+                                            <a href={emptyHrefLink} className="btn submit_btn userInfo_btn genric-btn circle">Change password</a>
                                         </div>
                                         }
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={"/contact"} className="btn submit_btn userInfo_btn">Contact us</a>
+                                            <a href={"/contact"} className="btn submit_btn userInfo_btn genric-btn circle">Contact us</a>
                                         </div>
                                         <div className="br"/>
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={"/tos"} className="btn submit_btn userInfo_btn">Terms of
+                                            <a href={"/tos"} className="btn submit_btn userInfo_btn genric-btn circle">Terms of
                                                 agreement</a>
                                         </div>
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={"/privacy"} className="btn submit_btn userInfo_btn">Privacy</a>
+                                            <a href={"/privacy"} className="btn submit_btn userInfo_btn genric-btn circle">Privacy</a>
                                         </div>
                                         <div className="col-md-12 text-center p_05">
-                                            <a href={emptyHrefLink} className="btn submit_btn userInfo_btn"
+                                            <a href={emptyHrefLink} className="btn submit_btn userInfo_btn genric-btn circle"
                                                onClick={this.handleLogOut}>
                                                 Logout
                                             </a>

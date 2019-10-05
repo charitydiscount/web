@@ -89,20 +89,12 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     public render() {
         return (
             <React.Fragment>
-                <Modal
-                    visible={this.state.fShopVisible}
-                    effect="fadeInUp"
-                    onClickAway={() => this.closeFShopModal()}
-                >
+                <Modal visible={this.state.fShopVisible} effect="fadeInUp" onClickAway={() => this.closeFShopModal()}>
                     <h3 style={{padding: 15}}>
                         Favorite shop: {this.props.name} {this.state.favShop ? 'added' : 'removed'}
                     </h3>
                 </Modal>
-                <Modal
-                    visible={this.state.visible}
-                    effect="fadeInUp"
-                    onClickAway={() => this.closeModal()}
-                >
+                <Modal visible={this.state.visible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="text-center p_20">
                         <img src={this.props.logoSrc} alt=""/>
                         <div className="blog_details">
@@ -142,7 +134,8 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                         </Link>
                                     </div>
 
-                                    <div className={this.state.favShop === true ? 'icon_btn p_iconUpdate' : 'icon_btn p_icon'}>
+                                    <div
+                                        className={this.state.favShop === true ? 'icon_btn p_iconUpdate' : 'icon_btn p_icon'}>
                                         <a href={emptyHrefLink} onClick={
                                             this.state.favShop === true
                                                 ? this.updateFavoriteShopsFalse

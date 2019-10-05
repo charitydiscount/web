@@ -4857,7 +4857,6 @@ h6 {
 }
 
 .cart_inner .table tbody tr.shipping_area .shipping_box {
-    margin-left: -250px;
     text-align: right;
 }
 
@@ -5910,6 +5909,11 @@ h6 {
 .userInfo_btn{
     min-width: 100%;
 }
+
+.blue-color {
+    color: #1641ff !important;
+}
+
 /*---------------------------------------------------- */
 
 /*# sourceMappingURL=style.css.map */

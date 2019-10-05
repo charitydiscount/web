@@ -10,6 +10,7 @@ export enum InputType {
     CHECKBOX = 'checkbox',
     DATE = 'date',
     TIME = 'time',
+    NUMBER = 'number'
 }
 
 export enum TxType {

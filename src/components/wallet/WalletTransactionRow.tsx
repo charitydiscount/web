@@ -38,14 +38,14 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                         <h3>
                         {
                             this.props.type === TxType.DONATION ?
-                                <i className="fa fa-heart" aria-hidden="true" title={"Donation"}></i> :
+                                <i className="fa fa-heart" aria-hidden="true" title={"Donation"}/> :
                                 this.props.type === TxType.BONUS ?
-                                    <i className="fa fa-thumbs-up" aria-hidden="true" title={'Bonus'}></i> :
-                                    <i className="fa fa-money" aria-hidden="true" title={'Cashout'}></i>
+                                    <i className="fa fa-thumbs-up" aria-hidden="true" title={'Bonus'}/> :
+                                    <i className="fa fa-money" aria-hidden="true" title={'Cashout'}/>
                         }
                         </h3>
                     </div>
-                    <div className="country">{this.props.amount}</div>
+                    <div className="country">{this.props.amount.toFixed(1)}</div>
                     <div className="country">
                         {this.props.type === TxType.DONATION ?
                             <a href={Routes.CAUSES}>
