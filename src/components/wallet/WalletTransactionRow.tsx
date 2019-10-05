@@ -2,6 +2,7 @@ import * as React from "react";
 import {StorageKey, TxType} from "../../helper/Constants";
 import {getLocalStorage} from "../../helper/StorageHelper";
 import {CauseDto} from "../../rest/CauseService";
+import {Routes} from "../helper/Routes";
 
 interface IWalletTransactionRowProps {
     date: string,
@@ -47,7 +48,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     <div className="country">{this.props.amount}</div>
                     <div className="country">
                         {this.props.type === TxType.DONATION ?
-                            <a href={"/causes"}>
+                            <a href={Routes.CAUSES}>
                                 {target}
                             </a>
                             : target}

@@ -50,8 +50,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
     public render() {
         const transactionsHistory = this.state.transactions ? this.state.transactions.map((value, index) => {
             return <WalletTransactionRow key={"tx" + index} date={value.createdAt.toDate().toDateString()}
-                                         type={TxType[value.type]}
-                                         amount={value.amount} target={value.target}/>
+                                         type={TxType[value.type]} amount={value.amount} target={value.target}/>
         }) : null;
 
         const commissionsHistory = this.state.commissions ? this.state.commissions.map((value, index) => {
@@ -72,7 +71,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                                  pending={this.state.cashbackPending} pendingExists={true}/>
                                     <WalletBlock title={"Charity points"} approved={this.state.pointsApproved}
                                                  pendingExists={false}/>
-                                    <WalletBlock title={"Transactions"} approved={this.state.totalTransactions}
+                                    <WalletBlock title={"History"} approved={this.state.totalTransactions}
                                                  pendingExists={false}/>
                                 </div>
                             </div>
