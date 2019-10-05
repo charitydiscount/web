@@ -4,13 +4,18 @@ import Modal from 'react-awesome-modal';
 import {CauseDto, fetchCauses} from "../../rest/CauseService";
 import CauseDonate from "./CauseDonate";
 import GenericInput from "../input/GenericInput";
+import {donate} from "../../rest/WalletService";
 
 interface IWalletBlockState {
     withDrawVisible: boolean,
     donateVisible: boolean,
     cashoutVisible: boolean,
     causes: CauseDto[],
-    selections: boolean[]
+
+    //cashout selection
+    selections: boolean[],
+    amount: string,
+    targetId: string
 }
 
 interface IWalletBlockProps {
@@ -29,9 +34,13 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
             cashoutVisible: false,
             donateVisible: false,
             causes: [],
+            amount: '',
+            targetId: '',
             selections: []
         };
         this.onChildUpdate = this.onChildUpdate.bind(this);
+        this.donate = this.donate.bind(this);
+        this.onAmountChange = this.onAmountChange.bind(this);
     }
 
     public componentDidMount() {
@@ -73,6 +82,27 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
         });
     }
 
+    onAmountChange(event){
+        this.setState({
+            amount: event.target.value
+        });
+    }
+
+    donate() {
+        if(!this.state.amount
+            || this.state.amount.length < 1
+            || parseFloat(this.state.amount) < 1
+            || parseFloat(this.state.amount) > this.props.approved){
+            alert("Please select a correct amount");
+            return;
+        }
+        if(!this.state.targetId){
+            alert("Please select a cause");
+            return;
+        }
+        donate(parseFloat(this.state.amount), this.state.targetId);
+    }
+
     /**
      * This is a callback function, it is invoked from CauseDonate.tsx
      * @param id - the id of the child which will be activated
@@ -82,13 +112,14 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
         selections[id] = true;
 
         this.setState({
+            targetId: id,
             selections: selections
         });
     }
 
     public render() {
         const causesList = this.state.causes ? this.state.causes.map(cause => {
-            return <CauseDonate key={cause.details.title} causeTitle={cause.details.title}
+            return <CauseDonate key={cause.id} id={cause.id} causeTitle={cause.details.title}
                                 onUpdate={this.onChildUpdate} selections={this.state.selections}/>
         }) : null;
 
@@ -110,10 +141,12 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                                 <td>
                                     <div className="shipping_box">
                                         <h6>
-                                            Available amount: <i className="blue-color">{this.props.approved.toFixed(1)}</i>
+                                            Available amount: <i
+                                            className="blue-color">{this.props.approved.toFixed(1)}</i>
                                         </h6>
                                         <GenericInput type={InputType.NUMBER} id={'amount-text-field'}
                                                       max={this.props.approved.toString()}
+                                                     handleChange={this.onAmountChange}
                                                       min={"10"}
                                                       step={0.1}
                                                       placeholder={"Amount"}/>
@@ -141,16 +174,18 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                                         </ul>
 
                                         <h6>
-                                            Available amount: <i className="blue-color">{this.props.approved.toFixed(1)}</i>
+                                            Available amount: <i
+                                            className="blue-color">{this.props.approved.toFixed(1)}</i>
                                         </h6>
                                         <GenericInput type={InputType.NUMBER} id={'amount-text-field'}
                                                       max={this.props.approved.toString()}
-                                                      min={"0"}
+                                                      min={"1"}
+                                                      handleChange={this.onAmountChange}
                                                       step={0.1}
                                                       placeholder={"Amount"}/>
                                         <h3>
-                                            <a href={emptyHrefLink}>
-                                                <i className="fa fa-thumbs-o-up blue-color" aria-hidden="true">Donate</i>
+                                            <a href={emptyHrefLink} onClick={this.donate}>
+                                                <i className="fa fa-heart blue-color" aria-hidden="true">Donate</i>
                                             </a>
                                         </h3>
                                     </div>

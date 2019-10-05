@@ -2,6 +2,7 @@ import * as React from "react";
 import {emptyHrefLink} from "../../helper/Constants";
 
 interface CauseDonateProps {
+    id: string,
     causeTitle: string
     onUpdate: (id: string) => void,
     selections : boolean[]
@@ -22,13 +23,13 @@ class CauseDonate extends React.Component<CauseDonateProps, CauseDonateState> {
     }
 
     public onUpdate() {
-        this.props.onUpdate(this.props.causeTitle);
+        this.props.onUpdate(this.props.id);
     }
 
     public render() {
         return (
             <React.Fragment>
-                <li className={this.props.selections[this.props.causeTitle] ? 'active' : ''}>
+                <li className={this.props.selections[this.props.id] ? 'active' : ''}>
                     <a href={emptyHrefLink} onClick={() => this.onUpdate()}>
                         {this.props.causeTitle}
                     </a>

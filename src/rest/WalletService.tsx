@@ -17,7 +17,7 @@ export interface WalletInfoDto {
 
 export interface TransactionDto {
     amount: number,
-    createdAt: firebase.firestore.Timestamp,
+    date: firebase.firestore.Timestamp,
     target: string,
     type: string,
 }
@@ -73,6 +73,29 @@ export function fetchCommissions(walletLayout) {
                 }
             }).catch(function (error) {
                 console.log("Error getting document:", error);
+            });
+        }
+    }
+}
+
+export function donate(amount, targetId) {
+    var user = getLocalStorage(StorageKey.USER);
+    if (user) {
+        var keyExist = (JSON.parse(user) as LoginDto).uid;
+        if (keyExist) {
+            const data = {
+                amount: amount,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                currency: "RON",
+                target: targetId,
+                type: "DONATION",
+                userId: keyExist
+            };
+
+            DB.collection('requests').add(
+                data
+            ).then(ref => {
+                window.location.reload();
             });
         }
     }

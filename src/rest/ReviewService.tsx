@@ -1,4 +1,5 @@
 import {DB} from "../index";
+import firebase from "firebase";
 
 export interface ReviewsDBWrapper {
     reviews: ReviewDto[]
@@ -61,7 +62,7 @@ export function fetchReviewRatings(shopsLayout) {
 
 export function updateReview(uniqueCode, rating, userId, photoUrl, name, description, shopRewiewLayout) {
     var review = {
-        createdAt: new Date(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         rating: rating,
         description: description,
         reviewer: {

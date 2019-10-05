@@ -49,7 +49,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
 
     public render() {
         const transactionsHistory = this.state.transactions ? this.state.transactions.map((value, index) => {
-            return <WalletTransactionRow key={"tx" + index} date={value.createdAt.toDate().toDateString()}
+            return <WalletTransactionRow key={"tx" + index} date={value.date.toDate().toDateString()}
                                          type={TxType[value.type]} amount={value.amount} target={value.target}/>
         }) : null;
 
