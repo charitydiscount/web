@@ -36,7 +36,7 @@ export function fetchWalletInfo(walletLayout) {
                         cashbackPending: data.cashback.pending,
                         pointsApproved: data.points.approved,
                         pointsPending: data.points.pending,
-                        totalTransactions: data.transactions.length,
+                        totalTransactions: data.transactions ? data.transactions.length : 0,
                         transactions: data.transactions
                     });
                 }
