@@ -176,17 +176,17 @@ export function getShopById(id) {
     if (shops) {
         const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
         return shopsParsed.find(value => {
-            return value.id == id
+            return value.id === parseInt(id)
         });
     }
 }
 
-export function getShopByUniqueCode(uniquedCode) {
+export function getShopByUniqueCode(uniqueCode) {
     const shops = getLocalStorage(StorageKey.SHOPS);
     if (shops) {
         const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
         return shopsParsed.find(value => {
-            return value.uniqueCode == uniquedCode
+            return value.uniqueCode === uniqueCode
         });
     }
 }
