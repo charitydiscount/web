@@ -6,6 +6,7 @@ import Login from './LoginComponent';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router';
 import {Routes} from '../helper/Routes';
+import {clearStorage} from "../../helper/StorageHelper";
 
 interface ILoginRendererProps {
     isUserLogged: boolean;
@@ -22,6 +23,7 @@ class LoginActor extends React.Component<ILoginRendererProps> {
     }
 
     public render() {
+        clearStorage();
         return this.props.isUserLogged ? (
             <Redirect to={Routes.CATEGORIES}/>
         ) : (

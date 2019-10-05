@@ -1,3 +1,5 @@
+import {StorageKey} from "./Constants";
+
 export function setLocalStorage(key: string, object: any) {
     localStorage.setItem(process.env.PUBLIC_URL + key, object);
 }
@@ -20,4 +22,13 @@ export function getSessionStorage(key: string) {
 
 export function removeSessionStorage(key: string) {
     return sessionStorage.removeItem(process.env.PUBLIC_URL + key);
+}
+
+export function clearStorage() {
+    removeLocalStorage(StorageKey.CAUSES);
+    removeLocalStorage(StorageKey.SHOPS);
+    removeLocalStorage(StorageKey.FAVORITE_SHOPS);
+    removeLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
+    removeLocalStorage(StorageKey.CATEGORIES);
+    removeSessionStorage(StorageKey.AFFILIATE_CODE);
 }
