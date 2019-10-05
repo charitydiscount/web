@@ -1,5 +1,3 @@
-import {push} from 'connected-react-router';
-import {Routes} from '../helper/Routes';
 import {ActionTypesUnion} from '../../redux/helper/TypesHelper';
 import {createAction} from '../../redux/helper/ActionHelper';
 import {LoginActionTypes} from '../../redux/actions/Actions';
@@ -19,13 +17,7 @@ export function doLogoutAction(): any {
     return (dispatch: any) => {
         dispatch(UserActions.resetLoggedUserAction());
         auth.signOut();
-        removeLocalStorage(StorageKey.CATEGORIES);
-        removeLocalStorage(StorageKey.SHOPS);
-        removeLocalStorage(StorageKey.FAVORITE_SHOPS);
-        removeLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
-        removeLocalStorage(StorageKey.CAUSES);
         removeLocalStorage(StorageKey.USER);
-        removeSessionStorage(StorageKey.AFFILIATE_CODE);
         window.location.reload();
     };
 }
