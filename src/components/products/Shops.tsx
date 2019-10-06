@@ -13,6 +13,8 @@ import ReactPaginate from 'react-paginate';
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 import {fetchShops, ShopDto} from "../../rest/ShopsService";
 import {fetchReviewRatings, ReviewRating} from "../../rest/ReviewService";
+import FadeLoader from 'react-spinners/FadeLoader';
+import {css} from '@emotion/core';
 
 interface IShopsProps {
     shops: Array<ShopDto>,
@@ -36,6 +38,12 @@ interface IShopsState {
 }
 
 const pageLimit = 24; // products per page
+
+const spinnerCss = css`
+    display: block;
+    margin: 200px auto;
+`;
+
 
 class Shops extends React.Component<IShopsProps, IShopsState> {
 
@@ -163,6 +171,11 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                         </nav>
                                     </div>
                                 </div>
+                                <FadeLoader
+                                    loading={this.state.isLoading || this.state.isLoadingRating}
+                                    color={'#1641ff'}
+                                    css={spinnerCss}
+                                />
                                 <div className="latest_product_inner row">
                                     {
                                         !this.state.isLoading && !this.state.isLoadingRating &&

@@ -219,7 +219,7 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                         <h4>{this.props.approved ? this.props.approved.toFixed(1) : 0}</h4>
                         {this.props.pendingExists ?
                             <div>
-                                <h6>Pending:{this.props.pending ? this.props.pending : 0}</h6>
+                                <h6>Pending:{this.props.pending ? this.props.pending.toFixed(1) : 0}</h6>
                                 {this.props.money ?
                                     <div>
                                         <br/>
