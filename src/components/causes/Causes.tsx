@@ -4,13 +4,17 @@ import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import Cause from "./Cause";
 import {CauseDto, fetchCauses} from "../../rest/CauseService";
+import FadeLoader from 'react-spinners/FadeLoader';
+import {spinnerCss} from "../../helper/AppHelper";
 
 interface ICausesProps {
 }
 
 interface ICausesState {
     causes: CauseDto[],
+    isLoading: boolean
 }
+
 
 class Causes extends React.Component<ICausesProps, ICausesState> {
 
@@ -18,6 +22,7 @@ class Causes extends React.Component<ICausesProps, ICausesState> {
         super(props);
         this.state = {
             causes: [],
+            isLoading: true
         };
     }
 
@@ -32,15 +37,23 @@ class Causes extends React.Component<ICausesProps, ICausesState> {
 
     public render() {
         const causesList = this.state.causes ? this.state.causes.map(cause => {
-            return <Cause key={cause.details.title} description={cause.details.description} images={cause.details.images}
+            return <Cause key={cause.details.title} description={cause.details.description}
+                          images={cause.details.images}
                           site={cause.details.site} title={cause.details.title}/>
         }) : null;
 
         return (
             <React.Fragment>
-                <div className="container p_120">
-                    {causesList}
-                </div>
+                <FadeLoader
+                    loading={this.state.isLoading}
+                    color={'#1641ff'}
+                    css={spinnerCss}
+                />
+                {!this.state.isLoading &&
+                    <div className="container p_120">
+                        {causesList}
+                    </div>
+                }
             </React.Fragment>
         )
     }

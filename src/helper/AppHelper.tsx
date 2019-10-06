@@ -2,6 +2,7 @@ import {fetchAffiliateCode} from "../rest/ConfigService";
 import {getLocalStorage} from "./StorageHelper";
 import {StorageKey} from "./Constants";
 import {LoginDto} from "../components/login/LoginComponent";
+import {css} from '@emotion/core';
 
 /**
  * Used to compute 2performant rest call and redirect
@@ -21,3 +22,8 @@ export function computeUrl(uniqueId, url) {
     }
     return baseUrl + affCode + unique + redirect + tag;
 }
+
+export const spinnerCss = css`
+    display: block;
+    margin: 200px auto;
+`;

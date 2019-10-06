@@ -8,12 +8,7 @@ import WalletTransactionRow from "./WalletTransactionRow";
 import {CommissionStatus, TxType} from "../../helper/Constants";
 import WalletCommissionRow from "./WalletCommissionRow";
 import FadeLoader from 'react-spinners/FadeLoader';
-import {css} from '@emotion/core';
-
-const spinnerCss = css`
-    display: block;
-    margin: 200px auto;
-`;
+import {spinnerCss} from "../../helper/AppHelper";
 
 interface IWalletProps {
 

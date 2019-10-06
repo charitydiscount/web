@@ -14,7 +14,7 @@ import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesA
 import {fetchShops, ShopDto} from "../../rest/ShopsService";
 import {fetchReviewRatings, ReviewRating} from "../../rest/ReviewService";
 import FadeLoader from 'react-spinners/FadeLoader';
-import {css} from '@emotion/core';
+import {spinnerCss} from "../../helper/AppHelper";
 
 interface IShopsProps {
     shops: Array<ShopDto>,
@@ -38,11 +38,6 @@ interface IShopsState {
 }
 
 const pageLimit = 24; // products per page
-
-const spinnerCss = css`
-    display: block;
-    margin: 200px auto;
-`;
 
 
 class Shops extends React.Component<IShopsProps, IShopsState> {

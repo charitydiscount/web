@@ -22,7 +22,8 @@ export function fetchCauses(layout) {
     const causes = getLocalStorage(StorageKey.CAUSES);
     if (causes) {
         layout.setState({
-            causes: JSON.parse(causes)
+            causes: JSON.parse(causes),
+            isLoading: false
         });
     }
     var dbRef = DB.collection("cases");
@@ -37,7 +38,8 @@ export function fetchCauses(layout) {
                 });
                 setLocalStorage(StorageKey.CAUSES, JSON.stringify(data));
                 layout.setState({
-                    causes: data
+                    causes: data,
+                    isLoading: false
                 });
             }
         )
