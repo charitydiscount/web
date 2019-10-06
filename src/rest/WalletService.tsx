@@ -37,10 +37,18 @@ export function fetchWalletInfo(walletLayout) {
                         pointsApproved: data.points.approved,
                         pointsPending: data.points.pending,
                         totalTransactions: data.transactions ? data.transactions.length : 0,
-                        transactions: data.transactions
+                        transactions: data.transactions,
+                        isLoading: false
+                    });
+                }else{
+                    walletLayout.setState({
+                        isLoading: false
                     });
                 }
             }).catch(function (error) {
+                walletLayout.setState({
+                    isLoading: false
+                });
                 console.log("Error getting document:", error);
             });
         }
@@ -68,10 +76,18 @@ export function fetchCommissions(walletLayout) {
                 if (doc.exists) {
                     const data = doc.data() as CommissionWrapper;
                     walletLayout.setState({
-                        commissions: data.transactions
+                        commissions: data.transactions,
+                        isLoadingCommissions: false
+                    });
+                }else{
+                    walletLayout.setState({
+                        isLoadingCommissions: false
                     });
                 }
             }).catch(function (error) {
+                walletLayout.setState({
+                    isLoadingCommissions: false
+                });
                 console.log("Error getting document:", error);
             });
         }

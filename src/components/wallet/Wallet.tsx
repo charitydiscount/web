@@ -7,6 +7,13 @@ import {CommissionDto, fetchCommissions, fetchWalletInfo, TransactionDto} from "
 import WalletTransactionRow from "./WalletTransactionRow";
 import {CommissionStatus, TxType} from "../../helper/Constants";
 import WalletCommissionRow from "./WalletCommissionRow";
+import FadeLoader from 'react-spinners/FadeLoader';
+import {css} from '@emotion/core';
+
+const spinnerCss = css`
+    display: block;
+    margin: 200px auto;
+`;
 
 interface IWalletProps {
 
@@ -18,6 +25,8 @@ interface IWalletState {
     pointsApproved: number,
     pointsPending: number,
     totalTransactions: number,
+    isLoading: boolean,
+    isLoadingCommissions: boolean,
     transactions: TransactionDto[],
     commissions: CommissionDto[]
 }
@@ -33,6 +42,8 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
             pointsPending: 0,
             totalTransactions: 0,
             transactions: [],
+            isLoading: true,
+            isLoadingCommissions: true,
             commissions: []
         };
     }
@@ -48,10 +59,18 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
     }
 
     public render() {
-        var dateOptions = {year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'};
+        var dateOptions = {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric'
+        };
 
         const transactionsHistory = this.state.transactions ? this.state.transactions.map((value, index) => {
-            return <WalletTransactionRow key={"tx" + index} date={value.date.toDate().toLocaleDateString("ro-RO", dateOptions)}
+            return <WalletTransactionRow key={"tx" + index}
+                                         date={value.date.toDate().toLocaleDateString("ro-RO", dateOptions)}
                                          type={TxType[value.type]} amount={value.amount} target={value.target}/>
         }) : null;
 
@@ -65,46 +84,59 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
             <React.Fragment>
                 <section className={"product_description_area"}>
                     <div className={"container"}>
-                        <div className={"tab-content"}>
-                            <div className="row">
-                                <WalletBlock title={"Cashback"} approved={this.state.cashbackApproved}
-                                             pending={this.state.cashbackPending} pendingExists={true} money={true}/>
-                                <WalletBlock title={"Charity points"} approved={this.state.pointsApproved}
-                                             pending={this.state.pointsPending} pendingExists={true} money={false}/>
-                                <WalletBlock title={"History"} approved={this.state.totalTransactions}
-                                             pendingExists={false} money={false}/>
-                            </div>
-                        </div>
+                        <FadeLoader
+                            loading={this.state.isLoading || this.state.isLoadingCommissions}
+                            color={'#1641ff'}
+                            css={spinnerCss}
+                        />
 
-                        <div className={"tab-content"}>
-                            <h3 className="mb-30 title_color">Cashback History</h3>
-                            <div className="progress-table-wrap">
-                                <div className="progress-table">
-                                    <div className="table-head">
-                                        <div className="country">Date</div>
-                                        <div className="country">Status</div>
-                                        <div className="country">Amount</div>
-                                        <div className="country">Shop</div>
+                        {
+                            !this.state.isLoading && !this.state.isLoadingCommissions &&
+                            <React.Fragment>
+                                <div className={"tab-content"}>
+                                    <div className="row">
+                                        <WalletBlock title={"Cashback"} approved={this.state.cashbackApproved}
+                                                     pending={this.state.cashbackPending} pendingExists={true}
+                                                     money={true}/>
+                                        <WalletBlock title={"Charity points"} approved={this.state.pointsApproved}
+                                                     pending={this.state.pointsPending} pendingExists={true}
+                                                     money={false}/>
+                                        <WalletBlock title={"History"} approved={this.state.totalTransactions}
+                                                     pendingExists={false} money={false}/>
                                     </div>
-                                    {commissionsHistory}
                                 </div>
-                            </div>
-                        </div>
 
-                        <div className={"tab-content"}>
-                            <h3 className="mb-30 title_color">History</h3>
-                            <div className="progress-table-wrap">
-                                <div className="progress-table">
-                                    <div className="table-head">
-                                        <div className="country">Date</div>
-                                        <div className="country">Type</div>
-                                        <div className="country">Amount</div>
-                                        <div className="country">Target</div>
+                                <div className={"tab-content"}>
+                                    <h3 className="mb-30 title_color">Cashback History</h3>
+                                    <div className="progress-table-wrap">
+                                        <div className="progress-table">
+                                            <div className="table-head">
+                                                <div className="country">Date</div>
+                                                <div className="country">Status</div>
+                                                <div className="country">Amount</div>
+                                                <div className="country">Shop</div>
+                                            </div>
+                                            {commissionsHistory}
+                                        </div>
                                     </div>
-                                    {transactionsHistory}
                                 </div>
-                            </div>
-                        </div>
+
+                                <div className={"tab-content"}>
+                                    <h3 className="mb-30 title_color">History</h3>
+                                    <div className="progress-table-wrap">
+                                        <div className="progress-table">
+                                            <div className="table-head">
+                                                <div className="country">Date</div>
+                                                <div className="country">Type</div>
+                                                <div className="country">Amount</div>
+                                                <div className="country">Target</div>
+                                            </div>
+                                            {transactionsHistory}
+                                        </div>
+                                    </div>
+                                </div>
+                            </React.Fragment>
+                        }
                     </div>
                 </section>
             </React.Fragment>
