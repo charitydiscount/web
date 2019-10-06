@@ -90,7 +90,7 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
         });
     }
 
-    cashout(){
+    cashout() {
         if (!this.state.amount
             || this.state.amount.length < 1
             || parseFloat(this.state.amount) < 10
@@ -222,11 +222,13 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                                 <h6>Pending:{this.props.pending ? this.props.pending.toFixed(1) : 0}</h6>
                                 {this.props.money ?
                                     <div>
-                                        <br/>
                                         {this.props.approved > 0 ?
-                                            <a href={emptyHrefLink} onClick={() => this.openModal()}
-                                               className="btn submit_btn genric-btn circle">Withdraw
-                                            </a> : null}
+                                            <div>
+                                                <br/>
+                                                <a href={emptyHrefLink} onClick={() => this.openModal()}
+                                                   className="btn submit_btn genric-btn circle">Withdraw
+                                                </a>
+                                            </div> : null}
                                     </div> : null}
                             </div> : null
                         }
