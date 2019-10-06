@@ -122,7 +122,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                 const user = JSON.parse(userSt) as LoginDto;
                 if (user) {
                     updateReview(this.state.uniqueCode, this.state.rating, user.uid,
-                        user.photoURL, user.displayName, this.state.description, this);
+                        user.photoURL, user.displayName, this.state.description);
                 }
             }
         } else {

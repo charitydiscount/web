@@ -60,7 +60,7 @@ export function fetchReviewRatings(shopsLayout) {
     );
 }
 
-export function updateReview(uniqueCode, rating, userId, photoUrl, name, description, shopRewiewLayout) {
+export function updateReview(uniqueCode, rating, userId, photoUrl, name, description) {
     var review = {
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         rating: rating,
@@ -81,11 +81,7 @@ export function updateReview(uniqueCode, rating, userId, photoUrl, name, descrip
                 }
             }, {merge: true})
                 .then(function () {
-                    shopRewiewLayout.setState({
-                        modalMessage: "Review updated"
-                    });
-                    shopRewiewLayout.openModal();
-                    fetchReviews(uniqueCode, shopRewiewLayout);
+                    window.location.reload();
                 })
         } else {
             // create the first entry for the document
@@ -95,11 +91,7 @@ export function updateReview(uniqueCode, rating, userId, photoUrl, name, descrip
                     [review.reviewer.userId]: review
                 }
             }).then(function () {
-                shopRewiewLayout.setState({
-                    modalMessage: "Review created"
-                });
-                shopRewiewLayout.openModal();
-                fetchReviews(uniqueCode, shopRewiewLayout);
+                window.location.reload();
             })
         }
     });
