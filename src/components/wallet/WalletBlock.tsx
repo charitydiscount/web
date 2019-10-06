@@ -4,7 +4,7 @@ import Modal from 'react-awesome-modal';
 import {CauseDto, fetchCauses} from "../../rest/CauseService";
 import CauseDonate from "./CauseDonate";
 import GenericInput from "../input/GenericInput";
-import {donate} from "../../rest/WalletService";
+import {createRequest} from "../../rest/WalletService";
 
 interface IWalletBlockState {
     withDrawVisible: boolean,
@@ -41,6 +41,7 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
         };
         this.onChildUpdate = this.onChildUpdate.bind(this);
         this.donate = this.donate.bind(this);
+        this.cashout = this.cashout.bind(this);
         this.onAmountChange = this.onAmountChange.bind(this);
     }
 
@@ -89,6 +90,18 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
         });
     }
 
+    cashout(){
+        if (!this.state.amount
+            || this.state.amount.length < 1
+            || parseFloat(this.state.amount) < 10
+            || parseFloat(this.state.amount) > this.props.approved) {
+            alert("Please select a correct amount. minimum is 10 RON");
+            return;
+        }
+
+        createRequest(parseFloat(this.state.amount), "CASHOUT", this.state.targetId);
+    }
+
     donate() {
         if (!this.state.amount
             || this.state.amount.length < 1
@@ -101,7 +114,7 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
             alert("Please select a cause");
             return;
         }
-        donate(parseFloat(this.state.amount), this.state.targetId);
+        createRequest(parseFloat(this.state.amount), "DONATION", this.state.targetId);
     }
 
     /**
@@ -141,18 +154,21 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                             <tr className="shipping_area">
                                 <td>
                                     <div className="shipping_box">
+                                        <GenericInput type={InputType.TEXT} id={"name"} placeholder={"Full Name"}/>
+                                        <GenericInput type={InputType.TEXT} id={"iban"} placeholder={"Iban"}/>
+
                                         <h6>
                                             Available amount: <i
                                             className="blue-color">{this.props.approved.toFixed(1)}</i>
                                         </h6>
-                                        <GenericInput type={InputType.NUMBER} id={'amount-text-field'}
+                                        <GenericInput type={InputType.NUMBER} id={'amount-text-field-cashout'}
                                                       max={this.props.approved.toString()}
                                                       handleChange={this.onAmountChange}
                                                       min={"10"}
                                                       step={0.1}
                                                       placeholder={"Amount"}/>
                                         <h3>
-                                            <a href={emptyHrefLink}>
+                                            <a href={emptyHrefLink} onClick={this.cashout}>
                                                 <i className="fa fa-money blue-color" aria-hidden="true">Cashout</i>
                                             </a>
                                         </h3>
@@ -178,7 +194,7 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                                             Available amount: <i
                                             className="blue-color">{this.props.approved.toFixed(1)}</i>
                                         </h6>
-                                        <GenericInput type={InputType.NUMBER} id={'amount-text-field'}
+                                        <GenericInput type={InputType.NUMBER} id={'amount-text-field-donation'}
                                                       max={this.props.approved.toString()}
                                                       min={"1"}
                                                       handleChange={this.onAmountChange}

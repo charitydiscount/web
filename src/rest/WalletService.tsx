@@ -78,7 +78,7 @@ export function fetchCommissions(walletLayout) {
     }
 }
 
-export function donate(amount, targetId) {
+export function createRequest(amount, type, targetId) {
     var user = getLocalStorage(StorageKey.USER);
     if (user) {
         var keyExist = (JSON.parse(user) as LoginDto).uid;
@@ -88,7 +88,7 @@ export function donate(amount, targetId) {
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 currency: "RON",
                 target: targetId,
-                type: "DONATION",
+                type: type,
                 userId: keyExist
             };
 
