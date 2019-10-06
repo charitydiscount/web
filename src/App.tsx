@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import PageLayout from "./components/layout/PageLayout";
-import DownLayout from "./components/layout/DownLayout";
+import FooterLayout from "./components/layout/FooterLayout";
 import HeaderLayout from "./components/layout/HeaderLayout";
 
 class App extends React.Component {
@@ -12,7 +12,7 @@ class App extends React.Component {
                 <HeaderLayout/>
                 <div className="banner_area"/>
                 <PageLayout/>
-                <DownLayout/>
+                <FooterLayout/>
             </React.Fragment>
         );
     }
