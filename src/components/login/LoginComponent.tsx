@@ -8,11 +8,12 @@ import {setLocalStorage} from '../../helper/StorageHelper';
 import {ProviderType, StorageKey} from '../../helper/Constants';
 
 export interface LoginDto {
-    uid: string;
-    photoURL: string | null;
-    displayName: string;
-    email: string;
-    providerType: ProviderType
+    uid: string,
+    photoURL: string | null,
+    displayName: string,
+    email: string,
+    providerType: ProviderType,
+    creationTime: string
 }
 
 export interface LoginRequestDto {
@@ -36,6 +37,7 @@ class LoginComponent extends React.Component {
         var objectMapper = require('object-mapper');
         let parsedUser = objectMapper(response.user as LoginRequestDto, LoginMapper) as LoginDto;
         let providerId = response.user.providerData[0].providerId;
+        parsedUser.creationTime = response.user.metadata.creationTime;
         if (providerId.startsWith("google")) {
             parsedUser.providerType = ProviderType.GOOGLE;
         } else if (providerId.startsWith("facebook")) {

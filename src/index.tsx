@@ -16,6 +16,8 @@ import * as serviceWorker from './serviceWorker';
 import {UserActions} from './components/login/UserActions';
 import {getLocalStorage} from './helper/StorageHelper';
 import {StorageKey} from './helper/Constants';
+import {updateUser} from "./rest/UserService";
+import {LoginDto} from "./components/login/LoginComponent";
 
 export const publicUrl = process.env.PUBLIC_URL || '';
 
@@ -42,7 +44,21 @@ const user = getLocalStorage(StorageKey.USER);
 if (user && user.length > 0) {
     //validate json present in storage
     if (user.includes("uid") && user.includes("displayName") && user.includes("email")) {
-        store.dispatch(UserActions.setLoggedUserAction(user));
+        var parsedUser = JSON.parse(user) as LoginDto;
+        var userCD = new Date(parsedUser.creationTime);
+        userCD.setMinutes(userCD.getMinutes() + 1);
+        //created in the last minute, add it to DB
+        if (userCD > new Date()) {
+            updateUser({
+                accounts: [],
+                email: parsedUser.email,
+                name: parsedUser.displayName,
+                photoUrl: parsedUser.photoURL ? parsedUser.photoURL : '',
+                userId: parsedUser.uid
+            }, user);
+        } else {
+            store.dispatch(UserActions.setLoggedUserAction(user));
+        }
     }
 }
 
