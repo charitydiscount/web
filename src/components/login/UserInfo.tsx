@@ -71,8 +71,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                             <div className="s_product_img">
                                 <div className="blog_right_sidebar">
                                     <aside className="single_sidebar_widget author_widget">
-                                        <img className="author_img rounded-circle" src={photoUrl}
-                                             alt="Missing" width={200} height={200}/>
+                                        {photoUrl ?
+                                            <img className="author_img rounded-circle" src={photoUrl}
+                                                 alt="Missing" width={200} height={200}/>
+                                            : <img className="author_img rounded-circle" src={"img/no-image.jpg"}
+                                                   alt="Missing" width={200} height={200}/>}
                                         <h4>{this.state.displayName}</h4>
                                         <p>{this.state.email}</p>
                                         <div className="br"/>

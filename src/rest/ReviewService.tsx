@@ -67,7 +67,7 @@ export function updateReview(uniqueCode, rating, userId, photoUrl, name, descrip
         description: description,
         reviewer: {
             name: name,
-            photoUrl: photoUrl,
+            photoUrl: photoUrl ? photoUrl : "",
             userId: userId
         }
     };

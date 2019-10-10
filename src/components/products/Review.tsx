@@ -20,7 +20,12 @@ class Review extends React.Component<IReviewProps> {
                 <div className="review_item">
                     <div className="media">
                         <div className="d-flex">
-                            <img src={photoUrl} alt="No content" width={80} height={80} style={{borderRadius: 70}}/>
+                            {photoUrl ?
+                                <img src={photoUrl} alt="No content" width={80} height={80} style={{borderRadius: 70}}/>
+                                :
+                                <img src={"/img/no-image.jpg"} alt="No content" width={80} height={80}
+                                     style={{borderRadius: 70}}/>
+                            }
                         </div>
                         <div className="media-body">
                             <h4>{this.props.name}</h4>
