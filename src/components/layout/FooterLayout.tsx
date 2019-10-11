@@ -42,7 +42,7 @@ const FooterLayout = () => {
           <p className="col-lg-12 footer-text text-center">
             Copyright &copy;
             <a href={emptyHrefLink}>
-               CharityDiscounts
+               CharityDiscount
             </a>
           </p>
         </div>
