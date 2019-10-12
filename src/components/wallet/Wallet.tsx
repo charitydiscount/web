@@ -101,6 +101,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                     </div>
                                 </div>
 
+                                {commissionsHistory && commissionsHistory.length > 0 &&
                                 <div className={"tab-content"}>
                                     <h3 className="mb-30 title_color">Cashback History</h3>
                                     <div className="progress-table-wrap">
@@ -115,7 +116,9 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                         </div>
                                     </div>
                                 </div>
+                                }
 
+                                {transactionsHistory && transactionsHistory.length > 0 &&
                                 <div className={"tab-content"}>
                                     <h3 className="mb-30 title_color">History</h3>
                                     <div className="progress-table-wrap">
@@ -130,6 +133,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                         </div>
                                     </div>
                                 </div>
+                                }
                             </React.Fragment>
                         }
                     </div>
