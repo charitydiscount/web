@@ -100,12 +100,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                             My account
                                         </a>
                                     </li>
-
-                                    <li>
-                                        <a href={Routes.CONTACT}>
-                                            Contact us
-                                        </a>
-                                    </li>
                                 </React.Fragment>
                                 }
                             </ul>

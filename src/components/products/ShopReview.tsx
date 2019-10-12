@@ -183,7 +183,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
     public render() {
         const reviewsList = this.state.reviews && this.state.reviews.length > 0 ? this.state.reviews.map(review => {
             return <Review key={review.reviewer.name} photoUrl={review.reviewer.photoUrl} name={review.reviewer.name}
-                           description={review.description} rating={review.rating}/>
+                           description={review.description} rating={review.rating} userID={review.reviewer.userId}/>
         }) : 'No reviews yet';
 
         let reviewAverage = 0;

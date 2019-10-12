@@ -1,13 +1,26 @@
 import * as React from "react";
+import {fbStorage} from "../../index";
+
+interface IReviewState {
+    photoURL: string
+}
 
 interface IReviewProps {
     photoUrl: string,
     name: string,
     description: string,
-    rating: number
+    rating: number,
+    userID: string
 }
 
-class Review extends React.Component<IReviewProps> {
+class Review extends React.Component<IReviewProps, IReviewState> {
+
+    constructor(props: IReviewProps) {
+        super(props);
+        this.state = {
+            photoURL: "",
+        };
+    }
 
     public render() {
         let photoUrl = this.props.photoUrl;
@@ -15,17 +28,27 @@ class Review extends React.Component<IReviewProps> {
             photoUrl += '?height=200';
         }
 
+        if (photoUrl) {
+            this.state = {
+                photoURL: photoUrl
+            }
+        } else {
+            fbStorage.ref("profilePhotos/" + this.props.userID)
+                .child("profilePicture.png")
+                .getDownloadURL()
+                .then(url => this.setState({photoURL: url}))
+                .catch(() => this.setState({
+                    photoURL: "/img/no-image.jpg"
+                }));
+        }
+
         return (
             <React.Fragment>
                 <div className="review_item">
                     <div className="media">
                         <div className="d-flex">
-                            {photoUrl ?
-                                <img src={photoUrl} alt="No content" width={80} height={80} style={{borderRadius: 70}}/>
-                                :
-                                <img src={"/img/no-image.jpg"} alt="No content" width={80} height={80}
-                                     style={{borderRadius: 70}}/>
-                            }
+                            <img src={this.state.photoURL} alt="No content" width={80} height={80}
+                                 style={{borderRadius: 70}}/>
                         </div>
                         <div className="media-body">
                             <h4>{this.props.name}</h4>

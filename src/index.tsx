@@ -12,6 +12,7 @@ import * as firebase from "firebase/app";
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/performance';
+import 'firebase/storage';
 import * as serviceWorker from './serviceWorker';
 import {UserActions} from './components/login/UserActions';
 import {getLocalStorage} from './helper/StorageHelper';
@@ -36,6 +37,7 @@ export const store = createStore(
 export const firebaseApp = firebase.initializeApp(config);
 export const DB = firebaseApp.firestore();
 export const auth = firebaseApp.auth();
+export const fbStorage = firebaseApp.storage();
 
 //----------------------------------------------------------------------------------------------------------------------
 
