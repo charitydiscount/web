@@ -16,13 +16,17 @@ interface IProductInfoState {
 }
 
 interface IProductProps {
-    logoSrc: string;
-    name: string;
-    id: number;
-    category: string;
-    mainUrl: string;
-    uniqueCode: string;
-    reviewRating: number;
+    logoSrc: string,
+    name: string,
+    id: number,
+    category: string,
+    mainUrl: string,
+    uniqueCode: string,
+    reviewRating: number,
+    defaultLeadCommissionAmount: string,
+    defaultLeadCommissionType: string,
+    defaultSaleCommissionRate: string,
+    defaultSaleCommissionType: string
 }
 
 class Shop extends React.Component<IProductProps, IProductInfoState> {
@@ -87,6 +91,9 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     }
 
     public render() {
+        let commission = this.props.defaultLeadCommissionAmount != null
+            ? this.props.defaultLeadCommissionAmount + ' RON'
+            : this.props.defaultSaleCommissionRate + ' %';
         return (
             <React.Fragment>
                 <Modal visible={this.state.fShopVisible} effect="fadeInUp" onClickAway={() => this.closeFShopModal()}>
@@ -96,6 +103,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                 </Modal>
                 <Modal visible={this.state.visible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="text-center p_20">
+                        <h4 className="blue-color">Cashback: {commission}</h4>
                         <img src={this.props.logoSrc} alt=""/>
                         <div className="blog_details">
                             <a href={emptyHrefLink}>
@@ -151,16 +159,15 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                 </Modal>
                 <div className="col-lg-3 col-md-3 col-sm-6">
                     <div className="f_p_item">
-                        <div className="f_p_img">
-                            <a href={emptyHrefLink} onClick={() => this.openModal()}>
+                        <a href={emptyHrefLink} onClick={() => this.openModal()}>
+                            <h6 className="blue-color">{commission}</h6>
+                            <div className="f_p_img">
                                 <img
                                     className="img-fluid img-min img"
                                     src={this.props.logoSrc}
                                     alt=""
                                 />
-                            </a>
-                        </div>
-                        <a href={emptyHrefLink} onClick={() => this.openModal()}>
+                            </div>
                             <h4>{this.props.name}</h4>
                         </a>
                     </div>

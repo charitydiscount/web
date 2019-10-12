@@ -109,6 +109,10 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             }
 
             return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
+                         defaultLeadCommissionAmount={shop.defaultLeadCommissionAmount}
+                         defaultLeadCommissionType={shop.defaultLeadCommissionType}
+                         defaultSaleCommissionRate={shop.defaultSaleCommissionRate}
+                         defaultSaleCommissionType={shop.defaultSaleCommissionType}
                          mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}
                          reviewRating={rr}/>
         }) : null;
@@ -126,6 +130,10 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                     }
 
                     return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
+                                 defaultLeadCommissionAmount={shop.defaultLeadCommissionAmount}
+                                 defaultLeadCommissionType={shop.defaultLeadCommissionType}
+                                 defaultSaleCommissionRate={shop.defaultSaleCommissionRate}
+                                 defaultSaleCommissionType={shop.defaultSaleCommissionType}
                                  mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}
                                  reviewRating={rr}/>
                 });

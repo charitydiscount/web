@@ -15,7 +15,9 @@ export interface ShopDtoWrapper {
 export interface ShopDto {
     category: string,
     defaultLeadCommissionAmount: string,
-    defaultSaleCommissionRate: number,
+    defaultLeadCommissionType: string,
+    defaultSaleCommissionRate: string,
+    defaultSaleCommissionType: string,
     logoPath: string,
     mainUrl: string,
     id: number,
@@ -27,7 +29,9 @@ export interface ShopDto {
 export var ShopDtoMap = {
     category: "category",
     defaultLeadCommissionAmount: "defaultLeadCommissionAmount",
+    defaultLeadCommissionType: "defaultLeadCommissionType",
     defaultSaleCommissionRate: "defaultSaleCommissionRate",
+    defaultSaleCommissionType: "defaultSaleCommissionType",
     logoPath: "logoPath",
     mainUrl: "mainUrl",
     id: "id",
