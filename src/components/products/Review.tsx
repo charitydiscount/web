@@ -17,22 +17,17 @@ class Review extends React.Component<IReviewProps, IReviewState> {
 
     constructor(props: IReviewProps) {
         super(props);
-        this.state = {
-            photoURL: "",
-        };
-    }
-
-    public render() {
         let photoUrl = this.props.photoUrl;
         if (photoUrl.includes("facebook")) {
             photoUrl += '?height=200';
         }
+        this.state = {
+            photoURL: photoUrl,
+        };
+    }
 
-        if (photoUrl) {
-            this.state = {
-                photoURL: photoUrl
-            }
-        } else {
+    public render() {
+        if (!this.props.photoUrl) {
             fbStorage.ref("profilePhotos/" + this.props.userID)
                 .child("profilePicture.png")
                 .getDownloadURL()
