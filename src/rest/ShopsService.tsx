@@ -94,9 +94,9 @@ export function isInFavoriteShops(shopdId, shopLayout) {
 }
 
 export function updateFavoriteShops(name, remove) {
-    var user = getLocalStorage(StorageKey.USER);
+    const user = getLocalStorage(StorageKey.USER);
     if (user) {
-        var keyExist = (JSON.parse(user) as LoginDto).uid;
+        const keyExist = (JSON.parse(user) as LoginDto).uid;
         if (keyExist) {
             const shopsStorage = getLocalStorage(StorageKey.SHOPS);
             if (shopsStorage) {
@@ -104,11 +104,11 @@ export function updateFavoriteShops(name, remove) {
                 if (shops) {
                     let favoriteShop = shops.find(shop => shop.name === name) as ShopDto;
                     if (favoriteShop) {
-                        var docRef = DB.collection("favoriteShops").doc(keyExist);
+                        const docRef = DB.collection("favoriteShops").doc(keyExist);
                         docRef.get().then(function (doc) {
                             if (doc.exists) {
                                 let wholeObject = doc.data() as FavoriteShopsDto;
-                                var favoriteShops = wholeObject.programs as ShopDto[];
+                                let favoriteShops = wholeObject.programs as ShopDto[];
                                 if (remove) {
                                     favoriteShops = favoriteShops.filter(value => value.name !== favoriteShop.name);
                                 } else {
@@ -119,14 +119,23 @@ export function updateFavoriteShops(name, remove) {
                                 })
                             } else {
                                 // create the document as a list
-                                var favShops = [] as ShopDto[];
+                                const favShops = [] as ShopDto[];
                                 favShops.push(favoriteShop);
                                 docRef.set({
                                     programs: favShops,
                                     userId: keyExist
                                 })
                             }
-                            removeLocalStorage(StorageKey.FAVORITE_SHOPS);
+                            if (remove) {
+                                const stKeyFavShop = getLocalStorage(StorageKey.FAVORITE_SHOPS);
+                                if (stKeyFavShop) {
+                                    let favShops = JSON.parse(stKeyFavShop) as ShopDto[];
+                                    favShops = favShops.filter(value => value.name !== favoriteShop.name);
+                                    setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favShops));
+                                }
+                            } else {
+                                removeLocalStorage(StorageKey.FAVORITE_SHOPS);
+                            }
                             removeLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
                         });
                     }
