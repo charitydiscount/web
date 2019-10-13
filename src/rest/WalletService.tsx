@@ -31,16 +31,25 @@ export function fetchWalletInfo(walletLayout) {
             docRef.get().then(function (doc) {
                 if (doc.exists) {
                     const data = doc.data() as WalletWrapper;
+                    let transactionList = data.transactions as TransactionDto[];
+                    transactionList.sort(function (x, y) {
+                        let a = x.date.toDate(), b = y.date.toDate();
+                        if (a > b)
+                            return -1;
+                        if (a < b)
+                            return 1;
+                        return 0;
+                    });
                     walletLayout.setState({
                         cashbackApproved: data.cashback.approved,
                         cashbackPending: data.cashback.pending,
                         pointsApproved: data.points.approved,
                         pointsPending: data.points.pending,
                         totalTransactions: data.transactions ? data.transactions.length : 0,
-                        transactions: data.transactions,
+                        transactions: transactionList,
                         isLoading: false
                     });
-                }else{
+                } else {
                     walletLayout.setState({
                         isLoading: false
                     });
@@ -75,11 +84,20 @@ export function fetchCommissions(walletLayout) {
             docRef.get().then(function (doc) {
                 if (doc.exists) {
                     const data = doc.data() as CommissionWrapper;
+                    let transactionList = data.transactions as CommissionDto[];
+                    transactionList.sort(function (x, y) {
+                        let a = x.createdAt.toDate(), b = y.createdAt.toDate();
+                        if (a > b)
+                            return -1;
+                        if (a < b)
+                            return 1;
+                        return 0;
+                    });
                     walletLayout.setState({
-                        commissions: data.transactions,
+                        commissions: transactionList,
                         isLoadingCommissions: false
                     });
-                }else{
+                } else {
                     walletLayout.setState({
                         isLoadingCommissions: false
                     });
