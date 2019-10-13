@@ -1,4 +1,4 @@
-import {fbStorage, store} from '../../index';
+import {auth, fbStorage, store} from '../../index';
 import {NavigationsAction} from '../../redux/actions/NavigationsAction';
 import {Stages} from '../helper/Stages';
 import * as React from 'react';
@@ -41,6 +41,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         this.closeModal = this.closeModal.bind(this);
         this.handleUploadError = this.handleUploadError.bind(this);
         this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
+        this.handleEmailResetSent = this.handleEmailResetSent.bind(this);
+        this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this);
     }
 
     public componentDidMount() {
@@ -81,6 +83,24 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     public handleLogOut(event: any) {
         event.preventDefault();
         this.props.logout();
+    }
+
+    handleEmailResetSent(success) {
+        this.setState({
+            modalVisible: true,
+            modalMessage: success ? "Email reset password sent" : "Failed to send password reset email"
+        });
+    }
+
+    sendPasswordResetEmail() {
+        auth.sendPasswordResetEmail(
+            this.state.email)
+            .then((succes) =>
+                this.handleEmailResetSent(true)  // Password reset email sent.
+            )
+            .catch((error) =>
+                this.handleEmailResetSent(false)
+            );
     }
 
 
@@ -156,6 +176,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                 </div>
                                                 <div className="col-md-12 text-center p_05">
                                                     <a href={emptyHrefLink}
+                                                       onClick={this.sendPasswordResetEmail}
                                                        className="btn submit_btn userInfo_btn genric-btn circle">
                                                         Change password
                                                     </a>
