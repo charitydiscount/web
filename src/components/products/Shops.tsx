@@ -104,8 +104,10 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         this.props.shops.length > 0 && this.props.ratings.size > 0 ? this.props.shops.map(shop => {
             let ratingObj = this.props.ratings.get(shop.uniqueCode);
             let rr = 0;
+            let rn = 0;
             if (ratingObj !== undefined) {
                 rr = ratingObj.rating;
+                rn = ratingObj.count;
             }
 
             return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
@@ -114,7 +116,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                          defaultSaleCommissionRate={shop.defaultSaleCommissionRate}
                          defaultSaleCommissionType={shop.defaultSaleCommissionType}
                          mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}
-                         reviewRating={rr}/>
+                         reviewRating={rr} totalReviews={rn}/>
         }) : null;
 
         var pageCount = 0;
@@ -125,8 +127,10 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 shopsList = this.props.shops.slice(offset * pageLimit, (offset + 1) * pageLimit).map(shop => {
                     let ratingObj = this.props.ratings.get(shop.uniqueCode);
                     let rr = 0;
+                    let rn = 0;
                     if (ratingObj !== undefined) {
                         rr = ratingObj.rating;
+                        rn = ratingObj.count;
                     }
 
                     return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
@@ -135,7 +139,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                  defaultSaleCommissionRate={shop.defaultSaleCommissionRate}
                                  defaultSaleCommissionType={shop.defaultSaleCommissionType}
                                  mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}
-                                 reviewRating={rr}/>
+                                 reviewRating={rr} totalReviews={rn}/>
                 });
             } else {
                 pageCount = 1;

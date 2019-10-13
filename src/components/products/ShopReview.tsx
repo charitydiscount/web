@@ -187,8 +187,8 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
         }) : 'No reviews yet';
 
         let reviewAverage = 0;
+        let reviewNumber = 0;
         if (this.state.reviews) {
-            let reviewNumber = 0;
             this.state.reviews.forEach(value => {
                 reviewAverage += value.rating;
                 reviewNumber += 1;
@@ -217,24 +217,30 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                         <a href={emptyHrefLink}>
                                             <h2>{this.state.name}</h2>
                                         </a>
-                                        {reviewAverage >= 1 ? <i className="fa fa-star star-focus"/> :
-                                            <i className="fa fa-star-o star-focus"/>}
-                                        {reviewAverage >= 2 ? <i className="fa fa-star star-focus"/> :
-                                            reviewAverage > 1 && reviewAverage < 2 ?
-                                                <i className="fa fa-star-half-o star-focus"/> :
-                                                <i className="fa fa-star-o star-focus"/>}
-                                        {reviewAverage >= 3 ? <i className="fa fa-star star-focus"/> :
-                                            reviewAverage > 2 && reviewAverage < 3 ?
-                                                <i className="fa fa-star-half-o star-focus"/> :
-                                                <i className="fa fa-star-o star-focus"/>}
-                                        {reviewAverage >= 4 ? <i className="fa fa-star star-focus"/> :
-                                            reviewAverage > 3 && reviewAverage < 4 ?
-                                                <i className="fa fa-star-half-o star-focus"/> :
-                                                <i className="fa fa-star-o star-focus"/>}
-                                        {reviewAverage >= 5 ? <i className="fa fa-star star-focus"/> :
-                                            reviewAverage > 4 && reviewAverage < 5 ?
-                                                <i className="fa fa-star-half-o star-focus"/> :
-                                                <i className="fa fa-star-o star-focus"/>}
+                                        {reviewNumber ?
+                                            <a>
+                                                {reviewAverage >= 1 ? <i className="fa fa-star star-focus"/> :
+                                                    <i className="fa fa-star-o star-focus"/>}
+                                                {reviewAverage >= 2 ? <i className="fa fa-star star-focus"/> :
+                                                    reviewAverage > 1 && reviewAverage < 2 ?
+                                                        <i className="fa fa-star-half-o star-focus"/> :
+                                                        <i className="fa fa-star-o star-focus"/>}
+                                                {reviewAverage >= 3 ? <i className="fa fa-star star-focus"/> :
+                                                    reviewAverage > 2 && reviewAverage < 3 ?
+                                                        <i className="fa fa-star-half-o star-focus"/> :
+                                                        <i className="fa fa-star-o star-focus"/>}
+                                                {reviewAverage >= 4 ? <i className="fa fa-star star-focus"/> :
+                                                    reviewAverage > 3 && reviewAverage < 4 ?
+                                                        <i className="fa fa-star-half-o star-focus"/> :
+                                                        <i className="fa fa-star-o star-focus"/>}
+                                                {reviewAverage >= 5 ? <i className="fa fa-star star-focus"/> :
+                                                    reviewAverage > 4 && reviewAverage < 5 ?
+                                                        <i className="fa fa-star-half-o star-focus"/> :
+                                                        <i className="fa fa-star-o star-focus"/>}
+                                                <span> {reviewNumber}</span>
+                                            </a>
+                                            : ''}
+
                                         <h3>{'Category: ' + this.state.category}</h3>
                                         <div className="s_product_text">
                                             <div className="card_area">
