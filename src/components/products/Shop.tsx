@@ -8,6 +8,7 @@ import {
 import {computeUrl} from '../../helper/AppHelper';
 import {Link} from "react-router-dom";
 import {Routes} from "../helper/Routes";
+import {FormattedMessage} from 'react-intl';
 
 interface IProductInfoState {
     visible: boolean;
@@ -140,7 +141,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                        target="_blank"
                                        rel="noopener noreferrer"
                                        className="main_btn">
-                                        Access
+                                        <FormattedMessage id={"shop.access.button"} defaultMessage="Access"/>
                                     </a>
                                     <div className={"icon_btn p_icon p_05"}>
                                         <Link to={Routes.REVIEW + "/" + this.props.id}>

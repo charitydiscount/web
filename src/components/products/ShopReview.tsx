@@ -10,6 +10,8 @@ import Review from "./Review";
 import {fetchReviews, ReviewDto, updateReview} from "../../rest/ReviewService";
 import {getLocalStorage} from "../../helper/StorageHelper";
 import {LoginDto} from "../login/LoginComponent";
+import {FormattedMessage} from 'react-intl';
+import {InjectedIntlProps, injectIntl} from "react-intl";
 
 interface IProductReviewState {
     fShopVisible: boolean;
@@ -30,9 +32,9 @@ interface IProductReviewProps {
     match: any
 }
 
-class ShopReview extends React.Component<IProductReviewProps, IProductReviewState> {
+class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps, IProductReviewState> {
 
-    constructor(props: IProductReviewProps) {
+    constructor(props: IProductReviewProps & InjectedIntlProps) {
         super(props);
         this.state = {
             fShopVisible: false,
@@ -184,7 +186,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
         const reviewsList = this.state.reviews && this.state.reviews.length > 0 ? this.state.reviews.map(review => {
             return <Review key={review.reviewer.name} photoUrl={review.reviewer.photoUrl} name={review.reviewer.name}
                            description={review.description} rating={review.rating} userID={review.reviewer.userId}/>
-        }) : 'No reviews yet';
+        }) : <FormattedMessage id={"review.no.reviews"} defaultMessage="No reviews yet"/>;
 
         let reviewAverage = 0;
         let reviewNumber = 0;
@@ -248,7 +250,8 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                                    target="_blank"
                                                    rel="noopener noreferrer"
                                                    className="main_btn">
-                                                    Access
+                                                    <FormattedMessage id={"shop.access.button"}
+                                                                      defaultMessage="Access"/>
                                                 </a>
                                                 <div
                                                     className={this.state.favShop === true ? 'icon_btn p_iconUpdate' : 'icon_btn p_icon'}>
@@ -268,7 +271,9 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                             <div className="col-lg-6">
                                 <div className="tab-pane fade show active p_20" id="review">
                                     <div className="review_box">
-                                        <p>Your Rating:</p>
+                                        <p>
+                                            <FormattedMessage id={"review.rating.label"} defaultMessage="Your rating:"/>
+                                        </p>
                                         <ul className="list">
                                             <li>
                                                 <a href={emptyHrefLink}>
@@ -315,13 +320,14 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                              <textarea className="form-control"
                                                        value={this.state.description}
                                                        onChange={this.handleTextAreaChange}
-                                                       placeholder={"Review"}>
+                                                       placeholder={this.props.intl.formatMessage({id:"review.placeholder"})}>
                                              </textarea>
                                         </div>
 
                                         <div className="col-md-12 text-right">
                                             <a href={emptyHrefLink} onClick={this.updateCurrentReview}
-                                               className="btn submit_btn">Submit Review
+                                               className="btn submit_btn">
+                                                <FormattedMessage id={"review.submit.button"} defaultMessage="Submit review"/>
                                             </a>
                                         </div>
                                     </div>
@@ -338,4 +344,4 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
     }
 }
 
-export default ShopReview;
+export default injectIntl(ShopReview);

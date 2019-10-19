@@ -35,5 +35,11 @@
   "Telecom": "Telecom",
   "Travel&Tourism": "Travel & Tourism",
   "Watches": "Watches",
-  "shops.search" : "Search..."
+  "FavoriteShops": "Favorite Shops",
+  "shops.search": "Search...",
+  "shop.access.button": "Access",
+  "review.rating.label": "Your rating:",
+  "review.no.reviews": "No reviews yet",
+  "review.placeholder": "Message",
+  "review.submit.button": "Submit review"
 }
