@@ -3,6 +3,7 @@ import {StorageKey, TxType} from "../../helper/Constants";
 import {getLocalStorage} from "../../helper/StorageHelper";
 import {CauseDto} from "../../rest/CauseService";
 import {Routes} from "../helper/Routes";
+import {InjectedIntlProps, injectIntl} from "react-intl";
 
 interface IWalletTransactionRowProps {
     date: string,
@@ -11,7 +12,7 @@ interface IWalletTransactionRowProps {
     target: string
 }
 
-class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
+class WalletTransactionRow extends React.Component<IWalletTransactionRowProps & InjectedIntlProps> {
 
     public render() {
         let target;
@@ -27,7 +28,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
             }
         }
         if (this.props.type === TxType.BONUS) {
-            target = 'Charity points';
+            target = this.props.intl.formatMessage({id: "wallet.charity.points"});
         }
 
         return (
@@ -36,13 +37,17 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     <div className="country">{this.props.date}</div>
                     <div className="country">
                         <h3>
-                        {
-                            this.props.type === TxType.DONATION ?
-                                <i className="fa fa-heart" aria-hidden="true" title={"Donation"}/> :
-                                this.props.type === TxType.BONUS ?
-                                    <i className="fa fa-thumbs-up" aria-hidden="true" title={'Bonus'}/> :
-                                    <i className="fa fa-money" aria-hidden="true" title={'Cashout'}/>
-                        }
+                            {
+                                this.props.type === TxType.DONATION ?
+                                    <i className="fa fa-heart" aria-hidden="true"
+                                       title={this.props.intl.formatMessage({id: "wallet.tx.type.donation"})}/> :
+                                    this.props.type === TxType.BONUS ?
+                                        <i className="fa fa-thumbs-up" aria-hidden="true" title={
+                                            this.props.intl.formatMessage({id: "wallet.tx.type.bonus"})
+                                        }/> :
+                                        <i className="fa fa-money" aria-hidden="true"
+                                           title={this.props.intl.formatMessage({id: "wallet.tx.type.cashout"})}/>
+                            }
                         </h3>
                     </div>
                     <div className="country">{this.props.amount.toFixed(1)}</div>
@@ -59,5 +64,5 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
     }
 }
 
-export default WalletTransactionRow;
+export default injectIntl(WalletTransactionRow);
 

@@ -81,6 +81,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
             setLocalStorage(StorageKey.USER, JSON.stringify(userParsed));
         }
         store.dispatch(setLangResources(event.value));
+        window.location.reload();
     }
 
     render() {

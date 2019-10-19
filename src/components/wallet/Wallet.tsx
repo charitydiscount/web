@@ -9,6 +9,8 @@ import {CommissionStatus, TxType} from "../../helper/Constants";
 import WalletCommissionRow from "./WalletCommissionRow";
 import FadeLoader from 'react-spinners/FadeLoader';
 import {spinnerCss} from "../../helper/AppHelper";
+import {InjectedIntlProps, injectIntl} from "react-intl";
+import {FormattedMessage} from 'react-intl';
 
 interface IWalletProps {
 
@@ -26,9 +28,9 @@ interface IWalletState {
     commissions: CommissionDto[]
 }
 
-class Wallet extends React.Component<IWalletProps, IWalletState> {
+class Wallet extends React.Component<IWalletProps & InjectedIntlProps, IWalletState> {
 
-    constructor(props: IWalletProps) {
+    constructor(props: IWalletProps & InjectedIntlProps) {
         super(props);
         this.state = {
             cashbackApproved: 0,
@@ -90,27 +92,42 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                             <React.Fragment>
                                 <div className={"tab-content"}>
                                     <div className="row">
-                                        <WalletBlock title={"Cashback"} approved={this.state.cashbackApproved}
+                                        <WalletBlock title={this.props.intl.formatMessage({id: "wallet.cashback"})}
+                                                     approved={this.state.cashbackApproved}
                                                      pending={this.state.cashbackPending} pendingExists={true}
                                                      money={true}/>
-                                        <WalletBlock title={"Charity points"} approved={this.state.pointsApproved}
-                                                     pending={this.state.pointsPending} pendingExists={true}
-                                                     money={false}/>
-                                        <WalletBlock title={"History"} approved={this.state.totalTransactions}
+                                        <WalletBlock
+                                            title={this.props.intl.formatMessage({id: "wallet.charity.points"})}
+                                            approved={this.state.pointsApproved}
+                                            pending={this.state.pointsPending} pendingExists={true}
+                                            money={false}/>
+                                        <WalletBlock title={this.props.intl.formatMessage({id: "wallet.history"})}
+                                                     approved={this.state.totalTransactions}
                                                      pendingExists={false} money={false}/>
                                     </div>
                                 </div>
 
                                 {commissionsHistory && commissionsHistory.length > 0 &&
                                 <div className={"tab-content"}>
-                                    <h3 className="mb-30 title_color">Cashback History</h3>
+                                    <h3 className="mb-30 title_color">
+                                        <FormattedMessage id="wallet.cashback.history"
+                                                          defaultMessage="Cashback History"/>
+                                    </h3>
                                     <div className="progress-table-wrap">
                                         <div className="progress-table">
                                             <div className="table-head">
-                                                <div className="country">Date</div>
-                                                <div className="country">Status</div>
-                                                <div className="country">Amount</div>
-                                                <div className="country">Shop</div>
+                                                <div className="country">
+                                                    <FormattedMessage id="wallet.table.date" defaultMessage="Date"/>
+                                                </div>
+                                                <div className="country">
+                                                    <FormattedMessage id="wallet.table.status" defaultMessage="Status"/>
+                                                </div>
+                                                <div className="country">
+                                                    <FormattedMessage id="wallet.table.amount" defaultMessage="Amount"/>
+                                                </div>
+                                                <div className="country">
+                                                    <FormattedMessage id="wallet.table.shop" defaultMessage="Shop"/>
+                                                </div>
                                             </div>
                                             {commissionsHistory}
                                         </div>
@@ -120,14 +137,24 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
 
                                 {transactionsHistory && transactionsHistory.length > 0 &&
                                 <div className={"tab-content"}>
-                                    <h3 className="mb-30 title_color">History</h3>
+                                    <h3 className="mb-30 title_color">
+                                        <FormattedMessage id="wallet.history" defaultMessage="History"/>
+                                    </h3>
                                     <div className="progress-table-wrap">
                                         <div className="progress-table">
                                             <div className="table-head">
-                                                <div className="country">Date</div>
-                                                <div className="country">Type</div>
-                                                <div className="country">Amount</div>
-                                                <div className="country">Target</div>
+                                                <div className="country">
+                                                    <FormattedMessage id="wallet.table.date" defaultMessage="Date"/>
+                                                </div>
+                                                <div className="country">
+                                                    <FormattedMessage id="wallet.table.type" defaultMessage="Type"/>
+                                                </div>
+                                                <div className="country">
+                                                    <FormattedMessage id="wallet.table.amount" defaultMessage="Amount"/>
+                                                </div>
+                                                <div className="country">
+                                                    <FormattedMessage id="wallet.table.target" defaultMessage="Target"/>
+                                                </div>
                                             </div>
                                             {transactionsHistory}
                                         </div>
@@ -143,6 +170,6 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
     }
 }
 
-export default Wallet;
+export default injectIntl(Wallet);
 
 

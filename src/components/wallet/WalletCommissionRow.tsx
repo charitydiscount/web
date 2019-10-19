@@ -1,6 +1,7 @@
 import * as React from "react";
 import {CommissionStatus} from "../../helper/Constants";
 import {getShopByUniqueCode, ShopDto} from "../../rest/ShopsService";
+import {InjectedIntlProps, injectIntl} from "react-intl";
 
 interface IWalletTransactionRowProps {
     amount: number,
@@ -9,7 +10,7 @@ interface IWalletTransactionRowProps {
     status: CommissionStatus
 }
 
-class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
+class WalletCommissionRow extends React.Component<IWalletTransactionRowProps & InjectedIntlProps> {
 
     public render() {
         let shop = getShopByUniqueCode(this.props.shopUniqueCode) as ShopDto;
@@ -22,12 +23,19 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                         <h3>
                             {
                                 this.props.status === CommissionStatus.paid ?
-                                    <i className="fa fa-money" aria-hidden="true" title={'Paid'}/> :
+                                    <i className="fa fa-money" aria-hidden="true"
+                                       title={this.props.intl.formatMessage({id: "wallet.tx.status.paid"})}/> :
                                     this.props.status === CommissionStatus.approved ?
-                                        <i className="fa fa-thumbs-up" aria-hidden="true" title={'Approved'}/> :
+                                        <i className="fa fa-thumbs-up" aria-hidden="true" title={
+                                            this.props.intl.formatMessage({id: "wallet.tx.status.approved"})
+                                        }/> :
                                         this.props.status === CommissionStatus.rejected ?
-                                            <i className="fa fa-ban" aria-hidden="true" title={'Rejected'}/> :
-                                            <i className="fa fa-clock-o" aria-hidden="true" title={'Pending'}/>
+                                            <i className="fa fa-ban" aria-hidden="true" title={
+                                                this.props.intl.formatMessage({id: "wallet.tx.status.rejected"})
+                                            }/> :
+                                            <i className="fa fa-clock-o" aria-hidden="true" title={
+                                                this.props.intl.formatMessage({id: "wallet.tx.status.pending"})
+                                            }/>
                             }
                         </h3>
                     </div>
@@ -41,5 +49,5 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
     }
 }
 
-export default WalletCommissionRow;
+export default injectIntl(WalletCommissionRow);
 
