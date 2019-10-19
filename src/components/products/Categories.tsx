@@ -6,10 +6,11 @@ import Category from "./Category";
 import {CategoryDto, fetchCategories} from "../../rest/CategoriesService";
 import {connect} from "react-redux";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
+import {FormattedMessage} from 'react-intl';
 
 interface ICategoryProps {
-    currentCategory ?: String,
-    selections ?: boolean[]
+    currentCategory?: String,
+    selections?: boolean[]
 
     //global state
     setCurrentCategory?: any
@@ -59,8 +60,15 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
             <React.Fragment>
                 <aside className="left_widgets cat_widgets">
                     <div className="l_w_title">
-                        <h3>Categories {this.props.currentCategory &&
-                        this.props.currentCategory.length > 0 ? ' -> ' + this.props.currentCategory : null}</h3>
+                        <h3>
+                            <FormattedMessage id="categories.title" defaultMessage="Categories"/>
+                            {this.props.currentCategory && this.props.currentCategory.length > 0
+                                ? "->"
+                                : null}
+                            {this.props.currentCategory && this.props.currentCategory.length > 0
+                                ? <FormattedMessage id={this.props.currentCategory.replace(/\s/g, '')}/>
+                                : null}
+                        </h3>
                     </div>
                     <div className="widgets_inner">
                         <ul className="list">

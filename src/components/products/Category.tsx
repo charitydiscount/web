@@ -4,6 +4,7 @@ import {setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
 import {getLocalStorage} from "../../helper/StorageHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
 import {ShopDto} from "../../rest/ShopsService";
+import {FormattedMessage} from 'react-intl';
 
 interface ICategoryProps {
     name: String,
@@ -62,7 +63,9 @@ class Category extends React.Component<ICategoryProps> {
                 <li>
                     <a href={emptyHrefLink} id={this.props.name.toString()}
                        style={this.props.selected ? {color: 'blue'} : undefined}
-                       onClick={this.updateShops}>{this.props.name}</a>
+                       onClick={this.updateShops}>
+                        <FormattedMessage id={this.props.name.replace(/\s/g, '')}/>
+                    </a>
                 </li>
             </React.Fragment>
         )

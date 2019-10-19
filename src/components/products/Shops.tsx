@@ -15,6 +15,7 @@ import {fetchShops, ShopDto} from "../../rest/ShopsService";
 import {fetchReviewRatings, ReviewRating} from "../../rest/ReviewService";
 import FadeLoader from 'react-spinners/FadeLoader';
 import {spinnerCss} from "../../helper/AppHelper";
+import {InjectedIntlProps, injectIntl} from "react-intl";
 
 interface IShopsProps {
     shops: Array<ShopDto>,
@@ -40,9 +41,9 @@ interface IShopsState {
 const pageLimit = 24; // products per page
 
 
-class Shops extends React.Component<IShopsProps, IShopsState> {
+class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState> {
 
-    constructor(props: IShopsProps) {
+    constructor(props: IShopsProps & InjectedIntlProps) {
         super(props);
         this.state = {
             isLoading: true,
@@ -154,7 +155,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                             <div className="col-lg-9">
                                 <div className="product_top_bar">
                                     <GenericInput type={"textfield"} id={"search"} className={"single-input"}
-                                                  placeholder={"Search..."} onKeyUp={this.onSearchUpdate}/>
+                                                  placeholder={this.props.intl.formatMessage({id: "shops.search"})}
+                                                  onKeyUp={this.onSearchUpdate}/>
                                     <div className="right_page ml-auto">
                                         <nav className="cat_page" aria-label="Page navigation example">
                                             <ReactPaginate
@@ -230,6 +232,6 @@ const mapDispatchToProps = (dispatch: any) => {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Shops);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Shops));
 
 
