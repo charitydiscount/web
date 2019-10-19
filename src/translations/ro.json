@@ -74,5 +74,8 @@
   "shop.category": "Categorie: ",
   "shop.cashback": "Comision: ",
   "footer.mobile": "Descarca pe telefon",
-  "footer.follow": "Urmareste-ne"
+  "footer.follow": "Urmareste-ne",
+  "shop.favorite.shop": "Magazin favorit: ",
+  "shop.favorite.shop.added": "adaugat",
+  "shop.favorite.shop.removed": "sters"
 }

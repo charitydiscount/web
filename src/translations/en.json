@@ -74,5 +74,8 @@
   "shop.category": "Category: ",
   "shop.cashback": "Cashback: ",
   "footer.mobile": "Get it on mobile",
-  "footer.follow": "Follow us"
+  "footer.follow": "Follow us",
+  "shop.favorite.shop": "Favorite shop: ",
+  "shop.favorite.shop.added": "added",
+  "shop.favorite.shop.removed": "removed"
 }

@@ -64,7 +64,11 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
      */
     public updateFavoriteShopsTrue() {
         this.setState({
-            modalMessage: "Favorite shop: " + this.state.name + "added",
+            modalMessage:
+                this.props.intl.formatMessage({id: "shop.favorite.shop"}) +
+                this.state.name + ' ' +
+                this.props.intl.formatMessage({id: "shop.favorite.shop.added"})
+                ,
             favShop: true
         });
         this.openModal();
@@ -76,7 +80,11 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
      */
     public updateFavoriteShopsFalse() {
         this.setState({
-            modalMessage: "Favorite shop: " + this.state.name + "removed",
+            modalMessage:
+                this.props.intl.formatMessage({id: "shop.favorite.shop"}) +
+                this.state.name + ' ' +
+                this.props.intl.formatMessage({id: "shop.favorite.shop.removed"})
+                ,
             favShop: false
         });
         this.openModal();
@@ -322,14 +330,15 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                                              <textarea className="form-control"
                                                        value={this.state.description}
                                                        onChange={this.handleTextAreaChange}
-                                                       placeholder={this.props.intl.formatMessage({id:"review.placeholder"})}>
+                                                       placeholder={this.props.intl.formatMessage({id: "review.placeholder"})}>
                                              </textarea>
                                         </div>
 
                                         <div className="col-md-12 text-right">
                                             <a href={emptyHrefLink} onClick={this.updateCurrentReview}
                                                className="btn submit_btn">
-                                                <FormattedMessage id={"review.submit.button"} defaultMessage="Submit review"/>
+                                                <FormattedMessage id={"review.submit.button"}
+                                                                  defaultMessage="Submit review"/>
                                             </a>
                                         </div>
                                     </div>

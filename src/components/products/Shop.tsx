@@ -100,7 +100,11 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
             <React.Fragment>
                 <Modal visible={this.state.fShopVisible} effect="fadeInUp" onClickAway={() => this.closeFShopModal()}>
                     <h3 style={{padding: 15}}>
-                        Favorite shop: {this.props.name} {this.state.favShop ? 'added' : 'removed'}
+                        <FormattedMessage id={"shop.favorite.shop"} defaultMessage="Favorite shop: "/>
+                        {this.props.name} {this.state.favShop ?
+                        <FormattedMessage id={"shop.favorite.shop.added"} defaultMessage="added"/>
+                        :
+                        <FormattedMessage id={"shop.favorite.shop.removed"} defaultMessage="removed"/>}
                     </h3>
                 </Modal>
                 <Modal visible={this.state.visible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
@@ -136,7 +140,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                     <span> {this.props.totalReviews}</span>
                                 </a>
                                 : ''}
-                            <h3> <FormattedMessage id={"shop.category"} defaultMessage="Category:"/>
+                            <h3><FormattedMessage id={"shop.category"} defaultMessage="Category:"/>
                                 {this.props.category}</h3>
                             <div className="s_product_text">
                                 <div className="card_area p_20">
