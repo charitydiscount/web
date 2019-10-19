@@ -77,5 +77,8 @@
   "footer.follow": "Follow us",
   "shop.favorite.shop": "Favorite shop: ",
   "shop.favorite.shop.added": "added",
-  "shop.favorite.shop.removed": "removed"
+  "shop.favorite.shop.removed": "removed",
+  "wallet.block.cashout.name": "Full name",
+  "wallet.block.cashout.iban": "Iban",
+  "wallet.block.available.amount": "Available amount: "
 }

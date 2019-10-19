@@ -6,6 +6,7 @@ import CauseDonate from "./CauseDonate";
 import GenericInput from "../input/GenericInput";
 import {createRequest} from "../../rest/WalletService";
 import {FormattedMessage} from 'react-intl';
+import {InjectedIntlProps, injectIntl} from "react-intl";
 
 interface IWalletBlockState {
     withDrawVisible: boolean,
@@ -27,7 +28,7 @@ interface IWalletBlockProps {
     money: boolean
 }
 
-class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> {
+class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps, IWalletBlockState> {
 
     constructor(props: IWalletBlockProps) {
         super(props);
@@ -155,22 +156,32 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                             <tr className="shipping_area">
                                 <td>
                                     <div className="shipping_box">
-                                        <GenericInput type={InputType.TEXT} id={"name"} placeholder={"Full Name"}/>
-                                        <GenericInput type={InputType.TEXT} id={"iban"} placeholder={"Iban"}/>
+                                        <GenericInput type={InputType.TEXT} id={"name"} placeholder={
+                                            this.props.intl.formatMessage({id: "wallet.block.cashout.name"})
+                                        }/>
+                                        <GenericInput type={InputType.TEXT} id={"iban"} placeholder={
+                                            this.props.intl.formatMessage({id: "wallet.block.cashout.iban"})
+                                        }/>
 
                                         <h6>
-                                            Available amount: <i
-                                            className="blue-color">{this.props.approved.toFixed(1)}</i>
+                                            <FormattedMessage id="wallet.block.available.amount"
+                                                              defaultMessage="Available amount: "/>
+                                            <i className="blue-color">{this.props.approved.toFixed(1)}</i>
                                         </h6>
                                         <GenericInput type={InputType.NUMBER} id={'amount-text-field-cashout'}
                                                       max={this.props.approved.toString()}
                                                       handleChange={this.onAmountChange}
                                                       min={"10"}
                                                       step={0.1}
-                                                      placeholder={"Amount"}/>
+                                                      placeholder={
+                                                          this.props.intl.formatMessage({id: "wallet.table.amount"})
+                                                      }/>
                                         <h3>
                                             <a href={emptyHrefLink} onClick={this.cashout}>
-                                                <i className="fa fa-money blue-color" aria-hidden="true">Cashout</i>
+                                                <i className="fa fa-money blue-color" aria-hidden="true">
+                                                    <FormattedMessage id="wallet.block.cashout"
+                                                                      defaultMessage="Cashout "/>
+                                                </i>
                                             </a>
                                         </h3>
                                     </div>
@@ -192,18 +203,24 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                                         </ul>
 
                                         <h6>
-                                            Available amount: <i
-                                            className="blue-color">{this.props.approved.toFixed(1)}</i>
+                                            <FormattedMessage id="wallet.block.available.amount"
+                                                              defaultMessage="Available amount: "/>
+                                            <i className="blue-color">{this.props.approved.toFixed(1)}</i>
                                         </h6>
                                         <GenericInput type={InputType.NUMBER} id={'amount-text-field-donation'}
                                                       max={this.props.approved.toString()}
                                                       min={"1"}
                                                       handleChange={this.onAmountChange}
                                                       step={0.1}
-                                                      placeholder={"Amount"}/>
+                                                      placeholder={
+                                                          this.props.intl.formatMessage({id: "wallet.table.amount"})
+                                                      }/>
                                         <h3>
                                             <a href={emptyHrefLink} onClick={this.donate}>
-                                                <i className="fa fa-heart blue-color" aria-hidden="true">Donate</i>
+                                                <i className="fa fa-heart blue-color" aria-hidden="true">
+                                                    <FormattedMessage id="wallet.block.donate"
+                                                                      defaultMessage="Donate "/>
+                                                </i>
                                             </a>
                                         </h3>
                                     </div>
@@ -220,7 +237,7 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                         <h4>{this.props.approved ? this.props.approved.toFixed(1) : 0}</h4>
                         {this.props.pendingExists ?
                             <div>
-                                <h6> <FormattedMessage id="wallet.block.pending" defaultMessage="Pending:"/>
+                                <h6><FormattedMessage id="wallet.block.pending" defaultMessage="Pending:"/>
                                     {this.props.pending ? this.props.pending.toFixed(1) : 0}</h6>
                                 {this.props.money ?
                                     <div>
@@ -229,7 +246,8 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
                                                 <br/>
                                                 <a href={emptyHrefLink} onClick={() => this.openModal()}
                                                    className="btn submit_btn genric-btn circle">
-                                                    <FormattedMessage id="wallet.block.withdraw" defaultMessage="Withdraw"/>
+                                                    <FormattedMessage id="wallet.block.withdraw"
+                                                                      defaultMessage="Withdraw"/>
                                                 </a>
                                             </div> : null}
                                     </div> : null}
@@ -242,4 +260,4 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
     }
 }
 
-export default WalletBlock;
+export default injectIntl(WalletBlock);

@@ -77,5 +77,8 @@
   "footer.follow": "Urmareste-ne",
   "shop.favorite.shop": "Magazin favorit: ",
   "shop.favorite.shop.added": "adaugat",
-  "shop.favorite.shop.removed": "sters"
+  "shop.favorite.shop.removed": "sters",
+  "wallet.block.cashout.name": "Nume",
+  "wallet.block.cashout.iban": "Iban",
+  "wallet.block.available.amount": "Bani disponibili: "
 }
