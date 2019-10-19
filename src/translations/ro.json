@@ -1,3 +1,7 @@
 {
-  "navigation.wallet": "Portofel"
+  "navigation.wallet": "Portofel",
+  "navigation.causes": "Cauze",
+  "navigation.shops": "Magazine",
+  "navigation.welcome": "Bine ai venit: ",
+  "navigation.logout": "Delogare "
 }

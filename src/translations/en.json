@@ -1,3 +1,7 @@
 {
-  "navigation.wallet": "Wallet"
+  "navigation.wallet": "Wallet",
+  "navigation.causes": "Causes",
+  "navigation.shops": "Shops",
+  "navigation.welcome": "Welcome: ",
+  "navigation.logout": "Logout "
 }

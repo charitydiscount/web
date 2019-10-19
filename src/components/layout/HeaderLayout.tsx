@@ -98,7 +98,12 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                         <div className="float-left">
                             {isLoggedIn
                             &&
-                            <p>{this.state.username ? "Welcome: " + this.state.username : ""}</p>
+                            <React.Fragment>
+                                <p>
+                                    <FormattedMessage id="navigation.welcome" defaultMessage="Welcome: "/>
+                                    {this.state.username ? this.state.username : ""}
+                                </p>
+                            </React.Fragment>
                             }
                         </div>
                         <div className="float-right">
@@ -108,7 +113,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                 <React.Fragment>
                                     <li>
                                         <a href={emptyHrefLink} onClick={this.handleLogOut}>
-                                            Logout
+                                            <FormattedMessage id="navigation.logout" defaultMessage="Logout: "/>
                                         </a>
                                     </li>
                                 </React.Fragment>
@@ -160,16 +165,23 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                             &&
                                             <React.Fragment>
                                                 <li className={"nav-item " + (isCategories ? "active" : "")}>
-                                                    <a className="nav-link" href={Routes.CATEGORIES}>Shops</a>
+                                                    <a className="nav-link" href={Routes.CATEGORIES}>
+                                                        <FormattedMessage id="navigation.shops"
+                                                                          defaultMessage="Magazine"/>
+                                                    </a>
                                                 </li>
 
                                                 <li className={"nav-item " + (isCauses ? "active" : "")}>
-                                                    <a className="nav-link" href={Routes.CAUSES}>Causes</a>
+                                                    <a className="nav-link" href={Routes.CAUSES}>
+                                                        <FormattedMessage id="navigation.causes"
+                                                                          defaultMessage="Cauze"/>
+                                                    </a>
                                                 </li>
 
                                                 <li className={"nav-item " + (isWallet ? "active" : "")}>
                                                     <a className="nav-link" href={Routes.WALLET}>
-                                                        <FormattedMessage id="navigation.wallet"/>
+                                                        <FormattedMessage id="navigation.wallet"
+                                                                          defaultMessage="Portofel"/>
                                                     </a>
                                                 </li>
                                             </React.Fragment>
