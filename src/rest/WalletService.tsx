@@ -121,6 +121,7 @@ export function createRequest(amount, type, targetId) {
                 amount: amount,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 currency: "RON",
+                status: "PENDING",
                 target: targetId,
                 type: type,
                 userId: keyExist
