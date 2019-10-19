@@ -111,7 +111,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                 <h2>{this.props.name}</h2>
                             </a>
                             {this.props.reviewRating ?
-                                <a>
+                                <a href={emptyHrefLink}>
                                     {this.props.reviewRating >= 1 ? <i className="fa fa-star star-focus"/> :
                                         <i className="fa fa-star-o star-focus"/>}
                                     {this.props.reviewRating >= 2 ? <i className="fa fa-star star-focus"/> :

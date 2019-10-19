@@ -8,6 +8,10 @@ export enum LoginActionTypes {
     RESET_LOGGED_USER_ACTION = 'RESET_LOGGED_USER_ACTION',
 }
 
+export enum LocaleActionTypes {
+    SET_LANG_RESOURCES = 'SET_LANG_RESOURCES',
+}
+
 export enum ShopsActionTypes {
     SET_SHOPS_ACTION = 'SET_SHOPS_ACTION',
     SET_RATINGS_ACTION = 'SET_RATINGS_ACTION',

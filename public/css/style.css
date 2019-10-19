@@ -5914,6 +5914,13 @@ h6 {
     color: #1641ff !important;
 }
 
+.react_select__control{
+    border: none !important;
+}
+
+.react_select__value-container{
+   min-width: 45px;
+}
 /*---------------------------------------------------- */
 
 /*# sourceMappingURL=style.css.map */

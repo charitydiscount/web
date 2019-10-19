@@ -13,6 +13,7 @@ export interface LoginDto {
   displayName: string;
   email: string;
   providerType: ProviderType;
+  locale: string,
   creationTime: string;
 }
 
@@ -46,6 +47,7 @@ class LoginComponent extends React.Component {
     } else {
       parsedUser.providerType = ProviderType.NORMAL;
     }
+    parsedUser.locale = '';
     setLocalStorage(StorageKey.USER, JSON.stringify(parsedUser));
     return true; // redirects to signInSuccessUrl
   }

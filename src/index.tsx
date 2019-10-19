@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import {Provider} from 'react-redux';
 import {applyMiddleware, createStore} from 'redux';
 import thunk from 'redux-thunk';
@@ -19,6 +18,7 @@ import {getLocalStorage} from './helper/StorageHelper';
 import {StorageKey} from './helper/Constants';
 import {updateUser} from "./rest/UserService";
 import {LoginDto} from "./components/login/LoginComponent";
+import I18nApp from "./I18nApp";
 
 export const publicUrl = process.env.PUBLIC_URL || '';
 
@@ -68,7 +68,7 @@ if (user && user.length > 0) {
 ReactDOM.render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
-            <App/>
+            <I18nApp/>
         </ConnectedRouter>
     </Provider>,
     document.getElementById('root')

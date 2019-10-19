@@ -3,17 +3,23 @@ import {Stages} from "../helper/Stages";
 import {connect} from "react-redux";
 import {doLogoutAction} from "../login/UserActions";
 import {setShops} from "../../redux/actions/ShopsAction";
-import {getLocalStorage} from "../../helper/StorageHelper";
+import {getLocalStorage, setLocalStorage} from "../../helper/StorageHelper";
 import {emptyHrefLink, logoSrc, StorageKey} from "../../helper/Constants";
 import {fetchFavoriteShops, ShopDto} from "../../rest/ShopsService";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 import {LoginDto} from "../login/LoginComponent";
 import {Routes} from "../helper/Routes";
+import {FormattedMessage} from 'react-intl';
+import Select from 'react-select';
+import {setLangResources} from "../../redux/actions/LocaleAction";
+import {store} from "../../index";
 
 interface IHeaderLayoutProps {
     isLoggedIn?: boolean,
     logout: () => void,
     view?: string,
+
+    currentLocale?: string,
 
     // global state
     // used to refresh shops
@@ -37,6 +43,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
         };
         this.handleLogOut = this.handleLogOut.bind(this);
         this.loadFavoriteShops = this.loadFavoriteShops.bind(this);
+        this.onLanguageChange = this.onLanguageChange.bind(this);
     }
 
     public componentDidMount() {
@@ -64,6 +71,16 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
         }
         this.props.setCurrentCategory('Favorite Shops');
         this.props.setSelections([]);
+    }
+
+    onLanguageChange(event) {
+        const user = getLocalStorage(StorageKey.USER);
+        if (user) {
+            let userParsed = JSON.parse(user) as LoginDto;
+            userParsed.locale = event.value;
+            setLocalStorage(StorageKey.USER, JSON.stringify(userParsed));
+        }
+        store.dispatch(setLangResources(event.value));
     }
 
     render() {
@@ -94,15 +111,25 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                             Logout
                                         </a>
                                     </li>
-
-                                    <li>
-                                        <a href={Routes.USER}>
-                                            My account
-                                        </a>
-                                    </li>
                                 </React.Fragment>
                                 }
                             </ul>
+                        </div>
+                        <div className="float-right">
+                            {isLoggedIn
+                            &&
+                            <Select
+                                name="form-field-name"
+                                value={this.props.currentLocale}
+                                onChange={this.onLanguageChange}
+                                isSearchable={false}
+                                className={"react_select"}
+                                classNamePrefix={"react_select"}
+                                placeholder={this.props.currentLocale ? this.props.currentLocale.toUpperCase() : ''}
+                                options={[{value: 'ro', label: 'RO'},
+                                    {value: 'en', label: 'EN'}]}
+                            />
+                            }
                         </div>
                     </div>
                 </div>
@@ -141,7 +168,9 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                                 </li>
 
                                                 <li className={"nav-item " + (isWallet ? "active" : "")}>
-                                                    <a className="nav-link" href={Routes.WALLET}>Wallet</a>
+                                                    <a className="nav-link" href={Routes.WALLET}>
+                                                        <FormattedMessage id="navigation.wallet"/>
+                                                    </a>
                                                 </li>
                                             </React.Fragment>
                                             }
@@ -187,7 +216,8 @@ const
     mapStateToProps = (state: any) => {
         return {
             view: state.navigation.stageName,
-            isLoggedIn: state.user.isLoggedIn
+            isLoggedIn: state.user.isLoggedIn,
+            currentLocale: state.locale.langResources.language
         }
     };
 

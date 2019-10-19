@@ -4,6 +4,7 @@ import NavigatorReducer from "./NavigatorReducer";
 import UserReducer from "./UserReducer";
 import ShopsReducer from "./ShopsReducer";
 import CategoryReducer from "./CategoryReducer";
+import LocaleReducer from "./LocaleReducer";
 
 // Used to combine all reducers for full functionality
 export default (history: any) => combineReducers({
@@ -11,6 +12,7 @@ export default (history: any) => combineReducers({
     navigation: NavigatorReducer,
     user: UserReducer,
     shopReducer: ShopsReducer,
-    categoryReducer: CategoryReducer
+    categoryReducer: CategoryReducer,
+    locale: LocaleReducer
 });
 

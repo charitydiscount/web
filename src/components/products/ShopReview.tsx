@@ -218,7 +218,7 @@ class ShopReview extends React.Component<IProductReviewProps, IProductReviewStat
                                             <h2>{this.state.name}</h2>
                                         </a>
                                         {reviewNumber ?
-                                            <a>
+                                            <a href={emptyHrefLink}>
                                                 {reviewAverage >= 1 ? <i className="fa fa-star star-focus"/> :
                                                     <i className="fa fa-star-o star-focus"/>}
                                                 {reviewAverage >= 2 ? <i className="fa fa-star star-focus"/> :
