@@ -105,7 +105,9 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                 </Modal>
                 <Modal visible={this.state.visible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="text-center p_20">
-                        <h4 className="blue-color">Cashback: {commission}</h4>
+                        <h4 className="blue-color">
+                            <FormattedMessage id={"shop.cashback"} defaultMessage="Cashback:"/>
+                            {commission}</h4>
                         <img src={this.props.logoSrc} alt=""/>
                         <div className="blog_details">
                             <a href={emptyHrefLink}>
@@ -134,7 +136,8 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                     <span> {this.props.totalReviews}</span>
                                 </a>
                                 : ''}
-                            <h3>{'Category: ' + this.props.category}</h3>
+                            <h3> <FormattedMessage id={"shop.category"} defaultMessage="Category:"/>
+                                {this.props.category}</h3>
                             <div className="s_product_text">
                                 <div className="card_area p_20">
                                     <a href={computeUrl(this.props.uniqueCode, this.props.mainUrl)}

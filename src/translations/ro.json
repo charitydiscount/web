@@ -68,5 +68,11 @@
   "userinfo.contact.us.button": "Contacteaza-ne",
   "userinfo.terms.button": "Conditii de acord",
   "userinfo.privacy.button": "Privacy",
-  "userinfo.logout.button": "Delogare"
+  "userinfo.logout.button": "Delogare",
+  "privacy.title": "Privacy",
+  "tos.title": "Conditii de acord",
+  "shop.category": "Categorie: ",
+  "shop.cashback": "Comision: ",
+  "footer.mobile": "Descarca pe telefon",
+  "footer.follow": "Urmareste-ne"
 }

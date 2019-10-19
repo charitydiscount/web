@@ -2,6 +2,7 @@ import * as React from "react";
 import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
+import {FormattedMessage} from 'react-intl';
 
 class Privacy extends React.Component {
 
@@ -18,7 +19,10 @@ class Privacy extends React.Component {
             <React.Fragment>
                 <div className="container p_120">
                     <div className={"p_20"}>
-                        <h3 className="mb-30 title_color">Privacy</h3>
+                        <h3 className="mb-30 title_color">
+                            <FormattedMessage id="privacy.title"
+                                              defaultMessage="Privacy"/>
+                        </h3>
                         <div className="row">
                             <div className="mt-sm-20 left-align-p">
                                 <p className="sample-text">
@@ -33,7 +37,7 @@ class Privacy extends React.Component {
                                     retail-ready DVDs, with UPC barcodes and polywrap sitting on your doorstep? You need to create eye-popping artwork and
                                     have your project replicated. Using a reputable full service DVD Replication company like PacificDisc, Inc. to partner
                                     with is certainly a helpful option to ensure a professional end result, but to help with your DVD replication project,
-                                    here are 4 easy steps to follow for good DVD replication results:
+                                    here are 4 easy steps to follow for good DVD replication results
                                 </p>
                             </div>
                         </div>

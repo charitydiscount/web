@@ -2,6 +2,7 @@ import * as React from "react";
 import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
+import {FormattedMessage} from 'react-intl';
 
 class Tos extends React.Component {
 
@@ -18,7 +19,10 @@ class Tos extends React.Component {
             <React.Fragment>
                 <div className="container p_120">
                     <div className={"p_20"}>
-                        <h3 className="mb-30 title_color">Terms of agreement</h3>
+                        <h3 className="mb-30 title_color">
+                            <FormattedMessage id="tos.title"
+                                              defaultMessage="Terms of agreement"/>
+                        </h3>
                         <div className="row">
                             <div className="mt-sm-20 left-align-p">
                                 <p className="sample-text">

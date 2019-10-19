@@ -243,7 +243,9 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                                             </a>
                                             : ''}
 
-                                        <h3>{'Category: ' + this.state.category}</h3>
+                                        <h3>
+                                            <FormattedMessage id={"shop.category"} defaultMessage="Category:"/>
+                                            {this.state.category}</h3>
                                         <div className="s_product_text">
                                             <div className="card_area">
                                                 <a href={computeUrl(this.state.uniqueCode, this.state.mainUrl)}

@@ -68,5 +68,11 @@
   "userinfo.contact.us.button": "Contact us",
   "userinfo.terms.button": "Terms of agreement",
   "userinfo.privacy.button": "Privacy",
-  "userinfo.logout.button": "Logout"
+  "userinfo.logout.button": "Logout",
+  "privacy.title": "Privacy",
+  "tos.title": "Terms of agreement",
+  "shop.category": "Category: ",
+  "shop.cashback": "Cashback: ",
+  "footer.mobile": "Get it on mobile",
+  "footer.follow": "Follow us"
 }
