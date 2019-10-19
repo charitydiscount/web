@@ -132,7 +132,7 @@ export function createRequest(amount, type, targetId) {
             ).then(ref => {
                 setTimeout(function () {
                     window.location.reload();
-                }, 1000);
+                }, 1600);
             });
         }
     }
