@@ -47,8 +47,10 @@
   "wallet.history": "Istoric",
   "wallet.block.pending": "In asteptare:",
   "wallet.block.withdraw": "Retragere",
+  "wallet.block.cashout": "Scoate bani",
+  "wallet.block.donate": "Doneaza",
   "wallet.cashback.history": "Istoric comisioane",
-  "wallet.table.date" : "Data",
+  "wallet.table.date": "Data",
   "wallet.table.status": "Status",
   "wallet.table.amount": "Valoare",
   "wallet.table.shop": "Magazin",
@@ -60,5 +62,11 @@
   "wallet.tx.status.paid": "Platit",
   "wallet.tx.status.approved": "Aprobata",
   "wallet.tx.status.rejected": "Respinsa",
-  "wallet.tx.status.pending": "In asteptare"
+  "wallet.tx.status.pending": "In asteptare",
+  "userinfo.upload.button": "Schimba poza",
+  "userinfo.change.password.button": "Schimba parola",
+  "userinfo.contact.us.button": "Contacteaza-ne",
+  "userinfo.terms.button": "Conditii de acord",
+  "userinfo.privacy.button": "Privacy",
+  "userinfo.logout.button": "Delogare"
 }

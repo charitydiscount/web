@@ -47,6 +47,8 @@
   "wallet.history": "History",
   "wallet.block.pending": "Pending:",
   "wallet.block.withdraw": "Withdraw",
+  "wallet.block.cashout": "Cashout",
+  "wallet.block.donate": "Donate",
   "wallet.cashback.history": "Cashback history",
   "wallet.table.date": "Date",
   "wallet.table.status": "Status",
@@ -60,5 +62,11 @@
   "wallet.tx.status.paid": "Paid",
   "wallet.tx.status.approved": "Approved",
   "wallet.tx.status.rejected": "Rejected",
-  "wallet.tx.status.pending": "Pending"
+  "wallet.tx.status.pending": "Pending",
+  "userinfo.upload.button": "Upload photo",
+  "userinfo.change.password.button": "Change password",
+  "userinfo.contact.us.button": "Contact us",
+  "userinfo.terms.button": "Terms of agreement",
+  "userinfo.privacy.button": "Privacy",
+  "userinfo.logout.button": "Logout"
 }

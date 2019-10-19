@@ -9,6 +9,7 @@ import {doLogoutAction} from "./UserActions";
 import {connect} from "react-redux";
 import FileUploader from 'react-firebase-file-uploader';
 import Modal from 'react-awesome-modal';
+import {FormattedMessage} from 'react-intl';
 
 interface IUserInfoProps {
     logout: () => void
@@ -162,7 +163,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                             borderRadius: 20,
                                                             cursor: 'pointer'
                                                         }}>
-                                                            Upload photo
+                                                            <FormattedMessage id="userinfo.upload.button"
+                                                                              defaultMessage="Upload photo"/>
                                                             <FileUploader
                                                                 hidden
                                                                 accept="image/*"
@@ -178,7 +180,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     <a href={emptyHrefLink}
                                                        onClick={this.sendPasswordResetEmail}
                                                        className="btn submit_btn userInfo_btn genric-btn circle">
-                                                        Change password
+                                                        <FormattedMessage id="userinfo.change.password.button"
+                                                                          defaultMessage="Change password"/>
                                                     </a>
                                                 </div>
                                                 <div className="br"/>
@@ -186,24 +189,31 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                             }
                                             <div className="col-md-12 text-center p_05">
                                                 <a href={"/contact"}
-                                                   className="btn submit_btn userInfo_btn genric-btn circle">Contact
-                                                    us</a>
+                                                   className="btn submit_btn userInfo_btn genric-btn circle">
+                                                    <FormattedMessage id="userinfo.contact.us.button"
+                                                                      defaultMessage="Contact us"/>
+                                                </a>
                                             </div>
                                             <div className="col-md-12 text-center p_05">
                                                 <a href={"/tos"}
-                                                   className="btn submit_btn userInfo_btn genric-btn circle">Terms
-                                                    of
-                                                    agreement</a>
+                                                   className="btn submit_btn userInfo_btn genric-btn circle">
+                                                    <FormattedMessage id="userinfo.terms.button"
+                                                                      defaultMessage="Terms of agreement"/>
+                                                </a>
                                             </div>
                                             <div className="col-md-12 text-center p_05">
                                                 <a href={"/privacy"}
-                                                   className="btn submit_btn userInfo_btn genric-btn circle">Privacy</a>
+                                                   className="btn submit_btn userInfo_btn genric-btn circle">
+                                                    <FormattedMessage id="userinfo.privacy.button"
+                                                                      defaultMessage="Privacy"/>
+                                                </a>
                                             </div>
                                             <div className="col-md-12 text-center p_05">
                                                 <a href={emptyHrefLink}
                                                    className="btn submit_btn userInfo_btn genric-btn circle"
                                                    onClick={this.handleLogOut}>
-                                                    Logout
+                                                    <FormattedMessage id="userinfo.logout.button"
+                                                                      defaultMessage="Logout"/>
                                                 </a>
                                             </div>
                                         </aside>

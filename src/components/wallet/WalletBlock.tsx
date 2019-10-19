@@ -142,10 +142,10 @@ class WalletBlock extends React.Component<IWalletBlockProps, IWalletBlockState> 
             <React.Fragment>
                 <Modal visible={this.state.withDrawVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <a href={emptyHrefLink} className="btn submit_btn" onClick={() => this.openCashoutModal()}>
-                        Cashout
+                        <FormattedMessage id="wallet.block.cashout" defaultMessage="Cashout"/>
                     </a>
                     <a href={emptyHrefLink} className="btn submit_btn" onClick={() => this.openDonateModal()}>
-                        Donate
+                        <FormattedMessage id="wallet.block.donate" defaultMessage="Donate"/>
                     </a>
                 </Modal>
                 <Modal visible={this.state.cashoutVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
