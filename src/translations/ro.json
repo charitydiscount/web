@@ -80,5 +80,11 @@
   "shop.favorite.shop.removed": "sters",
   "wallet.block.cashout.name": "Nume",
   "wallet.block.cashout.iban": "Iban",
-  "wallet.block.available.amount": "Bani disponibili: "
+  "wallet.block.available.amount": "Bani disponibili: ",
+  "contact.mail.label": "Trimite-ti-ne mesajul vostru oricand!",
+  "contact.name": "Numele...",
+  "contact.email": "Email...",
+  "contact.subject": "Subiect...",
+  "contact.message": "Mesajul...",
+  "contact.send.message.button": "Trimite mesajul"
 }

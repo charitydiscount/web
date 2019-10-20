@@ -28,7 +28,6 @@ const FooterLayout = () => {
                                 <FormattedMessage id="footer.follow"
                                                   defaultMessage="Follow us"/>
                             </h6>
-                            <p>Let us be social</p>
                             <div className="f_social">
                                 <a href="#">
                                     <i className="fa fa-facebook"></i>

@@ -80,5 +80,11 @@
   "shop.favorite.shop.removed": "removed",
   "wallet.block.cashout.name": "Full name",
   "wallet.block.cashout.iban": "Iban",
-  "wallet.block.available.amount": "Available amount: "
+  "wallet.block.available.amount": "Available amount: ",
+  "contact.mail.label": "Send us your message anytime!",
+  "contact.name": "Enter your name",
+  "contact.email": "Enter email address",
+  "contact.subject": "Enter subject",
+  "contact.message": "Enter message",
+  "contact.send.message.button": "Send messasge"
 }
