@@ -20,6 +20,14 @@
         "destination": "/landing-ro.html"
       },
       {
+        "source": "/",
+        "destination": "/landing-ro.html"
+      },
+      {
+        "source": "/app",
+        "destination": "/index.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
