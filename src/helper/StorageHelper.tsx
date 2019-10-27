@@ -30,5 +30,6 @@ export function clearStorage() {
     removeLocalStorage(StorageKey.FAVORITE_SHOPS);
     removeLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
     removeLocalStorage(StorageKey.CATEGORIES);
+    removeLocalStorage(StorageKey.REVIEWS);
     removeSessionStorage(StorageKey.AFFILIATE_CODE);
 }

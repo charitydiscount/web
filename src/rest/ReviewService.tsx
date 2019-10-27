@@ -1,5 +1,7 @@
-import { DB } from '../index';
-import { firestore } from 'firebase/app';
+import {DB} from '../index';
+import {firestore} from 'firebase/app';
+import {getLocalStorage, setLocalStorage} from "../helper/StorageHelper";
+import {StorageKey} from "../helper/Constants";
 
 export interface ReviewsDBWrapper {
     reviews: ReviewDto[];
@@ -20,7 +22,7 @@ export interface ReviewerDto {
 
 export function fetchReviews(shopUniqueCode, reviewLayout) {
     var docRef = DB.collection('reviews').doc(shopUniqueCode);
-    docRef.get().then(function(doc) {
+    docRef.get().then(function (doc) {
         if (doc.exists) {
             const data = doc.data() as ReviewsDBWrapper;
             var reviews = new Array<ReviewDto>();
@@ -46,18 +48,30 @@ export interface ReviewRating {
 }
 
 export function fetchReviewRatings(shopsLayout) {
-    const docRef = DB.collection('meta').doc('programs');
-    docRef.get().then(function(doc) {
-        if (doc.exists) {
-            let dbReviews = doc.data() as MetaReviewsDBWrapper;
-            shopsLayout.props.setRatings(
-                new Map(Object.entries(dbReviews.ratings))
-            );
-            shopsLayout.setState({
-                isLoadingRating: false,
-            });
-        }
-    });
+    const reviews = getLocalStorage(StorageKey.REVIEWS);
+    if (reviews) {
+        let dbReviews = JSON.parse(reviews) as Map<String, ReviewRating>;
+        shopsLayout.props.setRatings(
+            new Map(Object.entries(dbReviews))
+        );
+        shopsLayout.setState({
+            isLoadingRating: false,
+        });
+    } else {
+        const docRef = DB.collection('meta').doc('programs');
+        docRef.get().then(function (doc) {
+            if (doc.exists) {
+                let dbReviews = doc.data() as MetaReviewsDBWrapper;
+                setLocalStorage(StorageKey.REVIEWS, JSON.stringify(dbReviews.ratings));
+                shopsLayout.props.setRatings(
+                    new Map(Object.entries(dbReviews.ratings))
+                );
+                shopsLayout.setState({
+                    isLoadingRating: false,
+                });
+            }
+        });
+    }
 }
 
 export function updateReview(
@@ -80,7 +94,7 @@ export function updateReview(
     };
 
     var docRef = DB.collection('reviews').doc(uniqueCode);
-    docRef.get().then(function(doc) {
+    docRef.get().then(function (doc) {
         if (doc.exists) {
             docRef
                 .set(
@@ -89,9 +103,9 @@ export function updateReview(
                             [review.reviewer.userId]: review,
                         },
                     },
-                    { merge: true }
+                    {merge: true}
                 )
-                .then(function() {
+                .then(function () {
                     window.location.reload();
                 });
         } else {
@@ -103,7 +117,7 @@ export function updateReview(
                         [review.reviewer.userId]: review,
                     },
                 })
-                .then(function() {
+                .then(function () {
                     window.location.reload();
                 });
         }

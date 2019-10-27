@@ -25,22 +25,23 @@ export function fetchCauses(layout) {
             causes: JSON.parse(causes),
             isLoading: false
         });
-    }
-    var dbRef = DB.collection("cases");
-    dbRef.get()
-        .then(querySnapshot => {
-                let data = [] as CauseDto[];
-                querySnapshot.docs.forEach(value => {
-                    data.push({
-                        id: value.id,
-                        details: value.data() as CauseDetailDto
+    } else {
+        const dbRef = DB.collection("cases");
+        dbRef.get()
+            .then(querySnapshot => {
+                    let data = [] as CauseDto[];
+                    querySnapshot.docs.forEach(value => {
+                        data.push({
+                            id: value.id,
+                            details: value.data() as CauseDetailDto
+                        });
                     });
-                });
-                setLocalStorage(StorageKey.CAUSES, JSON.stringify(data));
-                layout.setState({
-                    causes: data,
-                    isLoading: false
-                });
-            }
-        )
+                    setLocalStorage(StorageKey.CAUSES, JSON.stringify(data));
+                    layout.setState({
+                        causes: data,
+                        isLoading: false
+                    });
+                }
+            )
+    }
 }
