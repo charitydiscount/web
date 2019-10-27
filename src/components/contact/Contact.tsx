@@ -6,15 +6,14 @@ import {emptyHrefLink, InputType, FirebaseTable} from "../../helper/Constants";
 import GenericInput from "../input/GenericInput";
 import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
-import {getUserKeyFromStorage, isEmptyString, isValidEmailAddress} from "../../helper/AppHelper";
+import {getUserFromStorage, isEmptyString} from "../../helper/AppHelper";
 import Modal from 'react-awesome-modal';
+import {LoginDto} from "../login/LoginComponent";
 
 interface IContactProps {
 }
 
 interface IContactState {
-    name: string,
-    email: string,
     subject: string,
     message: string,
     modalVisible: boolean,
@@ -26,8 +25,6 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
     constructor(props: IContactProps & InjectedIntlProps) {
         super(props);
         this.state = {
-            name: "",
-            email: "",
             subject: "",
             message: "",
             modalVisible: false,
@@ -47,20 +44,6 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
     }
 
     public async handleSendMessage(event) {
-        if (!isEmptyString(this.state.name)) {
-            this.setState({
-                modalVisible: true,
-                modalMessage: this.props.intl.formatMessage({id: "contact.name.wrong"})
-            });
-            return;
-        }
-        if ((!isValidEmailAddress(this.state.email))) {
-            this.setState({
-                modalVisible: true,
-                modalMessage: this.props.intl.formatMessage({id: "contact.email.wrong"})
-            });
-            return;
-        }
         if (!isEmptyString(this.state.subject)) {
             this.setState({
                 modalVisible: true,
@@ -76,18 +59,18 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
             return;
         }
 
-        this.sendMessageToDb(this.state.name, this.state.subject, this.state.email, this.state.message);
+        this.sendMessageToDb(this.state.subject, this.state.message);
     }
 
-    private sendMessageToDb(name, subject, email, message) {
-        const userKey = getUserKeyFromStorage();
-        if (userKey) {
+    private sendMessageToDb(subject, message) {
+        const user = getUserFromStorage();
+        if (user) {
             const data = {
-                name: name,
-                email: email,
+                name: (JSON.parse(user) as LoginDto).displayName,
+                email: (JSON.parse(user) as LoginDto).email,
                 message: message,
                 subject: subject,
-                userId: userKey
+                userId: (JSON.parse(user) as LoginDto).uid
             };
 
             this.setState({
@@ -99,7 +82,9 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
                 data
             ).then(() => {
                 this.setState({
-                    modalMessage: this.props.intl.formatMessage({id: "contact.sendMessage.ok"})
+                    modalMessage: this.props.intl.formatMessage({id: "contact.sendMessage.ok"}),
+                    subject: "",
+                    message: ""
                 });
             }).catch(() => {
                 this.setState({
@@ -129,6 +114,7 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
                 <section className="contact_area p_120">
                     <div className="container">
                         <div className="row">
+                            <div className="col-lg-2"/>
                             <div className="col-lg-3">
                                 <div className="contact_info">
                                     <div className="info_item">
@@ -156,35 +142,18 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-lg-9">
+                            <div className="col-lg-6">
                                 <div className="row contact_form">
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <GenericInput className={"form-control"}
-                                                          placeholder={
-                                                              this.props.intl.formatMessage({id: "contact.name"})
-                                                          }
-                                                          type={InputType.TEXT} id={"name"}
-                                                          handleChange={event => this.setState({name: event.target.value})}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <GenericInput className={"form-control"}
-                                                          placeholder={
-                                                              this.props.intl.formatMessage({id: "contact.email"})
-                                                          }
-                                                          type={InputType.EMAIL} id={"email"}
-                                                          handleChange={event => this.setState({email: event.target.value})}/>
-                                        </div>
+                                    <div className="col-md-9">
                                         <div className="form-group">
                                             <GenericInput className={"form-control"}
                                                           placeholder={
                                                               this.props.intl.formatMessage({id: "contact.subject"})
                                                           }
+                                                          value={this.state.subject}
                                                           type={InputType.TEXT} id={"subject"}
                                                           handleChange={event => this.setState({subject: event.target.value})}/>
                                         </div>
-                                    </div>
-                                    <div className="col-md-6">
                                         <div className="form-group">
                                             <textarea className="form-control"
                                                       id={"message"}
@@ -195,13 +164,13 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
                                                       }>
                                              </textarea>
                                         </div>
-                                    </div>
-                                    <div className="col-md-12 text-right">
-                                        <button type="submit" value="submit" className="btn submit_btn"
-                                                onClick={this.handleSendMessage}>
-                                            <FormattedMessage id="contact.send.message.button"
-                                                              defaultMessage="Send Message"/>
-                                        </button>
+                                        <div className="col-md-12 text-right">
+                                            <button type="submit" value="submit" className="btn submit_btn"
+                                                    onClick={this.handleSendMessage}>
+                                                <FormattedMessage id="contact.send.message.button"
+                                                                  defaultMessage="Send Message"/>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

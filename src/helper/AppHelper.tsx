@@ -28,10 +28,6 @@ export const spinnerCss = css`
     margin: 200px auto;
 `;
 
-export function isValidEmailAddress(address) {
-    return !!address.match(/.+@.+/);
-}
-
 export function isEmptyString(field) {
     return !!field && field.trim().length;
 }
@@ -45,6 +41,16 @@ export function getUserKeyFromStorage() {
         } else {
             removeLocalStorage(StorageKey.USER)
         }
+    }
+    //the app can't work without user key from storage, so when reloading it will be created again
+    window.location.reload();
+    return null;
+}
+
+export function getUserFromStorage() {
+    const user = getLocalStorage(StorageKey.USER);
+    if (user) {
+        return user;
     }
     //the app can't work without user key from storage, so when reloading it will be created again
     window.location.reload();

@@ -87,8 +87,6 @@
   "contact.subject": "Subiect...",
   "contact.message": "Mesajul...",
   "contact.send.message.button": "Trimite mesajul",
-  "contact.name.wrong" : "Numele nu este corect",
-  "contact.email.wrong" : "Email-ul nu este corect",
   "contact.subject.wrong" : "Subiectul nu este corect",
   "contact.message.wrong" : "Mesajul nu este corect",
   "contact.sendMessage.ok": "Mesajul a fost trimis",
