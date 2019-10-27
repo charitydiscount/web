@@ -1,27 +1,26 @@
-import {DB} from "../index";
-import firebase from "firebase";
+import { DB } from '../index';
+import { firestore } from 'firebase/app';
 
 export interface ReviewsDBWrapper {
-    reviews: ReviewDto[]
+    reviews: ReviewDto[];
 }
 
 export interface ReviewDto {
-    createdAt: Date,
-    description: string,
-    rating: number,
-    reviewer: ReviewerDto
+    createdAt: Date;
+    description: string;
+    rating: number;
+    reviewer: ReviewerDto;
 }
 
 export interface ReviewerDto {
-    name: string,
-    photoUrl: string,
-    userId: string
+    name: string;
+    photoUrl: string;
+    userId: string;
 }
 
-
 export function fetchReviews(shopUniqueCode, reviewLayout) {
-    var docRef = DB.collection("reviews").doc(shopUniqueCode);
-    docRef.get().then(function (doc) {
+    var docRef = DB.collection('reviews').doc(shopUniqueCode);
+    docRef.get().then(function(doc) {
         if (doc.exists) {
             const data = doc.data() as ReviewsDBWrapper;
             var reviews = new Array<ReviewDto>();
@@ -30,7 +29,7 @@ export function fetchReviews(shopUniqueCode, reviewLayout) {
             });
             if (reviews) {
                 reviewLayout.setState({
-                    reviews: reviews
+                    reviews: reviews,
                 });
             }
         }
@@ -42,57 +41,71 @@ export interface MetaReviewsDBWrapper {
 }
 
 export interface ReviewRating {
-    count: number,
-    rating: number,
+    count: number;
+    rating: number;
 }
 
 export function fetchReviewRatings(shopsLayout) {
-    const docRef = DB.collection("meta").doc("programs");
-    docRef.get().then(function (doc) {
-            if (doc.exists) {
-                let dbReviews = doc.data() as MetaReviewsDBWrapper;
-                shopsLayout.props.setRatings(new Map(Object.entries(dbReviews.ratings)));
-                shopsLayout.setState({
-                    isLoadingRating: false
-                })
-            }
+    const docRef = DB.collection('meta').doc('programs');
+    docRef.get().then(function(doc) {
+        if (doc.exists) {
+            let dbReviews = doc.data() as MetaReviewsDBWrapper;
+            shopsLayout.props.setRatings(
+                new Map(Object.entries(dbReviews.ratings))
+            );
+            shopsLayout.setState({
+                isLoadingRating: false,
+            });
         }
-    );
+    });
 }
 
-export function updateReview(uniqueCode, rating, userId, photoUrl, name, description) {
+export function updateReview(
+    uniqueCode: string,
+    rating: number,
+    userId: string,
+    photoUrl: string | null,
+    name: string,
+    description: string
+) {
     var review = {
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        createdAt: firestore.FieldValue.serverTimestamp(),
         rating: rating,
         description: description,
         reviewer: {
             name: name,
-            photoUrl: photoUrl ? photoUrl : "",
-            userId: userId
-        }
+            photoUrl: photoUrl ? photoUrl : '',
+            userId: userId,
+        },
     };
 
-    var docRef = DB.collection("reviews").doc(uniqueCode);
-    docRef.get().then(function (doc) {
+    var docRef = DB.collection('reviews').doc(uniqueCode);
+    docRef.get().then(function(doc) {
         if (doc.exists) {
-            docRef.set({
-                'reviews': {
-                    [review.reviewer.userId]: review
-                }
-            }, {merge: true})
-                .then(function () {
+            docRef
+                .set(
+                    {
+                        reviews: {
+                            [review.reviewer.userId]: review,
+                        },
+                    },
+                    { merge: true }
+                )
+                .then(function() {
                     window.location.reload();
-                })
+                });
         } else {
             // create the first entry for the document
-            docRef.set({
-                shopUniqueCode: uniqueCode,
-                'reviews': {
-                    [review.reviewer.userId]: review
-                }
-            }).then(function () {
-                window.location.reload();
-            })
+            docRef
+                .set({
+                    shopUniqueCode: uniqueCode,
+                    reviews: {
+                        [review.reviewer.userId]: review,
+                    },
+                })
+                .then(function() {
+                    window.location.reload();
+                });
         }
     });
 }

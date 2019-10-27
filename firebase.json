@@ -2,6 +2,13 @@
   "hosting": {
     "public": "build",
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "redirects": [
+      {
+        "source": "/",
+        "destination": "/landing-ro.html",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "/manifest.json",
@@ -22,10 +29,6 @@
       {
         "source": "/",
         "destination": "/landing-ro.html"
-      },
-      {
-        "source": "/app",
-        "destination": "/index.html"
       },
       {
         "source": "**",

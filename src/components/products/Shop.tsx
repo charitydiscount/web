@@ -173,7 +173,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                 </Modal>
                 <div className="col-lg-3 col-md-3 col-sm-6">
                     <div className="f_p_item">
-                        <a href={emptyHrefLink} onClick={() => this.openModal()}>
+                        <div onClick={() => this.openModal()} style={{cursor: 'pointer'}}>
                             <h6 className="blue-color">{commission}</h6>
                             <div className="f_p_img">
                                 <img
@@ -183,7 +183,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
                                 />
                             </div>
                             <h4>{this.props.name}</h4>
-                        </a>
+                        </div>
                     </div>
                 </div>
             </React.Fragment>
