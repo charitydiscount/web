@@ -86,5 +86,11 @@
   "contact.email": "Enter email address",
   "contact.subject": "Enter subject",
   "contact.message": "Enter message",
-  "contact.send.message.button": "Send messasge"
+  "contact.send.message.button": "Send messasge",
+  "contact.name.wrong" : "The name is not valid",
+  "contact.email.wrong" : "The email is not valid",
+  "contact.subject.wrong" : "The subject is not valid",
+  "contact.message.wrong" : "The message is not valid",
+  "contact.sendMessage.ok": "The message was sent",
+  "contact.sendMessage.not.ok": "The message was not sent, please try again"
 }

@@ -1,5 +1,5 @@
 import {fetchAffiliateCode} from "../rest/ConfigService";
-import {getLocalStorage} from "./StorageHelper";
+import {getLocalStorage, removeLocalStorage} from "./StorageHelper";
 import {StorageKey} from "./Constants";
 import {LoginDto} from "../components/login/LoginComponent";
 import {css} from '@emotion/core';
@@ -27,3 +27,26 @@ export const spinnerCss = css`
     display: block;
     margin: 200px auto;
 `;
+
+export function isValidEmailAddress(address) {
+    return !!address.match(/.+@.+/);
+}
+
+export function isEmptyString(field) {
+    return !!field && field.trim().length;
+}
+
+export function getUserKeyFromStorage() {
+    const user = getLocalStorage(StorageKey.USER);
+    if (user) {
+        const keyExist = (JSON.parse(user) as LoginDto).uid;
+        if (keyExist) {
+            return keyExist;
+        } else {
+            removeLocalStorage(StorageKey.USER)
+        }
+    }
+    //the app can't work without user key from storage, so when reloading it will be created again
+    window.location.reload();
+    return null;
+}

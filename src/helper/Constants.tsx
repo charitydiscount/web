@@ -10,7 +10,13 @@ export enum InputType {
     CHECKBOX = 'checkbox',
     DATE = 'date',
     TIME = 'time',
-    NUMBER = 'number'
+    NUMBER = 'number',
+    EMAIL = 'email'
+}
+
+export enum FirebaseTable {
+    CONTACT = "contact"
+
 }
 
 export enum TxType {
