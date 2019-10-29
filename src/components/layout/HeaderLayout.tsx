@@ -3,7 +3,7 @@ import {Stages} from "../helper/Stages";
 import {connect} from "react-redux";
 import {doLogoutAction} from "../login/UserActions";
 import {setShops} from "../../redux/actions/ShopsAction";
-import {getLocalStorage, setLocalStorage} from "../../helper/StorageHelper";
+import {getLocalStorage} from "../../helper/StorageHelper";
 import {emptyHrefLink, logoSrc, StorageKey} from "../../helper/Constants";
 import {fetchFavoriteShops, ShopDto} from "../../rest/ShopsService";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
@@ -11,8 +11,7 @@ import {LoginDto} from "../login/LoginComponent";
 import {Routes} from "../helper/Routes";
 import {FormattedMessage} from 'react-intl';
 import Select from 'react-select';
-import {setLangResources} from "../../redux/actions/LocaleAction";
-import {store} from "../../index";
+import {onLanguageChange} from "../../helper/AppHelper";
 
 interface IHeaderLayoutProps {
     isLoggedIn?: boolean,
@@ -43,7 +42,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
         };
         this.handleLogOut = this.handleLogOut.bind(this);
         this.loadFavoriteShops = this.loadFavoriteShops.bind(this);
-        this.onLanguageChange = this.onLanguageChange.bind(this);
     }
 
     public componentDidMount() {
@@ -71,17 +69,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
         }
         this.props.setCurrentCategory('Favorite Shops');
         this.props.setSelections([]);
-    }
-
-    onLanguageChange(event) {
-        const user = getLocalStorage(StorageKey.USER);
-        if (user) {
-            let userParsed = JSON.parse(user) as LoginDto;
-            userParsed.locale = event.value;
-            setLocalStorage(StorageKey.USER, JSON.stringify(userParsed));
-        }
-        store.dispatch(setLangResources(event.value));
-        window.location.reload();
     }
 
     render() {
@@ -127,7 +114,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                             <Select
                                 name="form-field-name"
                                 value={this.props.currentLocale}
-                                onChange={this.onLanguageChange}
+                                onChange={onLanguageChange}
                                 isSearchable={false}
                                 className={"react_select"}
                                 classNamePrefix={"react_select"}

@@ -90,5 +90,6 @@
   "contact.subject.wrong" : "Subiectul nu este corect",
   "contact.message.wrong" : "Mesajul nu este corect",
   "contact.sendMessage.ok": "Mesajul a fost trimis",
-  "contact.sendMessage.not.ok": "Mesajul nu a fost trimis, te rog incearca din nou"
+  "contact.sendMessage.not.ok": "Mesajul nu a fost trimis, te rog incearca din nou",
+  "userInfo.select.language.placeholder": "Alege limba..."
 }

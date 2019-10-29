@@ -9,10 +9,13 @@ import {doLogoutAction} from "./UserActions";
 import {connect} from "react-redux";
 import FileUploader from 'react-firebase-file-uploader';
 import Modal from 'react-awesome-modal';
-import {FormattedMessage} from 'react-intl';
+import Select from 'react-select';
+import {InjectedIntlProps, injectIntl, FormattedMessage} from 'react-intl';
+import {onLanguageChange} from "../../helper/AppHelper";
 
 interface IUserInfoProps {
-    logout: () => void
+    logout: () => void,
+    currentLocale?: string
 }
 
 interface IUserInfoState {
@@ -25,9 +28,9 @@ interface IUserInfoState {
     modalMessage: string
 }
 
-class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
+class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUserInfoState> {
 
-    constructor(props: IUserInfoProps) {
+    constructor(props: IUserInfoProps & InjectedIntlProps) {
         super(props);
         this.state = {
             photoURL: "",
@@ -104,7 +107,6 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             );
     }
 
-
     closeModal() {
         this.setState({
             modalVisible: false,
@@ -151,6 +153,21 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                             <div className="br"/>
                                         </aside>
                                         <aside className="single_sidebar_widget popular_post_widget">
+                                            <div className="col-md-12 text-center p_05">
+                                                <Select
+                                                    name="form-field-name"
+                                                    value={this.props.currentLocale}
+                                                    onChange={onLanguageChange}
+                                                    isSearchable={false}
+                                                    className={"react_select"}
+                                                    classNamePrefix={"react_select"}
+                                                    placeholder={this.props.intl.formatMessage(
+                                                        { id: 'userInfo.select.language.placeholder' }
+                                                    )}
+                                                    options={[{value: 'ro', label: 'RO'},
+                                                        {value: 'en', label: 'EN'}]}
+                                                />
+                                            </div>
                                             {this.state.providerType === ProviderType.NORMAL
                                             &&
                                             <div>
@@ -229,10 +246,17 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
 }
 
 const
+    mapStateToProps = (state: any) => {
+        return {
+            currentLocale: state.locale.langResources.language
+        }
+    };
+
+const
     mapDispatchToProps = (dispatch: any) => {
         return {
             logout: () => dispatch(doLogoutAction())
         };
     };
 
-export default connect(null, mapDispatchToProps)(UserInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(UserInfo));

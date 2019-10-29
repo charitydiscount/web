@@ -1,8 +1,10 @@
 import {fetchAffiliateCode} from "../rest/ConfigService";
-import {getLocalStorage, removeLocalStorage} from "./StorageHelper";
+import {getLocalStorage, removeLocalStorage, setLocalStorage} from "./StorageHelper";
 import {StorageKey} from "./Constants";
 import {LoginDto} from "../components/login/LoginComponent";
 import {css} from '@emotion/core';
+import {store} from "../index";
+import {setLangResources} from "../redux/actions/LocaleAction";
 
 /**
  * Used to compute 2performant rest call and redirect
@@ -55,4 +57,15 @@ export function getUserFromStorage() {
     //the app can't work without user key from storage, so when reloading it will be created again
     window.location.reload();
     return null;
+}
+
+export function onLanguageChange(event) {
+    const user = getLocalStorage(StorageKey.USER);
+    if (user) {
+        let userParsed = JSON.parse(user) as LoginDto;
+        userParsed.locale = event.value;
+        setLocalStorage(StorageKey.USER, JSON.stringify(userParsed));
+    }
+    store.dispatch(setLangResources(event.value));
+    window.location.reload();
 }

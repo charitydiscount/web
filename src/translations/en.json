@@ -90,5 +90,6 @@
   "contact.subject.wrong" : "The subject is not valid",
   "contact.message.wrong" : "The message is not valid",
   "contact.sendMessage.ok": "The message was sent",
-  "contact.sendMessage.not.ok": "The message was not sent, please try again"
+  "contact.sendMessage.not.ok": "The message was not sent, please try again",
+  "userInfo.select.language.placeholder": "Select language..."
 }
