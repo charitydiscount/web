@@ -9,11 +9,14 @@ import {computeUrl} from '../../helper/AppHelper';
 import {Link} from "react-router-dom";
 import {Routes} from "../helper/Routes";
 import {FormattedMessage} from 'react-intl';
+import {fetchPercentage} from "../../rest/ConfigService";
+
 
 interface IProductInfoState {
-    visible: boolean;
-    fShopVisible: boolean;
-    favShop: boolean
+    visible: boolean,
+    fShopVisible: boolean,
+    favShop: boolean,
+    percentage: number
 }
 
 interface IProductProps {
@@ -32,16 +35,22 @@ interface IProductProps {
 }
 
 class Shop extends React.Component<IProductProps, IProductInfoState> {
+
     constructor(props: IProductProps) {
         super(props);
         this.state = {
             visible: false,
             fShopVisible: false,
             favShop: false,
+            percentage: 0
         };
         this.updateFavoriteShopsTrue = this.updateFavoriteShopsTrue.bind(this);
         this.updateFavoriteShopsFalse = this.updateFavoriteShopsFalse.bind(this);
         isInFavoriteShops(this.props.id, this);
+    }
+
+    public componentDidMount() {
+        fetchPercentage(this);
     }
 
     closeModal() {
@@ -93,9 +102,11 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     }
 
     public render() {
-        let commission = this.props.defaultLeadCommissionAmount != null
-            ? this.props.defaultLeadCommissionAmount + ' RON'
-            : this.props.defaultSaleCommissionRate + ' %';
+        let commission;
+        commission = this.props.defaultLeadCommissionAmount != null
+            ? (parseFloat(this.props.defaultLeadCommissionAmount) * this.state.percentage).toFixed(2) + ' RON'
+            : (parseFloat(this.props.defaultSaleCommissionRate) * this.state.percentage).toFixed(2) + ' %';
+
         return (
             <React.Fragment>
                 <Modal visible={this.state.fShopVisible} effect="fadeInUp" onClickAway={() => this.closeFShopModal()}>

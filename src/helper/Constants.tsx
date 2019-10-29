@@ -15,8 +15,12 @@ export enum InputType {
 }
 
 export enum FirebaseTable {
-    CONTACT = "contact"
+    CONTACT = "contact",
+    META = "meta"
+}
 
+export enum TableDocument {
+    PERFORMANT2 = "2performant"
 }
 
 export enum TxType {
@@ -43,7 +47,7 @@ export enum StorageKey {
     REVIEWS = '/reviewsCD',
 
     //SESSION STORAGE
-    AFFILIATE_CODE = '/affiliateCodeCD'
+    PERFORMANET_2_CODE = '/performant2CodeCD'
 }
 
 export enum ProviderType {
