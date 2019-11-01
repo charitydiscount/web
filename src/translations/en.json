@@ -91,5 +91,9 @@
   "contact.message.wrong" : "The message is not valid",
   "contact.sendMessage.ok": "The message was sent",
   "contact.sendMessage.not.ok": "The message was not sent, please try again",
-  "userInfo.select.language.placeholder": "Select language..."
+  "userInfo.select.language.placeholder": "Select language...",
+  "userInfo.profile.picture.uploaded": "Profile picture uploaded successfully",
+  "userInfo.profile.picture.error": "Failed to upload. Warning! Photo size must be smaller than 5 MB",
+  "userInfo.email.reset.sent": "Email reset password sent",
+  "userInfo.email.reset.error": "Failed to send password reset email"
 }

@@ -1,9 +1,14 @@
-import {auth, fbStorage, store} from '../../index';
+import {auth, storage, store} from '../../index';
 import {NavigationsAction} from '../../redux/actions/NavigationsAction';
 import {Stages} from '../helper/Stages';
 import * as React from 'react';
-import {getLocalStorage} from "../../helper/StorageHelper";
-import {emptyHrefLink, ProviderType, StorageKey} from "../../helper/Constants";
+import {
+    emptyHrefLink,
+    facebookPictureKey,
+    noImagePath, profilePictureDefaultName,
+    profilePictureSuffix,
+    ProviderType, StorageRef
+} from "../../helper/Constants";
 import {LoginDto} from "./LoginComponent";
 import {doLogoutAction} from "./UserActions";
 import {connect} from "react-redux";
@@ -11,7 +16,8 @@ import FileUploader from 'react-firebase-file-uploader';
 import Modal from 'react-awesome-modal';
 import Select from 'react-select';
 import {InjectedIntlProps, injectIntl, FormattedMessage} from 'react-intl';
-import {onLanguageChange} from "../../helper/AppHelper";
+import {getUserFromStorage, onLanguageChange} from "../../helper/AppHelper";
+import {fetchProfilePhoto} from "../../rest/StorageService";
 
 interface IUserInfoProps {
     logout: () => void,
@@ -49,12 +55,11 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
         this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this);
     }
 
-    public componentDidMount() {
+    async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
-        const user = getLocalStorage(StorageKey.USER);
+        const user = getUserFromStorage();
         if (user) {
             const userParsed = JSON.parse(user) as LoginDto;
-
 
             this.setState({
                 photoURL: userParsed.photoURL ? userParsed.photoURL : '',
@@ -65,15 +70,20 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
             });
 
             if (!userParsed.photoURL) {
-                fbStorage.ref("profilePhotos/" + userParsed.uid)
-                    .child("profilePicture.png")
-                    .getDownloadURL()
-                    .then(url => this.setState({photoURL: url}))
-                    .catch(() => this.setState({photoURL: "/img/no-image.jpg"}));
-            } else {
-                if (this.state.photoURL.includes("facebook")) {
+                try {
+                    const response = await fetchProfilePhoto(userParsed.uid);
                     this.setState({
-                        photoURL: this.state.photoURL + "?height=200"
+                        photoURL: response as string,
+                    });
+                } catch (error) {
+                    this.setState({
+                        photoURL: noImagePath
+                    });
+                }
+            } else {
+                if (this.state.photoURL.includes(facebookPictureKey)) {
+                    this.setState({
+                        photoURL: this.state.photoURL + profilePictureSuffix
                     });
                 }
             }
@@ -92,7 +102,13 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
     handleEmailResetSent(success) {
         this.setState({
             modalVisible: true,
-            modalMessage: success ? "Email reset password sent" : "Failed to send password reset email"
+            modalMessage: success ?
+                this.props.intl.formatMessage(
+                    {id: "userInfo.email.reset.sent"}
+                ) :
+                this.props.intl.formatMessage(
+                    {id: "userInfo.email.reset.error"}
+                )
         });
     }
 
@@ -119,14 +135,19 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
     handleUploadSuccess() {
         this.setState({
             modalVisible: true,
-            modalMessage: "Profile photo uploaded successfully"
+            modalMessage: this.props.intl.formatMessage(
+                {id: "userInfo.profile.picture.uploaded"}
+            )
         });
     };
 
     handleUploadError(event) {
         this.setState({
             modalVisible: true,
-            modalMessage: "Failed to upload. Warning! Photo size must be smaller than 5 MB"
+            modalMessage:
+                this.props.intl.formatMessage(
+                    {id: "userInfo.profile.picture.error"}
+                )
         });
     };
 
@@ -162,7 +183,7 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                                                     className={"react_select"}
                                                     classNamePrefix={"react_select"}
                                                     placeholder={this.props.intl.formatMessage(
-                                                        { id: 'userInfo.select.language.placeholder' }
+                                                        {id: 'userInfo.select.language.placeholder'}
                                                     )}
                                                     options={[{value: 'ro', label: 'RO'},
                                                         {value: 'en', label: 'EN'}]}
@@ -185,8 +206,8 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                                                             <FileUploader
                                                                 hidden
                                                                 accept="image/*"
-                                                                filename={"profilePicture.png"}
-                                                                storageRef={fbStorage.ref('profilePhotos/' + this.state.userId)}
+                                                                filename={profilePictureDefaultName}
+                                                                storageRef={storage.ref(StorageRef.PROFILE_PHOTOS + this.state.userId)}
                                                                 onUploadError={this.handleUploadError}
                                                                 onUploadSuccess={this.handleUploadSuccess}
                                                             />

@@ -11,7 +11,7 @@ export interface CategoriesDBWrapper {
 }
 
 export function fetchCategories() {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         const categories = getLocalStorage(StorageKey.CATEGORIES);
         if (categories) {
             try {
@@ -43,8 +43,7 @@ export function fetchCategories() {
                 throw new Error("Fetch error for categories from meta");
             }
         }).catch(() => {
-            throw new Error("Fetch error for categories from meta");
+            reject();
         });
-
     });
 }

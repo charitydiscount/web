@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import {doLogoutAction} from "../login/UserActions";
 import {setShops} from "../../redux/actions/ShopsAction";
 import {getLocalStorage} from "../../helper/StorageHelper";
-import {emptyHrefLink, logoSrc, StorageKey} from "../../helper/Constants";
+import {emptyHrefLink, logoPath, StorageKey} from "../../helper/Constants";
 import {fetchFavoriteShops, ShopDto} from "../../rest/ShopsService";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 import {LoginDto} from "../login/LoginComponent";
@@ -132,7 +132,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                             {(isLoggedIn || (!isLoggedIn && (isTos || isPrivacy)))
                             &&
                             <a className="navbar-brand logo_h" href={emptyHrefLink}>
-                                <img src={logoSrc} alt=""/>
+                                <img src={logoPath} alt=""/>
                             </a>
                             }
                             {isLoggedIn

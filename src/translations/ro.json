@@ -87,9 +87,13 @@
   "contact.subject": "Subiect...",
   "contact.message": "Mesajul...",
   "contact.send.message.button": "Trimite mesajul",
-  "contact.subject.wrong" : "Subiectul nu este corect",
-  "contact.message.wrong" : "Mesajul nu este corect",
+  "contact.subject.wrong": "Subiectul nu este corect",
+  "contact.message.wrong": "Mesajul nu este corect",
   "contact.sendMessage.ok": "Mesajul a fost trimis",
   "contact.sendMessage.not.ok": "Mesajul nu a fost trimis, te rog incearca din nou",
-  "userInfo.select.language.placeholder": "Alege limba..."
+  "userInfo.select.language.placeholder": "Alege limba...",
+  "userInfo.profile.picture.uploaded": "Poza de profil s-a incarcat cu success",
+  "userInfo.profile.picture.error": "Incarcarea nu a reusit, dimensiunea pozei trebuie sa fie mai mica de 5MB",
+  "userInfo.email.reset.sent": "A fost trimis un mail de recuperare a parolei",
+  "userInfo.email.reset.error": "Mail-ul de recuperare a parolei nu a putut fi trimis"
 }

@@ -1,8 +1,3 @@
-export enum ButtonType {
-    SUBMIT = 'submit',
-    BUTTON = 'button',
-}
-
 export enum InputType {
     TEXT = 'text',
     NUMBER = 'number',
@@ -17,6 +12,10 @@ export enum FirebaseTable {
 export enum TableDocument {
     PERFORMANT2 = "2performant",
     PROGRAMS = "programs"
+}
+
+export enum StorageRef {
+    PROFILE_PHOTOS = "profilePhotos/"
 }
 
 export enum TxType {
@@ -53,4 +52,8 @@ export enum ProviderType {
 }
 
 export const emptyHrefLink = '#';
-export const logoSrc = 'img/logo.png';
+export const logoPath = 'img/logo.png';
+export const noImagePath = "/img/no-image.jpg";
+export const profilePictureSuffix = "?height=200";
+export const facebookPictureKey = "facebook";
+export const profilePictureDefaultName = "profilePicture.png";

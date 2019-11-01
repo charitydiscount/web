@@ -37,7 +37,7 @@ export const store = createStore(
 export const firebaseApp = firebase.initializeApp(config);
 export const DB = firebaseApp.firestore();
 export const auth = firebaseApp.auth();
-export const fbStorage = firebaseApp.storage();
+export const storage = firebaseApp.storage();
 
 //----------------------------------------------------------------------------------------------------------------------
 
