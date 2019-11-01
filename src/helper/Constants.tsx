@@ -5,11 +5,6 @@ export enum ButtonType {
 
 export enum InputType {
     TEXT = 'text',
-    PASSWORD = 'password',
-    RADIO = 'radio',
-    CHECKBOX = 'checkbox',
-    DATE = 'date',
-    TIME = 'time',
     NUMBER = 'number',
     EMAIL = 'email'
 }
@@ -20,7 +15,8 @@ export enum FirebaseTable {
 }
 
 export enum TableDocument {
-    PERFORMANT2 = "2performant"
+    PERFORMANT2 = "2performant",
+    PROGRAMS = "programs"
 }
 
 export enum TxType {

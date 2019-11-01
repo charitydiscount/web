@@ -7,6 +7,8 @@ import {CategoryDto, fetchCategories} from "../../rest/CategoriesService";
 import {connect} from "react-redux";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 import {FormattedMessage} from 'react-intl';
+import FadeLoader from 'react-spinners/FadeLoader';
+import {spinnerCss} from "../../helper/AppHelper";
 
 interface ICategoryProps {
     currentCategory?: String,
@@ -33,9 +35,21 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
         this.onChildToggle = this.onChildToggle.bind(this);
     }
 
-    public componentDidMount() {
-        fetchCategories(this);
+    async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
+        try {
+            let response = await fetchCategories();
+            this.setState(
+                {
+                    categories: response as CategoryDto[],
+                    isLoading: false
+                });
+        } catch (error) {
+            this.setState(
+                {
+                    isLoading: true
+                });
+        }
     }
 
     /**
@@ -83,6 +97,11 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
                                 }
                             </React.Fragment>
                             }
+                            <FadeLoader
+                                loading={this.state.isLoading}
+                                color={'#1641ff'}
+                                css={spinnerCss}
+                            />
                         </ul>
                     </div>
                 </aside>
