@@ -36,15 +36,13 @@ export function fetchCategories() {
                     var categories = doc.data() as CategoriesDBWrapper;
                     categories.categories.forEach(value => data.push({category: value}));
                     setLocalStorage(StorageKey.CATEGORIES, JSON.stringify(data));
-                    if (data) {
-                        resolve(data);
-                        return;
-                    }
+                    resolve(data);
                 } else {
-                    throw new Error("Fetch error for categories from meta");
+                    reject(); //entry doesn't exist in DB
                 }
-            }).catch(() => {
-            reject();
-        });
+            })
+            .catch(() => {
+                reject(); //DB not working
+            });
     });
 }

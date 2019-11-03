@@ -64,6 +64,7 @@ export function fetchFavoriteShops() {
 export function verifyInFavoriteShops(shopId) {
     const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
     if (favoriteShops) {
+        //TODO: verify in storage is ok
         let favShops = JSON.parse(favoriteShops) as ShopDto[];
         let shopFound = favShops.find(value => value.id === shopId);
         if (shopFound) {
@@ -110,7 +111,7 @@ export function updateFavoriteShops(favShopName, remove) {
                                 resolve(true);
                             })
                             .catch(() => {
-                                reject();
+                                reject(); //DB not working
                             })
                     } else {
                         reject();

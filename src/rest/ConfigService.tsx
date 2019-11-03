@@ -49,10 +49,11 @@ export function fetchPercentage() {
                     setSessionStorage(StorageKey.PERFORMANET_2_CODE, JSON.stringify(data));
                     resolve(data.percentage);
                 } else {
-                    reject();
+                    reject(); //entry can't be found in DB
                 }
-            }).catch(() => {
-            reject();
-        });
+            })
+            .catch(() => {
+                reject(); //DB not working
+            });
     }))
 }

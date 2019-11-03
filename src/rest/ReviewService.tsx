@@ -32,11 +32,11 @@ export function fetchReviews(shopUniqueCode) {
                     });
                     resolve(reviews);
                 } else {
-                    reject();
+                    reject(); //entry can't be found in DB
                 }
             })
             .catch(() => {
-                reject(); //DB call not working
+                reject(); //DB not working
             });
     }))
 }
