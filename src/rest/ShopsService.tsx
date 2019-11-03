@@ -1,7 +1,7 @@
 import {DB} from "../index";
 import {getLocalStorage, removeLocalStorage, setLocalStorage} from "../helper/StorageHelper";
-import {StorageKey} from "../helper/Constants";
-import {LoginDto} from "../components/login/LoginComponent";
+import {FirebaseTable, StorageKey} from "../helper/Constants";
+import {getUserKeyFromStorage} from "../helper/AppHelper";
 
 export interface FavoriteShopsDto {
     programs: ShopDto[],
@@ -41,108 +41,71 @@ export var ShopDtoMap = {
 };
 
 
-export function fetchFavoriteShops(headerLayout) {
-    var user = getLocalStorage(StorageKey.USER);
-    if (user) {
-        var keyExist = (JSON.parse(user) as LoginDto).uid;
+export function fetchFavoriteShops() {
+    return new Promise((resolve, reject) => {
+        var keyExist = getUserKeyFromStorage();
         if (keyExist) {
-            var docRef = DB.collection("favoriteShops").doc(keyExist);
-            docRef.get().then(function (doc) {
-                if (doc.exists) {
-                    const data = doc.data() as FavoriteShopsDto;
-                    setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(data.programs));
-                    headerLayout.props.setShops(data.programs);
-                    return;
-                }
-            }).catch(function (error) {
-                console.log("Error getting document:", error);
-            });
-        }
-    }
-    headerLayout.props.setShops(new Array<ShopDto>());
-}
-
-export function isInFavoriteShops(shopdId, shopLayout) {
-    var storageItems = getLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
-    var fShopsId;
-    if (storageItems) {
-        fShopsId = storageItems.split(",");
-    } else {
-        var user = getLocalStorage(StorageKey.USER);
-        if (user) {
-            var keyExist = (JSON.parse(user) as LoginDto).uid;
-            if (keyExist) {
-                var docRef = DB.collection("favoriteShops").doc(keyExist);
-                docRef.get().then(function (doc) {
+            DB.collection(FirebaseTable.FAVORITE_SHOPS).doc(keyExist).get()
+                .then(function (doc) {
                     if (doc.exists) {
                         const data = doc.data() as FavoriteShopsDto;
-                        fShopsId = data.programs.map(fs => fs.id);
-                        setLocalStorage(StorageKey.FAVORITE_SHOPS_ID, fShopsId);
-                        if (fShopsId && fShopsId.includes(shopdId)) {
-                            shopLayout.state = ({
-                                favShop: true
-                            });
-                            return;
-                        }
+                        setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(data.programs));
+                        resolve();
+                    } else {
+                        reject();
                     }
-                });
-            }
+                }).catch(() => {
+                reject();
+            });
         }
-    }
-
-    if (fShopsId && fShopsId.includes("" + shopdId)) {
-        shopLayout.state = {
-            favShop: true
-        };
-    }
+    });
 }
 
-export function updateFavoriteShops(name, remove) {
-    const user = getLocalStorage(StorageKey.USER);
-    if (user) {
-        const keyExist = (JSON.parse(user) as LoginDto).uid;
-        if (keyExist) {
-            const shopsStorage = getLocalStorage(StorageKey.SHOPS);
-            if (shopsStorage) {
-                const shops = JSON.parse(shopsStorage) as Array<ShopDto>;
-                if (shops) {
-                    let favoriteShop = shops.find(shop => shop.name === name) as ShopDto;
-                    if (favoriteShop) {
-                        const docRef = DB.collection("favoriteShops").doc(keyExist);
-                        docRef.get().then(function (doc) {
-                            if (doc.exists) {
-                                let wholeObject = doc.data() as FavoriteShopsDto;
-                                let favoriteShops = wholeObject.programs as ShopDto[];
-                                if (remove) {
-                                    favoriteShops = favoriteShops.filter(value => value.name !== favoriteShop.name);
-                                } else {
-                                    favoriteShops.push(favoriteShop);
-                                }
-                                docRef.update({
-                                    programs: favoriteShops
-                                })
-                            } else {
-                                // create the document as a list
-                                const favShops = [] as ShopDto[];
-                                favShops.push(favoriteShop);
-                                docRef.set({
-                                    programs: favShops,
-                                    userId: keyExist
-                                })
-                            }
+export function verifyInFavoriteShops(shopId) {
+    const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
+    if (favoriteShops) {
+        let favShops = JSON.parse(favoriteShops) as ShopDto[];
+        let shopFound = favShops.find(value => value.id === shopId);
+        if (shopFound) {
+            return true;
+        }
+    }
+    return false;
+}
+
+export function updateFavoriteShops(favShopName, remove) {
+    let keyExist = getUserKeyFromStorage();
+    if (keyExist) {
+        const shopsStorage = getLocalStorage(StorageKey.SHOPS);
+        if (shopsStorage) {
+            const shops = JSON.parse(shopsStorage) as Array<ShopDto>;
+            if (shops) {
+                let favoriteShop = shops.find(shop => shop.name === favShopName) as ShopDto;
+                if (favoriteShop) {
+                    const docRef = DB.collection(FirebaseTable.FAVORITE_SHOPS).doc(keyExist);
+                    docRef.get().then(function (doc) {
+                        let favShopList = [] as ShopDto[];
+                        if (doc.exists) {
+                            let wholeObject = doc.data() as FavoriteShopsDto;
+                            favShopList = wholeObject.programs as ShopDto[];
                             if (remove) {
-                                const stKeyFavShop = getLocalStorage(StorageKey.FAVORITE_SHOPS);
-                                if (stKeyFavShop) {
-                                    let favShops = JSON.parse(stKeyFavShop) as ShopDto[];
-                                    favShops = favShops.filter(value => value.name !== favoriteShop.name);
-                                    setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favShops));
-                                }
+                                favShopList = favShopList.filter(value => value.name !== favoriteShop.name);
                             } else {
-                                removeLocalStorage(StorageKey.FAVORITE_SHOPS);
+                                favShopList.push(favoriteShop);
                             }
-                            removeLocalStorage(StorageKey.FAVORITE_SHOPS_ID);
-                        });
-                    }
+                            docRef.update({
+                                programs: favShopList
+                            })
+                        } else {
+                            // create the document as a list
+                            favShopList.push(favoriteShop);
+                            docRef.set({
+                                programs: favShopList,
+                                userId: keyExist
+                            });
+                        }
+                        setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favShopList));
+                    });
                 }
             }
         }

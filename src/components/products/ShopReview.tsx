@@ -5,7 +5,7 @@ import {Stages} from "../helper/Stages";
 import {computeUrl} from "../../helper/AppHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
 import Modal from 'react-awesome-modal';
-import {getShopById, ShopDto, updateFavoriteShops} from "../../rest/ShopsService";
+import {getShopById, ShopDto, updateFavoriteShops, verifyInFavoriteShops} from "../../rest/ShopsService";
 import Review from "./Review";
 import {fetchReviews, ReviewDto, updateReview} from "../../rest/ReviewService";
 import {getLocalStorage} from "../../helper/StorageHelper";
@@ -68,7 +68,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                 this.props.intl.formatMessage({id: "shop.favorite.shop"}) +
                 this.state.name + ' ' +
                 this.props.intl.formatMessage({id: "shop.favorite.shop.added"})
-                ,
+            ,
             favShop: true
         });
         this.openModal();
@@ -84,7 +84,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                 this.props.intl.formatMessage({id: "shop.favorite.shop"}) +
                 this.state.name + ' ' +
                 this.props.intl.formatMessage({id: "shop.favorite.shop.removed"})
-                ,
+            ,
             favShop: false
         });
         this.openModal();
@@ -96,6 +96,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
 
         const shop = getShopById(this.props.match.params.id) as ShopDto;
+        let favShop = verifyInFavoriteShops(shop.id);
         this.setState({
                 fShopVisible: false,
                 logoSrc: shop.logoPath,
@@ -103,7 +104,8 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                 id: shop.id,
                 category: shop.category,
                 mainUrl: shop.mainUrl,
-                uniqueCode: shop.uniqueCode
+                uniqueCode: shop.uniqueCode,
+                favShop: favShop
             }
         );
         fetchReviews(shop.uniqueCode, this);

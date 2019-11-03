@@ -2,8 +2,7 @@ import * as React from 'react';
 import Modal from 'react-awesome-modal';
 import {emptyHrefLink} from '../../helper/Constants';
 import {
-    isInFavoriteShops,
-    updateFavoriteShops,
+    updateFavoriteShops, verifyInFavoriteShops,
 } from '../../rest/ShopsService';
 import {computeUrl} from '../../helper/AppHelper';
 import {Link} from "react-router-dom";
@@ -46,11 +45,25 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
         };
         this.updateFavoriteShopsTrue = this.updateFavoriteShopsTrue.bind(this);
         this.updateFavoriteShopsFalse = this.updateFavoriteShopsFalse.bind(this);
-        isInFavoriteShops(this.props.id, this);
     }
 
-    public componentDidMount() {
-        fetchPercentage(this);
+    async componentDidMount() {
+        try {
+            let response = await fetchPercentage();
+            this.setState({
+                percentage: response as number
+            })
+        } catch (error) {
+            //percentage will be hardcoded to our default if something fails
+            this.setState({
+                percentage: 0.6
+            })
+        }
+        if (verifyInFavoriteShops(this.props.id)) {
+            this.setState({
+                favShop: true
+            })
+        }
     }
 
     closeModal() {

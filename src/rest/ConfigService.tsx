@@ -1,4 +1,4 @@
-import {getSessionStorage, setSessionStorage} from "../helper/StorageHelper";
+import {getSessionStorage, removeSessionStorage, setSessionStorage} from "../helper/StorageHelper";
 import {FirebaseTable, StorageKey, TableDocument} from "../helper/Constants";
 import {DB} from "../index";
 
@@ -28,24 +28,31 @@ export function fetchAffiliateCode() {
     }
 }
 
-export  function fetchPercentage(currentShop) {
-    const code = getSessionStorage(StorageKey.PERFORMANET_2_CODE);
-    if (code) {
-        currentShop.setState({
-            percentage: (JSON.parse(code) as ConfigDto).percentage
-        });
-    } else {
-        var docRef = DB.collection(FirebaseTable.META).doc(TableDocument.PERFORMANT2);
-        docRef.get().then(function (doc) {
-            if (doc.exists) {
-                var data = doc.data() as ConfigDto;
-                setSessionStorage(StorageKey.PERFORMANET_2_CODE, JSON.stringify(data));
-                currentShop.setState({
-                    percentage: data.percentage
-                })
+export function fetchPercentage() {
+    return new Promise(((resolve, reject) => {
+        let code = getSessionStorage(StorageKey.PERFORMANET_2_CODE);
+        if (code) {
+            let stEntry = JSON.parse(code);
+            //verify localStorage valid
+            if (stEntry.length <= 0 || stEntry[0] === undefined || !stEntry[0].hasOwnProperty("percentage")) {
+                removeSessionStorage(StorageKey.PERFORMANET_2_CODE);
+            } else {
+                resolve((JSON.parse(code) as ConfigDto).percentage);
+                return;
             }
-        }).catch(function (error) {
-            console.log("Error getting document:", error);
+        }
+
+        DB.collection(FirebaseTable.META).doc(TableDocument.PERFORMANT2).get()
+            .then(doc => {
+                if (doc.exists) {
+                    var data = doc.data() as ConfigDto;
+                    setSessionStorage(StorageKey.PERFORMANET_2_CODE, JSON.stringify(data));
+                    resolve(data.percentage);
+                } else {
+                    reject();
+                }
+            }).catch(() => {
+            reject();
         });
-    }
+    }))
 }

@@ -28,21 +28,22 @@ export function fetchCategories() {
             }
         }
 
-        DB.collection(FirebaseTable.META).doc(TableDocument.PROGRAMS).get().then(doc => {
-            if (doc.exists) {
-                let data = [] as CategoryDto[];
-                data.push({category: "All"});
-                var categories = doc.data() as CategoriesDBWrapper;
-                categories.categories.forEach(value => data.push({category: value}));
-                setLocalStorage(StorageKey.CATEGORIES, JSON.stringify(data));
-                if (data) {
-                    resolve(data);
-                    return;
+        DB.collection(FirebaseTable.META).doc(TableDocument.PROGRAMS).get()
+            .then(doc => {
+                if (doc.exists) {
+                    let data = [] as CategoryDto[];
+                    data.push({category: "All"});
+                    var categories = doc.data() as CategoriesDBWrapper;
+                    categories.categories.forEach(value => data.push({category: value}));
+                    setLocalStorage(StorageKey.CATEGORIES, JSON.stringify(data));
+                    if (data) {
+                        resolve(data);
+                        return;
+                    }
+                } else {
+                    throw new Error("Fetch error for categories from meta");
                 }
-            } else {
-                throw new Error("Fetch error for categories from meta");
-            }
-        }).catch(() => {
+            }).catch(() => {
             reject();
         });
     });

@@ -6,7 +6,8 @@ export enum InputType {
 
 export enum FirebaseTable {
     CONTACT = "contact",
-    META = "meta"
+    META = "meta",
+    FAVORITE_SHOPS = "favoriteShops"
 }
 
 export enum TableDocument {
@@ -36,7 +37,6 @@ export enum StorageKey {
     CATEGORIES = '/categoriesCD',
     SHOPS = '/shopsCD',
     FAVORITE_SHOPS = '/favoriteShopsCD',
-    FAVORITE_SHOPS_ID = '/favoriteShopsIdCD',
     CAUSES = '/causesCD',
     USER = '/userCD',
     REVIEWS = '/reviewsCD',

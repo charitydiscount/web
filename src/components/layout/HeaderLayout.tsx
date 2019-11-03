@@ -5,7 +5,7 @@ import {doLogoutAction} from "../login/UserActions";
 import {setShops} from "../../redux/actions/ShopsAction";
 import {getLocalStorage} from "../../helper/StorageHelper";
 import {emptyHrefLink, logoPath, StorageKey} from "../../helper/Constants";
-import {fetchFavoriteShops, ShopDto} from "../../rest/ShopsService";
+import {ShopDto} from "../../rest/ShopsService";
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
 import {LoginDto} from "../login/LoginComponent";
 import {Routes} from "../helper/Routes";
@@ -64,8 +64,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
         const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
         if (favoriteShops) {
             this.props.setShops(JSON.parse(favoriteShops));
-        } else {
-            fetchFavoriteShops(this);
         }
         this.props.setCurrentCategory('Favorite Shops');
         this.props.setSelections([]);

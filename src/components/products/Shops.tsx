@@ -11,7 +11,7 @@ import {getLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
 import ReactPaginate from 'react-paginate';
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
-import {fetchShops, ShopDto} from "../../rest/ShopsService";
+import {fetchFavoriteShops, fetchShops, ShopDto} from "../../rest/ShopsService";
 import {fetchReviewRatings, ReviewRating} from "../../rest/ReviewService";
 import FadeLoader from 'react-spinners/FadeLoader';
 import {spinnerCss} from "../../helper/AppHelper";
@@ -40,7 +40,6 @@ interface IShopsState {
 
 const pageLimit = 24; // products per page
 
-
 class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState> {
 
     constructor(props: IShopsProps & InjectedIntlProps) {
@@ -53,9 +52,14 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
         this.updatePageNumber = this.updatePageNumber.bind(this);
     }
 
-    public componentDidMount() {
+    async componentDidMount() {
         fetchShops(this);
         fetchReviewRatings(this);
+        try {
+            await fetchFavoriteShops();
+        } catch (error) {
+            //favorite shops not loaded
+        }
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
 
