@@ -102,7 +102,9 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
             let response = await updateFavoriteShops(this.props.name, false);
             if (response) {
                 this.closeModal();
-                this.openFShopModal(this.props.intl.formatMessage({id: "review.update.message"}));
+                this.openFShopModal(this.props.intl.formatMessage({id: "shop.favorite.shop"}) +
+                    this.props.name + ' ' +
+                    this.props.intl.formatMessage({id: "shop.favorite.shop.added"}));
                 this.setState({
                     favShop: true
                 });
@@ -121,7 +123,9 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
             let response = await updateFavoriteShops(this.props.name, true);
             if (response) {
                 this.closeModal();
-                this.openFShopModal(this.props.intl.formatMessage({id: "review.update.message"}));
+                this.openFShopModal(this.props.intl.formatMessage({id: "shop.favorite.shop"}) +
+                    this.props.name + ' ' +
+                    this.props.intl.formatMessage({id: "shop.favorite.shop.removed"}));
                 this.setState({
                     favShop: false
                 });
