@@ -9,13 +9,14 @@ import {Link} from "react-router-dom";
 import {Routes} from "../helper/Routes";
 import {FormattedMessage} from 'react-intl';
 import {fetchPercentage} from "../../rest/ConfigService";
-
+import {InjectedIntlProps, injectIntl} from "react-intl";
 
 interface IProductInfoState {
     visible: boolean,
     fShopVisible: boolean,
     favShop: boolean,
-    percentage: number
+    percentage: number,
+    favShopModalMessage: string
 }
 
 interface IProductProps {
@@ -33,7 +34,7 @@ interface IProductProps {
     totalReviews: number
 }
 
-class Shop extends React.Component<IProductProps, IProductInfoState> {
+class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductInfoState> {
 
     constructor(props: IProductProps) {
         super(props);
@@ -41,7 +42,8 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
             visible: false,
             fShopVisible: false,
             favShop: false,
-            percentage: 0
+            percentage: 0,
+            favShopModalMessage: ''
         };
         this.updateFavoriteShopsTrue = this.updateFavoriteShopsTrue.bind(this);
         this.updateFavoriteShopsFalse = this.updateFavoriteShopsFalse.bind(this);
@@ -74,13 +76,15 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
 
     closeFShopModal() {
         this.setState({
-            fShopVisible: false
+            fShopVisible: false,
+            favShopModalMessage: ''
         });
     }
 
-    openFShopModal() {
+    openFShopModal(message) {
         this.setState({
-            fShopVisible: true
+            fShopVisible: true,
+            favShopModalMessage: message
         });
     }
 
@@ -93,25 +97,39 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     /**
      * Used to add favorite shops to DB
      */
-    public updateFavoriteShopsTrue() {
-        this.closeModal();
-        this.openFShopModal();
-        this.setState({
-            favShop: true
-        });
-        updateFavoriteShops(this.props.name, false);
+    async updateFavoriteShopsTrue() {
+        try {
+            let response = await updateFavoriteShops(this.props.name, false);
+            if (response) {
+                this.closeModal();
+                this.openFShopModal(this.props.intl.formatMessage({id: "review.update.message"}));
+                this.setState({
+                    favShop: true
+                });
+            }
+        } catch (error) {
+            this.closeModal();
+            this.openFShopModal(this.props.intl.formatMessage({id: "favorite.shop.failed.to.update"}));
+        }
     }
 
     /**
      * Used to remove favorite shops from DB
      */
-    public updateFavoriteShopsFalse() {
-        this.closeModal();
-        this.openFShopModal();
-        this.setState({
-            favShop: false
-        });
-        updateFavoriteShops(this.props.name, true);
+    async updateFavoriteShopsFalse() {
+        try {
+            let response = await updateFavoriteShops(this.props.name, true);
+            if (response) {
+                this.closeModal();
+                this.openFShopModal(this.props.intl.formatMessage({id: "review.update.message"}));
+                this.setState({
+                    favShop: false
+                });
+            }
+        } catch (error) {
+            this.closeModal();
+            this.openFShopModal(this.props.intl.formatMessage({id: "favorite.shop.failed.to.update"}));
+        }
     }
 
     public render() {
@@ -124,11 +142,7 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
             <React.Fragment>
                 <Modal visible={this.state.fShopVisible} effect="fadeInUp" onClickAway={() => this.closeFShopModal()}>
                     <h3 style={{padding: 15}}>
-                        <FormattedMessage id={"shop.favorite.shop"} defaultMessage="Favorite shop: "/>
-                        {this.props.name} {this.state.favShop ?
-                        <FormattedMessage id={"shop.favorite.shop.added"} defaultMessage="added"/>
-                        :
-                        <FormattedMessage id={"shop.favorite.shop.removed"} defaultMessage="removed"/>}
+                        {this.state.favShopModalMessage}
                     </h3>
                 </Modal>
                 <Modal visible={this.state.visible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
@@ -215,4 +229,4 @@ class Shop extends React.Component<IProductProps, IProductInfoState> {
     }
 }
 
-export default Shop;
+export default (injectIntl(Shop));

@@ -2,13 +2,12 @@ import * as React from "react";
 import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
-import {computeUrl} from "../../helper/AppHelper";
-import {emptyHrefLink, StorageKey} from "../../helper/Constants";
+import {computeUrl, getUserFromStorage} from "../../helper/AppHelper";
+import {emptyHrefLink} from "../../helper/Constants";
 import Modal from 'react-awesome-modal';
 import {getShopById, ShopDto, updateFavoriteShops, verifyInFavoriteShops} from "../../rest/ShopsService";
 import Review from "./Review";
 import {fetchReviews, ReviewDto, updateReview} from "../../rest/ReviewService";
-import {getLocalStorage} from "../../helper/StorageHelper";
 import {LoginDto} from "../login/LoginComponent";
 import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
@@ -53,46 +52,46 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
         this.updateFavoriteShopsTrue = this.updateFavoriteShopsTrue.bind(this);
         this.updateFavoriteShopsFalse = this.updateFavoriteShopsFalse.bind(this);
         this.updateCurrentReview = this.updateCurrentReview.bind(this);
-        this.handleTextAreaChange = this.handleTextAreaChange.bind(this);
         this.handleStarFocusEnter = this.handleStarFocusEnter.bind(this);
         this.handleStarFocusRemove = this.handleStarFocusRemove.bind(this);
+        this.handleShowModalMessage = this.handleShowModalMessage.bind(this);
     }
 
 
     /**
      * Used to add favorite shops to DB
      */
-    public updateFavoriteShopsTrue() {
-        this.setState({
-            modalMessage:
-                this.props.intl.formatMessage({id: "shop.favorite.shop"}) +
-                this.state.name + ' ' +
-                this.props.intl.formatMessage({id: "shop.favorite.shop.added"})
-            ,
-            favShop: true
-        });
-        this.openModal();
-        updateFavoriteShops(this.state.name, false);
+    async updateFavoriteShopsTrue() {
+        try {
+            let response = await updateFavoriteShops(this.state.name, false);
+            if (response) {
+                this.handleShowModalMessage(this.props.intl.formatMessage({id: "shop.favorite.shop"}) +
+                    this.state.name + ' ' +
+                    this.props.intl.formatMessage({id: "shop.favorite.shop.added"}), true);
+            }
+        } catch (error) {
+            this.handleShowModalMessage(this.props.intl.formatMessage({id: "favorite.shop.failed.to.update"}), true);
+        }
     }
 
     /**
      * Used to remove favorite shops from DB
      */
-    public updateFavoriteShopsFalse() {
-        this.setState({
-            modalMessage:
-                this.props.intl.formatMessage({id: "shop.favorite.shop"}) +
-                this.state.name + ' ' +
-                this.props.intl.formatMessage({id: "shop.favorite.shop.removed"})
-            ,
-            favShop: false
-        });
-        this.openModal();
-        updateFavoriteShops(this.state.name, true);
+    async updateFavoriteShopsFalse() {
+        try {
+            let response = await updateFavoriteShops(this.state.name, true);
+            if (response) {
+                this.handleShowModalMessage(this.props.intl.formatMessage({id: "shop.favorite.shop"}) +
+                    this.state.name + ' ' +
+                    this.props.intl.formatMessage({id: "shop.favorite.shop.removed"}), false);
+            }
+        } catch (error) {
+            this.handleShowModalMessage(this.props.intl.formatMessage({id: "favorite.shop.failed.to.update"}), false);
+        }
     }
 
 
-    public componentDidMount() {
+    async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
 
         const shop = getShopById(this.props.match.params.id) as ShopDto;
@@ -108,7 +107,18 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                 favShop: favShop
             }
         );
-        fetchReviews(shop.uniqueCode, this);
+
+        try {
+            let response = await fetchReviews(shop.uniqueCode);
+            if (response) {
+                this.setState({
+                    reviews: response as Array<ReviewDto>
+                });
+            }
+        } catch (error) {
+            //reviews won't be loaded
+        }
+
     }
 
     public componentWillUnmount() {
@@ -119,6 +129,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
         this.setState({
             fShopVisible: false
         });
+        window.location.reload();
     }
 
     openModal() {
@@ -127,29 +138,40 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
         });
     }
 
-    updateCurrentReview() {
+    async updateCurrentReview() {
         if ((this.state.description && this.state.description.length > 0) && this.state.rating > 0) {
-            const userSt = getLocalStorage(StorageKey.USER);
-            if (userSt) {
-                const user = JSON.parse(userSt) as LoginDto;
-                if (user) {
-                    updateReview(this.state.uniqueCode, this.state.rating, user.uid,
-                        user.photoURL, user.displayName, this.state.description);
+            const user = getUserFromStorage();
+            if (user) {
+                const userParsed = JSON.parse(user) as LoginDto;
+                if (userParsed) {
+                    try {
+                        let response = await updateReview(this.state.uniqueCode, this.state.rating, userParsed.uid,
+                            userParsed.photoURL, userParsed.displayName, this.state.description);
+                        if (response) {
+                            this.handleShowModalMessage(this.props.intl.formatMessage({id: "review.update.message"}), null);
+                        }
+                    } catch (error) {
+                        this.handleShowModalMessage(this.props.intl.formatMessage({id: "review.failed.to.update.error.message"}), null);
+                    }
                 }
             }
         } else {
-            this.setState({
-                modalMessage: "Description and rating must not be empty"
-            });
-            this.openModal();
+            this.handleShowModalMessage(this.props.intl.formatMessage({id: "review.error.message"}), null);
         }
     }
 
-    handleTextAreaChange(event) {
-        this.setState(
-            {
-                description: event.target.value
+    handleShowModalMessage(message, favShop) {
+        if (favShop !== null) {
+            this.setState({
+                modalMessage: message,
+                favShop: favShop
             });
+        } else {
+            this.setState({
+                modalMessage: message
+            });
+        }
+        this.openModal();
     }
 
     handleStarClicked(event, starLevel) {
@@ -331,7 +353,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                                         <div className="form-group">
                                              <textarea className="form-control"
                                                        value={this.state.description}
-                                                       onChange={this.handleTextAreaChange}
+                                                       onChange={event => this.setState({description: event.target.value})}
                                                        placeholder={this.props.intl.formatMessage({id: "review.placeholder"})}>
                                              </textarea>
                                         </div>

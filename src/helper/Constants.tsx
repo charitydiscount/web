@@ -7,7 +7,8 @@ export enum InputType {
 export enum FirebaseTable {
     CONTACT = "contact",
     META = "meta",
-    FAVORITE_SHOPS = "favoriteShops"
+    FAVORITE_SHOPS = "favoriteShops",
+    REVIEWS = "reviews"
 }
 
 export enum TableDocument {

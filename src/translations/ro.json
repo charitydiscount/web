@@ -70,7 +70,7 @@
   "userinfo.privacy.button": "Privacy",
   "userinfo.logout.button": "Delogare",
   "privacy.title": "Privacy",
-  "tos.title": "Conditii de acord",
+  "tos.title": "Termeni si conditii",
   "shop.category": "Categorie: ",
   "shop.cashback": "Comision: ",
   "footer.mobile": "Descarca pe telefon",
@@ -95,5 +95,9 @@
   "userInfo.profile.picture.uploaded": "Poza de profil s-a incarcat cu success",
   "userInfo.profile.picture.error": "Incarcarea nu a reusit, dimensiunea pozei trebuie sa fie mai mica de 5MB",
   "userInfo.email.reset.sent": "A fost trimis un mail de recuperare a parolei",
-  "userInfo.email.reset.error": "Mail-ul de recuperare a parolei nu a putut fi trimis"
+  "userInfo.email.reset.error": "Mail-ul de recuperare a parolei nu a putut fi trimis",
+  "review.error.message": "Trebuie introdusa o descriere si ales un rating",
+  "review.failed.to.update.error.message": "Mesajul nu a putut fi trimis, te rog incearca din nou",
+  "review.update.message": "Rating-ul a fost salvat",
+  "favorite.shop.failed.to.update" : "Magazinul favorit nu a putut fi salvat, te rog incearca din nou"
 }

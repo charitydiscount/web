@@ -95,5 +95,9 @@
   "userInfo.profile.picture.uploaded": "Profile picture uploaded successfully",
   "userInfo.profile.picture.error": "Failed to upload. Warning! Photo size must be smaller than 5 MB",
   "userInfo.email.reset.sent": "Email reset password sent",
-  "userInfo.email.reset.error": "Failed to send password reset email"
+  "userInfo.email.reset.error": "Failed to send password reset email",
+  "review.error.message": "Description and rating must not be empty",
+  "review.failed.to.update.error.message": "Review failed to update, please try again",
+  "review.update.message": "Review updated",
+  "favorite.shop.failed.to.update" : "Favorite shop failed to update, please try again"
 }

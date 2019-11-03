@@ -1,7 +1,7 @@
 import {DB} from '../index';
 import {firestore} from 'firebase/app';
 import {getLocalStorage, setLocalStorage} from "../helper/StorageHelper";
-import {StorageKey} from "../helper/Constants";
+import {FirebaseTable, StorageKey} from "../helper/Constants";
 
 export interface ReviewsDBWrapper {
     reviews: ReviewDto[];
@@ -20,22 +20,25 @@ export interface ReviewerDto {
     userId: string;
 }
 
-export function fetchReviews(shopUniqueCode, reviewLayout) {
-    var docRef = DB.collection('reviews').doc(shopUniqueCode);
-    docRef.get().then(function (doc) {
-        if (doc.exists) {
-            const data = doc.data() as ReviewsDBWrapper;
-            var reviews = new Array<ReviewDto>();
-            new Map(Object.entries(data.reviews)).forEach(value => {
-                reviews.push(value);
+export function fetchReviews(shopUniqueCode) {
+    return new Promise(((resolve, reject) => {
+        DB.collection(FirebaseTable.REVIEWS).doc(shopUniqueCode).get()
+            .then(doc => {
+                if (doc.exists) {
+                    const data = doc.data() as ReviewsDBWrapper;
+                    var reviews = new Array<ReviewDto>();
+                    new Map(Object.entries(data.reviews)).forEach(value => {
+                        reviews.push(value);
+                    });
+                    resolve(reviews);
+                } else {
+                    reject();
+                }
+            })
+            .catch(() => {
+                reject(); //DB call not working
             });
-            if (reviews) {
-                reviewLayout.setState({
-                    reviews: reviews,
-                });
-            }
-        }
-    });
+    }))
 }
 
 export interface MetaReviewsDBWrapper {
@@ -82,44 +85,56 @@ export function updateReview(
     name: string,
     description: string
 ) {
-    var review = {
-        createdAt: firestore.FieldValue.serverTimestamp(),
-        rating: rating,
-        description: description,
-        reviewer: {
-            name: name,
-            photoUrl: photoUrl ? photoUrl : '',
-            userId: userId,
-        },
-    };
+    return new Promise(((resolve, reject) => {
+        let review = {
+            createdAt: firestore.FieldValue.serverTimestamp(),
+            rating: rating,
+            description: description,
+            reviewer: {
+                name: name,
+                photoUrl: photoUrl ? photoUrl : '',
+                userId: userId,
+            },
+        };
 
-    var docRef = DB.collection('reviews').doc(uniqueCode);
-    docRef.get().then(function (doc) {
-        if (doc.exists) {
-            docRef
-                .set(
-                    {
-                        reviews: {
-                            [review.reviewer.userId]: review,
-                        },
-                    },
-                    {merge: true}
-                )
-                .then(function () {
-                    window.location.reload();
-                });
-        } else {
-            // create the first entry for the document
-            docRef
-                .set({
-                    shopUniqueCode: uniqueCode,
-                    reviews: {
-                        [review.reviewer.userId]: review,
-                    },
-                })
-                .then(function () {
-                    window.location.reload();
-                });
-        }
-    });
+        let docRef = DB.collection(FirebaseTable.REVIEWS).doc(uniqueCode);
+        docRef.get()
+            .then(function (doc) {
+                if (doc.exists) {
+                    docRef
+                        .set(
+                            {
+                                reviews: {
+                                    [review.reviewer.userId]: review,
+                                },
+                            },
+                            {merge: true}
+                        )
+                        .then(function () {
+                            resolve(true);
+                        })
+                        .catch(() => {
+                            reject();
+                        });
+                } else {
+                    // create the first entry for the document
+                    docRef
+                        .set({
+                            shopUniqueCode: uniqueCode,
+                            reviews: {
+                                [review.reviewer.userId]: review,
+                            },
+                        })
+                        .then(function () {
+                            resolve(true);
+                        })
+                        .catch(() => {
+                            reject();
+                        });
+                }
+            })
+            .catch(() => {
+                reject();
+            });
+    }))
 }
