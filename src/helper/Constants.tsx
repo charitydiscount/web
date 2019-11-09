@@ -13,7 +13,8 @@ export enum FirebaseTable {
     CASES = "cases",
     USERS = "users",
     POINTS = "points",
-    COMMISSIONS = "commissions"
+    COMMISSIONS = "commissions",
+    REQUESTS = "requests"
 }
 
 export enum TableDocument {

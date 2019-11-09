@@ -97,9 +97,8 @@ export function fetchCommissions() {
 }
 
 export function createRequest(amount, type, targetId) {
-    var user = getLocalStorage(StorageKey.USER);
-    if (user) {
-        var keyExist = (JSON.parse(user) as LoginDto).uid;
+    return new Promise((resolve, reject) => {
+        var keyExist = getUserKeyFromStorage();
         if (keyExist) {
             const data = {
                 amount: amount,
@@ -111,13 +110,16 @@ export function createRequest(amount, type, targetId) {
                 userId: keyExist,
             };
 
-            DB.collection('requests')
+            DB.collection(FirebaseTable.REQUESTS)
                 .add(data)
-                .then(ref => {
+                .then(() => {
                     setTimeout(function () {
-                        window.location.reload();
-                    }, 1600);
+                        resolve(true);
+                    }, 2000);
+                })
+                .catch(() => {
+                    reject();
                 });
         }
-    }
+    });
 }

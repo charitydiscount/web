@@ -7,16 +7,21 @@ import GenericInput from "../input/GenericInput";
 import {createRequest} from "../../rest/WalletService";
 import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
+import {spinnerCss} from "../../helper/AppHelper";
+import FadeLoader from 'react-spinners/FadeLoader';
 
 interface IWalletBlockState {
     withDrawVisible: boolean,
     donateVisible: boolean,
     cashoutVisible: boolean,
 
-    //cashout selection
+    //cashout/donate selection
     selections: boolean[],
     amount: string,
-    targetId: string
+    name: string,
+    iban: string,
+    targetId: string,
+    faderVisible: boolean
 }
 
 interface IWalletBlockProps {
@@ -25,7 +30,7 @@ interface IWalletBlockProps {
     pending?: number,
     pendingExists: boolean,
     money: boolean,
-    causes ?: CauseDto[]
+    causes?: CauseDto[]
 }
 
 class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps, IWalletBlockState> {
@@ -38,12 +43,14 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             donateVisible: false,
             amount: '',
             targetId: '',
-            selections: []
+            name: '',
+            iban: '',
+            selections: [],
+            faderVisible: false
         };
         this.onChildUpdate = this.onChildUpdate.bind(this);
         this.donate = this.donate.bind(this);
         this.cashout = this.cashout.bind(this);
-        this.onAmountChange = this.onAmountChange.bind(this);
     }
 
     componentDidMount() {
@@ -83,13 +90,17 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
         });
     }
 
-    onAmountChange(event) {
-        this.setState({
-            amount: event.target.value
-        });
-    }
+    async cashout() {
+        if (!this.state.name) {
+            alert("Please select a correct name");
+            return;
+        }
 
-    cashout() {
+        if (!this.state.iban) {
+            alert("Please select a correct iban");
+            return;
+        }
+
         if (!this.state.amount
             || this.state.amount.length < 1
             || parseFloat(this.state.amount) < 10
@@ -98,10 +109,27 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             return;
         }
 
-        createRequest(parseFloat(this.state.amount), "CASHOUT", this.state.targetId);
+        try {
+            this.setState({
+                faderVisible: true
+            });
+            let response = await createRequest(parseFloat(this.state.amount), "CASHOUT", this.state.targetId);
+            if (response) {
+                this.setState({
+                    faderVisible: false
+                });
+                window.location.reload();
+                //cereare a fost succses
+            }
+        } catch (error) {
+            this.setState({
+                faderVisible: false
+            });
+            //cererea a fost respinsa
+        }
     }
 
-    donate() {
+    async donate() {
         if (!this.state.amount
             || this.state.amount.length < 1
             || parseFloat(this.state.amount) < 1
@@ -113,7 +141,24 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             alert("Please select a cause");
             return;
         }
-        createRequest(parseFloat(this.state.amount), "DONATION", this.state.targetId);
+        try {
+            this.setState({
+                faderVisible: true
+            });
+            let response = await createRequest(parseFloat(this.state.amount), "DONATION", this.state.targetId);
+            if (response) {
+                this.setState({
+                    faderVisible: false
+                });
+                window.location.reload();
+                //cereare a fost succses
+            }
+        } catch (error) {
+            this.setState({
+                faderVisible: false
+            });
+            //cererea a fost respinsa
+        }
     }
 
     /**
@@ -153,34 +198,47 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                             <tr className="shipping_area">
                                 <td>
                                     <div className="shipping_box">
-                                        <GenericInput type={InputType.TEXT} id={"name"} placeholder={
-                                            this.props.intl.formatMessage({id: "wallet.block.cashout.name"})
-                                        }/>
-                                        <GenericInput type={InputType.TEXT} id={"iban"} placeholder={
-                                            this.props.intl.formatMessage({id: "wallet.block.cashout.iban"})
-                                        }/>
+                                        <FadeLoader
+                                            loading={this.state.faderVisible}
+                                            color={'#1641ff'}
+                                            css={spinnerCss}
+                                        />
+                                        {!this.state.faderVisible &&
+                                        <React.Fragment>
+                                            <GenericInput type={InputType.TEXT} id={"name"}
+                                                          handleChange={event => this.setState({name: event.target.value})}
+                                                          placeholder={
+                                                              this.props.intl.formatMessage({id: "wallet.block.cashout.name"})
+                                                          }/>
+                                            < GenericInput type={InputType.TEXT} id={"iban"}
+                                                           handleChange={event => this.setState({iban: event.target.value})}
+                                                           placeholder={
+                                                               this.props.intl.formatMessage({id: "wallet.block.cashout.iban"})
+                                                           }/>
 
-                                        <h6>
-                                            <FormattedMessage id="wallet.block.available.amount"
-                                                              defaultMessage="Available amount: "/>
-                                            <i className="blue-color">{this.props.approved.toFixed(1)}</i>
-                                        </h6>
-                                        <GenericInput type={InputType.NUMBER} id={'amount-text-field-cashout'}
-                                                      max={this.props.approved.toString()}
-                                                      handleChange={this.onAmountChange}
-                                                      min={"10"}
-                                                      step={0.1}
-                                                      placeholder={
-                                                          this.props.intl.formatMessage({id: "wallet.table.amount"})
-                                                      }/>
-                                        <h3>
-                                            <a href={emptyHrefLink} onClick={this.cashout}>
-                                                <i className="fa fa-money blue-color" aria-hidden="true">
-                                                    <FormattedMessage id="wallet.block.cashout"
-                                                                      defaultMessage="Cashout "/>
-                                                </i>
-                                            </a>
-                                        </h3>
+                                            <h6>
+                                                <FormattedMessage id="wallet.block.available.amount"
+                                                                  defaultMessage="Available amount: "/>
+                                                <i className="blue-color">{this.props.approved.toFixed(1)}</i>
+                                            </h6>
+                                            <GenericInput type={InputType.NUMBER} id={'amount-text-field-cashout'}
+                                                          max={this.props.approved.toString()}
+                                                          handleChange={event => this.setState({amount: event.target.value})}
+                                                          min={"10"}
+                                                          step={0.1}
+                                                          placeholder={
+                                                              this.props.intl.formatMessage({id: "wallet.table.amount"})
+                                                          }/>
+                                            <h3>
+                                                <a href={emptyHrefLink} onClick={this.cashout}>
+                                                    <i className="fa fa-money blue-color" aria-hidden="true">
+                                                        <FormattedMessage id="wallet.block.cashout"
+                                                                          defaultMessage="Cashout "/>
+                                                    </i>
+                                                </a>
+                                            </h3>
+                                        </React.Fragment>
+                                        }
                                     </div>
                                 </td>
                             </tr>
@@ -195,31 +253,40 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                             <tr className="shipping_area">
                                 <td>
                                     <div className="shipping_box">
-                                        <ul className="list">
-                                            {causesList}
-                                        </ul>
+                                        <FadeLoader
+                                            loading={this.state.faderVisible}
+                                            color={'#1641ff'}
+                                            css={spinnerCss}
+                                        />
+                                        {!this.state.faderVisible &&
+                                        <React.Fragment>
+                                            <ul className="list">
+                                                {causesList}
+                                            </ul>
 
-                                        <h6>
-                                            <FormattedMessage id="wallet.block.available.amount"
-                                                              defaultMessage="Available amount: "/>
-                                            <i className="blue-color">{this.props.approved.toFixed(1)}</i>
-                                        </h6>
-                                        <GenericInput type={InputType.NUMBER} id={'amount-text-field-donation'}
-                                                      max={this.props.approved.toString()}
-                                                      min={"1"}
-                                                      handleChange={this.onAmountChange}
-                                                      step={0.1}
-                                                      placeholder={
-                                                          this.props.intl.formatMessage({id: "wallet.table.amount"})
-                                                      }/>
-                                        <h3>
-                                            <a href={emptyHrefLink} onClick={this.donate}>
-                                                <i className="fa fa-heart blue-color" aria-hidden="true">
-                                                    <FormattedMessage id="wallet.block.donate"
-                                                                      defaultMessage="Donate "/>
-                                                </i>
-                                            </a>
-                                        </h3>
+                                            <h6>
+                                                <FormattedMessage id="wallet.block.available.amount"
+                                                                  defaultMessage="Available amount: "/>
+                                                <i className="blue-color">{this.props.approved.toFixed(1)}</i>
+                                            </h6>
+                                            <GenericInput type={InputType.NUMBER} id={'amount-text-field-donation'}
+                                                          max={this.props.approved.toString()}
+                                                          min={"1"}
+                                                          handleChange={event => this.setState({amount: event.target.value})}
+                                                          step={0.1}
+                                                          placeholder={
+                                                              this.props.intl.formatMessage({id: "wallet.table.amount"})
+                                                          }/>
+                                            <h3>
+                                                <a href={emptyHrefLink} onClick={this.donate}>
+                                                    <i className="fa fa-heart blue-color" aria-hidden="true">
+                                                        <FormattedMessage id="wallet.block.donate"
+                                                                          defaultMessage="Donate "/>
+                                                    </i>
+                                                </a>
+                                            </h3>
+                                        </React.Fragment>
+                                        }
                                     </div>
                                 </td>
                             </tr>
