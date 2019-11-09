@@ -1,5 +1,5 @@
 import {DB} from "../index";
-import {getLocalStorage, setLocalStorage} from "../helper/StorageHelper";
+import {getLocalStorage, removeLocalStorage, setLocalStorage} from "../helper/StorageHelper";
 import {FirebaseTable, StorageKey} from "../helper/Constants";
 import {getUserKeyFromStorage} from "../helper/AppHelper";
 
@@ -43,7 +43,24 @@ export var ShopDtoMap = {
 
 export function fetchFavoriteShops() {
     return new Promise((resolve, reject) => {
-        var keyExist = getUserKeyFromStorage();
+        const favShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
+        if (favShops) {
+            try {
+                let stEntry = JSON.parse(favShops);
+                //verify localStorage valid
+                if (stEntry.length <= 0 || stEntry[0] === undefined || !stEntry[0].hasOwnProperty("category") ||
+                    !stEntry[0].hasOwnProperty("mainUrl") || !stEntry[0].hasOwnProperty("uniqueCode")) {
+                    removeLocalStorage(StorageKey.FAVORITE_SHOPS);
+                } else {
+                    resolve();
+                    return;
+                }
+            } catch (error) {
+                removeLocalStorage(StorageKey.FAVORITE_SHOPS);
+            }
+        }
+
+        let keyExist = getUserKeyFromStorage();
         if (keyExist) {
             DB.collection(FirebaseTable.FAVORITE_SHOPS).doc(keyExist).get()
                 .then(function (doc) {
@@ -54,9 +71,12 @@ export function fetchFavoriteShops() {
                     } else {
                         reject();  //object can't be found in DB
                     }
-                }).catch(() => {
-                reject(); //DB not working
-            });
+                })
+                .catch(() => {
+                    reject(); //DB not working
+                });
+        } else {
+            reject(); //not reachable state
         }
     });
 }
@@ -64,7 +84,6 @@ export function fetchFavoriteShops() {
 export function verifyInFavoriteShops(shopId) {
     const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
     if (favoriteShops) {
-        //TODO: verify in storage is ok
         let favShops = JSON.parse(favoriteShops) as ShopDto[];
         let shopFound = favShops.find(value => value.id === shopId);
         if (shopFound) {
@@ -128,21 +147,31 @@ export function updateFavoriteShops(favShopName, remove) {
     }))
 }
 
-export function fetchShops(shopsLayout) {
-    const shops = getLocalStorage(StorageKey.SHOPS);
-    if (shops) {
-        shopsLayout.props.setShops(JSON.parse(shops));
-        shopsLayout.setState({
-            isLoading: false
-        });
-    } else {
-        DB.collection("shops")
-            .get()
+export function fetchShops() {
+    return new Promise((resolve, reject) => {
+        const shops = getLocalStorage(StorageKey.SHOPS);
+        if (shops) {
+            try {
+                let stEntry = JSON.parse(shops);
+                //verify localStorage valid
+                if (stEntry.length <= 0 || stEntry[0] === undefined || !stEntry[0].hasOwnProperty("category") ||
+                    !stEntry[0].hasOwnProperty("mainUrl") || !stEntry[0].hasOwnProperty("uniqueCode")) {
+                    removeLocalStorage(StorageKey.SHOPS);
+                } else {
+                    resolve(stEntry);
+                    return;
+                }
+            } catch (error) {
+                removeLocalStorage(StorageKey.SHOPS);
+            }
+        }
+
+        DB.collection(FirebaseTable.SHOPS).get()
             .then(querySnapshot => {
                 const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
                 if (data) {
-                    var shops = new Array<ShopDto>();
-                    var objectMapper = require('object-mapper');
+                    let shops = new Array<ShopDto>();
+                    let objectMapper = require('object-mapper');
                     data.forEach(element => {
                         element.batch.forEach(
                             shop => {
@@ -153,14 +182,16 @@ export function fetchShops(shopsLayout) {
                     });
                     if (shops) {
                         setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
-                        shopsLayout.props.setShops(shops);
-                        shopsLayout.setState({
-                            isLoading: false
-                        });
+                        resolve(shops);
+                    } else {
+                        reject(); //shops not found
                     }
                 }
+            })
+            .catch(() => {
+                reject(); //DB not working.
             });
-    }
+    });
 }
 
 export function getShopById(id) {

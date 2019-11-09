@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import Shop from "./Shop";
 import {setCurrentPage, setRatings, setShops} from "../../redux/actions/ShopsAction";
 import GenericInput from "../input/GenericInput";
-import {getLocalStorage} from "../../helper/StorageHelper";
+import {getLocalStorage, removeLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
 import ReactPaginate from 'react-paginate';
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
@@ -34,8 +34,7 @@ interface IShopsProps {
 }
 
 interface IShopsState {
-    isLoading: boolean,
-    isLoadingRating: boolean
+    isLoading: boolean
 }
 
 const pageLimit = 24; // products per page
@@ -45,16 +44,35 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
     constructor(props: IShopsProps & InjectedIntlProps) {
         super(props);
         this.state = {
-            isLoading: true,
-            isLoadingRating: true
+            isLoading: true
         };
         this.onSearchUpdate = this.onSearchUpdate.bind(this);
         this.updatePageNumber = this.updatePageNumber.bind(this);
     }
 
     async componentDidMount() {
-        fetchShops(this);
-        fetchReviewRatings(this);
+        try {
+            let response = await fetchShops();
+            if (response) {
+                this.props.setShops(response as ShopDto[]);
+                this.setState(
+                    {
+                        isLoading: false
+                    });
+            }
+        } catch (error) {
+            //shops not loaded
+            removeLocalStorage(StorageKey.USER);
+            window.location.reload();
+        }
+        try {
+            let response = await fetchReviewRatings();
+            if (response) {
+                this.props.setRatings(new Map(Object.entries(response as Map<String, ReviewRating>)));
+            }
+        } catch (error) {
+            //ratings not loaded
+        }
         try {
             await fetchFavoriteShops();
         } catch (error) {
@@ -185,13 +203,13 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                                     </div>
                                 </div>
                                 <FadeLoader
-                                    loading={this.state.isLoading || this.state.isLoadingRating}
+                                    loading={this.state.isLoading}
                                     color={'#1641ff'}
                                     css={spinnerCss}
                                 />
                                 <div className="latest_product_inner row">
                                     {
-                                        !this.state.isLoading && !this.state.isLoadingRating &&
+                                        !this.state.isLoading &&
                                         <React.Fragment>
                                             {shopsList}
                                         </React.Fragment>

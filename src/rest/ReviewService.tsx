@@ -1,7 +1,7 @@
 import {DB} from '../index';
 import {firestore} from 'firebase/app';
-import {getLocalStorage, setLocalStorage} from "../helper/StorageHelper";
-import {FirebaseTable, StorageKey} from "../helper/Constants";
+import {getLocalStorage, removeLocalStorage, setLocalStorage} from "../helper/StorageHelper";
+import {FirebaseTable, StorageKey, TableDocument} from "../helper/Constants";
 
 export interface ReviewsDBWrapper {
     reviews: ReviewDto[];
@@ -50,31 +50,38 @@ export interface ReviewRating {
     rating: number;
 }
 
-export function fetchReviewRatings(shopsLayout) {
-    const reviews = getLocalStorage(StorageKey.REVIEWS);
-    if (reviews) {
-        let dbReviews = JSON.parse(reviews) as Map<String, ReviewRating>;
-        shopsLayout.props.setRatings(
-            new Map(Object.entries(dbReviews))
-        );
-        shopsLayout.setState({
-            isLoadingRating: false,
-        });
-    } else {
-        const docRef = DB.collection('meta').doc('programs');
-        docRef.get().then(function (doc) {
-            if (doc.exists) {
-                let dbReviews = doc.data() as MetaReviewsDBWrapper;
-                setLocalStorage(StorageKey.REVIEWS, JSON.stringify(dbReviews.ratings));
-                shopsLayout.props.setRatings(
-                    new Map(Object.entries(dbReviews.ratings))
-                );
-                shopsLayout.setState({
-                    isLoadingRating: false,
-                });
+export function fetchReviewRatings() {
+    return new Promise(((resolve, reject) => {
+        const reviews = getLocalStorage(StorageKey.REVIEWS);
+        if (reviews) {
+            try {
+                let stEntry = JSON.parse(reviews);
+                //verify localStorage valid
+                if (stEntry.length <= 0) {
+                    removeLocalStorage(StorageKey.REVIEWS);
+                } else {
+                    resolve(JSON.parse(reviews) as Map<String, ReviewRating>);
+                    return;
+                }
+            } catch (error) {
+                removeLocalStorage(StorageKey.REVIEWS);
             }
-        });
-    }
+        }
+
+        DB.collection(FirebaseTable.META).doc(TableDocument.PROGRAMS).get()
+            .then(function (doc) {
+                if (doc.exists) {
+                    let dbReviews = doc.data() as MetaReviewsDBWrapper;
+                    setLocalStorage(StorageKey.REVIEWS, JSON.stringify(dbReviews.ratings));
+                    resolve(dbReviews.ratings);
+                } else {
+                    reject(); //entry doesn't exist in DB
+                }
+            })
+            .catch(() => {
+                reject(); //DB not working
+            });
+    }));
 }
 
 export function updateReview(

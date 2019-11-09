@@ -8,7 +8,8 @@ export enum FirebaseTable {
     CONTACT = "contact",
     META = "meta",
     FAVORITE_SHOPS = "favoriteShops",
-    REVIEWS = "reviews"
+    REVIEWS = "reviews",
+    SHOPS = "shops"
 }
 
 export enum TableDocument {
