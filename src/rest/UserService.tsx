@@ -1,5 +1,6 @@
 import {DB, store} from "../index";
 import {UserActions} from "../components/login/UserActions";
+import {FirebaseTable} from "../helper/Constants";
 
 export interface UserDto {
     accounts: Account[]
@@ -16,7 +17,7 @@ export interface Account {
 }
 
 export function updateUser(user: UserDto, userFromIndex) {
-    let docRef = DB.collection("users").doc(user.userId);
+    let docRef = DB.collection(FirebaseTable.USERS).doc(user.userId);
     docRef.get().then(function (doc) {
         if (!doc.exists) {
             docRef.set({

@@ -1,8 +1,9 @@
-import { getLocalStorage } from '../helper/StorageHelper';
-import { StorageKey } from '../helper/Constants';
-import { DB } from '../index';
-import { LoginDto } from '../components/login/LoginComponent';
-import { firestore } from 'firebase/app';
+import {getLocalStorage} from '../helper/StorageHelper';
+import {FirebaseTable, StorageKey} from '../helper/Constants';
+import {DB} from '../index';
+import {LoginDto} from '../components/login/LoginComponent';
+import {firestore} from 'firebase/app';
+import {getUserKeyFromStorage} from "../helper/AppHelper";
 
 export interface WalletWrapper {
     cashback: WalletInfoDto;
@@ -22,50 +23,35 @@ export interface TransactionDto {
     type: string;
 }
 
-export function fetchWalletInfo(walletLayout) {
-    var user = getLocalStorage(StorageKey.USER);
-    if (user) {
-        var keyExist = (JSON.parse(user) as LoginDto).uid;
+export function fetchWalletInfo() {
+    return new Promise((resolve, reject) => {
+        var keyExist = getUserKeyFromStorage();
         if (keyExist) {
-            var docRef = DB.collection('points').doc(keyExist);
-            docRef
-                .get()
-                .then(function(doc) {
+            DB.collection(FirebaseTable.POINTS).doc(keyExist).get()
+                .then(function (doc) {
                     if (doc.exists) {
                         const data = doc.data() as WalletWrapper;
                         let transactionList = data.transactions as TransactionDto[];
-                        transactionList.sort(function(x, y) {
+                        transactionList.sort(function (x, y) {
                             let a = x.date.toDate(),
                                 b = y.date.toDate();
                             if (a > b) return -1;
                             if (a < b) return 1;
                             return 0;
                         });
-                        walletLayout.setState({
-                            cashbackApproved: data.cashback.approved,
-                            cashbackPending: data.cashback.pending,
-                            pointsApproved: data.points.approved,
-                            pointsPending: data.points.pending,
-                            totalTransactions: data.transactions
-                                ? data.transactions.length
-                                : 0,
-                            transactions: transactionList,
-                            isLoading: false,
-                        });
+                        data.transactions = transactionList;
+                        resolve(data);
                     } else {
-                        walletLayout.setState({
-                            isLoading: false,
-                        });
+                        reject(); //entry doesn't exist in DB
                     }
                 })
-                .catch(function(error) {
-                    walletLayout.setState({
-                        isLoading: false,
-                    });
-                    console.log('Error getting document:', error);
-                });
+                .catch(() => {
+                    reject(); //DB not working
+                })
+        } else {
+            reject() // not reachable state
         }
-    }
+    });
 }
 
 export interface CommissionWrapper {
@@ -79,43 +65,35 @@ export interface CommissionDto {
     status: string;
 }
 
-export function fetchCommissions(walletLayout) {
-    var user = getLocalStorage(StorageKey.USER);
-    if (user) {
-        var keyExist = (JSON.parse(user) as LoginDto).uid;
+export function fetchCommissions() {
+    return new Promise((resolve, reject) => {
+        var keyExist = getUserKeyFromStorage();
         if (keyExist) {
-            var docRef = DB.collection('commissions').doc(keyExist);
-            docRef
-                .get()
-                .then(function(doc) {
+            DB.collection(FirebaseTable.COMMISSIONS).doc(keyExist).get()
+                .then(function (doc) {
                     if (doc.exists) {
                         const data = doc.data() as CommissionWrapper;
                         let transactionList = data.transactions as CommissionDto[];
-                        transactionList.sort(function(x, y) {
+                        transactionList.sort(function (x, y) {
                             let a = x.createdAt.toDate(),
                                 b = y.createdAt.toDate();
                             if (a > b) return -1;
                             if (a < b) return 1;
                             return 0;
                         });
-                        walletLayout.setState({
-                            commissions: transactionList,
-                            isLoadingCommissions: false,
-                        });
+                        data.transactions = transactionList;
+                        resolve(data);
                     } else {
-                        walletLayout.setState({
-                            isLoadingCommissions: false,
-                        });
+                        reject(); // entry not found in DB
                     }
                 })
-                .catch(function(error) {
-                    walletLayout.setState({
-                        isLoadingCommissions: false,
-                    });
-                    console.log('Error getting document:', error);
-                });
+                .catch(() => {
+                    reject(); //DB not working
+                })
+        } else {
+            reject() // not reachable state
         }
-    }
+    });
 }
 
 export function createRequest(amount, type, targetId) {
@@ -136,7 +114,7 @@ export function createRequest(amount, type, targetId) {
             DB.collection('requests')
                 .add(data)
                 .then(ref => {
-                    setTimeout(function() {
+                    setTimeout(function () {
                         window.location.reload();
                     }, 1600);
                 });

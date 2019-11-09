@@ -4,10 +4,10 @@ import {NavigationsAction} from '../../redux/actions/NavigationsAction';
 import {Stages} from '../helper/Stages';
 import WalletBlock from './WalletBlock';
 import {
-    CommissionDto,
+    CommissionDto, CommissionWrapper,
     fetchCommissions,
     fetchWalletInfo,
-    TransactionDto,
+    TransactionDto, WalletWrapper,
 } from '../../rest/WalletService';
 import WalletTransactionRow from './WalletTransactionRow';
 import {CommissionStatus, TxType} from '../../helper/Constants';
@@ -52,7 +52,6 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
     }
 
     async componentDidMount() {
-        store.dispatch(NavigationsAction.setStageAction(Stages.WALLET));
         try {
             let response = await fetchCauses();
             if (response) {
@@ -65,8 +64,54 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
             //causes not loaded
         }
 
-        fetchWalletInfo(this);
-        fetchCommissions(this);
+        try {
+            let response = await fetchWalletInfo();
+            if (response) {
+                let data = response as WalletWrapper;
+                this.setState({
+                    cashbackApproved: data.cashback.approved,
+                    cashbackPending: data.cashback.pending,
+                    pointsApproved: data.points.approved,
+                    pointsPending: data.points.pending,
+                    totalTransactions: data.transactions
+                        ? data.transactions.length
+                        : 0,
+                    transactions: data.transactions,
+                    isLoading: false,
+                })
+            } else {
+                this.setState({
+                    isLoading: false
+                })
+            }
+        } catch (error) {
+            this.setState({
+                isLoading: false
+            })
+            //transaction history info not loaded or empty values
+        }
+
+        try {
+            let response = await fetchCommissions();
+            if (response) {
+                let data = response as CommissionWrapper;
+                this.setState({
+                    commissions: data.transactions,
+                    isLoadingCommissions: false
+                })
+            } else {
+                this.setState({
+                    isLoadingCommissions: false
+                })
+            }
+        } catch (error) {
+            this.setState({
+                isLoadingCommissions: false
+            })
+            //commissions history info not loaded or empty values
+        }
+
+        store.dispatch(NavigationsAction.setStageAction(Stages.WALLET));
     }
 
     public componentWillUnmount() {

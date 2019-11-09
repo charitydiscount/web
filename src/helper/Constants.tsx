@@ -10,7 +10,10 @@ export enum FirebaseTable {
     FAVORITE_SHOPS = "favoriteShops",
     REVIEWS = "reviews",
     SHOPS = "shops",
-    CASES = "cases"
+    CASES = "cases",
+    USERS = "users",
+    POINTS = "points",
+    COMMISSIONS = "commissions"
 }
 
 export enum TableDocument {
