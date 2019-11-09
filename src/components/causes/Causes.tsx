@@ -26,9 +26,20 @@ class Causes extends React.Component<ICausesProps, ICausesState> {
         };
     }
 
-    public componentDidMount() {
+    async componentDidMount() {
+        try {
+            let response = await fetchCauses();
+            if (response) {
+                this.setState({
+                    causes: response as CauseDto[],
+                    isLoading: false
+                })
+            }
+        } catch (error) {
+            //causes not loaded
+        }
+
         store.dispatch(NavigationsAction.setStageAction(Stages.CAUSES));
-        fetchCauses(this);
     }
 
     public componentWillUnmount() {
@@ -50,9 +61,9 @@ class Causes extends React.Component<ICausesProps, ICausesState> {
                     css={spinnerCss}
                 />
                 {!this.state.isLoading &&
-                    <div className="container p_120">
-                        {causesList}
-                    </div>
+                <div className="container p_120">
+                    {causesList}
+                </div>
                 }
             </React.Fragment>
         )

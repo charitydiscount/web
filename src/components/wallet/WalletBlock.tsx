@@ -1,7 +1,7 @@
 import * as React from "react";
 import {emptyHrefLink, InputType} from "../../helper/Constants";
 import Modal from 'react-awesome-modal';
-import {CauseDto, fetchCauses} from "../../rest/CauseService";
+import {CauseDto} from "../../rest/CauseService";
 import CauseDonate from "./CauseDonate";
 import GenericInput from "../input/GenericInput";
 import {createRequest} from "../../rest/WalletService";
@@ -12,7 +12,6 @@ interface IWalletBlockState {
     withDrawVisible: boolean,
     donateVisible: boolean,
     cashoutVisible: boolean,
-    causes: CauseDto[],
 
     //cashout selection
     selections: boolean[],
@@ -25,7 +24,8 @@ interface IWalletBlockProps {
     approved: number,
     pending?: number,
     pendingExists: boolean,
-    money: boolean
+    money: boolean,
+    causes ?: CauseDto[]
 }
 
 class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps, IWalletBlockState> {
@@ -36,7 +36,6 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             withDrawVisible: false,
             cashoutVisible: false,
             donateVisible: false,
-            causes: [],
             amount: '',
             targetId: '',
             selections: []
@@ -47,10 +46,8 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
         this.onAmountChange = this.onAmountChange.bind(this);
     }
 
-    public componentDidMount() {
-        if (this.props.pendingExists) {
-            fetchCauses(this);
-        }
+    componentDidMount() {
+
     }
 
     openModal() {
@@ -134,7 +131,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
     }
 
     public render() {
-        const causesList = this.state.causes ? this.state.causes.map(cause => {
+        const causesList = this.props.causes ? this.props.causes.map(cause => {
             return <CauseDonate key={cause.id} id={cause.id} causeTitle={cause.details.title}
                                 onUpdate={this.onChildUpdate} selections={this.state.selections}/>
         }) : null;

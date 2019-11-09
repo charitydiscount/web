@@ -1,6 +1,6 @@
 import {DB} from "../index";
-import {getLocalStorage, setLocalStorage} from "../helper/StorageHelper";
-import {StorageKey} from "../helper/Constants";
+import {getLocalStorage, removeLocalStorage, setLocalStorage} from "../helper/StorageHelper";
+import {FirebaseTable, StorageKey} from "../helper/Constants";
 
 export interface ImageDto {
     url: string
@@ -18,30 +18,40 @@ export interface CauseDto {
     details: CauseDetailDto
 }
 
-export function fetchCauses(layout) {
-    const causes = getLocalStorage(StorageKey.CAUSES);
-    if (causes) {
-        layout.setState({
-            causes: JSON.parse(causes),
-            isLoading: false
-        });
-    } else {
-        const dbRef = DB.collection("cases");
-        dbRef.get()
-            .then(querySnapshot => {
-                    let data = [] as CauseDto[];
-                    querySnapshot.docs.forEach(value => {
-                        data.push({
-                            id: value.id,
-                            details: value.data() as CauseDetailDto
-                        });
-                    });
-                    setLocalStorage(StorageKey.CAUSES, JSON.stringify(data));
-                    layout.setState({
-                        causes: data,
-                        isLoading: false
-                    });
+export function fetchCauses() {
+    return new Promise((resolve, reject) => {
+            let causes = getLocalStorage(StorageKey.CAUSES);
+            if (causes) {
+                try {
+                    let stEntry = JSON.parse(causes);
+                    //verify localStorage valid
+                    if (stEntry.length <= 0 || stEntry[0] === undefined || !stEntry[0].hasOwnProperty("details")) {
+                        removeLocalStorage(StorageKey.CAUSES);
+                    } else {
+                        resolve(stEntry);
+                        return;
+                    }
+                } catch (error) {
+                    removeLocalStorage(StorageKey.CAUSES);
                 }
-            )
-    }
+            }
+
+            DB.collection(FirebaseTable.CASES).get()
+                .then(querySnapshot => {
+                        let data = [] as CauseDto[];
+                        querySnapshot.docs.forEach(value => {
+                            data.push({
+                                id: value.id,
+                                details: value.data() as CauseDetailDto
+                            });
+                        });
+                        setLocalStorage(StorageKey.CAUSES, JSON.stringify(data));
+                        resolve(data);
+                    }
+                )
+                .catch(() => {
+                    reject(); //DB not working
+                });
+        }
+    );
 }
