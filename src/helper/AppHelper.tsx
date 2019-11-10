@@ -1,4 +1,4 @@
-import {fetchAffiliateCode} from "../rest/ConfigService";
+import {getAffiliateCode} from "../rest/ConfigService";
 import {getLocalStorage, removeLocalStorage, setLocalStorage} from "./StorageHelper";
 import {StorageKey} from "./Constants";
 import {LoginDto} from "../components/login/LoginComponent";
@@ -12,13 +12,13 @@ import {setLangResources} from "../redux/actions/LocaleAction";
  * @param url - app url
  */
 export function computeUrl(uniqueId, url) {
-    var baseUrl = 'https://event.2performant.com/events/click?ad_type=quicklink';
-    var theCode = fetchAffiliateCode();
-    var affCode = '&aff_code=' + theCode;
-    var unique = '&unique=' + uniqueId;
-    var redirect = '&redirect_to=' + url;
-    var tag = '';
-    const user = getLocalStorage(StorageKey.USER);
+    let baseUrl = 'https://event.2performant.com/events/click?ad_type=quicklink';
+    let theCode = getAffiliateCode();
+    let affCode = '&aff_code=' + theCode;
+    let unique = '&unique=' + uniqueId;
+    let redirect = '&redirect_to=' + url;
+    let tag = '';
+    let user = getLocalStorage(StorageKey.USER);
     if (user) {
         tag = '&st=' + (JSON.parse(user) as LoginDto).uid;
     }

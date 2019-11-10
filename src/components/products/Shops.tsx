@@ -16,6 +16,7 @@ import {fetchReviewRatings, ReviewRating} from "../../rest/ReviewService";
 import FadeLoader from 'react-spinners/FadeLoader';
 import {spinnerCss} from "../../helper/AppHelper";
 import {InjectedIntlProps, injectIntl} from "react-intl";
+import {fetchAffiliateCode, fetchPercentage} from "../../rest/ConfigService";
 
 interface IShopsProps {
     shops: Array<ShopDto>,
@@ -61,7 +62,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                     });
             }
         } catch (error) {
-            //shops not loaded
+            //shops not loaded, important part, refresh app
             removeLocalStorage(StorageKey.USER);
             window.location.reload();
         }
@@ -77,6 +78,18 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
             await fetchFavoriteShops();
         } catch (error) {
             //favorite shops not loaded
+        }
+        try {
+            await fetchAffiliateCode();
+        } catch (error) {
+            //affiliate code not loaded, important part, refresh app
+            removeLocalStorage(StorageKey.USER);
+            window.location.reload();
+        }
+        try {
+            await fetchPercentage();
+        } catch (error) {
+            //percentage not loaded it will be used a default
         }
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }

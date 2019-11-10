@@ -8,8 +8,8 @@ import {computeUrl} from '../../helper/AppHelper';
 import {Link} from "react-router-dom";
 import {Routes} from "../helper/Routes";
 import {FormattedMessage} from 'react-intl';
-import {fetchPercentage} from "../../rest/ConfigService";
 import {InjectedIntlProps, injectIntl} from "react-intl";
+import {getPercentage} from "../../rest/ConfigService";
 
 interface IProductInfoState {
     visible: boolean,
@@ -49,14 +49,13 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
         this.updateFavoriteShopsFalse = this.updateFavoriteShopsFalse.bind(this);
     }
 
-    async componentDidMount() {
-        try {
-            let response = await fetchPercentage();
+    componentDidMount() {
+        let percentage = getPercentage();
+        if (percentage) {
             this.setState({
-                percentage: response as number
+                percentage: percentage as number
             })
-        } catch (error) {
-            //percentage will be hardcoded to our default if something fails
+        } else {
             this.setState({
                 percentage: 0.6
             })

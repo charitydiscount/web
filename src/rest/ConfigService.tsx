@@ -8,23 +8,46 @@ export interface ConfigDto {
     uniqueCode: string
 }
 
-export function fetchAffiliateCode() {
+export function getAffiliateCode() {
     const code = getSessionStorage(StorageKey.PERFORMANET_2_CODE);
     if (code) {
         return (JSON.parse(code) as ConfigDto).uniqueCode;
-    } else {
-        var docRef = DB.collection(FirebaseTable.META).doc(TableDocument.PERFORMANT2);
-        docRef.get().then(function (doc) {
-            if (doc.exists) {
-                var data = doc.data() as ConfigDto;
-                setSessionStorage(StorageKey.PERFORMANET_2_CODE, JSON.stringify(data));
-                return data.uniqueCode;
+    }
+}
+
+export function fetchAffiliateCode() {
+    return new Promise(((resolve, reject) => {
+        const code = getSessionStorage(StorageKey.PERFORMANET_2_CODE);
+        if (code) {
+            let stKey = JSON.parse(code);
+            if (stKey.length <= 0 || stKey[0] === undefined || !stKey[0].hasOwnProperty("uniqueCode")) {
+                removeSessionStorage(StorageKey.PERFORMANET_2_CODE);
             } else {
-                console.log("No such document!");
+                resolve();
+                return;
             }
-        }).catch(function (error) {
-            console.log("Error getting document:", error);
-        });
+        }
+
+        DB.collection(FirebaseTable.META).doc(TableDocument.PERFORMANT2).get()
+            .then(doc => {
+                if (doc.exists) {
+                    var data = doc.data() as ConfigDto;
+                    setSessionStorage(StorageKey.PERFORMANET_2_CODE, JSON.stringify(data));
+                    resolve();
+                } else {
+                    reject(); //entry can't be found in DB
+                }
+            })
+            .catch(() => {
+                reject(); //DB not working
+            });
+    }));
+}
+
+export function getPercentage() {
+    const code = getSessionStorage(StorageKey.PERFORMANET_2_CODE);
+    if (code) {
+        return (JSON.parse(code) as ConfigDto).percentage;
     }
 }
 
@@ -37,7 +60,7 @@ export function fetchPercentage() {
             if (stEntry.length <= 0 || stEntry[0] === undefined || !stEntry[0].hasOwnProperty("percentage")) {
                 removeSessionStorage(StorageKey.PERFORMANET_2_CODE);
             } else {
-                resolve((JSON.parse(code) as ConfigDto).percentage);
+                resolve();
                 return;
             }
         }
@@ -47,7 +70,7 @@ export function fetchPercentage() {
                 if (doc.exists) {
                     var data = doc.data() as ConfigDto;
                     setSessionStorage(StorageKey.PERFORMANET_2_CODE, JSON.stringify(data));
-                    resolve(data.percentage);
+                    resolve();
                 } else {
                     reject(); //entry can't be found in DB
                 }
