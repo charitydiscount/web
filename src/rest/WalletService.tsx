@@ -1,7 +1,5 @@
-import {getLocalStorage} from '../helper/StorageHelper';
-import {FirebaseTable, StorageKey} from '../helper/Constants';
+import {FirebaseTable} from '../helper/Constants';
 import {DB} from '../index';
-import {LoginDto} from '../components/login/LoginComponent';
 import {firestore} from 'firebase/app';
 import {getUserKeyFromStorage} from "../helper/AppHelper";
 
@@ -25,7 +23,7 @@ export interface TransactionDto {
 
 export function fetchWalletInfo() {
     return new Promise((resolve, reject) => {
-        var keyExist = getUserKeyFromStorage();
+        let keyExist = getUserKeyFromStorage();
         if (keyExist) {
             DB.collection(FirebaseTable.POINTS).doc(keyExist).get()
                 .then(function (doc) {
@@ -67,7 +65,7 @@ export interface CommissionDto {
 
 export function fetchCommissions() {
     return new Promise((resolve, reject) => {
-        var keyExist = getUserKeyFromStorage();
+        let keyExist = getUserKeyFromStorage();
         if (keyExist) {
             DB.collection(FirebaseTable.COMMISSIONS).doc(keyExist).get()
                 .then(function (doc) {
@@ -96,9 +94,64 @@ export function fetchCommissions() {
     });
 }
 
+export function createOtpRequest() {
+    return new Promise((resolve, reject) => {
+        let keyExist = getUserKeyFromStorage();
+        if (keyExist) {
+            const data = {
+                userId: keyExist,
+                createdAt: firestore.FieldValue.serverTimestamp(),
+            };
+
+            DB.collection(FirebaseTable.OTP_REQUESTS).doc(keyExist)
+                .set(data)
+                .then(() => {
+                    resolve(true);
+                })
+                .catch(() => {
+                    reject();
+                });
+        } else {
+            reject()
+        }
+    })
+}
+
+
+export interface OtpDto {
+    generated: firestore.Timestamp;
+    code: string;
+}
+
+export function validateOtpCode(code) {
+    return new Promise((resolve, reject) => {
+        let keyExist = getUserKeyFromStorage();
+        if (keyExist) {
+            DB.collection(FirebaseTable.OTPS).doc(keyExist).get()
+                .then(function (doc) {
+                    if (doc.exists) {
+                        let dbObject = doc.data() as OtpDto;
+                        if (dbObject.code === code) {
+                            resolve(true);
+                        } else {
+                            reject(); //code is not right;
+                        }
+                    } else {
+                        reject(); // object doesn't exist;
+                    }
+                })
+                .catch(() => {
+                    reject(); //DB not working
+                });
+        } else {
+            reject(); // unreachable state
+        }
+    })
+}
+
 export function createRequest(amount, type, targetId) {
     return new Promise((resolve, reject) => {
-        var keyExist = getUserKeyFromStorage();
+        let keyExist = getUserKeyFromStorage();
         if (keyExist) {
             const data = {
                 amount: amount,

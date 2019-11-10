@@ -4,7 +4,7 @@ import Modal from 'react-awesome-modal';
 import {CauseDto} from "../../rest/CauseService";
 import CauseDonate from "./CauseDonate";
 import GenericInput from "../input/GenericInput";
-import {createRequest} from "../../rest/WalletService";
+import {createOtpRequest, createRequest, validateOtpCode} from "../../rest/WalletService";
 import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
 import {spinnerCss} from "../../helper/AppHelper";
@@ -14,6 +14,9 @@ interface IWalletBlockState {
     withDrawVisible: boolean,
     donateVisible: boolean,
     cashoutVisible: boolean,
+    otpRequestVisible: boolean,
+    otpType: string,
+    otpCode: string,
 
     //cashout/donate selection
     selections: boolean[],
@@ -41,6 +44,9 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             withDrawVisible: false,
             cashoutVisible: false,
             donateVisible: false,
+            otpRequestVisible: false,
+            otpType: '',
+            otpCode: '',
             amount: '',
             targetId: '',
             name: '',
@@ -51,6 +57,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
         this.onChildUpdate = this.onChildUpdate.bind(this);
         this.donate = this.donate.bind(this);
         this.cashout = this.cashout.bind(this);
+        this.creatRequest = this.creatRequest.bind(this);
     }
 
     componentDidMount() {
@@ -86,8 +93,49 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             withDrawVisible: false,
             cashoutVisible: false,
             donateVisible: false,
+            otpRequestVisible: false,
+            otpType: '',
+            otpCode: '',
+            amount: '',
+            targetId: '',
+            name: '',
+            iban: '',
             selections: []
         });
+    }
+
+    async creatRequest() {
+        if (!this.state.otpCode) {
+            alert(this.props.intl.formatMessage({id: "wallet.block.otp.code.error"}));
+            return;
+        }
+
+        try {
+            let response = await validateOtpCode(this.state.otpCode);
+            if (response) {
+                try {
+                    this.setState({
+                        faderVisible: true
+                    });
+                    let response = await createRequest(parseFloat(this.state.amount), this.state.otpType, this.state.targetId);
+                    if (response) {
+                        this.setState({
+                            faderVisible: false
+                        });
+                        this.closeModal();
+                        window.location.reload();
+                    }
+                } catch (error) {
+                    this.setState({
+                        faderVisible: false
+                    });
+                }
+            } else {
+                alert(this.props.intl.formatMessage({id: "wallet.block.otp.code.worng.error"}));
+            }
+        } catch (error) {
+            alert(this.props.intl.formatMessage({id: "wallet.block.otp.code.worng.error"}));
+        }
     }
 
     async cashout() {
@@ -108,23 +156,17 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             alert(this.props.intl.formatMessage({id: "wallet.cashout.amount.error"}));
             return;
         }
-
         try {
-            this.setState({
-                faderVisible: true
-            });
-            let response = await createRequest(parseFloat(this.state.amount), "CASHOUT", this.state.targetId);
+            let response = await createOtpRequest();
             if (response) {
                 this.setState({
-                    faderVisible: false
-                });
-                this.closeModal();
-                window.location.reload();
+                    cashoutVisible: false,
+                    otpRequestVisible: true,
+                    otpType: 'CASHOUT'
+                })
             }
         } catch (error) {
-            this.setState({
-                faderVisible: false
-            });
+            //nothing happens, DB not working
         }
     }
 
@@ -141,21 +183,16 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             return;
         }
         try {
-            this.setState({
-                faderVisible: true
-            });
-            let response = await createRequest(parseFloat(this.state.amount), "DONATION", this.state.targetId);
+            let response = await createOtpRequest();
             if (response) {
                 this.setState({
-                    faderVisible: false
-                });
-                this.closeModal();
-                window.location.reload();
+                    donateVisible: false,
+                    otpRequestVisible: true,
+                    otpType: 'DONATION'
+                })
             }
         } catch (error) {
-            this.setState({
-                faderVisible: false
-            });
+            //nothing happens, DB not working
         }
     }
 
@@ -181,6 +218,42 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
 
         return (
             <React.Fragment>
+                <Modal visible={this.state.otpRequestVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <div className="container cart_inner">
+                        <table className="table">
+                            <tbody>
+                            <tr className="shipping_area">
+                                <td>
+                                    <div className="shipping_box">
+                                        <h3 className="important-left-align">
+                                            <FormattedMessage id="wallet.block.otp.mail.mesasge"
+                                                              defaultMessage="A mail was sent with the code to validate the
+                                                           transaction."/>
+                                        </h3>
+                                        <h3 className="important-left-align">
+                                            <FormattedMessage id="wallet.block.otp.mail.mesasge1"
+                                                              defaultMessage="Code will expire in 30 seconds."/>
+                                        </h3>
+                                        <GenericInput type={InputType.TEXT} id={"otpCode"}
+                                                      handleChange={event => this.setState({otpCode: event.target.value})}
+                                                      placeholder={
+                                                          this.props.intl.formatMessage({id: "wallet.block.otp.request.placeholder"})
+                                                      }/>
+                                        <h3>
+                                            <a href={emptyHrefLink} onClick={this.creatRequest}>
+                                                <i className="fa fa-thumbs-up blue-color" aria-hidden="true">
+                                                    <FormattedMessage id="wallet.block.otp.proceed"
+                                                                      defaultMessage="Validate "/>
+                                                </i>
+                                            </a>
+                                        </h3>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </Modal>
                 <Modal visible={this.state.withDrawVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <a href={emptyHrefLink} className="btn submit_btn" onClick={() => this.openCashoutModal()}>
                         <FormattedMessage id="wallet.block.cashout" defaultMessage="Cashout"/>
@@ -205,11 +278,13 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                         <React.Fragment>
                                             <GenericInput type={InputType.TEXT} id={"name"}
                                                           handleChange={event => this.setState({name: event.target.value})}
+                                                          value={this.state.name}
                                                           placeholder={
                                                               this.props.intl.formatMessage({id: "wallet.block.cashout.name"})
                                                           }/>
                                             < GenericInput type={InputType.TEXT} id={"iban"}
                                                            handleChange={event => this.setState({iban: event.target.value})}
+                                                           value={this.state.iban}
                                                            placeholder={
                                                                this.props.intl.formatMessage({id: "wallet.block.cashout.iban"})
                                                            }/>
@@ -217,11 +292,12 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                             <h6>
                                                 <FormattedMessage id="wallet.block.available.amount"
                                                                   defaultMessage="Available amount: "/>
-                                                <i className="blue-color">{this.props.approved.toFixed(1)}</i>
+                                                <i className="blue-color">{this.props.approved.toFixed(1) + ' RON'}</i>
                                             </h6>
                                             <GenericInput type={InputType.NUMBER} id={'amount-text-field-cashout'}
                                                           max={this.props.approved.toString()}
                                                           handleChange={event => this.setState({amount: event.target.value})}
+                                                          value={this.state.amount}
                                                           min={"10"}
                                                           step={0.1}
                                                           placeholder={
@@ -265,10 +341,11 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                             <h6>
                                                 <FormattedMessage id="wallet.block.available.amount"
                                                                   defaultMessage="Available amount: "/>
-                                                <i className="blue-color">{this.props.approved.toFixed(1)}</i>
+                                                <i className="blue-color">{this.props.approved.toFixed(1) + ' RON'}</i>
                                             </h6>
                                             <GenericInput type={InputType.NUMBER} id={'amount-text-field-donation'}
                                                           max={this.props.approved.toString()}
+                                                          value={this.state.amount}
                                                           min={"1"}
                                                           handleChange={event => this.setState({amount: event.target.value})}
                                                           step={0.1}

@@ -5921,6 +5921,10 @@ h6 {
 .react_select__value-container{
    min-width: 45px;
 }
+
+.important-left-align {
+    text-align: left !important;
+}
 /*---------------------------------------------------- */
 
 /*# sourceMappingURL=style.css.map */

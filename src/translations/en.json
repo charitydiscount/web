@@ -104,5 +104,11 @@
   "wallet.cashout.iban.error" : "Please enter a bank account",
   "wallet.cashout.amount.error" : "Please select a correct amount. minimum is 10 RON",
   "wallet.donate.amount.error" : "Please select an amount",
-  "wallet.donate.cause.error": "Please select a cause"
+  "wallet.donate.cause.error": "Please select a cause",
+  "wallet.block.otp.request.placeholder": "Code received on mail",
+  "wallet.block.otp.proceed": "Validate",
+  "wallet.block.otp.mail.mesasge": "A mail was sent with the code to validate the transaction.",
+  "wallet.block.otp.mail.mesasge1": "Code will expire in 30 seconds.",
+  "wallet.block.otp.code.error": "Please enter the code received on mail",
+  "wallet.block.otp.code.worng.error": "Code doesn't match"
 }
