@@ -110,5 +110,5 @@
   "wallet.block.otp.mail.mesasge": "A mail was sent with the code to validate the transaction.",
   "wallet.block.otp.mail.mesasge1": "Code will expire in 30 seconds.",
   "wallet.block.otp.code.error": "Please enter the code received on mail",
-  "wallet.block.otp.code.worng.error": "Code doesn't match"
+  "wallet.block.otp.code.worng.error": "Code is not valid"
 }
