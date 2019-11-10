@@ -115,7 +115,7 @@ export function createRequest(amount, type, targetId) {
                 .then(() => {
                     setTimeout(function () {
                         resolve(true);
-                    }, 2000);
+                    }, 4000);
                 })
                 .catch(() => {
                     reject();

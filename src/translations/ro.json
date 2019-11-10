@@ -99,5 +99,10 @@
   "review.error.message": "Trebuie introdusa o descriere si ales un rating",
   "review.failed.to.update.error.message": "Mesajul nu a putut fi trimis, te rog incearca din nou",
   "review.update.message": "Rating-ul a fost salvat",
-  "favorite.shop.failed.to.update" : "Magazinul favorit nu a putut fi salvat, te rog incearca din nou"
+  "favorite.shop.failed.to.update" : "Magazinul favorit nu a putut fi salvat, te rog incearca din nou",
+  "wallet.cashout.name.error" : "Introdu un nume",
+  "wallet.cashout.iban.error" : "Introdu un IBAN",
+  "wallet.cashout.amount.error" : "Alege o suma corecta, suma minima este 10 RON",
+  "wallet.donate.amount.error" : "Alege o suma",
+  "wallet.donate.cause.error": "Alege o cauza"
 }

@@ -99,5 +99,10 @@
   "review.error.message": "Description and rating must not be empty",
   "review.failed.to.update.error.message": "Review failed to update, please try again",
   "review.update.message": "Review updated",
-  "favorite.shop.failed.to.update" : "Favorite shop failed to update, please try again"
+  "favorite.shop.failed.to.update" : "Favorite shop failed to update, please try again",
+  "wallet.cashout.name.error" : "Please enter a name",
+  "wallet.cashout.iban.error" : "Please enter a bank account",
+  "wallet.cashout.amount.error" : "Please select a correct amount. minimum is 10 RON",
+  "wallet.donate.amount.error" : "Please select an amount",
+  "wallet.donate.cause.error": "Please select a cause"
 }

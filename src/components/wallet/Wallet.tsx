@@ -202,10 +202,6 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                             approved={
                                                 this.state.pointsApproved
                                             }
-                                            pending={
-                                                this.state.pointsPending
-                                            }
-                                            pendingExists={true}
                                             money={false}
                                         />
                                         <WalletBlock

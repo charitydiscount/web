@@ -92,12 +92,12 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
 
     async cashout() {
         if (!this.state.name) {
-            alert("Please select a correct name");
+            alert(this.props.intl.formatMessage({id: "wallet.cashout.name.error"}));
             return;
         }
 
         if (!this.state.iban) {
-            alert("Please select a correct iban");
+            alert(this.props.intl.formatMessage({id: "wallet.cashout.iban.error"}));
             return;
         }
 
@@ -105,7 +105,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             || this.state.amount.length < 1
             || parseFloat(this.state.amount) < 10
             || parseFloat(this.state.amount) > this.props.approved) {
-            alert("Please select a correct amount. minimum is 10 RON");
+            alert(this.props.intl.formatMessage({id: "wallet.cashout.amount.error"}));
             return;
         }
 
@@ -118,14 +118,13 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                 this.setState({
                     faderVisible: false
                 });
+                this.closeModal();
                 window.location.reload();
-                //cereare a fost succses
             }
         } catch (error) {
             this.setState({
                 faderVisible: false
             });
-            //cererea a fost respinsa
         }
     }
 
@@ -134,11 +133,11 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             || this.state.amount.length < 1
             || parseFloat(this.state.amount) < 1
             || parseFloat(this.state.amount) > this.props.approved) {
-            alert("Please select a correct amount");
+            alert(this.props.intl.formatMessage({id: "wallet.donate.amount.error"}));
             return;
         }
         if (!this.state.targetId) {
-            alert("Please select a cause");
+            alert(this.props.intl.formatMessage({id: "wallet.donate.cause.error"}));
             return;
         }
         try {
@@ -150,14 +149,13 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                 this.setState({
                     faderVisible: false
                 });
+                this.closeModal();
                 window.location.reload();
-                //cereare a fost succses
             }
         } catch (error) {
             this.setState({
                 faderVisible: false
             });
-            //cererea a fost respinsa
         }
     }
 
