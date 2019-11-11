@@ -1,11 +1,10 @@
-import * as React from "react";
-import {store} from "../../index";
-import {NavigationsAction} from "../../redux/actions/NavigationsAction";
-import {Stages} from "../helper/Stages";
-import {FormattedMessage} from 'react-intl';
+import * as React from 'react';
+import { store } from '../../index';
+import { NavigationsAction } from '../../redux/actions/NavigationsAction';
+import { Stages } from '../helper/Stages';
+import { FormattedMessage } from 'react-intl';
 
 class Privacy extends React.Component {
-
     public componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.PRIVACY));
     }
@@ -17,27 +16,137 @@ class Privacy extends React.Component {
     public render() {
         return (
             <React.Fragment>
-                <div className="container p_120">
-                    <div className={"p_20"}>
+                <div className="container pt-5">
+                    <div className="p-2 p-md-4">
                         <h3 className="mb-30 title_color">
-                            <FormattedMessage id="privacy.title"
-                                              defaultMessage="Privacy"/>
+                            <FormattedMessage
+                                id="privacy.title"
+                                defaultMessage="Privacy"
+                            />
                         </h3>
                         <div className="row">
                             <div className="mt-sm-20 left-align-p">
                                 <p className="sample-text">
-                                    Every avid independent filmmaker has
-                                    <b>Bold</b> about making that
-                                    <i>Italic</i> interest documentary, or short film to show off their creative prowess. Many have great ideas and want to
-                                    “wow” the
-                                    <sup>Superscript</sup> scene, or video renters with their big project. But once you have the
-                                    <sub>Subscript</sub> “in the can” (no easy feat), how do you move from a
-                                    <del>Strike</del> through of master DVDs with the
-                                    <u>“Underline”</u> marked hand-written title inside a secondhand CD case, to a pile of cardboard boxes full of shiny new,
-                                    retail-ready DVDs, with UPC barcodes and polywrap sitting on your doorstep? You need to create eye-popping artwork and
-                                    have your project replicated. Using a reputable full service DVD Replication company like PacificDisc, Inc. to partner
-                                    with is certainly a helpful option to ensure a professional end result, but to help with your DVD replication project,
-                                    here are 4 easy steps to follow for good DVD replication results
+                                    <p className="text-muted">
+                                        Politica de confidențialitate prezentata
+                                        mai jos intră în vigoare de la data de
+                                        11.11.2019.
+                                    </p>
+                                    <ol>
+                                        <li className="p-2">
+                                            Informațiile pe care le stocăm
+                                        </li>
+                                        <ul>
+                                            <li className="">
+                                                <b>Nume si prenume</b>
+                                            </li>
+                                            <li className="">
+                                                <b>Adresa de email</b>
+                                            </li>
+                                            <li className="">
+                                                <b>IBAN</b>
+                                            </li>
+                                        </ul>
+                                        <li className="p-2 pt-4">
+                                            Cum sunt obținute aceste informații
+                                        </li>
+                                        Informațiile sunt colectate
+                                        prin introducerea lor de către
+                                        utilizatorii noștri direct în platformă
+                                        și sunt esențiale pentru buna
+                                        funcționare a serviciului nostru.
+                                        <li className="p-2 pt-4">
+                                            Cum și pentru ce folosim
+                                            informațiile stocate
+                                        </li>
+                                        Folosim și procesăm informațiile
+                                        colectate pentru a putea asigura
+                                        funcționalitatea platformei noastre după
+                                        cum urmează:
+                                        <p>
+                                            <b>Nume și Prenume</b> – le procesăm
+                                            pentru efectuarea plăților prin
+                                            transfer bancar către utilizatorii
+                                            noștri. Acestea sunt afișate public
+                                            in cadrul unei recenzii lasate de
+                                            utilizator.
+                                        </p>
+                                        <p>
+                                            <b>Adresa de email</b> – o procesăm
+                                            pentru crearea conturilor, în
+                                            procesul de autentificare și pentru
+                                            a transmite notificări.
+                                        </p>
+                                        <p>
+                                            <b>IBAN</b> - îl stocam pentru a
+                                            facilitate retragerea cashback-ului
+                                            și pentru a păstra istoricul
+                                            tranzacțiilor efectuate.
+                                        </p>
+                                        <li className="pt-2">
+                                            Platforme si servicii terțe:
+                                        </li>
+                                        <p>
+                                            Platforma CharityDiscount folosește
+                                            următoarele servicii oferite de
+                                            Google prin intermediul platformei{' '}
+                                            <b>Firebase</b>:
+                                            <ul>
+                                                <li className="p-1">
+                                                    Firebase Hosting
+                                                </li>
+                                                <li className="p-1">
+                                                    Firebase Analytics
+                                                </li>
+                                                <li className="p-1">
+                                                    Firebase Authentication
+                                                </li>
+                                                <li className="p-1">
+                                                    Firebase Firestore
+                                                </li>
+                                                <li className="p-1">
+                                                    Firebase Cloud Messaging
+                                                </li>
+                                            </ul>
+                                            Acestea sunt folosite exclusiv
+                                            pentru a asigura funcționarea
+                                            platformei CharityDiscount. Vă rugam
+                                            sa consultați politica de
+                                            confidențialitate a serviciilor
+                                            oferite de Google accesând următorul{' '}
+                                            <a href="https://policies.google.com/technologies/partner-sites?hl=ro">
+                                                link
+                                            </a>
+                                            .
+                                        </p>
+                                        <p>
+                                            De asemenea, folosim platforma{' '}
+                                            <a href="https://2performant.com/">
+                                                2performant
+                                            </a>{' '}
+                                            pentru afilierea cu magazinele
+                                            prezentate. Prin intermediul
+                                            2performant, obținem informațiile
+                                            despre magazine, oferte, comisioane
+                                            si cumpărăturile efectuate.
+                                            2performant nu are access la nicio
+                                            informație personală a
+                                            utilizatorilor noștri, comisionul
+                                            fiind acordat pe baza unui
+                                            identificator unic generat de
+                                            CharityDiscount. În urma
+                                            cumpărăturilor efectuate de
+                                            utilizatori, 2performant ne pune la
+                                            dispoziție următoarele informații:
+                                            magazinul de la care utilizatorul a
+                                            cumpărat, descrierea furnizata de
+                                            magazin (uneori poate conține
+                                            informații despre produsele
+                                            cumpărate), adresa IP si tipul
+                                            dispozitivului (exemplu: mobil) de
+                                            pe care s-a efectuat achiziția.
+                                        </p>
+                                    </ol>
                                 </p>
                             </div>
                         </div>
