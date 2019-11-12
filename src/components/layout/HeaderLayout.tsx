@@ -129,7 +129,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                         <div className="container-fluid">
                             {(isLoggedIn || (!isLoggedIn && (isTos || isPrivacy)))
                             &&
-                            <a className="navbar-brand logo_h" href={emptyHrefLink}>
+                            <a className="navbar-brand logo_h" href={"/login"}>
                                 <img src={logoPath} alt=""/>
                             </a>
                             }

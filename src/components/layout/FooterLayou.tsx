@@ -11,10 +11,6 @@ interface IFooterProps {
 
 class FooterLayou extends React.Component<IFooterProps & InjectedIntlProps> {
 
-    constructor(props: IFooterProps & InjectedIntlProps) {
-        super(props);
-    }
-
     render() {
         return (
             <footer className="footer-area section_gap">
@@ -42,10 +38,10 @@ class FooterLayou extends React.Component<IFooterProps & InjectedIntlProps> {
                                                       defaultMessage="Follow us"/>
                                 </h6>
                                 <div className="f_social">
-                                    <a href="#">
+                                    <a href={emptyHrefLink}>
                                         <i className="fa fa-facebook"></i>
                                     </a>
-                                    <a href="#">
+                                    <a href={emptyHrefLink}>
                                         <i className="fa fa-instagram"></i>
                                     </a>
                                 </div>

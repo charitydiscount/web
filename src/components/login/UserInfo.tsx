@@ -14,14 +14,12 @@ import {doLogoutAction} from "./UserActions";
 import {connect} from "react-redux";
 import FileUploader from 'react-firebase-file-uploader';
 import Modal from 'react-awesome-modal';
-import Select from 'react-select';
 import {InjectedIntlProps, injectIntl, FormattedMessage} from 'react-intl';
-import {getUserFromStorage, onLanguageChange} from "../../helper/AppHelper";
+import {getUserFromStorage} from "../../helper/AppHelper";
 import {fetchProfilePhoto} from "../../rest/StorageService";
 
 interface IUserInfoProps {
-    logout: () => void,
-    currentLocale?: string
+    logout: () => void
 }
 
 interface IUserInfoState {
@@ -174,19 +172,6 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                                             <div className="br"/>
                                         </aside>
                                         <aside className="single_sidebar_widget popular_post_widget">
-                                            <div className="col-md-12 text-center p_05">
-                                                <Select
-                                                    name="form-field-name"
-                                                    value={this.props.currentLocale}
-                                                    onChange={onLanguageChange}
-                                                    isSearchable={false}
-                                                    placeholder={this.props.intl.formatMessage(
-                                                        {id: 'userInfo.select.language.placeholder'}
-                                                    )}
-                                                    options={[{value: 'ro', label: 'RO'},
-                                                        {value: 'en', label: 'EN'}]}
-                                                />
-                                            </div>
                                             {this.state.providerType === ProviderType.NORMAL
                                             &&
                                             <div>
@@ -265,17 +250,10 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
 }
 
 const
-    mapStateToProps = (state: any) => {
-        return {
-            currentLocale: state.locale.langResources.language
-        }
-    };
-
-const
     mapDispatchToProps = (dispatch: any) => {
         return {
             logout: () => dispatch(doLogoutAction())
         };
     };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(UserInfo));
+export default connect(null, mapDispatchToProps)(injectIntl(UserInfo));
