@@ -180,8 +180,6 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                                                     value={this.props.currentLocale}
                                                     onChange={onLanguageChange}
                                                     isSearchable={false}
-                                                    className={"react_select"}
-                                                    classNamePrefix={"react_select"}
                                                     placeholder={this.props.intl.formatMessage(
                                                         {id: 'userInfo.select.language.placeholder'}
                                                     )}
