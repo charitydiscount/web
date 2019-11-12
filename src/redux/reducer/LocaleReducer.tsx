@@ -4,7 +4,6 @@ import messages_ro from "../../translations/ro.json";
 import messages_en from "../../translations/en.json";
 import {getLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
-import {LoginDto} from "../../components/login/LoginComponent";
 
 let language = navigator.language.split(/[-_]/)[0];  // language without region code, browser language
 const messages = {
@@ -33,13 +32,17 @@ export default function (state: ILocaleState = initialState, action: LocaleActio
         }
         default: {
             if (state) {
-                const user = getLocalStorage(StorageKey.USER);
-                if (user) {
-                    let localeExist = (JSON.parse(user) as LoginDto).locale;
-                    if (localeExist) {
+                const lang = getLocalStorage(StorageKey.LANG);
+                if (lang) {
+                    if (lang === "en" || lang === "ro") {
                         state.langResources = {
-                            language: localeExist,
-                            resources: messages[localeExist]
+                            language: lang,
+                            resources: messages[lang]
+                        }
+                    } else {
+                        state.langResources = {
+                            language: "en",
+                            resources: messages["en"]
                         }
                     }
                 }

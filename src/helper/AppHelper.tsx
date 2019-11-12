@@ -60,12 +60,7 @@ export function getUserFromStorage() {
 }
 
 export function onLanguageChange(event) {
-    const user = getLocalStorage(StorageKey.USER);
-    if (user) {
-        let userParsed = JSON.parse(user) as LoginDto;
-        userParsed.locale = event.value;
-        setLocalStorage(StorageKey.USER, JSON.stringify(userParsed));
-    }
+    setLocalStorage(StorageKey.LANG, event.value);
     store.dispatch(setLangResources(event.value));
     window.location.reload();
 }

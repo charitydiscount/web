@@ -48,6 +48,7 @@ export enum StorageKey {
     FAVORITE_SHOPS = '/favoriteShopsCD',
     CAUSES = '/causesCD',
     USER = '/userCD',
+    LANG = '/langCD',
     REVIEWS = '/reviewsCD',
 
     //SESSION STORAGE
