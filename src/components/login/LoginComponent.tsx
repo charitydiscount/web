@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import ClientsLogo from '../clients/ClientsLogo';
-import {auth} from 'firebase/app';
-import * as firebaseui from 'firebaseui';
-import 'firebaseui/dist/firebaseui.css';
-import {setLocalStorage} from '../../helper/StorageHelper';
-import {ProviderType, StorageKey} from '../../helper/Constants';
-import {FormattedMessage} from 'react-intl';
+import firebase from 'firebase/app';
+import { auth } from '../../index';
+import FirebaseUIAuth from 'react-firebaseui-localized';
+import { setLocalStorage } from '../../helper/StorageHelper';
+import { ProviderType, StorageKey } from '../../helper/Constants';
+import { FormattedMessage } from 'react-intl';
 
 export interface LoginDto {
     uid: string;
@@ -14,7 +14,7 @@ export interface LoginDto {
     displayName: string;
     email: string;
     providerType: ProviderType;
-    locale: string,
+    locale: string;
     creationTime: string;
 }
 
@@ -25,14 +25,18 @@ export interface LoginRequestDto {
     email: string;
 }
 
-export var LoginMapper = {
+export const LoginMapper = {
     uid: 'uid',
     photoURL: 'photoURL',
     displayName: 'displayName',
     email: 'email',
 };
 
-class LoginComponent extends React.Component {
+type ILoginProps = {
+    currentLocale: string;
+};
+
+class LoginComponent extends React.Component<ILoginProps> {
     static onSignInSuccess(response) {
         var objectMapper = require('object-mapper');
         let parsedUser = objectMapper(
@@ -59,62 +63,74 @@ class LoginComponent extends React.Component {
         signInSuccessUrl: '/categories',
         privacyPolicyUrl: '/privacy',
         signInOptions: [
-            auth.EmailAuthProvider.PROVIDER_ID,
-            auth.GoogleAuthProvider.PROVIDER_ID,
-            auth.FacebookAuthProvider.PROVIDER_ID,
+            firebase.auth.EmailAuthProvider.PROVIDER_ID,
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            firebase.auth.FacebookAuthProvider.PROVIDER_ID,
         ],
         callbacks: {
             signInSuccessWithAuthResult: LoginComponent.onSignInSuccess,
         },
     };
 
-    componentDidMount() {
-        let uiInstance;
-        if (firebaseui.auth.AuthUI.getInstance()) {
-            uiInstance = firebaseui.auth.AuthUI.getInstance();
-        } else {
-            uiInstance = new firebaseui.auth.AuthUI(auth());
-        }
-        uiInstance.start('#firebaseui', this.uiConfig);
-    }
-
     public render() {
         return (
             <React.Fragment>
-                <section className="login_box_area pb-4 pt-2">
-                    <div className="container">
-                        <div className="row">
+                <section
+                    style={{ height: '400px' }}
+                    className="login_box_area pb-4 pt-2"
+                >
+                    <div className="container h-100">
+                        <div className="row justify-content-between d-flex h-100">
                             <div className="col-lg-4 d-flex align-items-center">
-                                <a className="mx-auto text-center" href="/landing-ro.html">
-                                    <FormattedMessage id="login.question.label"
-                                                      defaultMessage="Not sure what Charity Discount is?"/>
+                                <a
+                                    className="mx-auto text-center"
+                                    href="/landing-ro.html"
+                                >
+                                    <FormattedMessage
+                                        id="login.question.label"
+                                        defaultMessage="Not sure what Charity Discount is?"
+                                    />
                                 </a>
                             </div>
-                            <div className="col-lg-4 d-flex align-items-center">
+                            <div className="col-lg-4 align-items-center d-none d-md-flex">
                                 <div className="login_box_img mx-auto">
                                     <img
                                         src="img/charity_discount.png"
                                         alt="Charity Discount Logo"
-                                        height="300px"
+                                        height="200px"
                                     />
                                 </div>
                             </div>
-                            <div className="col-lg-4 d-flex align-items-center flex-column">
+                            <div className="col-lg-4 d-flex align-items-center flex-column mt-4 mt-md-0 justify-content-center">
                                 <div>
-                                    <FormattedMessage id="login.question.ready.label"
-                                                      defaultMessage="Ready to join?"/>
+                                    <FormattedMessage
+                                        id="login.question.ready.label"
+                                        defaultMessage="Ready to join?"
+                                    />
                                     <span>&#128079;</span>
                                 </div>
-                                <div id="firebaseui" className="mx-auto"/>
+                                <FirebaseUIAuth
+                                    lang={this.props.currentLocale}
+                                    config={this.uiConfig}
+                                    auth={auth}
+                                    firebase={firebase}
+                                    className="mx-auto"
+                                />
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <ClientsLogo/>
+                <ClientsLogo />
             </React.Fragment>
         );
     }
 }
 
-export default connect()(LoginComponent);
+const mapStateToProps = (state: any) => {
+    return {
+        currentLocale: state.locale.langResources.language,
+    };
+};
+
+export default connect(mapStateToProps)(LoginComponent);

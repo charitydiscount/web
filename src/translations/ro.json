@@ -112,6 +112,6 @@
   "wallet.block.otp.code.error": "Introdu codul primit pe mail",
   "wallet.block.otp.code.worng.error": "Codul nu este valid",
   "footer.translation": "Traducere",
-  "login.question.label": "Nu stii inseamna Charity Discount?",
+  "login.question.label": "Nu stii ce inseamna CharityDiscount?",
   "login.question.ready.label": "Pregatit sa ni te alaturi?"
 }

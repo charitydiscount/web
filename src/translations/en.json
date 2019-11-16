@@ -112,6 +112,6 @@
   "wallet.block.otp.code.error": "Please enter the code received on mail",
   "wallet.block.otp.code.worng.error": "Code is not valid",
   "footer.translation": "Translation",
-  "login.question.label": "Not sure what Charity Discount is?",
+  "login.question.label": "Not sure what CharityDiscount is?",
   "login.question.ready.label": "Ready to join?"
 }

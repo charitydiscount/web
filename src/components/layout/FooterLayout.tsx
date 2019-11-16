@@ -1,16 +1,23 @@
 import * as React from 'react';
 import { emptyHrefLink } from '../../helper/Constants';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { onLanguageChange } from '../../helper/AppHelper';
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 
-interface IFooterProps {
-    currentLocale?: string;
-}
+type IFooterProps = {
+    currentLocale: string;
+    isLoggedIn: boolean;
+};
 
-class FooterLayout extends React.Component<IFooterProps & InjectedIntlProps> {
+const options: any[] = [
+    { value: 'ro', label: 'RO' },
+    { value: 'en', label: 'EN' },
+];
+const optionFromValue = (value: string) => options.find(o => o.value === value);
+
+class FooterLayout extends React.Component<IFooterProps> {
     render() {
         return (
             <footer className="footer-area p-4 pt-5">
@@ -64,36 +71,35 @@ class FooterLayout extends React.Component<IFooterProps & InjectedIntlProps> {
                         <div className="col-lg-3 col-md-6 col-sm-6">
                             <div className="single-footer-widget f_social_wd">
                                 <h6 className="footer_title">
-                                    <FormattedMessage
-                                        id="footer.translation"
-                                        defaultMessage="Translation"
-                                    />
+                                    {!this.props.isLoggedIn && (
+                                        <FormattedMessage
+                                            id="footer.translation"
+                                            defaultMessage="Translation"
+                                        />
+                                    )}
                                 </h6>
-                                <Select
-                                    name="form-field-name"
-                                    value={this.props.currentLocale}
-                                    onChange={onLanguageChange}
-                                    isSearchable={false}
-                                    placeholder={this.props.intl.formatMessage({
-                                        id:
-                                            'userInfo.select.language.placeholder',
-                                    })}
-                                    options={[
-                                        { value: 'ro', label: 'RO' },
-                                        { value: 'en', label: 'EN' },
-                                    ]}
-                                />
+                                {!this.props.isLoggedIn && (
+                                    <Select
+                                        name="form-field-name"
+                                        value={optionFromValue(
+                                            this.props.currentLocale
+                                        )}
+                                        defaultValue="ro"
+                                        onChange={onLanguageChange}
+                                        isSearchable={false}
+                                        options={options}
+                                    />
+                                )}
                             </div>
                         </div>
                     </div>
 
-                    <div className="row footer-bottom d-flex">
-                        <ul className="container col-lg-12 footer-text text-center d-flex list-inline">
-                            <li className="col-lg-3 footer-text">
-                                &copy;{' '}
-                                <a href={emptyHrefLink}>CharityDiscount</a>
+                    <div className="pt-5 d-flex container">
+                        <ul className="row footer-text text-center d-flex list-inline col-12">
+                            <li className="col-12 col-md-3 footer-text mt-2">
+                                &copy; CharityDiscount
                             </li>
-                            <li className="col-lg-3">
+                            <li className="col-12 col-md-3 mt-2">
                                 <Link to="/privacy" className="ml-1">
                                     <FormattedMessage
                                         id="userinfo.privacy.button"
@@ -101,7 +107,7 @@ class FooterLayout extends React.Component<IFooterProps & InjectedIntlProps> {
                                     />
                                 </Link>
                             </li>
-                            <li className="col-lg-3">
+                            <li className="col-12 col-md-3 mt-2">
                                 <Link to="/tos" className="ml-1">
                                     <FormattedMessage
                                         id="userinfo.terms.button"
@@ -109,7 +115,7 @@ class FooterLayout extends React.Component<IFooterProps & InjectedIntlProps> {
                                     />
                                 </Link>
                             </li>
-                            <li className="col-lg-3">
+                            <li className="col-12 col-md-3 mt-2">
                                 <a href="/faq">FAQ</a>
                             </li>
                         </ul>
@@ -123,7 +129,8 @@ class FooterLayout extends React.Component<IFooterProps & InjectedIntlProps> {
 const mapStateToProps = (state: any) => {
     return {
         currentLocale: state.locale.langResources.language,
+        isLoggedIn: state.user.isLoggedIn,
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(FooterLayout));
+export default connect(mapStateToProps)(FooterLayout);

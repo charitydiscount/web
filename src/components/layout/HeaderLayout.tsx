@@ -13,12 +13,12 @@ import {FormattedMessage} from 'react-intl';
 import Select from 'react-select';
 import {onLanguageChange} from "../../helper/AppHelper";
 
-interface IHeaderLayoutProps {
+type IHeaderLayoutProps = {
     isLoggedIn?: boolean,
     logout: () => void,
     view?: string,
 
-    currentLocale?: string,
+    currentLocale: string,
 
     // global state
     // used to refresh shops
@@ -32,6 +32,12 @@ interface IHeaderLayoutProps {
 interface IHeaderLayoutState {
     username: string
 }
+
+const options: any[] = [
+    { value: 'ro', label: 'RO' },
+    { value: 'en', label: 'EN' },
+];
+const optionFromValue = (value: string) => options.find(o => o.value === value);
 
 class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutState> {
 
@@ -111,14 +117,14 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                             &&
                             <Select
                                 name="form-field-name"
-                                value={this.props.currentLocale}
+                                value={optionFromValue(
+                                    this.props.currentLocale
+                                )}
                                 onChange={onLanguageChange}
                                 isSearchable={false}
                                 className={"react_select"}
                                 classNamePrefix={"react_select"}
-                                placeholder={this.props.currentLocale ? this.props.currentLocale.toUpperCase() : ''}
-                                options={[{value: 'ro', label: 'RO'},
-                                    {value: 'en', label: 'EN'}]}
+                                options={options}
                             />
                             }
                         </div>
