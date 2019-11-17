@@ -144,7 +144,7 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
             : (parseFloat(this.props.defaultSaleCommissionRate) * this.state.percentage).toFixed(2) + ' %';
         let sellingCountries = this.props.sellingCountries.map(country => {
             return country.name;
-        });
+        }).join(", ");
 
         return (
             <React.Fragment>
