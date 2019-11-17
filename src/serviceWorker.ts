@@ -81,12 +81,12 @@ function registerValidSW(swUrl: string, config?: Config) {
                                 'New content is available and will be used when all ' +
                                 'tabs for this page are closed. See https://bit.ly/CRA-PWA.'
                             );
-                            const event = new Event("newContentAvailable");
-                            window.dispatchEvent(event);
                             // Execute callback
                             if (config && config.onUpdate) {
                                 config.onUpdate(registration);
                             }
+                            const event = new Event("newContentAvailable");
+                            window.dispatchEvent(event);
                         } else {
                             // At this point, everything has been precached.
                             // It's the perfect time to display a

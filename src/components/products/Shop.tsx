@@ -60,11 +60,6 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
                 percentage: 0.6
             })
         }
-        if (verifyInFavoriteShops(this.props.id)) {
-            this.setState({
-                favShop: true
-            })
-        }
     }
 
     closeModal() {
@@ -74,8 +69,8 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
     }
 
     closeFShopModal() {
-        this.openModal();
         this.setState({
+            visible: true,
             fShopVisible: false,
             favShopModalMessage: ''
         });
@@ -89,6 +84,11 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
     }
 
     openModal() {
+        if (verifyInFavoriteShops(this.props.id)) {
+            this.setState({
+                favShop: true
+            })
+        }
         this.setState({
             visible: true
         });
