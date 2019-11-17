@@ -2,6 +2,7 @@ import * as React from 'react';
 import Modal from 'react-awesome-modal';
 import {emptyHrefLink} from '../../helper/Constants';
 import {
+    SellingCountriesDto,
     updateFavoriteShops, verifyInFavoriteShops,
 } from '../../rest/ShopsService';
 import {computeUrl} from '../../helper/AppHelper';
@@ -31,7 +32,8 @@ interface IProductProps {
     defaultLeadCommissionType: string,
     defaultSaleCommissionRate: string,
     defaultSaleCommissionType: string,
-    totalReviews: number
+    totalReviews: number,
+    sellingCountries: SellingCountriesDto[]
 }
 
 class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductInfoState> {
@@ -137,10 +139,12 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
     }
 
     public render() {
-        let commission;
-        commission = this.props.defaultLeadCommissionAmount != null
+        let commission = this.props.defaultLeadCommissionAmount != null
             ? (parseFloat(this.props.defaultLeadCommissionAmount) * this.state.percentage).toFixed(2) + ' RON'
             : (parseFloat(this.props.defaultSaleCommissionRate) * this.state.percentage).toFixed(2) + ' %';
+        let sellingCountries = this.props.sellingCountries.map(country => {
+            return country.name;
+        });
 
         return (
             <React.Fragment>
@@ -161,9 +165,11 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
                         </h6>
                         <img src={this.props.logoSrc} alt=""/>
                         <div className="blog_details">
-                            <a href={emptyHrefLink}>
-                                <h2>{this.props.name}</h2>
-                            </a>
+                            <h2>{this.props.name}</h2>
+                            <h6><FormattedMessage id={"shop.available.in"}
+                                                  defaultMessage="Available in: "/>
+                                {sellingCountries}
+                            </h6>
                             {this.props.reviewRating ?
                                 <a href={emptyHrefLink}>
                                     {this.props.reviewRating >= 1 ? <i className="fa fa-star star-focus"/> :
@@ -187,8 +193,10 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
                                     <span> {this.props.totalReviews}</span>
                                 </a>
                                 : ''}
-                            <h3><FormattedMessage id={"shop.category"} defaultMessage="Category:"/>
-                                {this.props.category}</h3>
+                            <h3>
+                                <FormattedMessage id={"shop.category"} defaultMessage="Category:"/>
+                                {this.props.category}
+                            </h3>
                             <div className="s_product_text">
                                 <div className="card_area p_20">
                                     <a href={computeUrl(this.props.uniqueCode, this.props.mainUrl)}

@@ -23,7 +23,15 @@ export interface ShopDto {
     id: number,
     name: string,
     status: string,
-    uniqueCode: string
+    uniqueCode: string,
+    sellingCountries: SellingCountriesDto[]
+}
+
+export interface SellingCountriesDto {
+    code: string,
+    currency: string,
+    name: string,
+    id: number
 }
 
 export var ShopDtoMap = {
@@ -37,7 +45,8 @@ export var ShopDtoMap = {
     id: "id",
     name: "name",
     status: "status",
-    uniqueCode: "uniqueCode"
+    uniqueCode: "uniqueCode",
+    sellingCountries: "sellingCountries"
 };
 
 
