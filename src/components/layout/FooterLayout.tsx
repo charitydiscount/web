@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { emptyHrefLink } from '../../helper/Constants';
-import { FormattedMessage } from 'react-intl';
-import { onLanguageChange } from '../../helper/AppHelper';
-import { connect } from 'react-redux';
+import {emptyHrefLink} from '../../helper/Constants';
+import {FormattedMessage} from 'react-intl';
+import {onLanguageChange} from '../../helper/AppHelper';
+import {connect} from 'react-redux';
 import Select from 'react-select';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 type IFooterProps = {
     currentLocale: string;
@@ -12,8 +12,8 @@ type IFooterProps = {
 };
 
 const options: any[] = [
-    { value: 'ro', label: 'RO' },
-    { value: 'en', label: 'EN' },
+    {value: 'ro', label: 'RO'},
+    {value: 'en', label: 'EN'},
 ];
 const optionFromValue = (value: string) => options.find(o => o.value === value);
 
@@ -68,28 +68,25 @@ class FooterLayout extends React.Component<IFooterProps> {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-3 col-md-6 col-sm-6">
+                        <div className={!this.props.isLoggedIn ? "col-lg-3 col-md-6 col-sm-6" :
+                            "col-lg-3 col-md-6 col-sm-6 d-flex d-md-none"}>
                             <div className="single-footer-widget f_social_wd">
                                 <h6 className="footer_title">
-                                    {!this.props.isLoggedIn && (
-                                        <FormattedMessage
-                                            id="footer.translation"
-                                            defaultMessage="Translation"
-                                        />
-                                    )}
-                                </h6>
-                                {!this.props.isLoggedIn && (
-                                    <Select
-                                        name="form-field-name"
-                                        value={optionFromValue(
-                                            this.props.currentLocale
-                                        )}
-                                        defaultValue="ro"
-                                        onChange={onLanguageChange}
-                                        isSearchable={false}
-                                        options={options}
+                                    <FormattedMessage
+                                        id="footer.translation"
+                                        defaultMessage="Translation"
                                     />
-                                )}
+                                </h6>
+                                <Select
+                                    name="form-field-name"
+                                    value={optionFromValue(
+                                        this.props.currentLocale
+                                    )}
+                                    defaultValue="ro"
+                                    onChange={onLanguageChange}
+                                    isSearchable={false}
+                                    options={options}
+                                />
                             </div>
                         </div>
                     </div>
