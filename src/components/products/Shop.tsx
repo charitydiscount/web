@@ -153,7 +153,12 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
                     <div className="text-center p_20">
                         <h4 className="blue-color">
                             <FormattedMessage id={"shop.cashback"} defaultMessage="Cashback:"/>
-                            {commission}</h4>
+                            {commission}
+                        </h4>
+                        <h6>
+                            <FormattedMessage id={"shop.cashback.without.vat.and.transport"}
+                                              defaultMessage="of the value without VAT and transport"/>
+                        </h6>
                         <img src={this.props.logoSrc} alt=""/>
                         <div className="blog_details">
                             <a href={emptyHrefLink}>

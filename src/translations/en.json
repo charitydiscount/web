@@ -113,5 +113,6 @@
   "login.question.label": "Not sure what CharityDiscount is?",
   "login.question.ready.label": "Ready to join?",
   "wallet.block.cashout.confirm.name": "Account holder name: ",
-  "wallet.block.cashout.confirm.iban": "IBAN: "
+  "wallet.block.cashout.confirm.iban": "IBAN: ",
+  "shop.cashback.without.vat.and.transport": "of the value without VAT and transport"
 }
