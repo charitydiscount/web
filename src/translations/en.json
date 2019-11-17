@@ -46,7 +46,6 @@
   "wallet.charity.points": "Bonus points",
   "wallet.history": "History",
   "wallet.block.pending": "Pending:",
-  "wallet.block.withdraw": "Withdraw",
   "wallet.block.cashout": "Cashout",
   "wallet.block.donate": "Donate",
   "wallet.cashback.history": "Cashback history",
@@ -78,8 +77,8 @@
   "shop.favorite.shop": "Favorite shop: ",
   "shop.favorite.shop.added": "added",
   "shop.favorite.shop.removed": "removed",
-  "wallet.block.cashout.name": "Full name",
-  "wallet.block.cashout.iban": "Iban",
+  "wallet.block.cashout.name": "Account holder name",
+  "wallet.block.cashout.iban": "IBAN",
   "wallet.block.available.amount": "Available amount: ",
   "contact.mail.label": "Send us your message anytime!",
   "contact.name": "Enter your name",
@@ -108,10 +107,11 @@
   "wallet.block.otp.request.placeholder": "Code received on mail",
   "wallet.block.otp.proceed": "Validate",
   "wallet.block.otp.mail.mesasge": "A mail was sent with the code to validate the transaction.",
-  "wallet.block.otp.mail.mesasge1": "Code will expire in 30 seconds.",
   "wallet.block.otp.code.error": "Please enter the code received on mail",
   "wallet.block.otp.code.worng.error": "Code is not valid",
   "footer.translation": "Translation",
   "login.question.label": "Not sure what CharityDiscount is?",
-  "login.question.ready.label": "Ready to join?"
+  "login.question.ready.label": "Ready to join?",
+  "wallet.block.cashout.confirm.name": "Account holder name: ",
+  "wallet.block.cashout.confirm.iban": "IBAN: "
 }

@@ -9,9 +9,9 @@ import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
 import {spinnerCss} from "../../helper/AppHelper";
 import FadeLoader from 'react-spinners/FadeLoader';
+import {AccountDto, getUserAccountInfo, updateUserAccount} from "../../rest/UserService";
 
 interface IWalletBlockState {
-    withDrawVisible: boolean,
     donateVisible: boolean,
     cashoutVisible: boolean,
     otpRequestVisible: boolean,
@@ -41,7 +41,6 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
     constructor(props: IWalletBlockProps) {
         super(props);
         this.state = {
-            withDrawVisible: false,
             cashoutVisible: false,
             donateVisible: false,
             otpRequestVisible: false,
@@ -64,25 +63,27 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
 
     }
 
-    openModal() {
-        this.setState({
-            withDrawVisible: true,
-            cashoutVisible: false,
-            donateVisible: false
-        });
-    }
-
     openDonateModal() {
         this.setState({
-            withDrawVisible: false,
             cashoutVisible: false,
             donateVisible: true
         });
     }
 
-    openCashoutModal() {
+    async openCashoutModal() {
+        try {
+            let response = await getUserAccountInfo();
+            if (response) {
+                this.setState({
+                    name: (response as AccountDto).name,
+                    iban: (response as AccountDto).iban
+                })
+            }
+        } catch (error) {
+            //account info not loaded
+        }
+
         this.setState({
-            withDrawVisible: false,
             cashoutVisible: true,
             donateVisible: false
         });
@@ -90,7 +91,6 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
 
     closeModal() {
         this.setState({
-            withDrawVisible: false,
             cashoutVisible: false,
             donateVisible: false,
             otpRequestVisible: false,
@@ -156,6 +156,12 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             alert(this.props.intl.formatMessage({id: "wallet.cashout.amount.error"}));
             return;
         }
+        try {
+            await updateUserAccount(this.state.name, this.state.iban);
+        } catch (error) {
+            //nothing happens, DB not working
+        }
+
         try {
             let response = await createOtpRequest();
             if (response) {
@@ -225,14 +231,24 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                             <tr className="shipping_area">
                                 <td>
                                     <div className="shipping_box">
+                                        {this.state.otpType === 'CASHOUT' &&
+                                            <React.Fragment>
+                                                <h3 className="important-left-align">
+                                                    <FormattedMessage id="wallet.block.cashout.confirm.name"
+                                                                      defaultMessage="Account holder name: "/>
+                                                    {this.state.name}
+                                                </h3>
+                                                <h3 className="important-left-align">
+                                                    <FormattedMessage id="wallet.block.cashout.confirm.iban"
+                                                                      defaultMessage="IBAN: "/>
+                                                    {this.state.iban}
+                                                </h3>
+                                            </React.Fragment>
+                                        }
                                         <h3 className="important-left-align">
                                             <FormattedMessage id="wallet.block.otp.mail.mesasge"
                                                               defaultMessage="A mail was sent with the code to validate the
                                                            transaction."/>
-                                        </h3>
-                                        <h3 className="important-left-align">
-                                            <FormattedMessage id="wallet.block.otp.mail.mesasge1"
-                                                              defaultMessage="Code will expire in 30 seconds."/>
                                         </h3>
                                         <GenericInput type={InputType.TEXT} id={"otpCode"}
                                                       handleChange={event => this.setState({otpCode: event.target.value})}
@@ -253,14 +269,6 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                             </tbody>
                         </table>
                     </div>
-                </Modal>
-                <Modal visible={this.state.withDrawVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                    <a href={emptyHrefLink} className="btn submit_btn" onClick={() => this.openCashoutModal()}>
-                        <FormattedMessage id="wallet.block.cashout" defaultMessage="Cashout"/>
-                    </a>
-                    <a href={emptyHrefLink} className="btn submit_btn" onClick={() => this.openDonateModal()}>
-                        <FormattedMessage id="wallet.block.donate" defaultMessage="Donate"/>
-                    </a>
                 </Modal>
                 <Modal visible={this.state.cashoutVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <div className="container cart_inner">
@@ -383,10 +391,14 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                         {this.props.approved > 0 ?
                                             <div>
                                                 <br/>
-                                                <a href={emptyHrefLink} onClick={() => this.openModal()}
-                                                   className="btn submit_btn genric-btn circle">
-                                                    <FormattedMessage id="wallet.block.withdraw"
-                                                                      defaultMessage="Withdraw"/>
+                                                <a href={emptyHrefLink} className="btn submit_btn genric-btn circle"
+                                                   onClick={() => this.openCashoutModal()}>
+                                                    <FormattedMessage id="wallet.block.cashout"
+                                                                      defaultMessage="Cashout"/>
+                                                </a>
+                                                <a href={emptyHrefLink} className="btn submit_btn genric-btn circle"
+                                                   onClick={() => this.openDonateModal()}>
+                                                    <FormattedMessage id="wallet.block.donate" defaultMessage="Donate"/>
                                                 </a>
                                             </div> : null}
                                     </div> : null}
