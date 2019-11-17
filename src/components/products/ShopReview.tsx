@@ -3,7 +3,7 @@ import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import {computeUrl, getUserFromStorage} from "../../helper/AppHelper";
-import {emptyHrefLink} from "../../helper/Constants";
+import {emptyHrefLink, StorageKey} from "../../helper/Constants";
 import Modal from 'react-awesome-modal';
 import {getShopById, ShopDto, updateFavoriteShops, verifyInFavoriteShops} from "../../rest/ShopsService";
 import Review from "./Review";
@@ -11,6 +11,7 @@ import {fetchReviews, ReviewDto, updateReview} from "../../rest/ReviewService";
 import {LoginDto} from "../login/LoginComponent";
 import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
+import {removeLocalStorage} from "../../helper/StorageHelper";
 
 interface IProductReviewState {
     fShopVisible: boolean;
@@ -148,6 +149,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                         let response = await updateReview(this.state.uniqueCode, this.state.rating, userParsed.uid,
                             userParsed.photoURL, userParsed.displayName, this.state.description);
                         if (response) {
+                            removeLocalStorage(StorageKey.REVIEWS);
                             this.handleShowModalMessage(this.props.intl.formatMessage({id: "review.update.message"}), null);
                         }
                     } catch (error) {
