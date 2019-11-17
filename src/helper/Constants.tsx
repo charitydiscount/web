@@ -62,7 +62,7 @@ export enum ProviderType {
 }
 
 export const emptyHrefLink = '#';
-export const logoPath = 'img/logo.png';
+export const logoPath = '/img/logo.png';
 export const noImagePath = "/img/no-image.jpg";
 export const profilePictureSuffix = "?height=200";
 export const facebookPictureKey = "facebook";

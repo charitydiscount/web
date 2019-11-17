@@ -36,14 +36,14 @@ class FooterLayout extends React.Component<IFooterProps> {
                                 </h6>
                                 <a href="https://play.google.com/store/apps/details?id=com.clover.charity_discount">
                                     <img
-                                        src={'img/mobile/google-play-badge.svg'}
+                                        src={'/img/mobile/google-play-badge.svg'}
                                         height={40}
                                         width={135}
                                         alt={''}
                                     />
                                 </a>{' '}
                                 <img
-                                    src={'img/mobile/app-store-badge.svg'}
+                                    src={'/img/mobile/app-store-badge.svg'}
                                     height={40}
                                     width={135}
                                     alt={''}

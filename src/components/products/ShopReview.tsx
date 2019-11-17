@@ -2,7 +2,7 @@ import * as React from "react";
 import {store} from "../../index";
 import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
-import {computeUrl, getUserFromStorage} from "../../helper/AppHelper";
+import {computeUrl, getUserFromStorage, spinnerCss} from "../../helper/AppHelper";
 import {emptyHrefLink, StorageKey} from "../../helper/Constants";
 import Modal from 'react-awesome-modal';
 import {getShopById, ShopDto, updateFavoriteShops, verifyInFavoriteShops} from "../../rest/ShopsService";
@@ -12,6 +12,7 @@ import {LoginDto} from "../login/LoginComponent";
 import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
 import {removeLocalStorage} from "../../helper/StorageHelper";
+import FadeLoader from 'react-spinners/FadeLoader';
 
 interface IProductReviewState {
     fShopVisible: boolean;
@@ -25,7 +26,8 @@ interface IProductReviewState {
     description: string,
     modalMessage: string,
     rating: number,
-    reviews: Array<ReviewDto>
+    reviews: Array<ReviewDto>,
+    reviewsLoading: boolean
 }
 
 interface IProductReviewProps {
@@ -48,7 +50,8 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
             description: '',
             modalMessage: '',
             rating: 0,
-            reviews: []
+            reviews: [],
+            reviewsLoading: true
         };
         this.updateFavoriteShopsTrue = this.updateFavoriteShopsTrue.bind(this);
         this.updateFavoriteShopsFalse = this.updateFavoriteShopsFalse.bind(this);
@@ -113,11 +116,15 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
             let response = await fetchReviews(shop.uniqueCode);
             if (response) {
                 this.setState({
-                    reviews: response as Array<ReviewDto>
+                    reviews: response as Array<ReviewDto>,
+                    reviewsLoading: false
                 });
             }
         } catch (error) {
             //reviews won't be loaded
+            this.setState({
+                reviewsLoading: false
+            });
         }
 
     }
@@ -369,7 +376,12 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                                         </div>
                                     </div>
                                     <div className="review_list p_20">
-                                        {reviewsList}
+                                        <FadeLoader
+                                            loading={this.state.reviewsLoading}
+                                            color={'#1641ff'}
+                                            css={spinnerCss}
+                                        />
+                                        {!this.state.reviewsLoading && reviewsList}
                                     </div>
                                 </div>
                             </div>
