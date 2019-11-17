@@ -74,6 +74,7 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
     }
 
     closeFShopModal() {
+        this.openModal();
         this.setState({
             fShopVisible: false,
             favShopModalMessage: ''
