@@ -20,6 +20,12 @@ interface II18nAppProps {
 
 class I18nApp extends React.Component<II18nAppProps> {
 
+    public componentDidMount() {
+        window.addEventListener("newContentAvailable", () => {
+            window.location.reload();
+        });
+    }
+
     public render() {
         return (
             <IntlProvider textComponent={React.Fragment} locale={this.props.langResources.language}
