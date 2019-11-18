@@ -30,14 +30,16 @@ export function fetchWalletInfo() {
                     if (doc.exists) {
                         const data = doc.data() as WalletWrapper;
                         let transactionList = data.transactions as TransactionDto[];
-                        transactionList.sort(function (x, y) {
-                            let a = x.date.toDate(),
-                                b = y.date.toDate();
-                            if (a > b) return -1;
-                            if (a < b) return 1;
-                            return 0;
-                        });
-                        data.transactions = transactionList;
+                        if (transactionList) {
+                            transactionList.sort(function (x, y) {
+                                let a = x.date.toDate(),
+                                    b = y.date.toDate();
+                                if (a > b) return -1;
+                                if (a < b) return 1;
+                                return 0;
+                            });
+                            data.transactions = transactionList;
+                        }
                         resolve(data);
                     } else {
                         reject(); //entry doesn't exist in DB
@@ -50,10 +52,6 @@ export function fetchWalletInfo() {
             reject() // not reachable state
         }
     });
-}
-
-export interface CommissionWrapper {
-    transactions: CommissionDto[];
 }
 
 export interface CommissionDto {
@@ -70,17 +68,23 @@ export function fetchCommissions() {
             DB.collection(FirebaseTable.COMMISSIONS).doc(keyExist).get()
                 .then(function (doc) {
                     if (doc.exists) {
-                        const data = doc.data() as CommissionWrapper;
-                        let transactionList = data.transactions as CommissionDto[];
-                        transactionList.sort(function (x, y) {
-                            let a = x.createdAt.toDate(),
-                                b = y.createdAt.toDate();
-                            if (a > b) return -1;
-                            if (a < b) return 1;
-                            return 0;
-                        });
-                        data.transactions = transactionList;
-                        resolve(data);
+                        const data = doc.data() as Map<String, CommissionDto>;
+                        let commissions = [] as CommissionDto[];
+                        for (let i = 0; i < (Object.entries(data).length - 1); i++) {
+                            let element = Object.entries(data)[i][1] as CommissionDto;
+                            commissions.push(element as CommissionDto);
+                        }
+                        if (commissions) {
+                            commissions.sort(function (x, y) {
+                                let a = x.createdAt.toDate(),
+                                    b = y.createdAt.toDate();
+                                if (a > b) return -1;
+                                if (a < b) return 1;
+                                return 0;
+                            });
+
+                        }
+                        resolve(commissions);
                     } else {
                         reject(); // entry not found in DB
                     }

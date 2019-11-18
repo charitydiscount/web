@@ -4,7 +4,7 @@ import {NavigationsAction} from '../../redux/actions/NavigationsAction';
 import {Stages} from '../helper/Stages';
 import WalletBlock from './WalletBlock';
 import {
-    CommissionDto, CommissionWrapper,
+    CommissionDto,
     fetchCommissions,
     fetchWalletInfo,
     TransactionDto, WalletWrapper,
@@ -94,9 +94,9 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
         try {
             let response = await fetchCommissions();
             if (response) {
-                let data = response as CommissionWrapper;
+                let data = response as CommissionDto[];
                 this.setState({
-                    commissions: data.transactions,
+                    commissions: data,
                     isLoadingCommissions: false
                 })
             } else {
