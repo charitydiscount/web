@@ -142,9 +142,10 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps, IProductIn
         let commission = this.props.defaultLeadCommissionAmount != null
             ? (parseFloat(this.props.defaultLeadCommissionAmount) * this.state.percentage).toFixed(2) + ' RON'
             : (parseFloat(this.props.defaultSaleCommissionRate) * this.state.percentage).toFixed(2) + ' %';
-        let sellingCountries = this.props.sellingCountries.map(country => {
-            return country.name;
-        }).join(", ");
+        let sellingCountries = this.props.sellingCountries && this.props.sellingCountries.length > 0
+            && this.props.sellingCountries.map(country => {
+                return country.name;
+            }).join(", ");
 
         return (
             <React.Fragment>
