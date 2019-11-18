@@ -1,6 +1,6 @@
 import * as React from "react";
 import {CommissionStatus} from "../../helper/Constants";
-import {getShopByUniqueCode, ShopDto} from "../../rest/ShopsService";
+import {getShopById, ShopDto} from "../../rest/ShopsService";
 import {InjectedIntlProps, injectIntl} from "react-intl";
 
 interface IWalletTransactionRowProps {
@@ -13,7 +13,7 @@ interface IWalletTransactionRowProps {
 class WalletCommissionRow extends React.Component<IWalletTransactionRowProps & InjectedIntlProps> {
 
     public render() {
-        let shop = getShopByUniqueCode(this.props.shopUniqueCode) as ShopDto;
+        let shop = getShopById(this.props.shopUniqueCode) as ShopDto;
 
         return (
             <React.Fragment>
