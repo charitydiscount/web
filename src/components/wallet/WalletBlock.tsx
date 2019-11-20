@@ -16,7 +16,7 @@ interface IWalletBlockState {
     cashoutVisible: boolean,
     otpRequestVisible: boolean,
     otpType: string,
-    otpCode: string,
+    otpCode?: number,
 
     //cashout/donate selection
     selections: boolean[],
@@ -45,7 +45,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             donateVisible: false,
             otpRequestVisible: false,
             otpType: '',
-            otpCode: '',
+            otpCode: undefined,
             amount: '',
             targetId: '',
             name: '',
@@ -95,7 +95,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             donateVisible: false,
             otpRequestVisible: false,
             otpType: '',
-            otpCode: '',
+            otpCode: undefined,
             amount: '',
             targetId: '',
             name: '',
@@ -250,8 +250,8 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                                               defaultMessage="A mail was sent with the code to validate the
                                                            transaction."/>
                                         </h3>
-                                        <GenericInput type={InputType.TEXT} id={"otpCode"}
-                                                      handleChange={event => this.setState({otpCode: event.target.value})}
+                                        <GenericInput type={InputType.NUMBER} id={"otpCode"}
+                                                      handleChange={event => this.setState({otpCode: parseInt(event.target.value)})}
                                                       placeholder={
                                                           this.props.intl.formatMessage({id: "wallet.block.otp.request.placeholder"})
                                                       }/>

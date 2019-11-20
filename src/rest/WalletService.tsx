@@ -124,33 +124,21 @@ export function createOtpRequest() {
 
 export interface OtpDto {
     generated: firestore.Timestamp;
-    code: string;
+    code: number;
 }
 
-export function validateOtpCode(code) {
-    return new Promise((resolve, reject) => {
-        let keyExist = getUserKeyFromStorage();
-        if (keyExist) {
-            DB.collection(FirebaseTable.OTPS).doc(keyExist).get()
-                .then(function (doc) {
-                    if (doc.exists) {
-                        let dbObject = doc.data() as OtpDto;
-                        if (dbObject.code === code) {
-                            resolve(true);
-                        } else {
-                            reject(); //code is not right;
-                        }
-                    } else {
-                        reject(); // object doesn't exist;
-                    }
-                })
-                .catch(() => {
-                    reject(); //DB not working
-                });
-        } else {
-            reject(); // unreachable state
-        }
-    })
+export function validateOtpCode(code: number) {
+    let userKey = getUserKeyFromStorage();
+    if (!userKey) {
+        return false;
+    }
+    console.log(userKey);
+
+    return DB.collection(FirebaseTable.OTPS)
+        .doc(userKey)
+        .get()
+        .then(doc => doc.exists && doc.data()!.code === code)
+        .catch(() => false);
 }
 
 export function createRequest(amount, type, targetId) {
