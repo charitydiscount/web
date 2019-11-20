@@ -175,7 +175,7 @@ export function fetchShops() {
             }
         }
 
-        DB.collection(FirebaseTable.SHOPS).get()
+        DB.collection(FirebaseTable.SHOPS).orderBy('order').get()
             .then(querySnapshot => {
                 const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
                 if (data) {
