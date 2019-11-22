@@ -96,7 +96,7 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
 
     async handleRequestDeleteAccount() {
         let question = window.confirm(this.props.intl.formatMessage({id: "userInfo.delete.account.question"}));
-        if (question == true) {
+        if (question === true) {
             const user = getUserFromStorage();
             if (user) {
                 await addContactMessageToDb(user,

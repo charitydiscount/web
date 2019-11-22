@@ -10,7 +10,7 @@ import {
     TransactionDto, WalletWrapper,
 } from '../../rest/WalletService';
 import WalletTransactionRow from './WalletTransactionRow';
-import {CommissionStatus, TxType} from '../../helper/Constants';
+import {CommissionStatus, emptyHrefLink, TxType} from '../../helper/Constants';
 import WalletCommissionRow from './WalletCommissionRow';
 import FadeLoader from 'react-spinners/FadeLoader';
 import {spinnerCss} from '../../helper/AppHelper';
@@ -30,7 +30,17 @@ interface IWalletState {
     isLoadingCommissions: boolean;
     transactions: TransactionDto[];
     commissions: CommissionDto[];
-    causes: CauseDto[]
+    causes: CauseDto[],
+
+    //sort commissions
+    comSortDateAsc: string,
+    comSortStatusAsc: string,
+    comSortAmountAsc: string,
+
+    //sort transactions
+    tranSortDateAsc: string,
+    tranSortTypeAsc: string,
+    tranSortAmount: string
 }
 
 class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
@@ -47,7 +57,13 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
             isLoading: true,
             isLoadingCommissions: true,
             commissions: [],
-            causes: []
+            causes: [],
+            comSortDateAsc: 'true',
+            comSortStatusAsc: '',
+            comSortAmountAsc: '',
+            tranSortDateAsc: 'true',
+            tranSortTypeAsc: '',
+            tranSortAmount: ''
         };
     }
 
@@ -129,7 +145,31 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
         };
 
         const transactionsHistory = this.state.transactions
-            ? this.state.transactions.map((value, index) => {
+            ? this.state.transactions.sort((a, b) => {
+                    if (this.state.tranSortDateAsc) {
+                        if (this.state.tranSortDateAsc === "true") {
+                            return a.date > b.date ? -1 : 1;
+                        } else {
+                            return a.date < b.date ? -1 : 1;
+                        }
+                    }
+                    if (this.state.tranSortTypeAsc) {
+                        if (this.state.tranSortTypeAsc === "true") {
+                            return a.type > b.type ? -1 : 1;
+                        } else {
+                            return a.type < b.type ? -1 : 1;
+                        }
+                    }
+                    if (this.state.tranSortAmount) {
+                        if (this.state.tranSortAmount === "true") {
+                            return a.amount < b.amount ? -1 : 1;
+                        } else {
+                            return a.amount > b.amount ? -1 : 1;
+                        }
+                    }
+                    return 0;
+                }
+            ).map((value, index) => {
                 return (
                     <WalletTransactionRow
                         key={'tx' + index}
@@ -145,7 +185,31 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
             : null;
 
         const commissionsHistory = this.state.commissions
-            ? this.state.commissions.map((value, index) => {
+            ? this.state.commissions.sort((a, b) => {
+                    if (this.state.comSortDateAsc) {
+                        if (this.state.comSortDateAsc === "true") {
+                            return a.createdAt > b.createdAt ? -1 : 1;
+                        } else {
+                            return a.createdAt < b.createdAt ? -1 : 1;
+                        }
+                    }
+                    if (this.state.comSortStatusAsc) {
+                        if (this.state.comSortStatusAsc === "true") {
+                            return a.status > b.status ? -1 : 1;
+                        } else {
+                            return a.status < b.status ? -1 : 1;
+                        }
+                    }
+                    if (this.state.comSortAmountAsc) {
+                        if (this.state.comSortAmountAsc === "true") {
+                            return a.amount < b.amount ? -1 : 1;
+                        } else {
+                            return a.amount > b.amount ? -1 : 1;
+                        }
+                    }
+                    return 0;
+                }
+            ).map((value, index) => {
                 return (
                     <WalletCommissionRow
                         key={'cm' + index}
@@ -230,22 +294,90 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                             <div className="progress-table">
                                                 <div className="table-head">
                                                     <div className="country">
-                                                        <FormattedMessage
-                                                            id="wallet.table.date"
-                                                            defaultMessage="Date"
-                                                        />
+                                                        <a href={emptyHrefLink}
+                                                           onClick={event => {
+                                                               event.preventDefault();
+                                                               this.state.comSortDateAsc
+                                                               && this.state.comSortDateAsc === "true" ?
+                                                                   this.setState(
+                                                                       {
+                                                                           comSortDateAsc: "false",
+                                                                           comSortAmountAsc: '',
+                                                                           comSortStatusAsc: ''
+                                                                       }) :
+                                                                   this.setState({
+                                                                       comSortDateAsc: "true",
+                                                                       comSortAmountAsc: '',
+                                                                       comSortStatusAsc: ''
+                                                                   })
+                                                           }}>
+                                                            <FormattedMessage
+                                                                id="wallet.table.date"
+                                                                defaultMessage="Date"
+                                                            />
+                                                            {this.state.comSortDateAsc && this.state.comSortDateAsc === "true" &&
+                                                            <i className="fa fa-arrow-up"/>}
+                                                            {this.state.comSortDateAsc && this.state.comSortDateAsc === "false" &&
+                                                            <i className="fa fa-arrow-down"/>}
+                                                        </a>
                                                     </div>
                                                     <div className="country">
-                                                        <FormattedMessage
-                                                            id="wallet.table.status"
-                                                            defaultMessage="Status"
-                                                        />
+                                                        <a href={emptyHrefLink}
+                                                           onClick={
+                                                               event => {
+                                                                   event.preventDefault();
+                                                                   this.state.comSortStatusAsc
+                                                                   && this.state.comSortStatusAsc === "true" ?
+                                                                       this.setState(
+                                                                           {
+                                                                               comSortStatusAsc: "false",
+                                                                               comSortAmountAsc: '',
+                                                                               comSortDateAsc: ''
+                                                                           }) :
+                                                                       this.setState({
+                                                                           comSortStatusAsc: "true",
+                                                                           comSortAmountAsc: '',
+                                                                           comSortDateAsc: ''
+                                                                       })
+                                                               }}>
+                                                            <FormattedMessage
+                                                                id="wallet.table.status"
+                                                                defaultMessage="Status"
+                                                            />
+                                                            {this.state.comSortStatusAsc && this.state.comSortStatusAsc === "true" &&
+                                                            <i className="fa fa-arrow-up"/>}
+                                                            {this.state.comSortStatusAsc && this.state.comSortStatusAsc === "false" &&
+                                                            <i className="fa fa-arrow-down"/>}
+                                                        </a>
                                                     </div>
                                                     <div className="country">
-                                                        <FormattedMessage
-                                                            id="wallet.table.amount"
-                                                            defaultMessage="Amount"
-                                                        />
+                                                        <a href={emptyHrefLink}
+                                                           onClick={
+                                                               event => {
+                                                                   event.preventDefault();
+                                                                   this.state.comSortAmountAsc
+                                                                   && this.state.comSortAmountAsc === "true" ?
+                                                                       this.setState(
+                                                                           {
+                                                                               comSortAmountAsc: "false",
+                                                                               comSortStatusAsc: '',
+                                                                               comSortDateAsc: ''
+                                                                           }) :
+                                                                       this.setState({
+                                                                           comSortAmountAsc: "true",
+                                                                           comSortStatusAsc: '',
+                                                                           comSortDateAsc: ''
+                                                                       })
+                                                               }}>
+                                                            <FormattedMessage
+                                                                id="wallet.table.amount"
+                                                                defaultMessage="Amount"
+                                                            />
+                                                            {this.state.comSortAmountAsc && this.state.comSortAmountAsc === "true" &&
+                                                            <i className="fa fa-arrow-down"/>}
+                                                            {this.state.comSortAmountAsc && this.state.comSortAmountAsc === "false" &&
+                                                            <i className="fa fa-arrow-up"/>}
+                                                        </a>
                                                     </div>
                                                     <div className="country">
                                                         <FormattedMessage
@@ -273,22 +405,90 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                             <div className="progress-table">
                                                 <div className="table-head">
                                                     <div className="country">
-                                                        <FormattedMessage
-                                                            id="wallet.table.date"
-                                                            defaultMessage="Date"
-                                                        />
+                                                        <a href={emptyHrefLink}
+                                                           onClick={event => {
+                                                               event.preventDefault();
+                                                               this.state.tranSortDateAsc
+                                                               && this.state.tranSortDateAsc === "true" ?
+                                                                   this.setState(
+                                                                       {
+                                                                           tranSortDateAsc: "false",
+                                                                           tranSortAmount: '',
+                                                                           tranSortTypeAsc: ''
+                                                                       }) :
+                                                                   this.setState({
+                                                                       tranSortDateAsc: "true",
+                                                                       tranSortAmount: '',
+                                                                       tranSortTypeAsc: ''
+                                                                   })
+                                                           }}>
+                                                            <FormattedMessage
+                                                                id="wallet.table.date"
+                                                                defaultMessage="Date"
+                                                            />
+                                                            {this.state.tranSortDateAsc && this.state.tranSortDateAsc === "true" &&
+                                                            <i className="fa fa-arrow-up"/>}
+                                                            {this.state.tranSortDateAsc && this.state.tranSortDateAsc === "false" &&
+                                                            <i className="fa fa-arrow-down"/>}
+                                                        </a>
                                                     </div>
                                                     <div className="country">
-                                                        <FormattedMessage
-                                                            id="wallet.table.type"
-                                                            defaultMessage="Type"
-                                                        />
+                                                        <a href={emptyHrefLink}
+                                                           onClick={event => {
+                                                               event.preventDefault();
+                                                               this.state.tranSortTypeAsc
+                                                               && this.state.tranSortTypeAsc === "true" ?
+                                                                   this.setState(
+                                                                       {
+                                                                           tranSortTypeAsc: "false",
+                                                                           tranSortDateAsc: '',
+                                                                           tranSortAmount: ''
+                                                                       }) :
+                                                                   this.setState({
+                                                                       tranSortTypeAsc: "true",
+                                                                       tranSortDateAsc: '',
+                                                                       tranSortAmount: ''
+                                                                   })
+                                                           }}>
+                                                            <FormattedMessage
+                                                                id="wallet.table.type"
+                                                                defaultMessage="Type"
+                                                            />
+                                                            {this.state.tranSortTypeAsc && this.state.tranSortTypeAsc === "true" &&
+                                                            <i className="fa fa-arrow-up"/>}
+                                                            {this.state.tranSortTypeAsc && this.state.tranSortTypeAsc === "false" &&
+                                                            <i className="fa fa-arrow-down"/>}
+                                                        </a>
                                                     </div>
                                                     <div className="country">
-                                                        <FormattedMessage
-                                                            id="wallet.table.amount"
-                                                            defaultMessage="Amount"
-                                                        />
+                                                        <a href={emptyHrefLink}
+                                                           onClick={
+                                                               event => {
+                                                                   event.preventDefault();
+                                                                   this.state.tranSortAmount
+                                                                   && this.state.tranSortAmount === "true" ?
+                                                                       this.setState(
+                                                                           {
+                                                                               tranSortAmount: "false",
+                                                                               tranSortDateAsc: '',
+                                                                               tranSortTypeAsc: ''
+                                                                           }) :
+                                                                       this.setState({
+                                                                           tranSortAmount: "true",
+                                                                           tranSortDateAsc: '',
+                                                                           tranSortTypeAsc: ''
+                                                                       })
+                                                               }
+                                                           }>
+                                                            <FormattedMessage
+                                                                id="wallet.table.amount"
+                                                                defaultMessage="Amount"
+                                                            />
+                                                            {this.state.tranSortAmount && this.state.tranSortAmount === "true" &&
+                                                            <i className="fa fa-arrow-down"/>}
+                                                            {this.state.tranSortAmount && this.state.tranSortAmount === "false" &&
+                                                            <i className="fa fa-arrow-up"/>}
+                                                        </a>
                                                     </div>
                                                     <div className="country">
                                                         <FormattedMessage
