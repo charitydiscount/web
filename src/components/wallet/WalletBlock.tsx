@@ -7,7 +7,7 @@ import GenericInput from "../input/GenericInput";
 import {createOtpRequest, createRequest, validateOtpCode} from "../../rest/WalletService";
 import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
-import {spinnerCss} from "../../helper/AppHelper";
+import {emptyBackgroundCss, spinnerCss} from "../../helper/AppHelper";
 import FadeLoader from 'react-spinners/FadeLoader';
 import {AccountDto, getUserAccountInfo, updateUserAccount} from "../../rest/UserService";
 
@@ -15,6 +15,7 @@ interface IWalletBlockState {
     donateVisible: boolean,
     cashoutVisible: boolean,
     otpRequestVisible: boolean,
+    otpRequestValidateVisible: boolean,
     otpType: string,
     otpCode?: number,
 
@@ -23,8 +24,7 @@ interface IWalletBlockState {
     amount: string,
     name: string,
     iban: string,
-    targetId: string,
-    faderVisible: boolean
+    targetId: string
 }
 
 interface IWalletBlockProps {
@@ -44,14 +44,14 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             cashoutVisible: false,
             donateVisible: false,
             otpRequestVisible: false,
+            otpRequestValidateVisible: false,
             otpType: '',
             otpCode: undefined,
             amount: '',
             targetId: '',
             name: '',
             iban: '',
-            selections: [],
-            faderVisible: false
+            selections: []
         };
         this.onChildUpdate = this.onChildUpdate.bind(this);
         this.donate = this.donate.bind(this);
@@ -94,6 +94,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             cashoutVisible: false,
             donateVisible: false,
             otpRequestVisible: false,
+            otpRequestValidateVisible: false,
             otpType: '',
             otpCode: undefined,
             amount: '',
@@ -115,19 +116,16 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             if (response) {
                 try {
                     this.setState({
-                        faderVisible: true
+                        otpRequestValidateVisible: true
                     });
                     let response = await createRequest(parseFloat(this.state.amount), this.state.otpType, this.state.targetId);
                     if (response) {
-                        this.setState({
-                            faderVisible: false
-                        });
                         this.closeModal();
                         window.location.reload();
                     }
                 } catch (error) {
                     this.setState({
-                        faderVisible: false
+                        otpRequestValidateVisible: false
                     });
                 }
             } else {
@@ -151,7 +149,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
 
         if (!this.state.amount
             || this.state.amount.length < 1
-            || parseFloat(this.state.amount) < 10
+            || parseFloat(this.state.amount) < 50
             || parseFloat(this.state.amount) > this.props.approved) {
             alert(this.props.intl.formatMessage({id: "wallet.cashout.amount.error"}));
             return;
@@ -232,18 +230,18 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                 <td>
                                     <div className="shipping_box">
                                         {this.state.otpType === 'CASHOUT' &&
-                                            <React.Fragment>
-                                                <h3 className="important-left-align">
-                                                    <FormattedMessage id="wallet.block.cashout.confirm.name"
-                                                                      defaultMessage="Account holder name: "/>
-                                                    {this.state.name}
-                                                </h3>
-                                                <h3 className="important-left-align">
-                                                    <FormattedMessage id="wallet.block.cashout.confirm.iban"
-                                                                      defaultMessage="IBAN: "/>
-                                                    {this.state.iban}
-                                                </h3>
-                                            </React.Fragment>
+                                        <React.Fragment>
+                                            <h3 className="important-left-align">
+                                                <FormattedMessage id="wallet.block.cashout.confirm.name"
+                                                                  defaultMessage="Account holder name: "/>
+                                                {this.state.name}
+                                            </h3>
+                                            <h3 className="important-left-align">
+                                                <FormattedMessage id="wallet.block.cashout.confirm.iban"
+                                                                  defaultMessage="IBAN: "/>
+                                                {this.state.iban}
+                                            </h3>
+                                        </React.Fragment>
                                         }
                                         <h3 className="important-left-align">
                                             <FormattedMessage id="wallet.block.otp.mail.mesasge"
@@ -277,12 +275,6 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                             <tr className="shipping_area">
                                 <td>
                                     <div className="shipping_box">
-                                        <FadeLoader
-                                            loading={this.state.faderVisible}
-                                            color={'#1641ff'}
-                                            css={spinnerCss}
-                                        />
-                                        {!this.state.faderVisible &&
                                         <React.Fragment>
                                             <GenericInput type={InputType.TEXT} id={"name"}
                                                           handleChange={event => this.setState({name: event.target.value})}
@@ -302,11 +294,16 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                                                   defaultMessage="Available amount: "/>
                                                 <i className="blue-color">{this.props.approved.toFixed(1) + ' RON'}</i>
                                             </h6>
+                                            <h6>
+                                                <FormattedMessage id="wallet.block.minimum.amount"
+                                                                  defaultMessage="Minimum amount: "/>
+                                                <i className="blue-color">{'50 RON'}</i>
+                                            </h6>
                                             <GenericInput type={InputType.NUMBER} id={'amount-text-field-cashout'}
                                                           max={this.props.approved.toString()}
                                                           handleChange={event => this.setState({amount: event.target.value})}
                                                           value={this.state.amount}
-                                                          min={"10"}
+                                                          min={"50"}
                                                           step={0.1}
                                                           placeholder={
                                                               this.props.intl.formatMessage({id: "wallet.table.amount"})
@@ -320,7 +317,6 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                                 </a>
                                             </h3>
                                         </React.Fragment>
-                                        }
                                     </div>
                                 </td>
                             </tr>
@@ -335,12 +331,6 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                             <tr className="shipping_area">
                                 <td>
                                     <div className="shipping_box">
-                                        <FadeLoader
-                                            loading={this.state.faderVisible}
-                                            color={'#1641ff'}
-                                            css={spinnerCss}
-                                        />
-                                        {!this.state.faderVisible &&
                                         <React.Fragment>
                                             <ul className="list">
                                                 {causesList}
@@ -369,7 +359,6 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                                 </a>
                                             </h3>
                                         </React.Fragment>
-                                        }
                                     </div>
                                 </td>
                             </tr>
@@ -378,6 +367,13 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                     </div>
                 </Modal>
 
+                <Modal visible={this.state.otpRequestValidateVisible} effect="fadeInUp">
+                        <FadeLoader
+                            loading={this.state.otpRequestValidateVisible}
+                            color={'#ffffff'}
+                            css={emptyBackgroundCss}
+                        />
+                </Modal>
                 <div className="col-lg-4 total_rate">
                     <div className="box_total">
                         <h5>{this.props.title}</h5>

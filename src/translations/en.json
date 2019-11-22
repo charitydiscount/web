@@ -101,7 +101,7 @@
   "favorite.shop.failed.to.update" : "Favorite shop failed to update, please try again",
   "wallet.cashout.name.error" : "Please enter a name",
   "wallet.cashout.iban.error" : "Please enter a bank account",
-  "wallet.cashout.amount.error" : "Please select a correct amount. minimum is 10 RON",
+  "wallet.cashout.amount.error" : "Please select a correct amount. minimum is 50 RON",
   "wallet.donate.amount.error" : "Please select an amount",
   "wallet.donate.cause.error": "Please select a cause",
   "wallet.block.otp.request.placeholder": "Code received on mail",
@@ -121,5 +121,6 @@
   "userInfo.delete.account.question": "Are you sure you want to delete account?",
   "userInfo.delete.account.ok": "Delete account request was sent",
   "userInfo.delete.account.not.ok": "Something went wrong, please try again",
-  "adblock.button": "Reload page"
+  "adblock.button": "Reload page",
+  "wallet.block.minimum.amount": "Minimum amount:"
 }

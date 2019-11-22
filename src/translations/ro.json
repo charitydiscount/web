@@ -101,7 +101,7 @@
   "favorite.shop.failed.to.update": "Magazinul favorit nu a putut fi salvat, te rog incearca din nou",
   "wallet.cashout.name.error": "Introdu un nume",
   "wallet.cashout.iban.error": "Introdu un IBAN",
-  "wallet.cashout.amount.error": "Alege o suma corecta, suma minima este 10 RON",
+  "wallet.cashout.amount.error": "Alege o suma corecta, suma minima este 50 RON",
   "wallet.donate.amount.error": "Alege o suma",
   "wallet.donate.cause.error": "Alege o cauza",
   "wallet.block.otp.request.placeholder": "Codul primit pe mail",
@@ -121,5 +121,6 @@
   "userInfo.delete.account.question": "Sigur doriti stergerea contului?",
   "userInfo.delete.account.ok": "Cererea de stergere a contului a fost trimisa",
   "userInfo.delete.account.not.ok": "Cererea nu a putut fi trimisa, incearca din nou",
-  "adblock.button": "Reincarca pagina"
+  "adblock.button": "Reincarca pagina",
+  "wallet.block.minimum.amount": "Suma minima:"
 }

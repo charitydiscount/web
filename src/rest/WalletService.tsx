@@ -153,7 +153,7 @@ export function createRequest(amount, type, targetId) {
                 .then(() => {
                     setTimeout(function () {
                         resolve(true);
-                    }, 4000);
+                    }, 6000);
                 })
                 .catch(() => {
                     reject();

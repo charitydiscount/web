@@ -30,6 +30,10 @@ export const spinnerCss = css`
     margin: 200px auto;
 `;
 
+export const emptyBackgroundCss = css`
+   height: 0px !important;
+`;
+
 export function isEmptyString(field) {
     return !!field && field.trim().length;
 }
