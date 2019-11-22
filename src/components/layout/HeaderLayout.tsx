@@ -12,6 +12,7 @@ import {Routes} from "../helper/Routes";
 import {FormattedMessage} from 'react-intl';
 import Select from 'react-select';
 import {onLanguageChange} from "../../helper/AppHelper";
+import {Link} from "react-router-dom";
 
 type IHeaderLayoutProps = {
     isLoggedIn?: boolean,
@@ -34,8 +35,8 @@ interface IHeaderLayoutState {
 }
 
 const options: any[] = [
-    { value: 'ro', label: 'RO' },
-    { value: 'en', label: 'EN' },
+    {value: 'ro', label: 'RO'},
+    {value: 'en', label: 'EN'},
 ];
 const optionFromValue = (value: string) => options.find(o => o.value === value);
 
@@ -66,7 +67,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
     }
 
     public loadFavoriteShops(event) {
-        event.preventDefault();
         const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
         if (favoriteShops) {
             this.props.setShops(JSON.parse(favoriteShops));
@@ -187,14 +187,11 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                         <ul className="nav navbar-nav navbar-right right_nav pull-right">
                                             <hr/>
 
-                                            {isCategories &&
                                             <li className="nav-item">
-                                                <a href={emptyHrefLink} className="icons"
-                                                   onClick={this.loadFavoriteShops}>
+                                                <Link to={Routes.CATEGORIES + "/favShops"} onClick={this.loadFavoriteShops} className={"icons"}>
                                                     <i className="fa fa-heart-o" aria-hidden="true"/>
-                                                </a>
+                                                </Link>
                                             </li>
-                                            }
 
                                             <li className="nav-item">
                                                 <a href={Routes.USER} className="icons">

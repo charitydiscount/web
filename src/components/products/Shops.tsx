@@ -28,11 +28,15 @@ interface IShopsProps {
     setShops: any,
     resetShops: any,
     setCurrentPage: any,
-    setRatings: any
+    setRatings: any,
 
     //used to refresh categories
-    setCurrentCategory: any
-    setSelections: any
+    setCurrentCategory: any,
+    setSelections: any,
+
+    //parameters favshops redirect
+    match: any,
+    favShops: string
 }
 
 interface IShopsState {
@@ -66,6 +70,15 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
             //shops not loaded, important part, refresh app
             removeLocalStorage(StorageKey.USER);
             window.location.reload();
+        }
+        let favShop = this.props.match.params.favShops;
+        if (favShop && favShop === "favShops") {
+            const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
+            if (favoriteShops) {
+                this.props.setShops(JSON.parse(favoriteShops));
+            }
+            this.props.setCurrentCategory('Favorite Shops');
+            this.props.setSelections([]);
         }
         try {
             let response = await fetchReviewRatings();
