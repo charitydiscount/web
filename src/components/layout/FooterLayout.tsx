@@ -5,6 +5,7 @@ import {onLanguageChange} from '../../helper/AppHelper';
 import {connect} from 'react-redux';
 import Select from 'react-select';
 import {Link} from 'react-router-dom';
+import {appVersion} from "../../index";
 
 type IFooterProps = {
     currentLocale: string;
@@ -94,7 +95,7 @@ class FooterLayout extends React.Component<IFooterProps> {
                     <div className="pt-5 d-flex container">
                         <ul className="row footer-text text-center d-flex list-inline col-12">
                             <li className="col-12 col-md-3 footer-text mt-2">
-                                &copy; CharityDiscount
+                                &copy; CharityDiscount {appVersion}
                             </li>
                             <li className="col-12 col-md-3 mt-2">
                                 <Link to="/privacy" className="ml-1">
