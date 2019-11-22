@@ -116,9 +116,10 @@
   "wallet.block.cashout.confirm.iban": "IBAN: ",
   "shop.cashback.without.vat.and.transport": "of the value without VAT and transport",
   "shop.available.in": "Available in: ",
-  "adblock.message": "Disable AdBlock or similar programs to continue",
+  "adblock.message": "Disable AdBlock or similar programs to continue  ",
   "userinfo.delete.account.button": "Request delete account",
   "userInfo.delete.account.question": "Are you sure you want to delete account?",
   "userInfo.delete.account.ok": "Delete account request was sent",
-  "userInfo.delete.account.not.ok": "Something went wrong, please try again"
+  "userInfo.delete.account.not.ok": "Something went wrong, please try again",
+  "adblock.button": "Reload page"
 }

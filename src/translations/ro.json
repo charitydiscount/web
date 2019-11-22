@@ -116,9 +116,10 @@
   "wallet.block.cashout.confirm.iban": "IBAN: ",
   "shop.cashback.without.vat.and.transport": "din valoare fara VAT si transport",
   "shop.available.in": "Valabil in : ",
-  "adblock.message": "AdBlock trebuie sa fie dezactivat pentru a putea continua",
+  "adblock.message": "AdBlock trebuie sa fie dezactivat pentru a putea continua  ",
   "userinfo.delete.account.button": "Cerere stergere cont",
   "userInfo.delete.account.question": "Sigur doriti stergerea contului?",
   "userInfo.delete.account.ok": "Cererea de stergere a contului a fost trimisa",
-  "userInfo.delete.account.not.ok": "Cererea nu a putut fi trimisa, incearca din nou"
+  "userInfo.delete.account.not.ok": "Cererea nu a putut fi trimisa, incearca din nou",
+  "adblock.button": "Reincarca pagina"
 }
