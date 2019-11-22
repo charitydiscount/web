@@ -121,18 +121,11 @@ export function createOtpRequest() {
     })
 }
 
-
-export interface OtpDto {
-    generated: firestore.Timestamp;
-    code: number;
-}
-
 export function validateOtpCode(code: number) {
     let userKey = getUserKeyFromStorage();
     if (!userKey) {
         return false;
     }
-    console.log(userKey);
 
     return DB.collection(FirebaseTable.OTPS)
         .doc(userKey)
