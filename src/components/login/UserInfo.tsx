@@ -17,6 +17,7 @@ import Modal from 'react-awesome-modal';
 import {InjectedIntlProps, injectIntl, FormattedMessage} from 'react-intl';
 import {getUserFromStorage} from "../../helper/AppHelper";
 import {fetchProfilePhoto} from "../../rest/StorageService";
+import {addContactMessageToDb} from "../../rest/ContactService";
 
 interface IUserInfoProps {
     logout: () => void
@@ -51,6 +52,7 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
         this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
         this.handleEmailResetSent = this.handleEmailResetSent.bind(this);
         this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this);
+        this.handleRequestDeleteAccount = this.handleRequestDeleteAccount.bind(this);
     }
 
     async componentDidMount() {
@@ -90,6 +92,28 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
 
     public componentWillUnmount() {
         store.dispatch(NavigationsAction.resetStageAction(Stages.USER));
+    }
+
+    async handleRequestDeleteAccount() {
+        let question = window.confirm(this.props.intl.formatMessage({id: "userInfo.delete.account.question"}));
+        if (question == true) {
+            const user = getUserFromStorage();
+            if (user) {
+                await addContactMessageToDb(user,
+                    "Request to delete account with id:" + (JSON.parse(user) as LoginDto).uid,
+                    "Delete account with id:" + (JSON.parse(user) as LoginDto).uid).then(() => {
+                    this.setState({
+                        modalVisible: true,
+                        modalMessage: this.props.intl.formatMessage({id: "userInfo.delete.account.ok"}),
+                    });
+                }).catch(() => {
+                    this.setState({
+                        modalVisible: true,
+                        modalMessage: this.props.intl.formatMessage({id: "userInfo.delete.account.not.ok"})
+                    });
+                });
+            }
+        }
     }
 
     public handleLogOut(event: any) {
@@ -227,6 +251,14 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                                                    className="btn submit_btn userInfo_btn genric-btn circle">
                                                     <FormattedMessage id="userinfo.privacy.button"
                                                                       defaultMessage="Privacy"/>
+                                                </a>
+                                            </div>
+                                            <div className="col-md-12 text-center p_05">
+                                                <a href={emptyHrefLink}
+                                                   className="btn submit_btn userInfo_btn genric-btn circle"
+                                                   onClick={this.handleRequestDeleteAccount}>
+                                                    <FormattedMessage id="userinfo.delete.account.button"
+                                                                      defaultMessage="Delete account"/>
                                                 </a>
                                             </div>
                                             <div className="col-md-12 text-center p_05">
