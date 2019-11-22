@@ -10,6 +10,7 @@
     "firebase": "^7.2.2",
     "object-mapper": "^5.0.0",
     "react": "^16.11.0",
+    "react-ad-block-detect": "^1.0.1",
     "react-awesome-modal": "^2.0.5",
     "react-dom": "^16.11.0",
     "react-firebase-file-uploader": "^2.4.3",

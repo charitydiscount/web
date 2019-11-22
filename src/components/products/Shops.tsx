@@ -17,6 +17,7 @@ import FadeLoader from 'react-spinners/FadeLoader';
 import {spinnerCss} from "../../helper/AppHelper";
 import {InjectedIntlProps, injectIntl} from "react-intl";
 import {fetchAffiliateCode, fetchPercentage} from "../../rest/ConfigService";
+import ReactAdBlock from "../../ReactAdBlock";
 
 interface IShopsProps {
     shops: Array<ShopDto>,
@@ -184,6 +185,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
 
         return (
             <React.Fragment>
+                <ReactAdBlock/>
                 <section className="cat_product_area section_gap">
                     <div className="container-fluid">
                         <div className="row flex-row-reverse">

@@ -115,5 +115,6 @@
   "wallet.block.cashout.confirm.name": "Nume posesor cont: ",
   "wallet.block.cashout.confirm.iban": "IBAN: ",
   "shop.cashback.without.vat.and.transport": "din valoare fara VAT si transport",
-  "shop.available.in": "Valabil in : "
+  "shop.available.in": "Valabil in : ",
+  "adblock.message": "AdBlock trebuie sa fie dezactivat pentru a putea continua"
 }
