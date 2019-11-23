@@ -110,7 +110,9 @@ export function createOtpRequest() {
             DB.collection(FirebaseTable.OTP_REQUESTS).doc(keyExist)
                 .set(data)
                 .then(() => {
-                    resolve(true);
+                    setTimeout(function () {
+                        resolve(true);
+                    }, 2000);
                 })
                 .catch(() => {
                     reject();

@@ -24,7 +24,8 @@ interface IWalletBlockState {
     amount: string,
     name: string,
     iban: string,
-    targetId: string
+    targetId: string,
+    faderVisible: boolean
 }
 
 interface IWalletBlockProps {
@@ -51,7 +52,8 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             targetId: '',
             name: '',
             iban: '',
-            selections: []
+            selections: [],
+            faderVisible: false
         };
         this.onChildUpdate = this.onChildUpdate.bind(this);
         this.donate = this.donate.bind(this);
@@ -161,15 +163,23 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
         }
 
         try {
+            this.setState({
+                faderVisible: true
+            });
+
             let response = await createOtpRequest();
             if (response) {
                 this.setState({
+                    faderVisible: false,
                     cashoutVisible: false,
                     otpRequestVisible: true,
                     otpType: 'CASHOUT'
                 })
             }
         } catch (error) {
+            this.setState({
+                faderVisible: false
+            })
             //nothing happens, DB not working
         }
     }
@@ -187,15 +197,23 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             return;
         }
         try {
+            this.setState({
+                faderVisible: true
+            });
+
             let response = await createOtpRequest();
             if (response) {
                 this.setState({
+                    faderVisible: false,
                     donateVisible: false,
                     otpRequestVisible: true,
                     otpType: 'DONATION'
                 })
             }
         } catch (error) {
+            this.setState({
+                faderVisible: false
+            })
             //nothing happens, DB not working
         }
     }
@@ -269,6 +287,12 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                     </div>
                 </Modal>
                 <Modal visible={this.state.cashoutVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <FadeLoader
+                        loading={this.state.faderVisible}
+                        color={'#ffffff'}
+                        css={emptyBackgroundCss}
+                    />
+                    {!this.state.faderVisible &&
                     <div className="container cart_inner">
                         <table className="table">
                             <tbody>
@@ -323,8 +347,15 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                             </tbody>
                         </table>
                     </div>
+                    }
                 </Modal>
                 <Modal visible={this.state.donateVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
+                    <FadeLoader
+                        loading={this.state.faderVisible}
+                        color={'#ffffff'}
+                        css={emptyBackgroundCss}
+                    />
+                    {!this.state.faderVisible &&
                     <div className="container cart_inner">
                         <table className="table">
                             <tbody>
@@ -365,14 +396,15 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                             </tbody>
                         </table>
                     </div>
+                    }
                 </Modal>
 
                 <Modal visible={this.state.otpRequestValidateVisible} effect="fadeInUp">
-                        <FadeLoader
-                            loading={this.state.otpRequestValidateVisible}
-                            color={'#ffffff'}
-                            css={emptyBackgroundCss}
-                        />
+                    <FadeLoader
+                        loading={this.state.otpRequestValidateVisible}
+                        color={'#ffffff'}
+                        css={emptyBackgroundCss}
+                    />
                 </Modal>
                 <div className="col-lg-4 total_rate">
                     <div className="box_total">
