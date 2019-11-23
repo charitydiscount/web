@@ -409,11 +409,11 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                 <div className="col-lg-4 total_rate">
                     <div className="box_total">
                         <h5>{this.props.title}</h5>
-                        <h4>{this.props.approved ? this.props.approved.toFixed(1) : 0}</h4>
+                        <h4>{this.props.approved ? this.props.approved.toFixed(1): 0}</h4>
                         {this.props.pendingExists ?
                             <div>
                                 <h6><FormattedMessage id="wallet.block.pending" defaultMessage="Pending:"/>
-                                    {this.props.pending ? this.props.pending.toFixed(1) : 0}</h6>
+                                    {this.props.pending ? this.props.pending.toFixed(1) + " RON" : 0}</h6>
                                 {this.props.money ?
                                     <div>
                                         {this.props.approved > 0 ?

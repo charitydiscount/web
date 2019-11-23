@@ -51,7 +51,7 @@
   "wallet.cashback.history": "Cashback history",
   "wallet.table.date": "Date",
   "wallet.table.status": "Status",
-  "wallet.table.amount": "Amount",
+  "wallet.table.amount": "Sum(RON)",
   "wallet.table.shop": "Shop",
   "wallet.table.type": "Type",
   "wallet.table.target": "Target",
