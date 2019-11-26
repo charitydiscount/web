@@ -1,11 +1,11 @@
 import * as React from 'react';
-import {emptyHrefLink} from '../../helper/Constants';
-import {FormattedMessage} from 'react-intl';
-import {onLanguageChange} from '../../helper/AppHelper';
-import {connect} from 'react-redux';
+import { emptyHrefLink } from '../../helper/Constants';
+import { FormattedMessage } from 'react-intl';
+import { onLanguageChange } from '../../helper/AppHelper';
+import { connect } from 'react-redux';
 import Select from 'react-select';
-import {Link} from 'react-router-dom';
-import {appVersion} from "../../index";
+import { Link } from 'react-router-dom';
+import { appVersion } from '../../index';
 
 type IFooterProps = {
     currentLocale: string;
@@ -13,110 +13,112 @@ type IFooterProps = {
 };
 
 const options: any[] = [
-    {value: 'ro', label: 'RO'},
-    {value: 'en', label: 'EN'},
+    { value: 'ro', label: 'RO' },
+    { value: 'en', label: 'EN' },
 ];
 const optionFromValue = (value: string) => options.find(o => o.value === value);
 
 class FooterLayout extends React.Component<IFooterProps> {
     render() {
         return (
-            <footer className="footer-area p-4 pt-5">
+            <footer className="footer-area">
+                <hr w-100></hr>
                 <div className="container">
-                    <div className="row">
-                        <div className="col-lg-1  col-md-6 col-sm-6">
-                            <div className="single-footer-widget"></div>
+                    <div className="row d-flex justify-content-between">
+                        <div className="col-md-4 col-6 single-footer-widget">
+                            <h6 className="footer_title">
+                                <FormattedMessage
+                                    id="footer.info"
+                                    defaultMessage="Info"
+                                />
+                            </h6>
+                            <ul className="flex-column footer-text">
+                                <li className="d-flex">
+                                    <a href="/landing-ro.html">
+                                        <FormattedMessage
+                                            id="userinfo.about.label"
+                                            defaultMessage="About"
+                                        />
+                                    </a>
+                                </li>
+                                <li className="d-flex">
+                                    <Link to="/privacy">
+                                        <FormattedMessage
+                                            id="userinfo.privacy.button"
+                                            defaultMessage="Privacy"
+                                        />
+                                    </Link>
+                                </li>
+                                <li className="d-flex">
+                                    <Link to="/tos">
+                                        <FormattedMessage
+                                            id="userinfo.terms.button"
+                                            defaultMessage="Terms and Conditions"
+                                        />
+                                    </Link>
+                                </li>
+                                <li className="d-flex">
+                                    <Link to="/faq">
+                                        <FormattedMessage
+                                            id="userinfo.faq.button"
+                                            defaultMessage="FAQ"
+                                        />
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
-                        <div className="col-lg-4 col-md-6 col-sm-6">
-                            <div className="single-footer-widget">
-                                <h6 className="footer_title">
-                                    <FormattedMessage
-                                        id="footer.mobile"
-                                        defaultMessage="Get it on mobile"
-                                    />
-                                </h6>
-                                <a href="https://play.google.com/store/apps/details?id=com.clover.charity_discount">
-                                    <img
-                                        src={'/img/mobile/google-play-badge.svg'}
-                                        height={40}
-                                        width={135}
-                                        alt={''}
-                                    />
-                                </a>{' '}
-                                <img
+                        <div
+                            className="d-flex flex-column flex-md-row col-6 col-md-8 mx-0 px-0 justify-content-start
+                        justify-content-md-between"
+                        >
+                            <div className="col-5 single-footer-widget">
+                                <div className="f_social_wd">
+                                    <h6 className="footer_title">
+                                        <FormattedMessage
+                                            id="footer.follow"
+                                            defaultMessage="Follow us"
+                                        />
+                                    </h6>
+                                    <div className="f_social">
+                                        <a href={emptyHrefLink}>
+                                            <i className="fa fa-facebook"></i>
+                                        </a>
+                                        <a href={emptyHrefLink}>
+                                            <i className="fa fa-instagram"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-8 col-md-6 single-footer-widget">
+                                <div className="single-footer-widget">
+                                    <h6 className="footer_title">
+                                        <FormattedMessage
+                                            id="footer.mobile"
+                                            defaultMessage="Get it on mobile"
+                                        />
+                                    </h6>
+                                    <a href="https://play.google.com/store/apps/details?id=com.clover.charity_discount">
+                                        <img
+                                            src={
+                                                '/img/mobile/google-play-badge.svg'
+                                            }
+                                            height={40}
+                                            width={135}
+                                            alt={''}
+                                        />
+                                    </a>{' '}
+                                    {/* <img
                                     src={'/img/mobile/app-store-badge.svg'}
                                     height={40}
                                     width={135}
                                     alt={''}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6 col-sm-6">
-                            <div className="single-footer-widget f_social_wd">
-                                <h6 className="footer_title">
-                                    <FormattedMessage
-                                        id="footer.follow"
-                                        defaultMessage="Follow us"
-                                    />
-                                </h6>
-                                <div className="f_social">
-                                    <a href={emptyHrefLink}>
-                                        <i className="fa fa-facebook"></i>
-                                    </a>
-                                    <a href={emptyHrefLink}>
-                                        <i className="fa fa-instagram"></i>
-                                    </a>
+                                /> */}
                                 </div>
                             </div>
                         </div>
-                        <div className={!this.props.isLoggedIn ? "col-lg-3 col-md-6 col-sm-6" :
-                            "col-lg-3 col-md-6 col-sm-6 d-flex d-md-none"}>
-                            <div className="single-footer-widget f_social_wd">
-                                <h6 className="footer_title">
-                                    <FormattedMessage
-                                        id="footer.translation"
-                                        defaultMessage="Translation"
-                                    />
-                                </h6>
-                                <Select
-                                    name="form-field-name"
-                                    value={optionFromValue(
-                                        this.props.currentLocale
-                                    )}
-                                    defaultValue="ro"
-                                    onChange={onLanguageChange}
-                                    isSearchable={false}
-                                    options={options}
-                                />
-                            </div>
-                        </div>
                     </div>
-
-                    <div className="pt-5 d-flex container">
-                        <ul className="row footer-text text-center d-flex list-inline col-12">
-                            <li className="col-12 col-md-3 footer-text mt-2">
-                                &copy; CharityDiscount {appVersion}
-                            </li>
-                            <li className="col-12 col-md-3 mt-2">
-                                <Link to="/privacy" className="ml-1">
-                                    <FormattedMessage
-                                        id="userinfo.privacy.button"
-                                        defaultMessage="Privacy"
-                                    />
-                                </Link>
-                            </li>
-                            <li className="col-12 col-md-3 mt-2">
-                                <Link to="/tos" className="ml-1">
-                                    <FormattedMessage
-                                        id="userinfo.terms.button"
-                                        defaultMessage="Terms and Conditions"
-                                    />
-                                </Link>
-                            </li>
-                            <li className="col-12 col-md-3 mt-2">
-                                <a href="/faq">FAQ</a>
-                            </li>
-                        </ul>
+                    <div className="row my-3 justify-content-center copyright-text">
+                        <span>&copy; CharityDiscount {appVersion}</span>
                     </div>
                 </div>
             </footer>

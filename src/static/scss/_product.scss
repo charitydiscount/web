@@ -10,20 +10,18 @@
         &:hover {
             background: $baseColor;
             img {
-                opacity: .2;
+                opacity: 0.2;
             }
         }
         @media (max-width: 992px) {
             margin-bottom: 20px;
         }
         .hot_deal_box1 {
-            background: url(../img/product/hot_deals/deal1.jpg);
         }
         .hot_deal_box2 {
-            background: url(../img/product/hot_deals/deal1.jpg);
         }
         img {
-            opacity: .5;
+            opacity: 0.5;
         }
         .content {
             position: absolute;
@@ -212,7 +210,8 @@
     }
 }
 
-.left_sidebar_area {}
+.left_sidebar_area {
+}
 
 .left_widgets {
     margin-bottom: 30px;
@@ -289,7 +288,7 @@
                 color: $pfont;
                 position: relative;
                 &:before {
-                    content: "";
+                    content: '';
                     height: 10px;
                     width: 10px;
                     border-radius: 50%;
@@ -300,7 +299,7 @@
                     @include transition;
                 }
                 &:after {
-                    content: "";
+                    content: '';
                     height: 4px;
                     width: 4px;
                     background: #fff;
@@ -400,7 +399,7 @@
                 }
             }
             &:after {
-                content: "\f0d7";
+                content: '\f0d7';
                 font: normal normal normal 14px/1 FontAwesome;
                 transform: rotate(0);
                 border: none;
@@ -434,7 +433,7 @@
                 }
             }
             &:after {
-                content: "\f0d7";
+                content: '\f0d7';
                 font: normal normal normal 14px/1 FontAwesome;
                 transform: rotate(0);
                 border: none;
@@ -499,7 +498,8 @@
     padding-top: 30px;
 }
 
-.s_product_inner {}
+.s_product_inner {
+}
 
 .s_product_img {
     .carousel {
@@ -521,8 +521,8 @@
                     display: none;
                 }
                 &:before {
-                    content: "";
-                    background: rgba(197, 50, 45, .80);
+                    content: '';
+                    background: rgba(197, 50, 45, 0.8);
                     position: absolute;
                     left: 0px;
                     top: 0px;
@@ -776,7 +776,8 @@
     }
 }
 
-.review_list {}
+.review_list {
+}
 
 .review_item {
     margin-bottom: 15px;
@@ -863,7 +864,8 @@
 }
 
 .comment_list {
-    .review_item {}
+    .review_item {
+    }
 }
 
 /* End Single Product Area css
@@ -932,7 +934,7 @@
                         .increase {
                             top: -2px;
                             &:before {
-                                content: "";
+                                content: '';
                                 height: 40px;
                                 width: 1px;
                                 position: absolute;
@@ -941,7 +943,7 @@
                                 background: #eeeeee;
                             }
                             &:after {
-                                content: "";
+                                content: '';
                                 height: 1px;
                                 width: 30px;
                                 position: absolute;
@@ -1027,7 +1029,7 @@
                                     color: $pfont;
                                     position: relative;
                                     &:before {
-                                        content: "";
+                                        content: '';
                                         height: 16px;
                                         width: 16px;
                                         border: 1px solid #cdcdcd;
@@ -1039,7 +1041,7 @@
                                         transform: translateY(-50%);
                                     }
                                     &:after {
-                                        content: "";
+                                        content: '';
                                         height: 10px;
                                         width: 10px;
                                         border-radius: 50%;
@@ -1135,7 +1137,8 @@
 /* End Cart Area css
 ============================================================================================ */
 
-.checkout_area {}
+.checkout_area {
+}
 
 .check_title {
     h2 {
@@ -1214,7 +1217,7 @@
 //.p_star input:valid + .placeholder {
 //    display: none;
 //}
-.p_star input:focus+.placeholder {
+.p_star input:focus + .placeholder {
     display: none;
 }
 
@@ -1232,7 +1235,7 @@
 }
 
 .p_star .placeholder::after {
-    content: " *";
+    content: ' *';
     color: tomato;
 }
 
@@ -1398,7 +1401,7 @@
             margin-bottom: 15px;
             margin-top: 15px;
             &:before {
-                content: "";
+                content: '';
                 width: 14px;
                 height: 14px;
                 border-radius: 50%;
@@ -1411,7 +1414,7 @@
                 transform: translateY(-50%);
             }
             &:after {
-                content: "";
+                content: '';
                 height: 4px;
                 width: 4px;
                 background: #fff;
@@ -1555,8 +1558,8 @@
 ============================================================================================ */
 
 .login_box_area {
+    margin-top: 6rem;
     .login_box_img {
-        margin-right: -30px;
         position: relative;
         .hover {
             position: absolute;
@@ -1598,7 +1601,8 @@
     .login_form {
         max-width: 385px;
         margin: auto;
-        .form-group {}
+        .form-group {
+        }
     }
     &.reg_form {
         padding-top: 60px;
@@ -1617,7 +1621,8 @@
             border-radius: 0px;
             outline: none;
             box-shadow: none;
-            @include placeholder {}
+            @include placeholder {
+            }
         }
         .creat_account {
             margin-top: 10px;
@@ -1692,7 +1697,7 @@
 /* End Tracking Form Area css
 ============================================================================================ */
 
-.radion_btn input[type=radio] {
+.radion_btn input[type='radio'] {
     position: absolute;
     visibility: hidden;
 }
@@ -1723,7 +1728,7 @@
     font-weight: 500;
     color: $dip;
     font-size: 13px;
-    letter-spacing: .25px;
+    letter-spacing: 0.25px;
     text-transform: uppercase;
 }
 
@@ -1738,8 +1743,8 @@
     left: 0px;
     background: #fff;
     z-index: 5;
-    transition: border .25s linear;
-    -webkit-transition: border .25s linear;
+    transition: border 0.25s linear;
+    -webkit-transition: border 0.25s linear;
 }
 
 .radion_btn .check::before {
@@ -1756,15 +1761,15 @@
     -webkit-transition: background 0.25s linear;
 }
 
-.radion_btn input[type=radio]:checked~.check {
+.radion_btn input[type='radio']:checked ~ .check {
     border: 1px solid $baseColor;
     background: $baseColor;
 }
 
-.radion_btn input[type=radio]:checked~.check::before {
+.radion_btn input[type='radio']:checked ~ .check::before {
     background: #fff;
 }
 
-.radion_btn input[type=radio]:checked~label {
+.radion_btn input[type='radio']:checked ~ label {
     color: #000;
 }
