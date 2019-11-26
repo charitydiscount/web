@@ -126,7 +126,7 @@ class HeaderLayout extends React.Component<
                                 )}
                             </ul>
                         </div>
-                        <div className="float-right col-3 col-md-2">
+                        <div className="float-right col-4 col-md-2">
                             <Select
                                 name="form-field-name"
                                 value={optionFromValue(

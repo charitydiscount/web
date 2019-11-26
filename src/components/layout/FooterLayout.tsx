@@ -67,11 +67,8 @@ class FooterLayout extends React.Component<IFooterProps> {
                                 </li>
                             </ul>
                         </div>
-                        <div
-                            className="d-flex flex-column flex-md-row col-6 col-md-8 mx-0 px-0 justify-content-start
-                        justify-content-md-between"
-                        >
-                            <div className="col-5 single-footer-widget">
+                        <div className="d-flex flex-column flex-md-row col-6 col-md-8 mx-0 px-0 justify-content-start justify-content-md-between">
+                            <div className="w-100 col-md-6 single-footer-widget">
                                 <div className="f_social_wd">
                                     <h6 className="footer_title">
                                         <FormattedMessage
@@ -89,7 +86,7 @@ class FooterLayout extends React.Component<IFooterProps> {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-8 col-md-6 single-footer-widget">
+                            <div className="w-100 col-md-6 single-footer-widget">
                                 <div className="single-footer-widget">
                                     <h6 className="footer_title">
                                         <FormattedMessage
