@@ -75,25 +75,11 @@ class LoginComponent extends React.Component<ILoginProps> {
     public render() {
         return (
             <React.Fragment>
-                <section
-                    style={{ height: '400px' }}
-                    className="login_box_area pb-4 pt-2"
-                >
-                    <div className="container h-100">
-                        <div className="row justify-content-between d-flex h-100">
-                            <div className="col-lg-4 d-flex align-items-center">
-                                <a
-                                    className="mx-auto text-center"
-                                    href="/landing-ro.html"
-                                >
-                                    <FormattedMessage
-                                        id="login.question.label"
-                                        defaultMessage="Not sure what Charity Discount is?"
-                                    />
-                                </a>
-                            </div>
-                            <div className="col-lg-4 align-items-center d-none d-md-flex">
-                                <div className="login_box_img mx-auto">
+                <section className="login_box_area pb-4 pt-2">
+                    <div className="container">
+                        <div className="d-flex flex-column align-items-center">
+                            <div className="d-lg-flex">
+                                <div className="login_box_img d-flex justify-content-center">
                                     <img
                                         src="img/charity_discount.png"
                                         alt="Charity Discount Logo"
@@ -101,14 +87,7 @@ class LoginComponent extends React.Component<ILoginProps> {
                                     />
                                 </div>
                             </div>
-                            <div className="col-lg-4 d-flex align-items-center flex-column mt-4 mt-md-0 justify-content-center">
-                                <div>
-                                    <FormattedMessage
-                                        id="login.question.ready.label"
-                                        defaultMessage="Ready to join?"
-                                    />
-                                    <span>&#128079;</span>
-                                </div>
+                            <div className="d-flex align-items-center flex-column mt-4 mt-md-0 justify-content-center">
                                 <FirebaseUIAuth
                                     lang={this.props.currentLocale}
                                     config={this.uiConfig}
@@ -120,8 +99,6 @@ class LoginComponent extends React.Component<ILoginProps> {
                         </div>
                     </div>
                 </section>
-
-                <ClientsLogo />
             </React.Fragment>
         );
     }

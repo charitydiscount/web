@@ -2,7 +2,6 @@
 ============================================================================================ */
 
 .home_banner_area {
-    background: url(../img/banner/banner-bg.jpg) no-repeat center bottom;
     position: relative;
     z-index: 1;
     min-height: 900px;
@@ -24,15 +23,15 @@
             color: $dip;
             padding-top: 110px;
             align-self: center;
-			vertical-align: middle;
-			text-align: center;
+            vertical-align: middle;
+            text-align: center;
             h3 {
                 font-size: 60px;
                 font-family: $rob;
                 font-weight: 500;
                 line-height: 66px;
-				margin-bottom: 20px;
-				color: #ffffff;
+                margin-bottom: 20px;
+                color: #ffffff;
             }
             p {
                 font-size: 14px;
@@ -71,8 +70,7 @@
         min-height: 780px;
         z-index: 1;
         .overlay {
-            background: url(../img/banner/banner-2.jpg) no-repeat scroll center center;
-            opacity: .5;
+            opacity: 0.5;
             height: 125%;
             position: absolute;
             left: 0px;
@@ -118,7 +116,6 @@
         overflow: hidden;
         width: 100%;
         min-height: 80px;
-        background: url(../img/breadcrumb/checkout-bg.jpg) no-repeat center bottom;
         background-size: contain;
         z-index: 1;
         .overlay {
@@ -148,7 +145,7 @@
                     margin-right: 32px;
                     position: relative;
                     &:before {
-                        content: "\e87a";
+                        content: '\e87a';
                         font-family: 'Linearicons-Free';
                         font-size: 14px;
                         position: absolute;
