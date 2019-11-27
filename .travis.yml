@@ -1,14 +1,25 @@
 language: node_js
 node_js:
-- '10'
+    - '10'
 cache: npm
 script:
-- CI=false npm run build
+    - CI=false npm run build
 branches:
-  only:
-    - master
+    only:
+        - master
+        - develop
 deploy:
-  skip_cleanup: true
-  provider: firebase
-  token:
-    secure: fKP28i3Rwr9S9MjWs0NpShPWsgFFI3aOqOVDcQ734/5It9OeUv6zMG245etN13xLH3a3Br+WDIxtLY6uNnZIBKhS6ZtGcF92efzqQRN6sAWelk7rOd1LwkJyG3X7gyqX29fClYCHE3UHnQMyZk6RLaESWxLu0/3sGk4QF/GlClXM2cibtPy6gkGJL5fY/dWOeab3JHp4YE9UeZQYRraBsB1B3F/l9DDXnrzUEA4J7ReL+0hWwjZOx4YC8ZegzODfKMp4DQUPa8ZCH8KnMSU5/vtjihEoCwrvG/oXKCBXrkPHiU/wSCQ8q8h1NsJDOkfH9AHfZ5u2f8Ks2arpfOjfQVjdZa6hia+brJIHU2VFOBttarZcpEKoE15zeH/uuh/cU9NxYiFOO8PGJz1EaTi5x21Xr/52y+KTdJrgeNlpnJGeKrNxmq1Of/VQ5t7U9yQKcnyhykV9U9HItmDyrA3kWXEoOJNGRWkWQe3lGpp3AVmy+dey1lW/3EW+mWDscQoi0KwhJRxdhmhwAZRg0CxvO+Dbo0k/LjAXc1wvt4gu1H8yFmanH36Y5YiLnDF5IthcmHNkJeTuWLFm2eghgF/ou7rI27GtHg2ltG/EIJ7DPSLUjRWd/uytrIjv3AwZBxMtqxAcuUpYNAIi07Fi+Pfcn39JyE9OzSVs2x69E1kRZPQ=
+    - provider: firebase
+      on:
+          branch: master
+      skip_cleanup: true
+      token:
+          secure: fKP28i3Rwr9S9MjWs0NpShPWsgFFI3aOqOVDcQ734/5It9OeUv6zMG245etN13xLH3a3Br+WDIxtLY6uNnZIBKhS6ZtGcF92efzqQRN6sAWelk7rOd1LwkJyG3X7gyqX29fClYCHE3UHnQMyZk6RLaESWxLu0/3sGk4QF/GlClXM2cibtPy6gkGJL5fY/dWOeab3JHp4YE9UeZQYRraBsB1B3F/l9DDXnrzUEA4J7ReL+0hWwjZOx4YC8ZegzODfKMp4DQUPa8ZCH8KnMSU5/vtjihEoCwrvG/oXKCBXrkPHiU/wSCQ8q8h1NsJDOkfH9AHfZ5u2f8Ks2arpfOjfQVjdZa6hia+brJIHU2VFOBttarZcpEKoE15zeH/uuh/cU9NxYiFOO8PGJz1EaTi5x21Xr/52y+KTdJrgeNlpnJGeKrNxmq1Of/VQ5t7U9yQKcnyhykV9U9HItmDyrA3kWXEoOJNGRWkWQe3lGpp3AVmy+dey1lW/3EW+mWDscQoi0KwhJRxdhmhwAZRg0CxvO+Dbo0k/LjAXc1wvt4gu1H8yFmanH36Y5YiLnDF5IthcmHNkJeTuWLFm2eghgF/ou7rI27GtHg2ltG/EIJ7DPSLUjRWd/uytrIjv3AwZBxMtqxAcuUpYNAIi07Fi+Pfcn39JyE9OzSVs2x69E1kRZPQ=
+    - provider: pages
+      on:
+          branch: develop
+      skip_cleanup: true
+      github_token: $GITHUB_TOKEN
+      local-dir: build
+      repo: charitydiscount/charitydiscount.github.io
+      target-branch: master
