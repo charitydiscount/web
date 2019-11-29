@@ -1,17 +1,17 @@
 import * as React from 'react';
 import Modal from 'react-awesome-modal';
-import { emptyHrefLink } from '../../helper/Constants';
+import {emptyHrefLink} from '../../helper/Constants';
 import {
     SellingCountriesDto,
     updateFavoriteShops,
     verifyInFavoriteShops,
 } from '../../rest/ShopsService';
-import { computeUrl } from '../../helper/AppHelper';
-import { Link } from 'react-router-dom';
-import { Routes } from '../helper/Routes';
-import { FormattedMessage } from 'react-intl';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { getPercentage } from '../../rest/ConfigService';
+import {computeUrl} from '../../helper/AppHelper';
+import {Link} from 'react-router-dom';
+import {Routes} from '../helper/Routes';
+import {FormattedMessage} from 'react-intl';
+import {InjectedIntlProps, injectIntl} from 'react-intl';
+import {getPercentage} from '../../rest/ConfigService';
 
 interface IProductInfoState {
     visible: boolean;
@@ -37,10 +37,8 @@ interface IProductProps {
     sellingCountries: SellingCountriesDto[];
 }
 
-class Shop extends React.Component<
-    IProductProps & InjectedIntlProps,
-    IProductInfoState
-> {
+class Shop extends React.Component<IProductProps & InjectedIntlProps,
+    IProductInfoState> {
     constructor(props: IProductProps) {
         super(props);
         this.state = {
@@ -113,11 +111,11 @@ class Shop extends React.Component<
                     this.props.intl.formatMessage({
                         id: 'shop.favorite.shop',
                     }) +
-                        this.props.name +
-                        ' ' +
-                        this.props.intl.formatMessage({
-                            id: 'shop.favorite.shop.added',
-                        })
+                    this.props.name +
+                    ' ' +
+                    this.props.intl.formatMessage({
+                        id: 'shop.favorite.shop.added',
+                    })
                 );
                 this.setState({
                     favShop: true,
@@ -145,11 +143,11 @@ class Shop extends React.Component<
                     this.props.intl.formatMessage({
                         id: 'shop.favorite.shop',
                     }) +
-                        this.props.name +
-                        ' ' +
-                        this.props.intl.formatMessage({
-                            id: 'shop.favorite.shop.removed',
-                        })
+                    this.props.name +
+                    ' ' +
+                    this.props.intl.formatMessage({
+                        id: 'shop.favorite.shop.removed',
+                    })
                 );
                 this.setState({
                     favShop: false,
@@ -169,13 +167,13 @@ class Shop extends React.Component<
         let commission =
             this.props.defaultLeadCommissionAmount != null
                 ? (
-                      parseFloat(this.props.defaultLeadCommissionAmount) *
-                      this.state.percentage
-                  ).toFixed(2) + ' RON'
+                parseFloat(this.props.defaultLeadCommissionAmount) *
+                this.state.percentage
+            ).toFixed(2) + ' RON'
                 : (
-                      parseFloat(this.props.defaultSaleCommissionRate) *
-                      this.state.percentage
-                  ).toFixed(2) + ' %';
+                parseFloat(this.props.defaultSaleCommissionRate) *
+                this.state.percentage
+            ).toFixed(2) + ' %';
         let sellingCountries =
             this.props.sellingCountries &&
             this.props.sellingCountries.length > 0 &&
@@ -192,7 +190,7 @@ class Shop extends React.Component<
                     effect="fadeInUp"
                     onClickAway={() => this.closeFShopModal()}
                 >
-                    <h3 style={{ padding: 15 }}>
+                    <h3 style={{padding: 15}}>
                         {this.state.favShopModalMessage}
                     </h3>
                 </Modal>
@@ -215,10 +213,10 @@ class Shop extends React.Component<
                                 defaultMessage="of the value without VAT and transport"
                             />
                         </h6>
-                        <img src={this.props.logoSrc} alt="" />
+                        <img src={this.props.logoSrc} alt=""/>
                         <div className="blog_details">
                             <h2>{this.props.name}</h2>
-                            <h6>
+                            <h6 style={{maxWidth: 300}}>
                                 <FormattedMessage
                                     id={'shop.available.in'}
                                     defaultMessage="Available in: "
@@ -228,48 +226,48 @@ class Shop extends React.Component<
                             {this.props.reviewRating ? (
                                 <a href={emptyHrefLink}>
                                     {this.props.reviewRating >= 1 ? (
-                                        <i className="fa fa-star star-focus" />
+                                        <i className="fa fa-star star-focus"/>
                                     ) : (
-                                        <i className="fa fa-star-o star-focus" />
+                                        <i className="fa fa-star-o star-focus"/>
                                     )}
                                     {this.props.reviewRating >= 2 ? (
-                                        <i className="fa fa-star star-focus" />
+                                        <i className="fa fa-star star-focus"/>
                                     ) : this.props.reviewRating > 1 &&
-                                      this.props.reviewRating < 2 ? (
-                                        <i className="fa fa-star-half-o star-focus" />
+                                    this.props.reviewRating < 2 ? (
+                                        <i className="fa fa-star-half-o star-focus"/>
                                     ) : (
-                                        <i className="fa fa-star-o star-focus" />
+                                        <i className="fa fa-star-o star-focus"/>
                                     )}
                                     {this.props.reviewRating >= 3 ? (
-                                        <i className="fa fa-star star-focus" />
+                                        <i className="fa fa-star star-focus"/>
                                     ) : this.props.reviewRating > 2 &&
-                                      this.props.reviewRating < 3 ? (
-                                        <i className="fa fa-star-half-o star-focus" />
+                                    this.props.reviewRating < 3 ? (
+                                        <i className="fa fa-star-half-o star-focus"/>
                                     ) : (
-                                        <i className="fa fa-star-o star-focus" />
+                                        <i className="fa fa-star-o star-focus"/>
                                     )}
                                     {this.props.reviewRating >= 4 ? (
-                                        <i className="fa fa-star star-focus" />
+                                        <i className="fa fa-star star-focus"/>
                                     ) : this.props.reviewRating > 3 &&
-                                      this.props.reviewRating < 4 ? (
-                                        <i className="fa fa-star-half-o star-focus" />
+                                    this.props.reviewRating < 4 ? (
+                                        <i className="fa fa-star-half-o star-focus"/>
                                     ) : (
-                                        <i className="fa fa-star-o star-focus" />
+                                        <i className="fa fa-star-o star-focus"/>
                                     )}
                                     {this.props.reviewRating >= 5 ? (
-                                        <i className="fa fa-star star-focus" />
+                                        <i className="fa fa-star star-focus"/>
                                     ) : this.props.reviewRating > 4 &&
-                                      this.props.reviewRating < 5 ? (
-                                        <i className="fa fa-star-half-o star-focus" />
+                                    this.props.reviewRating < 5 ? (
+                                        <i className="fa fa-star-half-o star-focus"/>
                                     ) : (
-                                        <i className="fa fa-star-o star-focus" />
+                                        <i className="fa fa-star-o star-focus"/>
                                     )}
                                     <span> {this.props.totalReviews}</span>
                                 </a>
                             ) : (
                                 ''
                             )}
-                            <h3>
+                            <h3 style={{maxWidth: 300}}>
                                 <FormattedMessage
                                     id={'shop.category'}
                                     defaultMessage="Category:"
@@ -300,7 +298,7 @@ class Shop extends React.Component<
                                                 this.props.id
                                             }
                                         >
-                                            <i className="lnr lnr-bubble" />
+                                            <i className="lnr lnr-bubble"/>
                                         </Link>
                                     </div>
 
@@ -316,12 +314,12 @@ class Shop extends React.Component<
                                             onClick={
                                                 this.state.favShop === true
                                                     ? this
-                                                          .updateFavoriteShopsFalse
+                                                        .updateFavoriteShopsFalse
                                                     : this
-                                                          .updateFavoriteShopsTrue
+                                                        .updateFavoriteShopsTrue
                                             }
                                         >
-                                            <i className="lnr lnr-heart" />
+                                            <i className="lnr lnr-heart"/>
                                         </a>
                                     </div>
                                 </div>
@@ -333,7 +331,7 @@ class Shop extends React.Component<
                     <div className="f_p_item">
                         <div
                             onClick={() => this.openModal()}
-                            style={{ cursor: 'pointer' }}
+                            style={{cursor: 'pointer'}}
                         >
                             <h6 className="blue-color">{commission}</h6>
                             <div className="f_p_img">
