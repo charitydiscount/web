@@ -43,7 +43,7 @@ interface IShopsState {
     isLoading: boolean
 }
 
-const pageLimit = 24; // products per page
+const pageLimit = 20; // products per page
 
 class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState> {
 
@@ -201,7 +201,13 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                 <ReactAdBlock/>
                 <section className="cat_product_area section_gap">
                     <div className="container-fluid">
-                        <div className="row flex-row-reverse">
+                        <div className="row">
+                            <div className="col-lg-3">
+                                <div className="left_sidebar_area">
+                                    <Categories/>
+                                </div>
+                            </div>
+
                             <div className="col-lg-9">
                                 <div className="product_top_bar">
                                     <GenericInput type={"textfield"} id={"search"} className={"single-input"}
@@ -244,11 +250,33 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                                     }
                                 </div>
                             </div>
-                            <div className="col-lg-3">
-                                <div className="left_sidebar_area">
-                                    <Categories/>
+                        </div>
+
+                        <div className="row">
+                            <nav style={{marginTop: 30}} className="cat_page mx-auto" aria-label="Page navigation example">
+                                <div className="right_page ml-auto">
+                                    <nav className="cat_page" aria-label="Page navigation example">
+                                        <ReactPaginate
+                                            previousLabel={'<'}
+                                            previousLinkClassName={'page-link'}
+                                            nextLabel={'>'}
+                                            nextLinkClassName={'page-link'}
+                                            breakLabel={'...'}
+                                            breakClassName={'blank'}
+                                            breakLinkClassName={'page-link'}
+                                            pageCount={pageCount}
+                                            marginPagesDisplayed={1}
+                                            pageRangeDisplayed={2}
+                                            forcePage={this.props.currentPage}
+                                            onPageChange={this.updatePageNumber}
+                                            containerClassName={'pagination'}
+                                            pageClassName={'page-item'}
+                                            pageLinkClassName={'page-link'}
+                                            activeClassName={'active'}
+                                        />
+                                    </nav>
                                 </div>
-                            </div>
+                            </nav>
                         </div>
                     </div>
                 </section>
