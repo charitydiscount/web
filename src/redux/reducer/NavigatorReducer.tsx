@@ -5,11 +5,13 @@ import {NavigationsAction} from "../actions/NavigationsAction";
 export interface INavigationState {
     stageName: Stages,
     previousStage: Stages,
+    favShopsIconFill: boolean
 }
 
 const initialState: INavigationState = {
     stageName: Stages.EMPTY,
     previousStage: Stages.EMPTY,
+    favShopsIconFill: false,
 };
 
 export default function (state: INavigationState = initialState, action: NavigationsAction): INavigationState {
@@ -20,7 +22,7 @@ export default function (state: INavigationState = initialState, action: Navigat
             return {
                 ...state,
                 stageName: newStageName,
-                previousStage: state.stageName,
+                previousStage: state.stageName
             };
         }
         case NavigationActionTypes.RESET_STAGE_ACTION: {
@@ -30,6 +32,11 @@ export default function (state: INavigationState = initialState, action: Navigat
                 ...state,
             };
         }
+        case NavigationActionTypes.SET_FAV_SHOPS_ICON_FILL_ACTION:
+            return {
+                ...state,
+                favShopsIconFill: action.payload
+            };
         default:
             return state
     }

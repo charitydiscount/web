@@ -1,24 +1,12 @@
 import * as React from 'react';
 import { emptyHrefLink } from '../../helper/Constants';
 import { FormattedMessage } from 'react-intl';
-import { onLanguageChange } from '../../helper/AppHelper';
-import { connect } from 'react-redux';
-import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import { appVersion } from '../../index';
 
-type IFooterProps = {
-    currentLocale: string;
-    isLoggedIn: boolean;
-};
 
-const options: any[] = [
-    { value: 'ro', label: 'RO' },
-    { value: 'en', label: 'EN' },
-];
-const optionFromValue = (value: string) => options.find(o => o.value === value);
+class FooterLayout extends React.Component {
 
-class FooterLayout extends React.Component<IFooterProps> {
     render() {
         return (
             <footer className="footer-area">
@@ -123,11 +111,5 @@ class FooterLayout extends React.Component<IFooterProps> {
     }
 }
 
-const mapStateToProps = (state: any) => {
-    return {
-        currentLocale: state.locale.langResources.language,
-        isLoggedIn: state.user.isLoggedIn,
-    };
-};
 
-export default connect(mapStateToProps)(FooterLayout);
+export default FooterLayout;

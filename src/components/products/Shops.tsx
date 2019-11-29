@@ -1,6 +1,6 @@
 import * as React from "react";
 import {store} from "../../index";
-import {NavigationsAction} from "../../redux/actions/NavigationsAction";
+import {NavigationsAction, setFavShopsIconFill} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import Categories from "./Categories";
 import {connect} from "react-redux";
@@ -33,6 +33,7 @@ interface IShopsProps {
     //used to refresh categories
     setCurrentCategory: any,
     setSelections: any,
+    setFavShopsIconFill?: any;
 
     //parameters favshops redirect
     match: any,
@@ -78,6 +79,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                 this.props.setShops(JSON.parse(favoriteShops));
             }
             this.props.setCurrentCategory('Favorite Shops');
+            this.props.setFavShopsIconFill(true);
             this.props.setSelections([]);
         }
         try {
@@ -116,6 +118,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                 this.props.setShops(JSON.parse(shops));
                 this.props.setSelections([]);
                 this.props.setCurrentCategory(String(''));
+                this.props.setFavShopsIconFill(false);
                 this.props.setCurrentPage(0);
                 this.setState({
                     isLoading: false,
@@ -131,6 +134,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                         this.props.setShops(data);
                         this.props.setSelections([]);
                         this.props.setCurrentCategory(String(''));
+                        this.props.setFavShopsIconFill(false);
                         this.props.setCurrentPage(0);
                         this.setState({
                             isLoading: false,
@@ -253,7 +257,8 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                         </div>
 
                         <div className="row">
-                            <nav style={{marginTop: 30}} className="cat_page mx-auto" aria-label="Page navigation example">
+                            <nav style={{marginTop: 30}} className="cat_page mx-auto"
+                                 aria-label="Page navigation example">
                                 <div className="right_page ml-auto">
                                     <nav className="cat_page" aria-label="Page navigation example">
                                         <ReactPaginate
@@ -302,6 +307,8 @@ const mapDispatchToProps = (dispatch: any) => {
             dispatch(setRatings(ratings)),
         setCurrentPage: (currentPage: number) =>
             dispatch(setCurrentPage(currentPage)),
+        setFavShopsIconFill: (favShopsIconFill: boolean) =>
+            dispatch(setFavShopsIconFill(favShopsIconFill)),
         setCurrentCategory: (currentCategory: String) =>
             dispatch(setCurrentCategory(currentCategory)),
         setSelections: (selections: boolean[]) =>

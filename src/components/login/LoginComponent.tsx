@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import ClientsLogo from '../clients/ClientsLogo';
 import firebase from 'firebase/app';
 import { auth } from '../../index';
 import FirebaseUIAuth from 'react-firebaseui-localized';
@@ -81,7 +80,7 @@ class LoginComponent extends React.Component<ILoginProps> {
                             <div className="d-lg-flex">
                                 <div className="login_box_img d-flex justify-content-center">
                                     <img
-                                        src="img/charity_discount.png"
+                                        src="/img/charity_discount.png"
                                         alt="Charity Discount Logo"
                                         height="200px"
                                     />

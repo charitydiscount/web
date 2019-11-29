@@ -7,7 +7,7 @@ import GenericInput from "../input/GenericInput";
 import {createOtpRequest, createRequest, validateOtpCode} from "../../rest/WalletService";
 import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
-import {emptyBackgroundCss, spinnerCss} from "../../helper/AppHelper";
+import {emptyBackgroundCss} from "../../helper/AppHelper";
 import FadeLoader from 'react-spinners/FadeLoader';
 import {AccountDto, getUserAccountInfo, updateUserAccount} from "../../rest/UserService";
 

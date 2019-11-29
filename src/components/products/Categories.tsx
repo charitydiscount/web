@@ -1,6 +1,6 @@
 import * as React from "react";
 import {store} from "../../index";
-import {NavigationsAction} from "../../redux/actions/NavigationsAction";
+import {NavigationsAction, setFavShopsIconFill} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import Category from "./Category";
 import {CategoryDto, fetchCategories} from "../../rest/CategoriesService";
@@ -17,6 +17,9 @@ interface ICategoryProps {
     //global state
     setCurrentCategory?: any
     setSelections?: any // used for showing a blue color when a category is activated
+
+    //fav shops loading
+    setFavShopsIconFill?: any;
 }
 
 interface ICategoryState {
@@ -63,6 +66,7 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
 
         this.props.setSelections(selections);
         this.props.setCurrentCategory(name);
+        this.props.setFavShopsIconFill(false);
     }
 
     public componentWillUnmount() {
@@ -121,6 +125,8 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         setCurrentCategory: (currentCategory: String) =>
             dispatch(setCurrentCategory(currentCategory)),
+        setFavShopsIconFill: (favShopsIconFill: boolean) =>
+            dispatch(setFavShopsIconFill(favShopsIconFill)),
         setSelections: (selections: boolean[]) =>
             dispatch(setSelections(selections))
     };
