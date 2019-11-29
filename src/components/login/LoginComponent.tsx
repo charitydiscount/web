@@ -5,7 +5,6 @@ import { auth } from '../../index';
 import FirebaseUIAuth from 'react-firebaseui-localized';
 import { setLocalStorage } from '../../helper/StorageHelper';
 import { ProviderType, StorageKey } from '../../helper/Constants';
-import { FormattedMessage } from 'react-intl';
 
 export interface LoginDto {
     uid: string;

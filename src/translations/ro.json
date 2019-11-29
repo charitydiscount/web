@@ -122,5 +122,7 @@
   "userInfo.delete.account.ok": "Cererea de stergere a contului a fost trimisa",
   "userInfo.delete.account.not.ok": "Cererea nu a putut fi trimisa, incearca din nou",
   "adblock.button": "Reincarca pagina",
-  "wallet.block.minimum.amount": "Suma minima:"
+  "wallet.block.minimum.amount": "Suma minima:",
+  "average.waiting.time": "Timpul mediu de plata: ",
+  "average.waiting.time.days": " zile"
 }

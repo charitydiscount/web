@@ -24,6 +24,7 @@ export interface ShopDto {
     name: string,
     status: string,
     uniqueCode: string,
+    averagePaymentTime: number,
     sellingCountries: SellingCountriesDto[]
 }
 
@@ -46,7 +47,8 @@ export var ShopDtoMap = {
     name: "name",
     status: "status",
     uniqueCode: "uniqueCode",
-    sellingCountries: "sellingCountries"
+    sellingCountries: "sellingCountries",
+    averagePaymentTime: "averagePaymentTime"
 };
 
 

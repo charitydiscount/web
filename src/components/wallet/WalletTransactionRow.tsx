@@ -31,7 +31,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps & 
         }
         if (this.props.type === TxType.BONUS) {
             target = this.props.intl.formatMessage({id: "wallet.charity.points"});
-        } else if (this.props.type == TxType.CASHOUT) {
+        } else if (this.props.type === TxType.CASHOUT) {
             const user = getUserFromStorage();
             if (user) {
                 const userParsed = JSON.parse(user) as LoginDto;

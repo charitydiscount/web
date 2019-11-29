@@ -170,7 +170,8 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                          defaultSaleCommissionRate={shop.defaultSaleCommissionRate}
                          defaultSaleCommissionType={shop.defaultSaleCommissionType}
                          mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}
-                         reviewRating={rr} totalReviews={rn} sellingCountries={shop.sellingCountries}/>
+                         reviewRating={rr} totalReviews={rn} sellingCountries={shop.sellingCountries}
+                         averagePaymentTime={shop.averagePaymentTime}/>
         }) : null;
 
         var pageCount = 0;
@@ -193,7 +194,8 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                                  defaultSaleCommissionRate={shop.defaultSaleCommissionRate}
                                  defaultSaleCommissionType={shop.defaultSaleCommissionType}
                                  mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}
-                                 reviewRating={rr} totalReviews={rn} sellingCountries={shop.sellingCountries}/>
+                                 reviewRating={rr} totalReviews={rn} sellingCountries={shop.sellingCountries}
+                                 averagePaymentTime={shop.averagePaymentTime}/>
                 });
             } else {
                 pageCount = 1;

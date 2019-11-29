@@ -34,6 +34,7 @@ interface IProductProps {
     defaultSaleCommissionRate: string;
     defaultSaleCommissionType: string;
     totalReviews: number;
+    averagePaymentTime: number;
     sellingCountries: SellingCountriesDto[];
 }
 
@@ -211,6 +212,17 @@ class Shop extends React.Component<IProductProps & InjectedIntlProps,
                             <FormattedMessage
                                 id={'shop.cashback.without.vat.and.transport'}
                                 defaultMessage="of the value without VAT and transport"
+                            />
+                        </h6>
+                        <h6>
+                            <FormattedMessage
+                                id={'average.waiting.time'}
+                                defaultMessage="Average waiting time: "
+                            />
+                            {this.props.averagePaymentTime}
+                            <FormattedMessage
+                                id={'average.waiting.time.days'}
+                                defaultMessage=" days"
                             />
                         </h6>
                         <img src={this.props.logoSrc} alt=""/>
