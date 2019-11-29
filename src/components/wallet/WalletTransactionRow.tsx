@@ -4,6 +4,8 @@ import {getLocalStorage} from "../../helper/StorageHelper";
 import {CauseDto} from "../../rest/CauseService";
 import {Routes} from "../helper/Routes";
 import {InjectedIntlProps, injectIntl} from "react-intl";
+import {getUserFromStorage} from "../../helper/AppHelper";
+import {LoginDto} from "../login/LoginComponent";
 
 interface IWalletTransactionRowProps {
     date: string,
@@ -29,6 +31,12 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps & 
         }
         if (this.props.type === TxType.BONUS) {
             target = this.props.intl.formatMessage({id: "wallet.charity.points"});
+        } else if (this.props.type == TxType.CASHOUT) {
+            const user = getUserFromStorage();
+            if (user) {
+                const userParsed = JSON.parse(user) as LoginDto;
+                target = userParsed.displayName;
+            }
         }
 
         return (
