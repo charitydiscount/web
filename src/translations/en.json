@@ -121,5 +121,8 @@
   "adblock.button": "Reload page",
   "wallet.block.minimum.amount": "Minimum amount:",
   "average.waiting.time": "Average payment time: ",
-  "average.waiting.time.days": " days"
+  "average.waiting.time.days": " days",
+  "userinfo.about.label": "About",
+  "footer.info": "Info",
+  "userinfo.faq.button": "FAQ"
 }

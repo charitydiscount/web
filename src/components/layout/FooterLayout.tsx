@@ -10,7 +10,7 @@ class FooterLayout extends React.Component {
     render() {
         return (
             <footer className="footer-area">
-                <hr w-100></hr>
+                <hr w-100="true"></hr>
                 <div className="container">
                     <div className="row d-flex justify-content-between">
                         <div className="col-md-4 col-6 single-footer-widget">

@@ -121,5 +121,8 @@
   "adblock.button": "Reincarca pagina",
   "wallet.block.minimum.amount": "Suma minima:",
   "average.waiting.time": "Timpul mediu de plata: ",
-  "average.waiting.time.days": " zile"
+  "average.waiting.time.days": " zile",
+  "userinfo.about.label": "Despre",
+  "footer.info": "Info",
+  "userinfo.faq.button": "FAQ"
 }

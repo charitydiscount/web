@@ -9,7 +9,6 @@ import {Routes} from '../helper/Routes';
 import {clearStorage, removeLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
 import {UserActions} from "./UserActions";
-import {fetchConfigInfo} from "../../rest/ConfigService";
 
 interface ILoginRendererProps {
     isUserLogged: boolean;
@@ -20,13 +19,6 @@ class LoginActor extends React.Component<ILoginRendererProps> {
     async componentDidMount() {
         clearStorage();
         this.verifyUserLoggedInFirebase();
-        try {
-            await fetchConfigInfo();
-        } catch (error) {
-            //refresh to reload configs
-            window.location.reload();
-        }
-
         store.dispatch(NavigationsAction.setStageAction(Stages.EMPTY));
     }
 

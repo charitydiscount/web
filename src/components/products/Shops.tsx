@@ -17,6 +17,7 @@ import {spinnerCss} from "../../helper/AppHelper";
 import {InjectedIntlProps, injectIntl} from "react-intl";
 import ReactAdBlock from "../../ReactAdBlock";
 import ShopListElement from "./ShopListElement";
+import {fetchConfigInfo} from "../../rest/ConfigService";
 
 interface IShopsProps {
     shops: Array<ShopDto>,
@@ -57,6 +58,12 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
     }
 
     async componentDidMount() {
+        try {
+            await fetchConfigInfo();
+        } catch (error) {
+            //configs not loaded, important part, refresh app
+            window.location.reload();
+        }
         try {
             let response = await fetchShops();
             if (response) {

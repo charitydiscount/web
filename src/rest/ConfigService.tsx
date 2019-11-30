@@ -12,6 +12,8 @@ export function getAffiliateCode() {
     const code = getSessionStorage(StorageKey.PERFORMANET_2_CODE);
     if (code) {
         return (JSON.parse(code) as ConfigDto).uniqueCode;
+    } else {
+        return "6586acf43";
     }
 }
 
