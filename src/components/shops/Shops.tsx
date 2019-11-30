@@ -26,7 +26,6 @@ interface IShopsProps {
 
     // global state
     setShops: any,
-    resetShops: any,
     setCurrentPage: any,
     setRatings: any,
 
@@ -44,7 +43,7 @@ interface IShopsState {
     isLoading: boolean
 }
 
-const pageLimit = 20; // products per page
+const pageLimit = 20; // shops per page
 
 class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState> {
 

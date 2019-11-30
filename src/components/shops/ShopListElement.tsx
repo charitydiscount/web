@@ -8,13 +8,13 @@ interface ShopListElementState {
     visible: boolean
 }
 
-interface IProductProps {
+interface ShopListElementProps {
     shop: ShopDto
 }
 
-class ShopListElement extends React.Component<IProductProps & InjectedIntlProps, ShopListElementState> {
+class ShopListElement extends React.Component<ShopListElementProps & InjectedIntlProps, ShopListElementState> {
 
-    constructor(props: IProductProps) {
+    constructor(props: ShopListElementProps) {
         super(props);
         this.state = {
             visible: false
