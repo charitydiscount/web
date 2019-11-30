@@ -4,10 +4,9 @@ import {NavigationsAction, setFavShopsIconFill} from "../../redux/actions/Naviga
 import {Stages} from "../helper/Stages";
 import Categories from "./Categories";
 import {connect} from "react-redux";
-import Shop from "./Shop";
 import {setCurrentPage, setRatings, setShops} from "../../redux/actions/ShopsAction";
 import GenericInput from "../input/GenericInput";
-import {getLocalStorage, removeLocalStorage} from "../../helper/StorageHelper";
+import {getLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
 import ReactPaginate from 'react-paginate';
 import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
@@ -16,8 +15,8 @@ import {fetchReviewRatings, ReviewRating} from "../../rest/ReviewService";
 import FadeLoader from 'react-spinners/FadeLoader';
 import {spinnerCss} from "../../helper/AppHelper";
 import {InjectedIntlProps, injectIntl} from "react-intl";
-import {fetchAffiliateCode, fetchPercentage} from "../../rest/ConfigService";
 import ReactAdBlock from "../../ReactAdBlock";
+import ShopListElement from "./ShopListElement";
 
 interface IShopsProps {
     shops: Array<ShopDto>,
@@ -69,9 +68,14 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
             }
         } catch (error) {
             //shops not loaded, important part, refresh app
-            removeLocalStorage(StorageKey.USER);
             window.location.reload();
         }
+        try {
+            await fetchFavoriteShops();
+        } catch (error) {
+            //favorite shops not loaded
+        }
+
         let favShop = this.props.match.params.favShops;
         if (favShop && favShop === "favShops") {
             const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
@@ -82,6 +86,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
             this.props.setFavShopsIconFill(true);
             this.props.setSelections([]);
         }
+
         try {
             let response = await fetchReviewRatings();
             if (response) {
@@ -89,23 +94,6 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
             }
         } catch (error) {
             //ratings not loaded
-        }
-        try {
-            await fetchFavoriteShops();
-        } catch (error) {
-            //favorite shops not loaded
-        }
-        try {
-            await fetchAffiliateCode();
-        } catch (error) {
-            //affiliate code not loaded, important part, refresh app
-            removeLocalStorage(StorageKey.USER);
-            window.location.reload();
-        }
-        try {
-            await fetchPercentage();
-        } catch (error) {
-            //percentage not loaded it will be used a default
         }
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
@@ -154,7 +142,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
     }
 
     public render() {
-        var shopsList = this.props.shops && this.props.ratings &&
+        let shopsList = this.props.shops && this.props.ratings &&
         this.props.shops.length > 0 && this.props.ratings.size > 0 ? this.props.shops.map(shop => {
             let ratingObj = this.props.ratings.get(shop.uniqueCode);
             let rr = 0;
@@ -163,22 +151,17 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                 rr = ratingObj.rating;
                 rn = ratingObj.count;
             }
+            shop.reviewsRating = rr;
+            shop.totalReviews = rn;
 
-            return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
-                         defaultLeadCommissionAmount={shop.defaultLeadCommissionAmount}
-                         defaultLeadCommissionType={shop.defaultLeadCommissionType}
-                         defaultSaleCommissionRate={shop.defaultSaleCommissionRate}
-                         defaultSaleCommissionType={shop.defaultSaleCommissionType}
-                         mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}
-                         reviewRating={rr} totalReviews={rn} sellingCountries={shop.sellingCountries}
-                         averagePaymentTime={shop.averagePaymentTime}/>
+            return <ShopListElement key={"list" + shop.name} shop={shop}/>
         }) : null;
 
-        var pageCount = 0;
+        let pageCount = 0;
         if (this.props.shops && this.props.ratings && this.props.shops.length > 0 && this.props.ratings.size > 0) {
             if (this.props.shops.length > pageLimit) {
                 pageCount = this.props.shops.length / pageLimit;
-                var offset = this.props.currentPage;
+                let offset = this.props.currentPage;
                 shopsList = this.props.shops.slice(offset * pageLimit, (offset + 1) * pageLimit).map(shop => {
                     let ratingObj = this.props.ratings.get(shop.uniqueCode);
                     let rr = 0;
@@ -187,15 +170,10 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
                         rr = ratingObj.rating;
                         rn = ratingObj.count;
                     }
+                    shop.reviewsRating = rr;
+                    shop.totalReviews = rn;
 
-                    return <Shop key={shop.name} logoSrc={shop.logoPath} name={shop.name} category={shop.category}
-                                 defaultLeadCommissionAmount={shop.defaultLeadCommissionAmount}
-                                 defaultLeadCommissionType={shop.defaultLeadCommissionType}
-                                 defaultSaleCommissionRate={shop.defaultSaleCommissionRate}
-                                 defaultSaleCommissionType={shop.defaultSaleCommissionType}
-                                 mainUrl={shop.mainUrl} id={shop.id} uniqueCode={shop.uniqueCode}
-                                 reviewRating={rr} totalReviews={rn} sellingCountries={shop.sellingCountries}
-                                 averagePaymentTime={shop.averagePaymentTime}/>
+                    return <ShopListElement key={"list" + shop.name} shop={shop}/>
                 });
             } else {
                 pageCount = 1;

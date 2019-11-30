@@ -1,7 +1,8 @@
 import {DB} from "../index";
 import {getLocalStorage, removeLocalStorage, setLocalStorage} from "../helper/StorageHelper";
 import {FirebaseTable, StorageKey} from "../helper/Constants";
-import {getUserKeyFromStorage} from "../helper/AppHelper";
+import {computeUrl, getUserKeyFromStorage} from "../helper/AppHelper";
+import {getPercentage} from "./ConfigService";
 
 export interface FavoriteShopsDto {
     programs: ShopDto[],
@@ -25,7 +26,17 @@ export interface ShopDto {
     status: string,
     uniqueCode: string,
     averagePaymentTime: number,
-    sellingCountries: SellingCountriesDto[]
+    sellingCountries: SellingCountriesDto[],
+
+    //reviews
+    totalReviews: number,
+    reviewsRating: number,
+
+    //cashback
+    commission: string,
+
+    //linkUrl
+    computeUrl: string
 }
 
 export interface SellingCountriesDto {
@@ -138,7 +149,9 @@ export function updateFavoriteShops(favShopName, remove) {
                                     });
                                 }
                                 setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favShopList));
-                                resolve(true);
+                                setTimeout(function () {
+                                    resolve(true);
+                                }, 100);
                             })
                             .catch(() => {
                                 reject(); //DB not working
@@ -186,7 +199,24 @@ export function fetchShops() {
                     data.forEach(element => {
                         element.batch.forEach(
                             shop => {
-                                let parsedShop = objectMapper(shop, ShopDtoMap);
+                                let parsedShop = objectMapper(shop, ShopDtoMap) as ShopDto;
+
+                                //calculate commission
+                                let percentage = getPercentage();
+                                parsedShop.commission = parsedShop.defaultLeadCommissionAmount != null
+                                    ? (
+                                    parseFloat(parsedShop.defaultLeadCommissionAmount) *
+                                    percentage
+                                ).toFixed(2) + ' RON'
+                                    : (
+                                    parseFloat(parsedShop.defaultSaleCommissionRate) *
+                                    percentage
+                                ).toFixed(2) + ' %';
+
+                                parsedShop.computeUrl = computeUrl(
+                                    parsedShop.uniqueCode,
+                                    parsedShop.mainUrl);
+
                                 shops.push(parsedShop)
                             });
                         return;

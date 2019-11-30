@@ -13,8 +13,7 @@ import {setLangResources} from "../redux/actions/LocaleAction";
  */
 export function computeUrl(uniqueId, url) {
     let baseUrl = 'https://event.2performant.com/events/click?ad_type=quicklink';
-    let theCode = getAffiliateCode();
-    let affCode = '&aff_code=' + theCode;
+    let affCode = '&aff_code=' + getAffiliateCode();
     let unique = '&unique=' + uniqueId;
     let redirect = '&redirect_to=' + url;
     let tag = '';

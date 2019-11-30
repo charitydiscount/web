@@ -9,6 +9,7 @@ import {Routes} from '../helper/Routes';
 import {clearStorage, removeLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
 import {UserActions} from "./UserActions";
+import {fetchConfigInfo} from "../../rest/ConfigService";
 
 interface ILoginRendererProps {
     isUserLogged: boolean;
@@ -16,7 +17,16 @@ interface ILoginRendererProps {
 
 class LoginActor extends React.Component<ILoginRendererProps> {
 
-    public componentDidMount() {
+    async componentDidMount() {
+        clearStorage();
+        this.verifyUserLoggedInFirebase();
+        try {
+            await fetchConfigInfo();
+        } catch (error) {
+            //refresh to reload configs
+            window.location.reload();
+        }
+
         store.dispatch(NavigationsAction.setStageAction(Stages.EMPTY));
     }
 
@@ -34,8 +44,6 @@ class LoginActor extends React.Component<ILoginRendererProps> {
     }
 
     public render() {
-        clearStorage();
-        this.verifyUserLoggedInFirebase();
         return this.props.isUserLogged ? (
             <Redirect to={Routes.CATEGORIES}/>
         ) : (

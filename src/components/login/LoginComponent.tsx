@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import firebase from 'firebase/app';
-import { auth } from '../../index';
+import {auth} from '../../index';
 import FirebaseUIAuth from 'react-firebaseui-localized';
-import { setLocalStorage } from '../../helper/StorageHelper';
-import { ProviderType, StorageKey } from '../../helper/Constants';
+import {setLocalStorage} from '../../helper/StorageHelper';
+import {ProviderType, StorageKey} from '../../helper/Constants';
 
 export interface LoginDto {
     uid: string;
@@ -35,8 +35,9 @@ type ILoginProps = {
 };
 
 class LoginComponent extends React.Component<ILoginProps> {
+
     static onSignInSuccess(response) {
-        var objectMapper = require('object-mapper');
+        let objectMapper = require('object-mapper');
         let parsedUser = objectMapper(
             response.user as LoginRequestDto,
             LoginMapper
