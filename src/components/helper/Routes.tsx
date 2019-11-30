@@ -8,5 +8,6 @@ export enum Routes {
     WALLET = "/wallet",
     REVIEW = "/review",
     TOS = "/tos", //terms of agreement
-    PRIVACY = "/privacy"
+    PRIVACY = "/privacy",
+    LANDING = "/landing-ro.html"
 }

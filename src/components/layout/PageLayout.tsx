@@ -2,7 +2,7 @@ import * as React from 'react';
 import {Redirect, Route, Switch} from 'react-router';
 import {Routes} from '../helper/Routes';
 import Contact from '../contact/Contact';
-import Shops from '../products/Shops';
+import Shops from '../shops/Shops';
 import LoginActor from '../login/LoginActor';
 import UserInfo from '../login/UserInfo';
 import HotDeals from '../deals/HotDeals';
@@ -12,7 +12,7 @@ import {StorageKey} from "../../helper/Constants";
 import Wallet from "../wallet/Wallet";
 import Tos from "../tos/Tos";
 import Privacy from "../privacy/Privacy";
-import ShopReview from "../products/ShopReview";
+import ShopReview from "../shops/ShopReview";
 
 const PageLayout = () => {
     if (getLocalStorage(StorageKey.USER)) {
