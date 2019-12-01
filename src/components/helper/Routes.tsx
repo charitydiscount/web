@@ -9,5 +9,5 @@ export enum Routes {
     REVIEW = "/review",
     TOS = "/tos", //terms of agreement
     PRIVACY = "/privacy",
-    LANDING = "/landing-ro.html"
+    PRODUCTS = "/products"
 }

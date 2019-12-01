@@ -13,6 +13,7 @@ import Wallet from "../wallet/Wallet";
 import Tos from "../tos/Tos";
 import Privacy from "../privacy/Privacy";
 import ShopReview from "../shops/ShopReview";
+import Products from "../products/Products";
 
 const PageLayout = () => {
     if (getLocalStorage(StorageKey.USER)) {
@@ -30,6 +31,7 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.REVIEW + "/:id"} component={ShopReview}/>
                     <Route exact={true} path={Routes.TOS} component={Tos}/>
                     <Route exact={true} path={Routes.PRIVACY} component={Privacy}/>
+                    <Route exact={true} path={Routes.PRODUCTS} component={Products}/>
                     <Route render={() => <Redirect to={Routes.LOGIN}/>}/>
                 </Switch>
             </main>

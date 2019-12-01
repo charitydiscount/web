@@ -86,6 +86,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
 
     render() {
         const isCategories = this.props.view === Stages.CATEGORIES;
+        const isProducts = this.props.view === Stages.PRODUCTS;
         const isTos = this.props.view === Stages.TOS;
         const isPrivacy = this.props.view === Stages.PRIVACY;
         const isCauses = this.props.view === Stages.CAUSES;
@@ -198,6 +199,27 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                                             <FormattedMessage
                                                                 id="navigation.shops"
                                                                 defaultMessage="Magazine"
+                                                            />
+                                                        </a>
+                                                    </li>
+
+                                                    <li
+                                                        className={
+                                                            'nav-item ' +
+                                                            (isProducts
+                                                                ? 'active'
+                                                                : '')
+                                                        }
+                                                    >
+                                                        <a
+                                                            className="nav-link"
+                                                            href={
+                                                                Routes.PRODUCTS
+                                                            }
+                                                        >
+                                                            <FormattedMessage
+                                                                id="navigation.products"
+                                                                defaultMessage="Products"
                                                             />
                                                         </a>
                                                     </li>

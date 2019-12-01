@@ -1,6 +1,6 @@
 {
   "navigation.wallet": "Portofel",
-  "navigation.causes": "Cauze",
+  "navigation.causes": "Caritate",
   "navigation.shops": "Magazine",
   "navigation.welcome": "Bine ai venit: ",
   "navigation.logout": "Delogare ",
@@ -124,5 +124,8 @@
   "average.waiting.time.days": " zile",
   "userinfo.about.label": "Despre",
   "footer.info": "Info",
-  "userinfo.faq.button": "FAQ"
+  "userinfo.faq.button": "FAQ",
+  "products.search": "Cauta produsul...",
+  "navigation.products": "Produse",
+  "product.shop": "Magazin: "
 }

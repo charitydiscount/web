@@ -255,3 +255,13 @@ export function getShopByUniqueCode(uniqueCode) {
     }
 }
 
+export function getShopByName(name) {
+    const shops = getLocalStorage(StorageKey.SHOPS);
+    if (shops) {
+        const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
+        return shopsParsed.find(value => {
+            return value.name === name
+        });
+    }
+}
+

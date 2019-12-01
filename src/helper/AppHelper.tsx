@@ -17,11 +17,21 @@ export function computeUrl(uniqueId, url) {
     let unique = '&unique=' + uniqueId;
     let redirect = '&redirect_to=' + url;
     let tag = '';
-    let user = getLocalStorage(StorageKey.USER);
-    if (user) {
-        tag = '&st=' + (JSON.parse(user) as LoginDto).uid;
+    let userKey = getUserKeyFromStorage();
+    if (userKey) {
+        tag = '&st=' + userKey;
     }
     return baseUrl + affCode + unique + redirect + tag;
+}
+
+export function computeProductUrl(affUrl) {
+    let baseUrl = affUrl;
+    let tag = '';
+    let userKey = getUserKeyFromStorage();
+    if (userKey) {
+        tag = '&st=' + userKey;
+    }
+    return baseUrl + tag;
 }
 
 export const spinnerCss = css`

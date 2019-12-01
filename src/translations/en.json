@@ -124,5 +124,8 @@
   "average.waiting.time.days": " days",
   "userinfo.about.label": "About",
   "footer.info": "Info",
-  "userinfo.faq.button": "FAQ"
+  "userinfo.faq.button": "FAQ",
+  "products.search": "Search product...",
+  "navigation.products": "Products",
+  "product.shop": "Shop: "
 }

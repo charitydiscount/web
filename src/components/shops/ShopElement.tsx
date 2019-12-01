@@ -141,13 +141,13 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                                 <span> {this.props.shop.totalReviews}</span>
                             </a>
                         ) : ('')}
-                        <h3 style={this.props.comingFromShopReview ? {} : {maxWidth: 300}}>
+                        <h5 style={this.props.comingFromShopReview ? {} : {maxWidth: 300}}>
                             <FormattedMessage
                                 id={'shop.category'}
                                 defaultMessage="Category:"
                             />
                             {this.props.shop.category}
-                        </h3>
+                        </h5>
                         <div className="s_product_text">
                             <div className="card_area p_20">
                                 <a
