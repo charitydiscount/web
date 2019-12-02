@@ -46,7 +46,8 @@ export interface ProductDTO {
     id: string,
     category: string,
     url: string,
-    shopName: string
+    shopName: string,
+    commission: string
 }
 
 export interface ProductResult {
@@ -132,7 +133,6 @@ export function searchProduct(title, minPrice, maxPrice, sort, currentPage) {
         }
 
 
-        console.log(url);
         auth.onAuthStateChanged(async function (user) {
             if (user) {
                 let token = await user.getIdToken(false);

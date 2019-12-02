@@ -25,6 +25,13 @@ class ProductElement extends React.Component<ProductElementProps & InjectedIntlP
                         />
                         {this.props.product.shopName}
                     </h6>
+                    <h6>
+                        <FormattedMessage
+                            id={'product.cashback.money'}
+                            defaultMessage="Saved money: "
+                        />
+                        {this.props.product.commission} lei
+                    </h6>
                     <img style={{maxWidth: 300, maxHeight: 300}} src={this.props.product.imageUrl} alt=""/>
                     <div className="blog_details">
                         <h4 style={{maxWidth: 300}}> {this.props.product.title}</h4>

@@ -178,7 +178,14 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
         let productsState;
         //filter after active products, product's shop present in our shops list
         if (this.state.products && this.state.products.length > 0) {
-            productsState = this.state.products.filter(product => getShopByName(product.shopName) !== undefined);
+            productsState = this.state.products.filter(product => getShopByName(product.shopName) !== undefined)
+                .map(product => {
+                    let shop = getShopByName(product.shopName);
+                    if (shop) {
+                        product.commission = ((product.price * parseFloat(shop.commission)) / 100).toFixed(2);
+                    }
+                    return product
+                });
         }
 
         let productsList = productsState &&
