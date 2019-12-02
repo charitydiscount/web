@@ -125,7 +125,13 @@
   "userinfo.about.label": "Despre",
   "footer.info": "Info",
   "userinfo.faq.button": "FAQ",
-  "products.search": "Cauta produsul...",
+  "products.search": "Numele produsului...",
   "navigation.products": "Produse",
-  "product.shop": "Magazin: "
+  "product.shop": "Magazin: ",
+  "products.filters": "Filtre",
+  "products.filters.price": "Pret",
+  "products.button.search": "Cauta",
+  "products.filters.sorting": "Sortare",
+  "products.filters.sorting.ascending": "Crescator",
+  "products.filters.sorting.descending": "Descrescator"
 }

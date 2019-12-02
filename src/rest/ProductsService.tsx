@@ -32,6 +32,12 @@ export interface ProductResponse {
     url: string
 }
 
+export interface ProductSearchInfo {
+    productName: string,
+    minPrice: string,
+    maxPrice: string,
+    sort: string
+}
 
 export interface ProductDTO {
     price: number,
@@ -41,6 +47,11 @@ export interface ProductDTO {
     category: string,
     url: string,
     shopName: string
+}
+
+export interface ProductResult {
+    products: ProductDTO[],
+    total: number
 }
 
 export function getFeaturedProducts() {
@@ -93,9 +104,35 @@ export function getFeaturedProducts() {
 }
 
 
-export function searchProduct(title) {
+export function searchProduct(title, minPrice, maxPrice, sort, currentPage) {
     return new Promise(((resolve, reject) => {
         let url = 'https://charity-proxy.appspot.com/search/products?query=' + title;
+        url += '&page=' + currentPage * 50;
+
+        if (sort && sort.length > 0) {
+            url += '&sort=' + sort;
+        }
+
+        try {
+            let minP = parseInt(minPrice);
+            if (minP > 0) {
+                url += '&min=' + minP;
+            }
+        } catch (e) {
+            //min price not loaded
+        }
+
+        try {
+            let maxP = parseInt(maxPrice);
+            if (maxP > 0) {
+                url += '&max=' + maxP;
+            }
+        } catch (e) {
+            //max price not loaded
+        }
+
+
+        console.log(url);
         auth.onAuthStateChanged(async function (user) {
             if (user) {
                 let token = await user.getIdToken(false);
@@ -128,7 +165,10 @@ export function searchProduct(title) {
                                     parsedProductList.push(parsedProduct);
                                 });
                             }
-                            resolve(parsedProductList);
+                            resolve({
+                                products: parsedProductList,
+                                total: result.total.value
+                            } as ProductResult);
                         })).catch(() => {
                             reject();
                         });

@@ -125,7 +125,13 @@
   "userinfo.about.label": "About",
   "footer.info": "Info",
   "userinfo.faq.button": "FAQ",
-  "products.search": "Search product...",
+  "products.search": "Product name...",
   "navigation.products": "Products",
-  "product.shop": "Shop: "
+  "product.shop": "Shop: ",
+  "products.filters": "Filters",
+  "products.filters.price": "Price",
+  "products.button.search": "Search",
+  "products.filters.sorting": "Sorting",
+  "products.filters.sorting.ascending": "Ascending",
+  "products.filters.sorting.descending": "Descending"
 }
