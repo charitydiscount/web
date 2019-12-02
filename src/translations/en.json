@@ -133,5 +133,6 @@
   "products.button.search": "Search",
   "products.filters.sorting": "Sorting",
   "products.filters.sorting.ascending": "Ascending",
-  "products.filters.sorting.descending": "Descending"
+  "products.filters.sorting.descending": "Descending",
+  "shops.sort.message": "Sort after reviews number"
 }

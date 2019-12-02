@@ -306,7 +306,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                                           placeholder={
                                                               this.props.intl.formatMessage({id: "wallet.block.cashout.name"})
                                                           }/>
-                                            < GenericInput type={InputType.TEXT} id={"iban"}
+                                            <GenericInput type={InputType.TEXT} id={"iban"}
                                                            handleChange={event => this.setState({iban: event.target.value})}
                                                            value={this.state.iban}
                                                            placeholder={
