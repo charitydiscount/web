@@ -32,16 +32,16 @@ class ProductElement extends React.Component<ProductElementProps & InjectedIntlP
                         />
                         {this.props.product.commission} lei
                     </h6>
+                    <h6 style={{maxWidth: 300}}>
+                        <FormattedMessage
+                            id={'shop.category'}
+                            defaultMessage="Category: "
+                        />
+                        {this.props.product.category}
+                    </h6>
                     <img style={{maxWidth: 300, maxHeight: 300}} src={this.props.product.imageUrl} alt=""/>
                     <div className="blog_details">
                         <h4 style={{maxWidth: 300}}> {this.props.product.title}</h4>
-                        <h6 style={{maxWidth: 300}}>
-                            <FormattedMessage
-                                id={'shop.category'}
-                                defaultMessage="Category: "
-                            />
-                            {this.props.product.category}
-                        </h6>
                         <div className="s_product_text"
                              style={{
                                  marginLeft: 10,

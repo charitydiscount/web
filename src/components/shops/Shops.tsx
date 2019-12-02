@@ -150,6 +150,9 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps, IShopsState
     }
 
     sortAfterReviewsNumber(event) {
+        this.setState({
+            reviewsSort: event.target.value
+        });
         let shopsFilled = this.props.shops.map(shop => {
             let ratingObj = this.props.ratings.get(shop.uniqueCode);
             let rr = 0;
