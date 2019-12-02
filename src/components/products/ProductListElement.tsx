@@ -19,6 +19,17 @@ class ProductListElement extends React.Component<ProductListElementProps, Produc
         this.state = {
             visible: false
         };
+        this.escFunction = this.escFunction.bind(this);
+    }
+
+    escFunction(event){
+        if(event.keyCode === 27) {
+            this.closeModal();
+        }
+    }
+
+    componentDidMount(){
+        document.addEventListener("keydown", this.escFunction, false);
     }
 
     closeModal() {

@@ -59,10 +59,17 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
         this.donate = this.donate.bind(this);
         this.cashout = this.cashout.bind(this);
         this.creatRequest = this.creatRequest.bind(this);
+        this.escFunction = this.escFunction.bind(this);
+    }
+
+    escFunction(event){
+        if(event.keyCode === 27) {
+            this.closeModal();
+        }
     }
 
     componentDidMount() {
-
+        document.addEventListener("keydown", this.escFunction, false);
     }
 
     openDonateModal() {

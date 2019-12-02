@@ -53,9 +53,17 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
         this.handleEmailResetSent = this.handleEmailResetSent.bind(this);
         this.sendPasswordResetEmail = this.sendPasswordResetEmail.bind(this);
         this.handleRequestDeleteAccount = this.handleRequestDeleteAccount.bind(this);
+        this.escFunction = this.escFunction.bind(this);
+    }
+
+    escFunction(event){
+        if(event.keyCode === 27) {
+            this.closeModal();
+        }
     }
 
     async componentDidMount() {
+        document.addEventListener("keydown", this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
         const user = getUserFromStorage();
         if (user) {

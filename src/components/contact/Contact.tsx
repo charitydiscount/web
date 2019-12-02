@@ -32,9 +32,17 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
         };
         this.handleSendMessage = this.handleSendMessage.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.escFunction = this.escFunction.bind(this);
+    }
+
+    escFunction(event){
+        if(event.keyCode === 27) {
+            this.closeModal();
+        }
     }
 
     public componentDidMount() {
+        document.addEventListener("keydown", this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.CONTACT));
     }
 

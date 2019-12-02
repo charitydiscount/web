@@ -53,12 +53,19 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
         this.handleStarFocusEnter = this.handleStarFocusEnter.bind(this);
         this.handleStarFocusRemove = this.handleStarFocusRemove.bind(this);
         this.handleShowModalMessage = this.handleShowModalMessage.bind(this);
+        this.escFunction = this.escFunction.bind(this);
     }
 
 
+    escFunction(event){
+        if(event.keyCode === 27) {
+            this.closeModal();
+        }
+    }
+
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
-
+        document.addEventListener("keydown", this.escFunction, false);
         let shop = getShopById(this.props.match.params.id) as ShopDto;
         try {
             let response = await fetchReviews(shop.uniqueCode);
@@ -109,7 +116,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
     }
 
     async updateCurrentReview() {
-        if ((this.state.description && this.state.description.length > 0) && this.state.rating > 0) {
+        if (this.state.rating > 0) {
             const user = getUserFromStorage();
             if (user) {
                 const userParsed = JSON.parse(user) as LoginDto;

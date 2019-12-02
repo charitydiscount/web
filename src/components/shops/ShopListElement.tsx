@@ -21,6 +21,17 @@ class ShopListElement extends React.Component<ShopListElementProps & InjectedInt
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.escFunction = this.escFunction.bind(this);
+    }
+
+    escFunction(event){
+        if(event.keyCode === 27) {
+            this.closeModal();
+        }
+    }
+
+    componentDidMount(){
+        document.addEventListener("keydown", this.escFunction, false);
     }
 
     closeModal() {
