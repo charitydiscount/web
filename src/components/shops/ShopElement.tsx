@@ -1,26 +1,33 @@
-import {emptyHrefLink} from "../../helper/Constants";
-import {Link} from "react-router-dom";
-import {Routes} from "../helper/Routes";
-import * as React from "react";
-import {ShopDto, updateFavoriteShops, verifyInFavoriteShops} from "../../rest/ShopsService";
-import {InjectedIntlProps, injectIntl} from 'react-intl';
-import {FormattedMessage} from 'react-intl';
+import { emptyHrefLink } from '../../helper/Constants';
+import { Link } from 'react-router-dom';
+import { Routes } from '../helper/Routes';
+import * as React from 'react';
+import {
+    ShopDto,
+    updateFavoriteShops,
+    verifyInFavoriteShops,
+    fetchFavoriteShops,
+} from '../../rest/ShopsService';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 interface IShopElementProps {
-    shop: ShopDto,
-    comingFromShopReview?: boolean
+    shop: ShopDto;
+    comingFromShopReview?: boolean;
 }
 
 interface IShopElementState {
-    favShop: boolean
+    favShop: boolean;
 }
 
-class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps, IShopElementState> {
-
+class ShopElement extends React.Component<
+    IShopElementProps & InjectedIntlProps,
+    IShopElementState
+> {
     constructor(props: IShopElementProps) {
         super(props);
         this.state = {
-            favShop: false
+            favShop: false,
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
@@ -36,21 +43,22 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
     /**
      * Used to add/remove favorite shops from DB
      */
-    async updateFavoriteShops(remove) {
+    updateFavoriteShops(remove: boolean) {
+        this.setState({
+            favShop: !remove,
+        });
         try {
-            let response = await updateFavoriteShops(this.props.shop.name, remove);
-            if (response) {
-                this.setState({
-                    favShop: !remove
-                });
-            }
+            updateFavoriteShops(this.props.shop, remove).then(() => {
+                fetchFavoriteShops();
+            });
         } catch (error) {
-            alert(this.props.intl.formatMessage({
-                id: 'favorite.shop.failed.to.update',
-            }));
+            alert(
+                this.props.intl.formatMessage({
+                    id: 'favorite.shop.failed.to.update',
+                })
+            );
         }
     }
-
 
     public render() {
         let sellingCountries =
@@ -89,10 +97,16 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                             defaultMessage=" days"
                         />
                     </h6>
-                    <img src={this.props.shop.logoPath} alt=""/>
+                    <img src={this.props.shop.logoPath} alt="" />
                     <div className="blog_details">
                         <h2>{this.props.shop.name}</h2>
-                        <h6 style={this.props.comingFromShopReview ? {} : {maxWidth: 300}}>
+                        <h6
+                            style={
+                                this.props.comingFromShopReview
+                                    ? {}
+                                    : { maxWidth: 300 }
+                            }
+                        >
                             <FormattedMessage
                                 id={'shop.available.in'}
                                 defaultMessage="Available in: "
@@ -102,46 +116,54 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                         {this.props.shop.reviewsRating ? (
                             <a href={emptyHrefLink}>
                                 {this.props.shop.reviewsRating >= 1 ? (
-                                    <i className="fa fa-star star-focus"/>
+                                    <i className="fa fa-star star-focus" />
                                 ) : (
-                                    <i className="fa fa-star-o star-focus"/>
+                                    <i className="fa fa-star-o star-focus" />
                                 )}
                                 {this.props.shop.reviewsRating >= 2 ? (
-                                    <i className="fa fa-star star-focus"/>
+                                    <i className="fa fa-star star-focus" />
                                 ) : this.props.shop.reviewsRating > 1 &&
-                                this.props.shop.reviewsRating < 2 ? (
-                                    <i className="fa fa-star-half-o star-focus"/>
+                                  this.props.shop.reviewsRating < 2 ? (
+                                    <i className="fa fa-star-half-o star-focus" />
                                 ) : (
-                                    <i className="fa fa-star-o star-focus"/>
+                                    <i className="fa fa-star-o star-focus" />
                                 )}
                                 {this.props.shop.reviewsRating >= 3 ? (
-                                    <i className="fa fa-star star-focus"/>
+                                    <i className="fa fa-star star-focus" />
                                 ) : this.props.shop.reviewsRating > 2 &&
-                                this.props.shop.reviewsRating < 3 ? (
-                                    <i className="fa fa-star-half-o star-focus"/>
+                                  this.props.shop.reviewsRating < 3 ? (
+                                    <i className="fa fa-star-half-o star-focus" />
                                 ) : (
-                                    <i className="fa fa-star-o star-focus"/>
+                                    <i className="fa fa-star-o star-focus" />
                                 )}
                                 {this.props.shop.reviewsRating >= 4 ? (
-                                    <i className="fa fa-star star-focus"/>
+                                    <i className="fa fa-star star-focus" />
                                 ) : this.props.shop.reviewsRating > 3 &&
-                                this.props.shop.reviewsRating < 4 ? (
-                                    <i className="fa fa-star-half-o star-focus"/>
+                                  this.props.shop.reviewsRating < 4 ? (
+                                    <i className="fa fa-star-half-o star-focus" />
                                 ) : (
-                                    <i className="fa fa-star-o star-focus"/>
+                                    <i className="fa fa-star-o star-focus" />
                                 )}
                                 {this.props.shop.reviewsRating >= 5 ? (
-                                    <i className="fa fa-star star-focus"/>
+                                    <i className="fa fa-star star-focus" />
                                 ) : this.props.shop.reviewsRating > 4 &&
-                                this.props.shop.reviewsRating < 5 ? (
-                                    <i className="fa fa-star-half-o star-focus"/>
+                                  this.props.shop.reviewsRating < 5 ? (
+                                    <i className="fa fa-star-half-o star-focus" />
                                 ) : (
-                                    <i className="fa fa-star-o star-focus"/>
+                                    <i className="fa fa-star-o star-focus" />
                                 )}
                                 <span> {this.props.shop.totalReviews}</span>
                             </a>
-                        ) : ('')}
-                        <h5 style={this.props.comingFromShopReview ? {} : {maxWidth: 300}}>
+                        ) : (
+                            ''
+                        )}
+                        <h5
+                            style={
+                                this.props.comingFromShopReview
+                                    ? {}
+                                    : { maxWidth: 300 }
+                            }
+                        >
                             <FormattedMessage
                                 id={'shop.category'}
                                 defaultMessage="Category:"
@@ -161,25 +183,36 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                                         defaultMessage="Access"
                                     />
                                 </a>
-                                {!this.props.comingFromShopReview &&
-                                <div className={'icon_btn p_icon p_05'}>
-                                    <Link
-                                        to={
-                                            Routes.REVIEW +
-                                            '/' +
-                                            this.props.shop.id
-                                        }
-                                    >
-
-                                        <i className="lnr lnr-bubble"/>
-                                    </Link>
-                                </div>
-                                }
+                                {!this.props.comingFromShopReview && (
+                                    <div className={'icon_btn p_icon p_05'}>
+                                        <Link
+                                            to={
+                                                Routes.REVIEW +
+                                                '/' +
+                                                this.props.shop.id
+                                            }
+                                        >
+                                            <i className="lnr lnr-bubble" />
+                                        </Link>
+                                    </div>
+                                )}
 
                                 <div className={'icon_btn p_icon'}>
-                                    <a href={emptyHrefLink}
-                                       onClick={() => this.updateFavoriteShops(this.state.favShop)}>
-                                        <i className={this.state.favShop ? "fa fa-heart" : "fa fa-heart-o"}/>
+                                    <a
+                                        href={emptyHrefLink}
+                                        onClick={() =>
+                                            this.updateFavoriteShops(
+                                                this.state.favShop
+                                            )
+                                        }
+                                    >
+                                        <i
+                                            className={
+                                                this.state.favShop
+                                                    ? 'fa fa-heart'
+                                                    : 'fa fa-heart-o'
+                                            }
+                                        />
                                     </a>
                                 </div>
                             </div>
@@ -187,7 +220,7 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                     </div>
                 </div>
             </React.Fragment>
-        )
+        );
     }
 }
 

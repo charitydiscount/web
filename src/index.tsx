@@ -46,7 +46,7 @@ export const storage = firebaseApp.storage();
 const user = getLocalStorage(StorageKey.USER);
 if (user && user.length > 0) {
     //validate json present in storage
-    if (user.includes("uid") && user.includes("displayName") && user.includes("email")) {
+    if (user.includes("uid") && user.includes("email")) {
         var parsedUser = JSON.parse(user) as LoginDto;
         var userCD = new Date(parsedUser.creationTime);
         userCD.setMinutes(userCD.getMinutes() + 1);
