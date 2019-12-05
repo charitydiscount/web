@@ -1,109 +1,93 @@
-import {DB} from "../index";
-import {getLocalStorage, removeLocalStorage, setLocalStorage} from "../helper/StorageHelper";
-import {FirebaseTable, StorageKey} from "../helper/Constants";
-import {computeUrl, getUserKeyFromStorage} from "../helper/AppHelper";
-import {getPercentage} from "./ConfigService";
+import { DB } from '../index';
+import {
+    getLocalStorage,
+    removeLocalStorage,
+    setLocalStorage,
+} from '../helper/StorageHelper';
+import { FirebaseTable, StorageKey } from '../helper/Constants';
+import { computeUrl, getUserKeyFromStorage } from '../helper/AppHelper';
+import { getPercentage } from './ConfigService';
+import { firestore } from 'firebase/app';
 
 export interface FavoriteShopsDto {
-    programs: ShopDto[],
-    userId: string
+    programs: { [shopUniqueCode: string]: ShopDto };
+    userId: string;
 }
 
 export interface ShopDtoWrapper {
-    batch: ShopDto[]
+    batch: ShopDto[];
 }
 
 export interface ShopDto {
-    category: string,
-    defaultLeadCommissionAmount: string,
-    defaultLeadCommissionType: string,
-    defaultSaleCommissionRate: string,
-    defaultSaleCommissionType: string,
-    logoPath: string,
-    mainUrl: string,
-    id: number,
-    name: string,
-    status: string,
-    uniqueCode: string,
-    averagePaymentTime: number,
-    sellingCountries: SellingCountriesDto[],
+    category: string;
+    defaultLeadCommissionAmount: string;
+    defaultLeadCommissionType: string;
+    defaultSaleCommissionRate: string;
+    defaultSaleCommissionType: string;
+    logoPath: string;
+    mainUrl: string;
+    id: number;
+    name: string;
+    status: string;
+    uniqueCode: string;
+    averagePaymentTime: number;
+    sellingCountries: SellingCountriesDto[];
 
     //reviews
-    totalReviews: number,
-    reviewsRating: number,
+    totalReviews: number;
+    reviewsRating: number;
 
     //cashback
-    commission: string,
+    commission: string;
 
     //linkUrl
-    computeUrl: string
+    computeUrl: string;
 }
 
 export interface SellingCountriesDto {
-    code: string,
-    currency: string,
-    name: string,
-    id: number
+    code: string;
+    currency: string;
+    name: string;
+    id: number;
 }
 
 export var ShopDtoMap = {
-    category: "category",
-    defaultLeadCommissionAmount: "defaultLeadCommissionAmount",
-    defaultLeadCommissionType: "defaultLeadCommissionType",
-    defaultSaleCommissionRate: "defaultSaleCommissionRate",
-    defaultSaleCommissionType: "defaultSaleCommissionType",
-    logoPath: "logoPath",
-    mainUrl: "mainUrl",
-    id: "id",
-    name: "name",
-    status: "status",
-    uniqueCode: "uniqueCode",
-    sellingCountries: "sellingCountries",
-    averagePaymentTime: "averagePaymentTime"
+    category: 'category',
+    defaultLeadCommissionAmount: 'defaultLeadCommissionAmount',
+    defaultLeadCommissionType: 'defaultLeadCommissionType',
+    defaultSaleCommissionRate: 'defaultSaleCommissionRate',
+    defaultSaleCommissionType: 'defaultSaleCommissionType',
+    logoPath: 'logoPath',
+    mainUrl: 'mainUrl',
+    id: 'id',
+    name: 'name',
+    status: 'status',
+    uniqueCode: 'uniqueCode',
+    sellingCountries: 'sellingCountries',
+    averagePaymentTime: 'averagePaymentTime',
 };
 
+export async function fetchFavoriteShops() {
+    const userKey = getUserKeyFromStorage();
+    if (!userKey) {
+        return [];
+    }
+    const favoriteShopsDoc = await DB.collection(FirebaseTable.FAVORITE_SHOPS)
+        .doc(userKey)
+        .get();
+    if (!favoriteShopsDoc.exists) {
+        return [];
+    }
 
-export function fetchFavoriteShops() {
-    return new Promise((resolve, reject) => {
-        const favShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
-        if (favShops) {
-            try {
-                let stEntry = JSON.parse(favShops);
-                //verify localStorage valid
-                if (stEntry.length <= 0 || stEntry[0] === undefined || !stEntry[0].hasOwnProperty("category") ||
-                    !stEntry[0].hasOwnProperty("mainUrl") || !stEntry[0].hasOwnProperty("uniqueCode")) {
-                    removeLocalStorage(StorageKey.FAVORITE_SHOPS);
-                } else {
-                    resolve();
-                    return;
-                }
-            } catch (error) {
-                removeLocalStorage(StorageKey.FAVORITE_SHOPS);
-            }
-        }
+    const favoriteShops = Object.values(
+        (favoriteShopsDoc.data() as FavoriteShopsDto).programs
+    );
+    setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favoriteShops));
 
-        let keyExist = getUserKeyFromStorage();
-        if (keyExist) {
-            DB.collection(FirebaseTable.FAVORITE_SHOPS).doc(keyExist).get()
-                .then(function (doc) {
-                    if (doc.exists) {
-                        const data = doc.data() as FavoriteShopsDto;
-                        setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(data.programs));
-                        resolve();
-                    } else {
-                        reject();  //object can't be found in DB
-                    }
-                })
-                .catch(() => {
-                    reject(); //DB not working
-                });
-        } else {
-            reject(); //not reachable state
-        }
-    });
+    return favoriteShops;
 }
 
-export function verifyInFavoriteShops(shopId) {
+export function verifyInFavoriteShops(shopId: number) {
     const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
     if (favoriteShops) {
         let favShops = JSON.parse(favoriteShops) as ShopDto[];
@@ -115,60 +99,30 @@ export function verifyInFavoriteShops(shopId) {
     return false;
 }
 
-export function updateFavoriteShops(favShopName, remove) {
-    return new Promise(((resolve, reject) => {
-        let keyExist = getUserKeyFromStorage();
-        if (keyExist) {
-            const shopsStorage = getLocalStorage(StorageKey.SHOPS);
-            if (shopsStorage) {
-                const shops = JSON.parse(shopsStorage) as Array<ShopDto>;
-                if (shops) {
-                    let favoriteShop = shops.find(shop => shop.name === favShopName) as ShopDto;
-                    if (favoriteShop) {
-                        const docRef = DB.collection(FirebaseTable.FAVORITE_SHOPS).doc(keyExist);
-                        docRef.get()
-                            .then(function (doc) {
-                                let favShopList = [] as ShopDto[];
-                                if (doc.exists) {
-                                    let wholeObject = doc.data() as FavoriteShopsDto;
-                                    favShopList = wholeObject.programs as ShopDto[];
-                                    if (remove) {
-                                        favShopList = favShopList.filter(value => value.name !== favoriteShop.name);
-                                    } else {
-                                        favShopList.push(favoriteShop);
-                                    }
-                                    docRef.update({
-                                        programs: favShopList
-                                    })
-                                } else {
-                                    // create the document as a list
-                                    favShopList.push(favoriteShop);
-                                    docRef.set({
-                                        programs: favShopList,
-                                        userId: keyExist
-                                    });
-                                }
-                                setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favShopList));
-                                setTimeout(function () {
-                                    resolve(true);
-                                }, 100);
-                            })
-                            .catch(() => {
-                                reject(); //DB not working
-                            })
-                    } else {
-                        reject();
-                    }
-                } else {
-                    reject();
-                }
-            } else {
-                reject();
-            }
+export async function updateFavoriteShops(shop: ShopDto, remove: boolean) {
+    const userKey = getUserKeyFromStorage();
+    if (!userKey) {
+        return;
+    }
+
+    const docRef = DB.collection(FirebaseTable.FAVORITE_SHOPS).doc(userKey);
+    if (remove) {
+        return docRef.update({
+            [`programs.${shop.uniqueCode}`]: firestore.FieldValue.delete(),
+        });
+    } else {
+        const favoriteShopsDoc = await docRef.get();
+        if (favoriteShopsDoc.exists) {
+            return docRef.update({
+                [`programs.${shop.uniqueCode}`]: shop,
+            });
         } else {
-            reject();
+            return docRef.set({
+                userId: userKey,
+                [`programs.${shop.uniqueCode}`]: shop,
+            });
         }
-    }))
+    }
 }
 
 export function fetchShops() {
@@ -178,8 +132,13 @@ export function fetchShops() {
             try {
                 let stEntry = JSON.parse(shops);
                 //verify localStorage valid
-                if (stEntry.length <= 0 || stEntry[0] === undefined || !stEntry[0].hasOwnProperty("category") ||
-                    !stEntry[0].hasOwnProperty("mainUrl") || !stEntry[0].hasOwnProperty("uniqueCode")) {
+                if (
+                    stEntry.length <= 0 ||
+                    stEntry[0] === undefined ||
+                    !stEntry[0].hasOwnProperty('category') ||
+                    !stEntry[0].hasOwnProperty('mainUrl') ||
+                    !stEntry[0].hasOwnProperty('uniqueCode')
+                ) {
                     removeLocalStorage(StorageKey.SHOPS);
                 } else {
                     resolve(stEntry);
@@ -190,39 +149,52 @@ export function fetchShops() {
             }
         }
 
-        DB.collection(FirebaseTable.SHOPS).orderBy('order').get()
+        DB.collection(FirebaseTable.SHOPS)
+            .orderBy('order')
+            .get()
             .then(querySnapshot => {
-                const data = querySnapshot.docs.map(doc => doc.data() as ShopDtoWrapper);
+                const data = querySnapshot.docs.map(
+                    doc => doc.data() as ShopDtoWrapper
+                );
                 if (data) {
                     let shops = new Array<ShopDto>();
                     let objectMapper = require('object-mapper');
                     data.forEach(element => {
-                        element.batch.forEach(
-                            shop => {
-                                let parsedShop = objectMapper(shop, ShopDtoMap) as ShopDto;
+                        element.batch.forEach(shop => {
+                            let parsedShop = objectMapper(
+                                shop,
+                                ShopDtoMap
+                            ) as ShopDto;
 
-                                //calculate commission
-                                let percentage = getPercentage();
-                                parsedShop.commission = parsedShop.defaultLeadCommissionAmount != null
+                            //calculate commission
+                            let percentage = getPercentage();
+                            parsedShop.commission =
+                                parsedShop.defaultLeadCommissionAmount != null
                                     ? (
-                                    parseFloat(parsedShop.defaultLeadCommissionAmount) *
-                                    percentage
-                                ).toFixed(2) + ' RON'
+                                          parseFloat(
+                                              parsedShop.defaultLeadCommissionAmount
+                                          ) * percentage
+                                      ).toFixed(2) + ' RON'
                                     : (
-                                    parseFloat(parsedShop.defaultSaleCommissionRate) *
-                                    percentage
-                                ).toFixed(2) + ' %';
+                                          parseFloat(
+                                              parsedShop.defaultSaleCommissionRate
+                                          ) * percentage
+                                      ).toFixed(2) + ' %';
 
-                                parsedShop.computeUrl = computeUrl(
-                                    parsedShop.uniqueCode,
-                                    parsedShop.mainUrl);
+                            parsedShop.computeUrl = computeUrl(
+                                parsedShop.uniqueCode,
+                                parsedShop.mainUrl
+                            );
 
-                                shops.push(parsedShop)
-                            });
+                            shops.push(parsedShop);
+                        });
                         return;
                     });
                     if (shops) {
-                        setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
+                        setLocalStorage(
+                            StorageKey.SHOPS,
+                            JSON.stringify(shops)
+                        );
                         resolve(shops);
                     } else {
                         reject(); //shops not found
@@ -240,7 +212,7 @@ export function getShopById(id) {
     if (shops) {
         const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
         return shopsParsed.find(value => {
-            return value.id === parseInt(id)
+            return value.id === parseInt(id);
         });
     }
 }
@@ -250,7 +222,7 @@ export function getShopByUniqueCode(uniqueCode) {
     if (shops) {
         const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
         return shopsParsed.find(value => {
-            return value.uniqueCode === uniqueCode
+            return value.uniqueCode === uniqueCode;
         });
     }
 }
@@ -260,8 +232,7 @@ export function getShopByName(name) {
     if (shops) {
         const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
         return shopsParsed.find(value => {
-            return value.name === name
+            return value.name === name;
         });
     }
 }
-

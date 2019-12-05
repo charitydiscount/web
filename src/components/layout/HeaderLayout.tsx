@@ -64,7 +64,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
         if (user) {
             const userParsed = JSON.parse(user) as LoginDto;
             this.setState({
-                username: userParsed.displayName,
+                username: userParsed.displayName || userParsed.email,
             });
         }
     }
