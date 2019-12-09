@@ -46,6 +46,8 @@ const pageLimit = 50; // products per page
 
 class Products extends React.Component<ProductsProps & InjectedIntlProps, ProductsState> {
 
+    private searchTerm: string = '';
+    
     constructor(props: ProductsProps & InjectedIntlProps) {
         super(props);
         this.state = {
@@ -68,7 +70,7 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
         this.setState({
             currentPage: data.selected as number
         });
-        this.searchProducts(data.selected, this.state.productSearchInfo.productName, this.state.productSearchInfo.minPrice,
+        this.searchProducts(data.selected, this.searchTerm, this.state.productSearchInfo.minPrice,
             this.state.productSearchInfo.maxPrice, this.state.productSearchInfo.sort);
     }
 
@@ -119,7 +121,7 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
         this.setState({
             isLoading: true
         });
-        if (this.state.productName && this.state.productName.length > 0) {
+        if (this.searchTerm && this.searchTerm.length > 0) {
             try {
                 let response = await searchProduct(title,
                     minPrice ? minPrice : '0',
@@ -164,14 +166,14 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
         this.setState({
             currentPage: 0,
             productSearchInfo: {
-                productName: this.state.productName,
+                productName: this.searchTerm,
                 minPrice: this.state.minPrice,
                 maxPrice: this.state.maxPrice,
                 sort: this.state.sort
             }
         });
 
-        this.searchProducts(0, this.state.productName, this.state.minPrice, this.state.maxPrice, this.state.sort);
+        this.searchProducts(0, this.searchTerm, this.state.minPrice, this.state.maxPrice, this.state.sort);
     }
 
     public render() {
@@ -287,7 +289,7 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
                                 <div className="product_top_bar">
                                     <GenericInput type={"textfield"} id={"search"} className={"single-input"}
                                                   placeholder={this.props.intl.formatMessage({id: "products.search"})}
-                                                  onKeyUp={event => this.setState({productName: event.target.value})}/>
+                                                  onKeyUp={event => this.searchTerm = event.target.value}/>
                                 </div>
                                 <div className="product_top_bar">
                                     <button type="submit" value="submit" className="btn submit_btn"
