@@ -63,7 +63,7 @@ export async function getFeaturedProducts(): Promise<ProductDTO[]> {
     const token = await auth.currentUser.getIdToken();
     const url = `${remoteConfig.getString(
         'search_endpoint'
-    )}/products/featured`;
+    )}/search/products/featured`;
 
     const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
@@ -120,7 +120,7 @@ function buildSearchUrl(
 ): string {
     let url = `${remoteConfig.getString(
         'search_endpoint'
-    )}/products?query=${query}&page=${page * 50}`;
+    )}/search/products?query=${query}&page=${page * 50}`;
 
     if (sort && sort.length > 0) {
         url += '&sort=' + sort;

@@ -9,7 +9,7 @@ export async function getPromotions(programId: number) {
     const token = await auth.currentUser.getIdToken();
     const url = `${remoteConfig.getString(
         'affiliate_endpoint'
-    )}/promotions/${programId}`;
+    )}/programs/${programId}/promotions`;
 
     const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
