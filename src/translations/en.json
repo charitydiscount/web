@@ -134,7 +134,10 @@
   "products.filters.sorting": "Sorting",
   "products.filters.sorting.ascending": "Ascending",
   "products.filters.sorting.descending": "Descending",
-  "shops.sort.message": "Sort after reviews number",
+  "shops.filters.sorting.ascending": "Sort after review numbers ascending",
+  "shops.filters.sorting.descending": "Sort after review numbers descending",
+  "sort.key": "Sort",
+  "none.key": "None",
   "product.cashback.money": "Saved money: ",
   "shop.promotions": "Promotions"
 }

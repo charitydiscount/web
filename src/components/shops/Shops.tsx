@@ -1,20 +1,20 @@
 import * as React from 'react';
-import { store } from '../../index';
+import {store} from '../../index';
 import {
     NavigationsAction,
     setFavShopsIconFill,
 } from '../../redux/actions/NavigationsAction';
-import { Stages } from '../helper/Stages';
+import {Stages} from '../helper/Stages';
 import Categories from './Categories';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {
     setCurrentPage,
     setRatings,
     setShops,
 } from '../../redux/actions/ShopsAction';
 import GenericInput from '../input/GenericInput';
-import { getLocalStorage } from '../../helper/StorageHelper';
-import { StorageKey } from '../../helper/Constants';
+import {getLocalStorage} from '../../helper/StorageHelper';
+import {StorageKey} from '../../helper/Constants';
 import ReactPaginate from 'react-paginate';
 import {
     setCurrentCategory,
@@ -25,18 +25,18 @@ import {
     fetchShops,
     ShopDto,
 } from '../../rest/ShopsService';
-import { fetchReviewRatings, ReviewRating } from '../../rest/ReviewService';
+import {fetchReviewRatings, ReviewRating} from '../../rest/ReviewService';
 import FadeLoader from 'react-spinners/FadeLoader';
-import { spinnerCss } from '../../helper/AppHelper';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import {spinnerCss} from '../../helper/AppHelper';
+import {InjectedIntlProps, injectIntl} from 'react-intl';
 import ReactAdBlock from '../../ReactAdBlock';
 import ShopListElement from './ShopListElement';
-import { fetchConfigInfo } from '../../rest/ConfigService';
+import {fetchConfigInfo} from '../../rest/ConfigService';
 import FormControl from '@material-ui/core/FormControl';
-import { FormattedMessage } from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import {InputLabel} from "@material-ui/core";
 
 interface IShopsProps {
     shops: Array<ShopDto>;
@@ -67,10 +67,8 @@ interface IShopsState {
 
 const pageLimit = 20; // shops per page
 
-class Shops extends React.Component<
-    IShopsProps & InjectedIntlProps,
-    IShopsState
-> {
+class Shops extends React.Component<IShopsProps & InjectedIntlProps,
+    IShopsState> {
     constructor(props: IShopsProps & InjectedIntlProps) {
         super(props);
         this.state = {
@@ -171,36 +169,38 @@ class Shops extends React.Component<
     }
 
     sortAfterReviewsNumber(event) {
-        this.setState({
-            reviewsSort: event.target.value,
-        });
-        let shopsFilled = this.props.shops.map(shop => {
-            let ratingObj = this.props.ratings.get(shop.uniqueCode);
-            let rr = 0;
-            let rn = 0;
-            if (ratingObj !== undefined) {
-                rr = ratingObj.rating;
-                rn = ratingObj.count;
-            }
-            shop.reviewsRating = rr;
-            shop.totalReviews = rn;
+        if (event.target.value) {
+            this.setState({
+                reviewsSort: event.target.value,
+            });
+            let shopsFilled = this.props.shops.map(shop => {
+                let ratingObj = this.props.ratings.get(shop.uniqueCode);
+                let rr = 0;
+                let rn = 0;
+                if (ratingObj !== undefined) {
+                    rr = ratingObj.rating;
+                    rn = ratingObj.count;
+                }
+                shop.reviewsRating = rr;
+                shop.totalReviews = rn;
 
-            return shop;
-        });
+                return shop;
+            });
 
-        shopsFilled.sort(function(x, y) {
-            let a = x.totalReviews,
-                b = y.totalReviews;
-            if (event.target.value === 'asc') {
-                if (a > b) return -1;
-                if (a < b) return 1;
-            } else {
-                if (a > b) return 1;
-                if (a < b) return -1;
-            }
-            return 0;
-        });
-        this.props.setShops(shopsFilled);
+            shopsFilled.sort(function (x, y) {
+                let a = x.totalReviews,
+                    b = y.totalReviews;
+                if (event.target.value === 'asc') {
+                    if (a > b) return -1;
+                    if (a < b) return 1;
+                } else {
+                    if (a > b) return 1;
+                    if (a < b) return -1;
+                }
+                return 0;
+            });
+            this.props.setShops(shopsFilled);
+        }
     }
 
     public componentWillUnmount() {
@@ -218,23 +218,23 @@ class Shops extends React.Component<
             this.props.shops.length > 0 &&
             this.props.ratings.size > 0
                 ? this.props.shops.map(shop => {
-                      let ratingObj = this.props.ratings.get(shop.uniqueCode);
-                      let rr = 0;
-                      let rn = 0;
-                      if (ratingObj !== undefined) {
-                          rr = ratingObj.rating;
-                          rn = ratingObj.count;
-                      }
-                      shop.reviewsRating = rr;
-                      shop.totalReviews = rn;
+                    let ratingObj = this.props.ratings.get(shop.uniqueCode);
+                    let rr = 0;
+                    let rn = 0;
+                    if (ratingObj !== undefined) {
+                        rr = ratingObj.rating;
+                        rn = ratingObj.count;
+                    }
+                    shop.reviewsRating = rr;
+                    shop.totalReviews = rn;
 
-                      return (
-                          <ShopListElement
-                              key={'list' + shop.name}
-                              shop={shop}
-                          />
-                      );
-                  })
+                    return (
+                        <ShopListElement
+                            key={'list' + shop.name}
+                            shop={shop}
+                        />
+                    );
+                })
                 : null;
 
         let pageCount = 0;
@@ -274,13 +274,13 @@ class Shops extends React.Component<
 
         return (
             <React.Fragment>
-                <ReactAdBlock />
+                <ReactAdBlock/>
                 <section className="cat_product_area section_gap">
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-lg-3">
                                 <div className="left_sidebar_area">
-                                    <Categories />
+                                    <Categories/>
                                 </div>
                             </div>
 
@@ -291,7 +291,7 @@ class Shops extends React.Component<
                                         id={'search'}
                                         className={'single-input'}
                                         placeholder={this.props.intl.formatMessage(
-                                            { id: 'shops.search' }
+                                            {id: 'shops.search'}
                                         )}
                                         onKeyUp={this.onSearchUpdate}
                                     />
@@ -299,6 +299,9 @@ class Shops extends React.Component<
                                 <div className="product_top_bar">
                                     <div className="col-lg-3">
                                         <FormControl fullWidth>
+                                            <InputLabel>
+                                                <FormattedMessage id={"sort.key"} defaultMessage="Sort"/>
+                                            </InputLabel>
                                             <Select
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
@@ -307,10 +310,16 @@ class Shops extends React.Component<
                                                     this.sortAfterReviewsNumber
                                                 }
                                             >
+                                                <MenuItem value="">
+                                                    <FormattedMessage
+                                                        id={'none.key'}
+                                                        defaultMessage="None"
+                                                    />
+                                                </MenuItem>
                                                 <MenuItem value={'asc'}>
                                                     <FormattedMessage
                                                         id={
-                                                            'products.filters.sorting.ascending'
+                                                            'shops.filters.sorting.ascending'
                                                         }
                                                         defaultMessage="Ascending"
                                                     />
@@ -318,18 +327,12 @@ class Shops extends React.Component<
                                                 <MenuItem value={'desc'}>
                                                     <FormattedMessage
                                                         id={
-                                                            'products.filters.sorting.descending'
+                                                            'shops.filters.sorting.descending'
                                                         }
                                                         defaultMessage="Descending"
                                                     />
                                                 </MenuItem>
                                             </Select>
-                                            <FormHelperText>
-                                                <FormattedMessage
-                                                    id={'shops.sort.message'}
-                                                    defaultMessage="Sort after reviews number"
-                                                />
-                                            </FormHelperText>
                                         </FormControl>
                                     </div>
                                     <div className="right_page ml-auto">
@@ -383,7 +386,7 @@ class Shops extends React.Component<
 
                         <div className="row">
                             <nav
-                                style={{ marginTop: 30 }}
+                                style={{marginTop: 30}}
                                 className="cat_page mx-auto"
                                 aria-label="Page navigation example"
                             >

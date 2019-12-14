@@ -134,7 +134,10 @@
   "products.filters.sorting": "Sortare",
   "products.filters.sorting.ascending": "Crescator",
   "products.filters.sorting.descending": "Descrescator",
-  "shops.sort.message": "Sorteaza dupa nr. de review-uri",
+  "shops.filters.sorting.ascending": "Sorteaza dupa nr. de review-uri crescator",
+  "shops.filters.sorting.descending": "Sorteaza dupa nr. de review-uri descrescator",
+  "sort.key": "Sorteaza",
+  "none.key": "Fara sortare",
   "product.cashback.money": "Bani economisiti: ",
   "shop.promotions": "Promotii"
 }
