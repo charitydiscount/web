@@ -31,15 +31,11 @@ interface ProductsProps {
 
 interface ProductsState {
     isLoading: boolean,
-    productName: string,
+    searchActive: boolean,
     products: Array<ProductDTO>,
     currentPage: number,
-    minPrice: string,
-    maxPrice: string,
     sort: string,
     total: number,
-    productSearchInfo: ProductSearchInfo
-
 }
 
 const pageLimit = 50; // products per page
@@ -47,19 +43,18 @@ const pageLimit = 50; // products per page
 class Products extends React.Component<ProductsProps & InjectedIntlProps, ProductsState> {
 
     private searchTerm: string = '';
-    
+    private minPrice: string = '';
+    private maxPrice: string = '';
+
     constructor(props: ProductsProps & InjectedIntlProps) {
         super(props);
         this.state = {
             isLoading: false,
-            productName: '',
+            searchActive: false,
             products: {} as Array<ProductDTO>,
             currentPage: 0,
-            minPrice: '',
-            maxPrice: '',
-            sort: 'asc',
-            total: 50,
-            productSearchInfo: {} as ProductSearchInfo
+            sort: '',
+            total: 50
         };
         this.startSearch = this.startSearch.bind(this);
         this.searchProducts = this.searchProducts.bind(this);
@@ -70,8 +65,8 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
         this.setState({
             currentPage: data.selected as number
         });
-        this.searchProducts(data.selected, this.searchTerm, this.state.productSearchInfo.minPrice,
-            this.state.productSearchInfo.maxPrice, this.state.productSearchInfo.sort);
+        this.searchProducts(data.selected, this.searchTerm, this.minPrice,
+            this.maxPrice, this.state.sort);
     }
 
     async componentDidMount() {
@@ -164,16 +159,10 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
 
     async startSearch() {
         this.setState({
-            currentPage: 0,
-            productSearchInfo: {
-                productName: this.searchTerm,
-                minPrice: this.state.minPrice,
-                maxPrice: this.state.maxPrice,
-                sort: this.state.sort
-            }
+            currentPage: 0
         });
 
-        this.searchProducts(0, this.searchTerm, this.state.minPrice, this.state.maxPrice, this.state.sort);
+        this.searchProducts(0, this.searchTerm, this.minPrice, this.maxPrice, this.state.sort);
     }
 
     public render() {
@@ -217,28 +206,11 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
                                                 <FormattedMessage id={"products.filters.price"}
                                                                   defaultMessage="Price"/>
                                             </h3>
-                                            <FormControl fullWidth variant="outlined">
+                                            <FormControl fullWidth variant="outlined"
+                                                         disabled={!this.state.searchActive}>
                                                 <InputLabel htmlFor="outlined-adornment-amount">Min</InputLabel>
                                                 <OutlinedInput
                                                     id="outlined-adornment-amount"
-                                                    value={this.state.minPrice}
-                                                    type={"number"}
-                                                    inputProps={{
-                                                        min: "0",
-                                                        max: "100000"
-                                                    }}
-                                                    endAdornment={<InputAdornment position="end">lei</InputAdornment>}
-                                                    onChange={event => this.setState({minPrice: event.target.value})}
-                                                    labelWidth={60}
-                                                />
-                                            </FormControl>
-                                            <br/>
-                                            <br/>
-                                            <FormControl fullWidth variant="outlined">
-                                                <InputLabel htmlFor="outlined-adornment-amount">Max</InputLabel>
-                                                <OutlinedInput
-                                                    id="outlined-adornment-amount"
-                                                    value={this.state.maxPrice}
                                                     type={"number"}
                                                     inputProps={{
                                                         min: "0",
@@ -246,9 +218,26 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
                                                     }}
                                                     endAdornment={<InputAdornment position="end">lei</InputAdornment>}
                                                     onChange={event => {
-                                                        if (event.target.value) {
-                                                            this.setState({maxPrice: event.target.value})
-                                                        }
+                                                        this.minPrice = event.target.value;
+                                                    }}
+                                                    labelWidth={60}
+                                                />
+                                            </FormControl>
+                                            <br/>
+                                            <br/>
+                                            <FormControl fullWidth variant="outlined"
+                                                         disabled={!this.state.searchActive}>
+                                                <InputLabel htmlFor="outlined-adornment-amount">Max</InputLabel>
+                                                <OutlinedInput
+                                                    id="outlined-adornment-amount"
+                                                    type={"number"}
+                                                    inputProps={{
+                                                        min: "0",
+                                                        max: "100000"
+                                                    }}
+                                                    endAdornment={<InputAdornment position="end">lei</InputAdornment>}
+                                                    onChange={event => {
+                                                        this.maxPrice = event.target.value;
                                                     }}
                                                     labelWidth={60}
                                                 />
@@ -261,7 +250,7 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
                                                                   defaultMessage="Price sorting"/>
                                             </h3>
 
-                                            <FormControl fullWidth>
+                                            <FormControl fullWidth disabled={!this.state.searchActive}>
                                                 <Select
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
@@ -270,6 +259,12 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
                                                         sort: event.target.value as string
                                                     })}
                                                 >
+                                                    <MenuItem value="">
+                                                        <FormattedMessage
+                                                            id={'none.key'}
+                                                            defaultMessage="None"
+                                                        />
+                                                    </MenuItem>
                                                     <MenuItem value={'asc'}>
                                                         <FormattedMessage id={"products.filters.sorting.ascending"}
                                                                           defaultMessage="Ascending"/>
@@ -289,7 +284,20 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
                                 <div className="product_top_bar">
                                     <GenericInput type={"textfield"} id={"search"} className={"single-input"}
                                                   placeholder={this.props.intl.formatMessage({id: "products.search"})}
-                                                  onKeyUp={event => this.searchTerm = event.target.value}/>
+                                                  onKeyUp={event => {
+                                                      if (event.target.value) {
+                                                          this.searchTerm = event.target.value;
+                                                          if (!this.state.searchActive) {
+                                                              this.setState({
+                                                                  searchActive: true
+                                                              })
+                                                          }
+                                                      } else {
+                                                          this.setState({
+                                                              searchActive: false
+                                                          })
+                                                      }
+                                                  }}/>
                                 </div>
                                 <div className="product_top_bar">
                                     <button type="submit" value="submit" className="btn submit_btn"
