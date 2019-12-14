@@ -22,8 +22,6 @@ class I18nApp extends React.Component<II18nAppProps> {
 
     public componentDidMount() {
         window.addEventListener("newContentAvailable", () => {
-            console.log("New app version available");
-            alert("Something has changed");
             window.location.reload();
         });
     }
