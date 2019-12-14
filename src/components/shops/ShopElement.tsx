@@ -1,6 +1,6 @@
-import { emptyHrefLink } from '../../helper/Constants';
-import { Link } from 'react-router-dom';
-import { Routes } from '../helper/Routes';
+import {emptyHrefLink} from '../../helper/Constants';
+import {Link} from 'react-router-dom';
+import {Routes} from '../helper/Routes';
 import * as React from 'react';
 import {
     ShopDto,
@@ -8,34 +8,42 @@ import {
     verifyInFavoriteShops,
     fetchFavoriteShops,
 } from '../../rest/ShopsService';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { FormattedMessage } from 'react-intl';
+import {InjectedIntlProps, injectIntl} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
+import {getPromotions, PromotionDTO} from "../../rest/DealsService";
+import Promotion from "../promotions/Promotion";
 
 interface IShopElementProps {
-    shop: ShopDto;
-    comingFromShopReview?: boolean;
+    shop: ShopDto,
+    comingFromShopReview?: boolean
 }
 
 interface IShopElementState {
-    favShop: boolean;
+    favShop: boolean
+    promotions: PromotionDTO[]
 }
 
-class ShopElement extends React.Component<
-    IShopElementProps & InjectedIntlProps,
-    IShopElementState
-> {
+class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
+    IShopElementState> {
     constructor(props: IShopElementProps) {
         super(props);
         this.state = {
             favShop: false,
+            promotions: []
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         if (verifyInFavoriteShops(this.props.shop.id)) {
             this.setState({
-                favShop: true,
+                favShop: true
+            });
+        }
+        let response = await getPromotions(this.props.shop.id);
+        if (response) {
+            this.setState({
+                promotions: response as PromotionDTO[]
             });
         }
     }
@@ -70,6 +78,17 @@ class ShopElement extends React.Component<
                 })
                 .join(', ');
 
+        let promotions =
+            this.state.promotions &&
+            this.state.promotions.length > 0 &&
+            this.state.promotions.filter(promotion => {
+                let startDate = new Date(promotion.promotionStart);
+                let endDate = new Date(promotion.promotionEnd);
+                return startDate < new Date() && endDate > new Date();
+            }).map(promotion => {
+                return <Promotion key={promotion.id} promotion={promotion}/>
+            });
+
         return (
             <React.Fragment>
                 <div className="text-center p-4">
@@ -97,14 +116,14 @@ class ShopElement extends React.Component<
                             defaultMessage=" days"
                         />
                     </h6>
-                    <img src={this.props.shop.logoPath} alt="" />
+                    <img src={this.props.shop.logoPath} alt=""/>
                     <div className="blog_details">
                         <h2>{this.props.shop.name}</h2>
                         <h6
                             style={
                                 this.props.comingFromShopReview
                                     ? {}
-                                    : { maxWidth: 300 }
+                                    : {maxWidth: 300}
                             }
                         >
                             <FormattedMessage
@@ -116,41 +135,41 @@ class ShopElement extends React.Component<
                         {this.props.shop.reviewsRating ? (
                             <a href={emptyHrefLink}>
                                 {this.props.shop.reviewsRating >= 1 ? (
-                                    <i className="fa fa-star star-focus" />
+                                    <i className="fa fa-star star-focus"/>
                                 ) : (
-                                    <i className="fa fa-star-o star-focus" />
+                                    <i className="fa fa-star-o star-focus"/>
                                 )}
                                 {this.props.shop.reviewsRating >= 2 ? (
-                                    <i className="fa fa-star star-focus" />
+                                    <i className="fa fa-star star-focus"/>
                                 ) : this.props.shop.reviewsRating > 1 &&
-                                  this.props.shop.reviewsRating < 2 ? (
-                                    <i className="fa fa-star-half-o star-focus" />
+                                this.props.shop.reviewsRating < 2 ? (
+                                    <i className="fa fa-star-half-o star-focus"/>
                                 ) : (
-                                    <i className="fa fa-star-o star-focus" />
+                                    <i className="fa fa-star-o star-focus"/>
                                 )}
                                 {this.props.shop.reviewsRating >= 3 ? (
-                                    <i className="fa fa-star star-focus" />
+                                    <i className="fa fa-star star-focus"/>
                                 ) : this.props.shop.reviewsRating > 2 &&
-                                  this.props.shop.reviewsRating < 3 ? (
-                                    <i className="fa fa-star-half-o star-focus" />
+                                this.props.shop.reviewsRating < 3 ? (
+                                    <i className="fa fa-star-half-o star-focus"/>
                                 ) : (
-                                    <i className="fa fa-star-o star-focus" />
+                                    <i className="fa fa-star-o star-focus"/>
                                 )}
                                 {this.props.shop.reviewsRating >= 4 ? (
-                                    <i className="fa fa-star star-focus" />
+                                    <i className="fa fa-star star-focus"/>
                                 ) : this.props.shop.reviewsRating > 3 &&
-                                  this.props.shop.reviewsRating < 4 ? (
-                                    <i className="fa fa-star-half-o star-focus" />
+                                this.props.shop.reviewsRating < 4 ? (
+                                    <i className="fa fa-star-half-o star-focus"/>
                                 ) : (
-                                    <i className="fa fa-star-o star-focus" />
+                                    <i className="fa fa-star-o star-focus"/>
                                 )}
                                 {this.props.shop.reviewsRating >= 5 ? (
-                                    <i className="fa fa-star star-focus" />
+                                    <i className="fa fa-star star-focus"/>
                                 ) : this.props.shop.reviewsRating > 4 &&
-                                  this.props.shop.reviewsRating < 5 ? (
-                                    <i className="fa fa-star-half-o star-focus" />
+                                this.props.shop.reviewsRating < 5 ? (
+                                    <i className="fa fa-star-half-o star-focus"/>
                                 ) : (
-                                    <i className="fa fa-star-o star-focus" />
+                                    <i className="fa fa-star-o star-focus"/>
                                 )}
                                 <span> {this.props.shop.totalReviews}</span>
                             </a>
@@ -161,7 +180,7 @@ class ShopElement extends React.Component<
                             style={
                                 this.props.comingFromShopReview
                                     ? {}
-                                    : { maxWidth: 300 }
+                                    : {maxWidth: 300}
                             }
                         >
                             <FormattedMessage
@@ -170,7 +189,7 @@ class ShopElement extends React.Component<
                             />
                             {this.props.shop.category}
                         </h5>
-                        <div className="s_product_text">
+                        <div className="s_product_text" style={{marginTop: 20, marginBottom: 20}}>
                             <div className="card_area p_20">
                                 <a
                                     href={this.props.shop.computeUrl}
@@ -192,7 +211,7 @@ class ShopElement extends React.Component<
                                                 this.props.shop.id
                                             }
                                         >
-                                            <i className="lnr lnr-bubble" />
+                                            <i className="lnr lnr-bubble"/>
                                         </Link>
                                     </div>
                                 )}
@@ -218,6 +237,25 @@ class ShopElement extends React.Component<
                             </div>
                         </div>
                     </div>
+                    {promotions && promotions.length > 0 &&
+                    <div>
+                        <h3>
+                            <FormattedMessage id={"shop.promotions"} defaultMessage={"Promotions"}/>
+                        </h3>
+                        <div className="table-responsive"
+                             style={!this.props.comingFromShopReview ? {overflowY: 'auto', maxHeight: 200}
+                                 : {}}>
+                            <table className="table" style={
+                                !this.props.comingFromShopReview ? {
+                                    maxWidth: 300,
+                                } : {}}>
+                                <tbody>
+                                {promotions}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    }
                 </div>
             </React.Fragment>
         );

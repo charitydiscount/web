@@ -135,5 +135,6 @@
   "products.filters.sorting.ascending": "Ascending",
   "products.filters.sorting.descending": "Descending",
   "shops.sort.message": "Sort after reviews number",
-  "product.cashback.money": "Saved money: "
+  "product.cashback.money": "Saved money: ",
+  "shop.promotions": "Promotions"
 }

@@ -1,5 +1,13 @@
 import axios from 'axios';
-import { auth, remoteConfig } from '../index';
+import {auth, remoteConfig} from '../index';
+
+export interface PromotionDTO {
+    name: string,
+    description: string,
+    promotionEnd: string,
+    promotionStart: string,
+    id: number
+}
 
 export async function getPromotions(programId: number) {
     if (!auth.currentUser) {
@@ -12,8 +20,8 @@ export async function getPromotions(programId: number) {
     )}/programs/${programId}/promotions`;
 
     const response = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {Authorization: `Bearer ${token}`},
     });
 
-    return response.data;
+    return response.data as PromotionDTO[];
 }
