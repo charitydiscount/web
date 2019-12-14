@@ -13,7 +13,7 @@ import 'firebase/firestore';
 import 'firebase/performance';
 import 'firebase/storage';
 import 'firebase/remote-config';
-import * as serviceWorker from './serviceWorker';
+import registerServiceWorker from './registerServiceWorker';
 import { UserActions } from './components/login/UserActions';
 import { getLocalStorage } from './helper/StorageHelper';
 import { StorageKey } from './helper/Constants';
@@ -85,4 +85,4 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-serviceWorker.register();
+registerServiceWorker();
