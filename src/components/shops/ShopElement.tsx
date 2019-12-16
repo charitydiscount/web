@@ -86,7 +86,7 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                 let endDate = new Date(promotion.promotionEnd);
                 return startDate < new Date() && endDate > new Date();
             }).map(promotion => {
-                return <Promotion key={promotion.id} promotion={promotion}/>
+                return <Promotion key={promotion.id} promotion={promotion} comingFromShopReview={this.props.comingFromShopReview}/>
             });
 
         return (
