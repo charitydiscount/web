@@ -28,10 +28,9 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps & 
             if (cause) {
                 target = cause.details.title;
             }
-        }
-        if (this.props.type === TxType.BONUS) {
+        } else if (this.props.type === TxType.BONUS) {
             target = this.props.intl.formatMessage({id: "wallet.charity.points"});
-        } else if (this.props.type === TxType.CASHOUT) {
+        } else if (this.props.type === TxType.CASHOUT || this.props.type === TxType.COMMISSION) {
             const user = getUserFromStorage();
             if (user) {
                 const userParsed = JSON.parse(user) as LoginDto;
@@ -53,8 +52,12 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps & 
                                         <i className="fa fa-thumbs-up" aria-hidden="true" title={
                                             this.props.intl.formatMessage({id: "wallet.tx.type.bonus"})
                                         }/> :
-                                        <i className="fa fa-money" aria-hidden="true"
-                                           title={this.props.intl.formatMessage({id: "wallet.tx.type.cashout"})}/>
+                                        this.props.type === TxType.COMMISSION ?
+                                            <i className="fa fa-money" aria-hidden="true" title={
+                                                this.props.intl.formatMessage({id: "wallet.tx.type.commission"})
+                                            }/> :
+                                            <i className="fa fa-money" aria-hidden="true"
+                                               title={this.props.intl.formatMessage({id: "wallet.tx.type.cashout"})}/>
                             }
                         </h3>
                     </div>

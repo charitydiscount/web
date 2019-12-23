@@ -217,7 +217,7 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                         date={value.createdAt
                             .toDate()
                             .toLocaleDateString('ro-RO', dateOptions)}
-                        shopUniqueCode={value.shopId}
+                        shopId={value.shopId}
                         status={CommissionStatus[value.status]}
                     />
                 );

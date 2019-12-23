@@ -6,14 +6,14 @@ import {InjectedIntlProps, injectIntl} from "react-intl";
 interface IWalletTransactionRowProps {
     amount: number,
     date: string,
-    shopUniqueCode: string,
+    shopId: string,
     status: CommissionStatus
 }
 
 class WalletCommissionRow extends React.Component<IWalletTransactionRowProps & InjectedIntlProps> {
 
     public render() {
-        let shop = getShopById(this.props.shopUniqueCode) as ShopDto;
+        let shop = getShopById(this.props.shopId) as ShopDto;
 
         return (
             <React.Fragment>

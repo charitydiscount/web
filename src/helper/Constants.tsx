@@ -31,7 +31,8 @@ export enum StorageRef {
 export enum TxType {
     CASHOUT,
     BONUS,
-    DONATION
+    DONATION,
+    COMMISSION
 }
 
 export enum CommissionStatus {
