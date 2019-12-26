@@ -1,13 +1,20 @@
 import * as React from 'react';
-import { emptyHrefLink } from '../../helper/Constants';
-import { FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
-import { appVersion } from '../../index';
+import {emptyHrefLink, StorageKey} from '../../helper/Constants';
+import {FormattedMessage} from 'react-intl';
+import {Link} from 'react-router-dom';
+import {appVersion} from '../../index';
+import {getLocalStorage, removeLocalStorage} from "../../helper/StorageHelper";
 
 
 class FooterLayout extends React.Component {
 
     render() {
+        let lang = getLocalStorage(StorageKey.LANG);
+        let startPageLocation = "/landing-en.html";
+        if (lang === 'ro') {
+            startPageLocation = "/landing-ro.html";
+        }
+
         return (
             <footer className="footer-area">
                 <hr w-100="true"></hr>
@@ -22,7 +29,9 @@ class FooterLayout extends React.Component {
                             </h6>
                             <ul className="flex-column footer-text">
                                 <li className="d-flex">
-                                    <a href="/landing-ro.html">
+                                    <a href={startPageLocation} onClick={() => {
+                                        removeLocalStorage(StorageKey.USER)
+                                    }}>
                                         <FormattedMessage
                                             id="userinfo.about.label"
                                             defaultMessage="About"
