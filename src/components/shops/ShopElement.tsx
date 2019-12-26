@@ -95,12 +95,12 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
         return (
             <React.Fragment>
                 <div className="text-center p-4">
+                    {!this.props.comingFromShopReview &&
+                    <div style={{textAlign: 'right'}}>
+                        <i onClick={this.props.onCloseModal} className="fa fa-times"/>
+                    </div>
+                    }
                     <h4 className="blue-color">
-                        {!this.props.comingFromShopReview &&
-                        <div style={{textAlign: 'right'}}>
-                            <i onClick={this.props.onCloseModal} className="fa fa-times"/>
-                        </div>
-                        }
                         <FormattedMessage
                             id={'shop.cashback'}
                             defaultMessage="Cashback:"
