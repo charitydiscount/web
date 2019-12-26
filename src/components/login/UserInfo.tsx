@@ -56,8 +56,8 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
         this.escFunction = this.escFunction.bind(this);
     }
 
-    escFunction(event){
-        if(event.keyCode === 27) {
+    escFunction(event) {
+        if (event.keyCode === 27) {
             this.closeModal();
         }
     }
@@ -189,7 +189,7 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                         {this.state.modalMessage}
                     </h3>
                 </Modal>
-                <div className="product_image_area" style={{marginTop:60}}>
+                <div className="product_image_area">
                     <div className="container p_90">
                         <div className="row s_product_inner">
                             <div className="col-lg-4"/>

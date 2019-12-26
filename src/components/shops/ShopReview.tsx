@@ -210,7 +210,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                 </Modal>
                 <section className={"product_description_area"}>
                     <div className={"container"}>
-                        <div className="row" style={{marginTop:100}}>
+                        <div className="row" style={{marginTop:70}}>
                             <div className="col-lg-6">
                                 <ShopElement key={this.state.shop.name} shop={this.state.shop}
                                              comingFromShopReview={true}/>

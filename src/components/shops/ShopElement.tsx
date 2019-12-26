@@ -211,7 +211,7 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                                     />
                                 </a>
                                 {!this.props.comingFromShopReview && (
-                                    <div className={'icon_btn p_icon p_05'}>
+                                    <div style={{padding: 0}} className={'icon_btn p_icon'}>
                                         <Link
                                             to={
                                                 Routes.REVIEW +
@@ -224,7 +224,7 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                                     </div>
                                 )}
 
-                                <div className={'icon_btn p_icon'}>
+                                <div style={{padding: 0}} className={'icon_btn p_icon'}>
                                     <a
                                         href={emptyHrefLink}
                                         onClick={() =>
