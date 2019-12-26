@@ -189,7 +189,7 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                         {this.state.modalMessage}
                     </h3>
                 </Modal>
-                <div className="product_image_area">
+                <div className="product_image_area" style={{marginTop:60}}>
                     <div className="container p_90">
                         <div className="row s_product_inner">
                             <div className="col-lg-4"/>
