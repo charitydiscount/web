@@ -16,6 +16,7 @@ import Promotion from "../promotions/Promotion";
 interface IShopElementProps {
     shop: ShopDto,
     comingFromShopReview?: boolean
+    onCloseModal?: () => void
 }
 
 interface IShopElementState {
@@ -25,6 +26,7 @@ interface IShopElementState {
 
 class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
     IShopElementState> {
+
     constructor(props: IShopElementProps) {
         super(props);
         this.state = {
@@ -86,13 +88,19 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                 let endDate = new Date(promotion.promotionEnd);
                 return startDate < new Date() && endDate > new Date();
             }).map(promotion => {
-                return <Promotion key={promotion.id} promotion={promotion} comingFromShopReview={this.props.comingFromShopReview}/>
+                return <Promotion key={promotion.id} promotion={promotion}
+                                  comingFromShopReview={this.props.comingFromShopReview}/>
             });
 
         return (
             <React.Fragment>
                 <div className="text-center p-4">
                     <h4 className="blue-color">
+                        {!this.props.comingFromShopReview &&
+                        <div style={{textAlign: 'right'}}>
+                            <i onClick={this.props.onCloseModal} className="fa fa-times"/>
+                        </div>
+                        }
                         <FormattedMessage
                             id={'shop.cashback'}
                             defaultMessage="Cashback:"

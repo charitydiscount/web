@@ -24,13 +24,13 @@ class ShopListElement extends React.Component<ShopListElementProps & InjectedInt
         this.escFunction = this.escFunction.bind(this);
     }
 
-    escFunction(event){
-        if(event.keyCode === 27) {
+    escFunction(event) {
+        if (event.keyCode === 27) {
             this.closeModal();
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         document.addEventListener("keydown", this.escFunction, false);
     }
 
@@ -54,7 +54,8 @@ class ShopListElement extends React.Component<ShopListElementProps & InjectedInt
                     effect="fadeInUp"
                     onClickAway={() => this.closeModal()}
                 >
-                    {this.state.visible && <ShopElement key={"shop" + this.props.shop.name} shop={this.props.shop}/>}
+                    {this.state.visible && <ShopElement key={"shop" + this.props.shop.name} onCloseModal={this.closeModal}
+                                                        shop={this.props.shop}/>}
                 </Modal>
                 <div className="col-lg-3 col-md-3 col-sm-6">
                     <div className="f_p_item">

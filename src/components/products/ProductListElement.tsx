@@ -20,15 +20,16 @@ class ProductListElement extends React.Component<ProductListElementProps, Produc
             visible: false
         };
         this.escFunction = this.escFunction.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
-    escFunction(event){
-        if(event.keyCode === 27) {
+    escFunction(event) {
+        if (event.keyCode === 27) {
             this.closeModal();
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         document.addEventListener("keydown", this.escFunction, false);
     }
 
@@ -49,7 +50,8 @@ class ProductListElement extends React.Component<ProductListElementProps, Produc
             <React.Fragment>
                 <Modal visible={this.state.visible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     {this.state.visible &&
-                    <ProductElement key={"element" + this.props.keyElement} product={this.props.product}/>}
+                    <ProductElement key={"element" + this.props.keyElement} onCloseModal={this.closeModal}
+                                    product={this.props.product}/>}
                 </Modal>
                 <div className="col-md-3">
                     <div className="f_p_item">

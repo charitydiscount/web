@@ -5,6 +5,7 @@ import {ProductDTO} from "../../rest/ProductsService";
 
 interface ProductElementProps {
     product: ProductDTO,
+    onCloseModal: () => void
 }
 
 interface ProductElementState {
@@ -17,6 +18,9 @@ class ProductElement extends React.Component<ProductElementProps & InjectedIntlP
         return (
             <React.Fragment>
                 <div className="text-center p-4">
+                    <div style={{textAlign: 'right'}}>
+                        <i onClick={this.props.onCloseModal} className="fa fa-times"/>
+                    </div>
                     {this.props.product.price && <h6 className="blue-color">{this.props.product.price} lei</h6>}
                     <h6>
                         <FormattedMessage
