@@ -11,7 +11,7 @@ import {FadeLoader} from "react-spinners";
 import {
     getFeaturedProducts,
     ProductDTO,
-    ProductResult, ProductSearchInfo,
+    ProductResult,
     searchProduct
 } from "../../rest/ProductsService";
 import ReactAdBlock from "../../ReactAdBlock";

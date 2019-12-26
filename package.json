@@ -34,7 +34,7 @@
     "build:css": "postcss src/style/*.css -d src/postcss",
     "watch:css": "postcss src/style/*.css -d src/postcss -w",
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
