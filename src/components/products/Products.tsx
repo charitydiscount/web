@@ -59,6 +59,7 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
         this.startSearch = this.startSearch.bind(this);
         this.searchProducts = this.searchProducts.bind(this);
         this.updatePageNumber = this.updatePageNumber.bind(this);
+        this.searchFunction = this.searchFunction.bind(this);
     }
 
     updatePageNumber(data) {
@@ -70,6 +71,7 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
     }
 
     async componentDidMount() {
+        document.addEventListener("keydown", this.searchFunction, false);
         this.setState({
             isLoading: true
         });
@@ -156,6 +158,13 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
             }
         }
     }
+
+    searchFunction(event){
+        if(event.keyCode === 13) {
+            this.startSearch();
+        }
+    }
+
 
     async startSearch() {
         this.setState({
