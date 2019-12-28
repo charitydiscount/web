@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import firebase from 'firebase/app';
 import {auth} from '../../index';
 import FirebaseUIAuth from 'react-firebaseui-localized';
-import {setLocalStorage} from '../../helper/StorageHelper';
-import {ProviderType, StorageKey} from '../../helper/Constants';
+import {ProviderType} from '../../helper/Constants';
+import {parseAndSaveUser} from "../../helper/AuthHelper";
 
 export interface LoginDto {
     uid: string;
@@ -37,22 +37,7 @@ type ILoginProps = {
 class LoginComponent extends React.Component<ILoginProps> {
 
     static onSignInSuccess(response) {
-        let objectMapper = require('object-mapper');
-        let parsedUser = objectMapper(
-            response.user as LoginRequestDto,
-            LoginMapper
-        ) as LoginDto;
-        let providerId = response.user.providerData[0].providerId;
-        parsedUser.creationTime = response.user.metadata.creationTime;
-        if (providerId.startsWith('google')) {
-            parsedUser.providerType = ProviderType.GOOGLE;
-        } else if (providerId.startsWith('facebook')) {
-            parsedUser.providerType = ProviderType.FACEBOOK;
-        } else {
-            parsedUser.providerType = ProviderType.NORMAL;
-        }
-        parsedUser.locale = '';
-        setLocalStorage(StorageKey.USER, JSON.stringify(parsedUser));
+        parseAndSaveUser(response.user);
         return true; // redirects to signInSuccessUrl
     }
 

@@ -77,3 +77,12 @@ export function onLanguageChange(event) {
     store.dispatch(setLangResources(event.value));
     window.location.reload();
 }
+
+export function getUrlParameter(param: string) {
+    const name = param.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    const results = regex.exec(window.location.search);
+    return results === null
+        ? ''
+        : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}

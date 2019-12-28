@@ -18,6 +18,7 @@ import {InjectedIntlProps, injectIntl, FormattedMessage} from 'react-intl';
 import {CauseDto, fetchCauses} from "../../rest/CauseService";
 
 interface IWalletProps {
+    match: any
 }
 
 interface IWalletState {
@@ -255,6 +256,7 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                             pendingExists={true}
                                             money={true}
                                             causes={this.state.causes}
+                                            openDonateWithCaseId={this.props.match.params.caseId}
                                         />
                                         <WalletBlock
                                             title={this.props.intl.formatMessage(

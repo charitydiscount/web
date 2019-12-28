@@ -34,7 +34,8 @@ interface IWalletBlockProps {
     pending?: number,
     pendingExists: boolean,
     money: boolean,
-    causes?: CauseDto[]
+    causes?: CauseDto[],
+    openDonateWithCaseId?: string
 }
 
 class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps, IWalletBlockState> {
@@ -62,13 +63,23 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
         this.escFunction = this.escFunction.bind(this);
     }
 
-    escFunction(event){
-        if(event.keyCode === 27) {
+    escFunction(event) {
+        if (event.keyCode === 27) {
             this.closeModal();
         }
     }
 
     componentDidMount() {
+        if (this.props.openDonateWithCaseId) {
+            let selections = [] as boolean[];
+            selections[this.props.openDonateWithCaseId] = true;
+
+            this.setState({
+                targetId: this.props.openDonateWithCaseId,
+                selections: selections,
+                donateVisible: true
+            })
+        }
         document.addEventListener("keydown", this.escFunction, false);
     }
 
@@ -314,11 +325,11 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                                               this.props.intl.formatMessage({id: "wallet.block.cashout.name"})
                                                           }/>
                                             <GenericInput type={InputType.TEXT} id={"iban"}
-                                                           handleChange={event => this.setState({iban: event.target.value})}
-                                                           value={this.state.iban}
-                                                           placeholder={
-                                                               this.props.intl.formatMessage({id: "wallet.block.cashout.iban"})
-                                                           }/>
+                                                          handleChange={event => this.setState({iban: event.target.value})}
+                                                          value={this.state.iban}
+                                                          placeholder={
+                                                              this.props.intl.formatMessage({id: "wallet.block.cashout.iban"})
+                                                          }/>
 
                                             <h6>
                                                 <FormattedMessage id="wallet.block.available.amount"
@@ -416,26 +427,25 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                 <div className="col-lg-4 total_rate">
                     <div className="box_total">
                         <h5>{this.props.title}</h5>
-                        <h4>{this.props.approved ? this.props.approved.toFixed(1): 0}</h4>
+                        <h4>{this.props.approved ? this.props.approved.toFixed(1) : 0}</h4>
                         {this.props.pendingExists ?
                             <div>
                                 <h6><FormattedMessage id="wallet.block.pending" defaultMessage="Pending:"/>
                                     {this.props.pending ? this.props.pending.toFixed(1) + " RON" : 0}</h6>
                                 {this.props.money ?
                                     <div>
-                                        {this.props.approved > 0 ?
-                                            <div>
-                                                <br/>
-                                                <a href={emptyHrefLink} className="btn submit_btn genric-btn circle"
-                                                   onClick={() => this.openCashoutModal()}>
-                                                    <FormattedMessage id="wallet.block.cashout"
-                                                                      defaultMessage="Cashout"/>
-                                                </a>
-                                                <a href={emptyHrefLink} className="btn submit_btn genric-btn circle"
-                                                   onClick={() => this.openDonateModal()}>
-                                                    <FormattedMessage id="wallet.block.donate" defaultMessage="Donate"/>
-                                                </a>
-                                            </div> : null}
+                                        <div>
+                                            <br/>
+                                            <a href={emptyHrefLink} className="btn submit_btn genric-btn circle"
+                                               onClick={() => this.openCashoutModal()}>
+                                                <FormattedMessage id="wallet.block.cashout"
+                                                                  defaultMessage="Cashout"/>
+                                            </a>
+                                            <a href={emptyHrefLink} className="btn submit_btn genric-btn circle"
+                                               onClick={() => this.openDonateModal()}>
+                                                <FormattedMessage id="wallet.block.donate" defaultMessage="Donate"/>
+                                            </a>
+                                        </div>
                                     </div> : null}
                             </div> : null
                         }

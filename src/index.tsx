@@ -22,7 +22,7 @@ import { LoginDto } from './components/login/LoginComponent';
 import I18nApp from './I18nApp';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '1.7.4';
+export const appVersion = '1.7.5';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};

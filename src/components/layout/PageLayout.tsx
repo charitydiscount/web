@@ -14,6 +14,7 @@ import Tos from "../tos/Tos";
 import Privacy from "../privacy/Privacy";
 import ShopReview from "../shops/ShopReview";
 import Products from "../products/Products";
+import ExternalAccess from "../external/ExternalAccess";
 
 const PageLayout = () => {
     if (getLocalStorage(StorageKey.USER)) {
@@ -28,10 +29,12 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.CAUSES} component={Causes}/>
                     <Route exact={true} path={Routes.LOGIN} component={LoginActor}/>
                     <Route exact={true} path={Routes.WALLET} component={Wallet}/>
+                    <Route exact={true} path={Routes.WALLET + "/donate/:caseId"} component={Wallet}/>
                     <Route exact={true} path={Routes.REVIEW + "/:id"} component={ShopReview}/>
                     <Route exact={true} path={Routes.TOS} component={Tos}/>
                     <Route exact={true} path={Routes.PRIVACY} component={Privacy}/>
                     <Route exact={true} path={Routes.PRODUCTS} component={Products}/>
+                    <Route exact={true} path={Routes.AUTH} component={ExternalAccess}/>
                     <Route render={() => <Redirect to={Routes.LOGIN}/>}/>
                 </Switch>
             </main>
@@ -43,6 +46,7 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.LOGIN} component={LoginActor}/>
                     <Route exact={true} path={Routes.TOS} component={Tos}/>
                     <Route exact={true} path={Routes.PRIVACY} component={Privacy}/>
+                    <Route exact={true} path={Routes.AUTH} component={ExternalAccess}/>
                     <Route render={() => <Redirect to={Routes.LOGIN}/>}/>
                 </Switch>
             </main>
