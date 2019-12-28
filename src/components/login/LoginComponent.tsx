@@ -63,7 +63,7 @@ class LoginComponent extends React.Component<ILoginProps> {
                     <div className="container">
                         <div className="d-flex flex-column align-items-center">
                             <div className="d-lg-flex">
-                                <div className="login_box_img d-flex justify-content-center">
+                                <div className="d-flex justify-content-center">
                                     <img
                                         src="/img/charity_discount.png"
                                         alt="Charity Discount Logo"
