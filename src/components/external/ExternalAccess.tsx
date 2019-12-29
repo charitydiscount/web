@@ -41,7 +41,7 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
                     })
                 }
             } catch (e) {
-                console.log(e);
+                //nothing will happen, user will not login
             }
         }
     }
@@ -56,8 +56,8 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
                             resolve(true);
                         }
                     }
-                ).catch((error) => {
-                    console.log(error);
+                ).catch(() => {
+                    //token is not valid
                     reject();
                 });
         });
