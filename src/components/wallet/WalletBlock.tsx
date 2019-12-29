@@ -10,6 +10,8 @@ import {InjectedIntlProps, injectIntl} from "react-intl";
 import {emptyBackgroundCss} from "../../helper/AppHelper";
 import FadeLoader from 'react-spinners/FadeLoader';
 import {AccountDto, getUserAccountInfo, updateUserAccount} from "../../rest/UserService";
+import {publicUrl} from "../../index";
+import {Routes} from "../helper/Routes";
 
 interface IWalletBlockState {
     donateVisible: boolean,
@@ -222,7 +224,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             let response = await createRequest(parseFloat(this.state.amount), 'DONATION', this.state.targetId);
             if (response) {
                 this.closeModal();
-                window.location.reload();
+                window.location.href = publicUrl + Routes.WALLET;
             }
         } catch (error) {
             this.setState({
