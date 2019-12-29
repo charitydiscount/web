@@ -141,5 +141,7 @@
   "none.key": "None",
   "product.cashback.money": "Saved money: ",
   "shop.promotions": "Promotions",
-  "wallet.commission.shop.inactive": "Shop is not active anymore and the commission may not be received"
+  "wallet.commission.shop.inactive": "Shop is not active anymore and the commission may not be received",
+  "shops.filters.sorting.commission.ascending": "Sort after commissions ascending",
+  "shops.filters.sorting.commission.descending": "Sort after commissions descending"
 }

@@ -173,6 +173,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
             this.setState({
                 reviewsSort: event.target.value,
             });
+            let sortType = event.target.value;
             let shopsFilled = this.props.shops.map(shop => {
                 let ratingObj = this.props.ratings.get(shop.uniqueCode);
                 let rr = 0;
@@ -187,18 +188,35 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                 return shop;
             });
 
-            shopsFilled.sort(function (x, y) {
-                let a = x.totalReviews,
-                    b = y.totalReviews;
-                if (event.target.value === 'asc') {
-                    if (a > b) return -1;
-                    if (a < b) return 1;
-                } else {
-                    if (a > b) return 1;
-                    if (a < b) return -1;
-                }
-                return 0;
-            });
+            if (sortType === 'ascReview' || sortType === 'descReview') {
+                shopsFilled.sort(function (x, y) {
+                    let a = x.totalReviews,
+                        b = y.totalReviews;
+                    if (sortType === 'ascReview') {
+                        if (a > b) return 1;
+                        if (a < b) return -1;
+                    } else {
+                        if (a > b) return -1;
+                        if (a < b) return 1;
+                    }
+                    return 0;
+                });
+            } else if (sortType === 'ascCommission' || sortType === 'descCommission') {
+                shopsFilled.sort(function (x, y) {
+                    let a = x.commission,
+                        b = y.commission;
+                    if (sortType === 'ascCommission') {
+                        if (a > b) return 1;
+                        if (a < b) return -1;
+                    } else {
+                        if (a > b) return -1;
+                        if (a < b) return 1;
+                    }
+                    return 0;
+                });
+            }
+
+
             this.props.setShops(shopsFilled);
         }
     }
@@ -316,20 +334,36 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                                                         defaultMessage="None"
                                                     />
                                                 </MenuItem>
-                                                <MenuItem value={'asc'}>
+                                                <MenuItem value={'ascReview'}>
                                                     <FormattedMessage
                                                         id={
                                                             'shops.filters.sorting.ascending'
                                                         }
-                                                        defaultMessage="Ascending"
+                                                        defaultMessage="Sort after review numbers ascending"
                                                     />
                                                 </MenuItem>
-                                                <MenuItem value={'desc'}>
+                                                <MenuItem value={'descReview'}>
                                                     <FormattedMessage
                                                         id={
                                                             'shops.filters.sorting.descending'
                                                         }
-                                                        defaultMessage="Descending"
+                                                        defaultMessage="Sort after review numbers descending"
+                                                    />
+                                                </MenuItem>
+                                                <MenuItem value={'ascCommission'}>
+                                                    <FormattedMessage
+                                                        id={
+                                                            'shops.filters.sorting.commission.ascending'
+                                                        }
+                                                        defaultMessage="Sort after commissions ascending"
+                                                    />
+                                                </MenuItem>
+                                                <MenuItem value={'descCommission'}>
+                                                    <FormattedMessage
+                                                        id={
+                                                            'shops.filters.sorting.commission.descending'
+                                                        }
+                                                        defaultMessage="Sort after commissions descending"
                                                     />
                                                 </MenuItem>
                                             </Select>
