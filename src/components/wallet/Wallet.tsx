@@ -10,7 +10,7 @@ import {
     TransactionDto, WalletWrapper,
 } from '../../rest/WalletService';
 import WalletTransactionRow from './WalletTransactionRow';
-import {CommissionStatus, emptyHrefLink, TxType} from '../../helper/Constants';
+import {emptyHrefLink} from '../../helper/Constants';
 import WalletCommissionRow from './WalletCommissionRow';
 import FadeLoader from 'react-spinners/FadeLoader';
 import {spinnerCss} from '../../helper/AppHelper';

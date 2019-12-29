@@ -38,7 +38,7 @@ export enum TxType {
 export enum CommissionStatus {
     pending,
     rejected,
-    approved,
+    accepted,
     paid
 }
 

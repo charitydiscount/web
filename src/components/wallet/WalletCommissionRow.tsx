@@ -31,7 +31,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps & I
                 cmTitle = <i className="fa fa-money" aria-hidden="true"
                              title={this.props.intl.formatMessage({id: "wallet.tx.status.paid"})}/>;
                 break;
-            case CommissionStatus.approved.toString():
+            case CommissionStatus.accepted.toString():
                 cmTitle = <i className="fa fa-thumbs-up" aria-hidden="true" title={
                     this.props.intl.formatMessage({id: "wallet.tx.status.approved"})}/>;
                 break;
