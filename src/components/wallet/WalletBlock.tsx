@@ -219,14 +219,10 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                 faderVisible: true
             });
 
-            let response = await createOtpRequest();
+            let response = await createRequest(parseFloat(this.state.amount), 'DONATION', this.state.targetId);
             if (response) {
-                this.setState({
-                    faderVisible: false,
-                    donateVisible: false,
-                    otpRequestVisible: true,
-                    otpType: 'DONATION'
-                })
+                this.closeModal();
+                window.location.reload();
             }
         } catch (error) {
             this.setState({

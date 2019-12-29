@@ -86,3 +86,12 @@ export function getUrlParameter(param: string) {
         ? ''
         : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
+
+export const dateOptions = {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+};

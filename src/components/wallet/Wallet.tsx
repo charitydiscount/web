@@ -136,15 +136,6 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
     }
 
     public render() {
-        var dateOptions = {
-            year: 'numeric',
-            month: 'numeric',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-        };
-
         const transactionsHistory = this.state.transactions
             ? this.state.transactions.sort((a, b) => {
                     if (this.state.tranSortDateAsc) {
@@ -174,12 +165,7 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                 return (
                     <WalletTransactionRow
                         key={'tx' + index}
-                        date={value.date
-                            .toDate()
-                            .toLocaleDateString('ro-RO', dateOptions)}
-                        type={TxType[value.type]}
-                        amount={value.amount}
-                        target={value.target}
+                        transaction={value}
                     />
                 );
             })
@@ -214,13 +200,7 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                 return (
                     <WalletCommissionRow
                         key={'cm' + index}
-                        amount={value.amount}
-                        date={value.createdAt
-                            .toDate()
-                            .toLocaleDateString('ro-RO', dateOptions)}
-                        shopId={value.shopId}
-                        shopName={value.program.name}
-                        status={CommissionStatus[value.status]}
+                        commission={value}
                     />
                 );
             })
