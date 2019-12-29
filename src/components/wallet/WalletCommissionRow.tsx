@@ -1,12 +1,13 @@
 import * as React from "react";
-import {CommissionStatus} from "../../helper/Constants";
+import {CommissionStatus, emptyHrefLink} from "../../helper/Constants";
 import {getShopById, ShopDto} from "../../rest/ShopsService";
 import {InjectedIntlProps, injectIntl} from "react-intl";
 
 interface IWalletTransactionRowProps {
     amount: number,
     date: string,
-    shopId: string,
+    shopId?: string,
+    shopName: string,
     status: CommissionStatus
 }
 
@@ -14,6 +15,10 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps & I
 
     public render() {
         let shop = getShopById(this.props.shopId) as ShopDto;
+        let inactiveShop = false;
+        if (!shop) {
+            inactiveShop = true;
+        }
 
         return (
             <React.Fragment>
@@ -40,9 +45,21 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps & I
                         </h3>
                     </div>
                     <div className="country">{this.props.amount.toFixed(1)}</div>
+                    {inactiveShop &&
                     <div className="country">
-                        {shop ? shop.name : ''}
+                        <a title={this.props.intl.formatMessage({id: "wallet.commission.shop.inactive"})} href={emptyHrefLink} style={{
+                            color: 'red',
+                            textDecoration: 'underline'
+                        }}>
+                            {this.props.shopName}
+                        </a>
                     </div>
+                    }
+                    {!inactiveShop &&
+                    <div className="country">
+                        {this.props.shopName}
+                    </div>
+                    }
                 </div>
             </React.Fragment>
         )

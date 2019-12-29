@@ -219,6 +219,7 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                             .toDate()
                             .toLocaleDateString('ro-RO', dateOptions)}
                         shopId={value.shopId}
+                        shopName={value.program.name}
                         status={CommissionStatus[value.status]}
                     />
                 );

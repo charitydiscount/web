@@ -58,7 +58,12 @@ export interface CommissionDto {
     amount: number;
     createdAt: firestore.Timestamp;
     shopId: string;
+    program: ProgramDto
     status: string;
+}
+
+export interface ProgramDto {
+    name: string
 }
 
 export function fetchCommissions() {

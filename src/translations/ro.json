@@ -140,5 +140,6 @@
   "sort.key": "Sorteaza",
   "none.key": "Fara sortare",
   "product.cashback.money": "Bani economisiti: ",
-  "shop.promotions": "Promotii"
+  "shop.promotions": "Promotii",
+  "wallet.commission.shop.inactive": "Magazinul nu mai este disponibil si comisionul se poate sa nu mai fie primit"
 }
