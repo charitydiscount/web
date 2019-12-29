@@ -56,7 +56,8 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
                             resolve(true);
                         }
                     }
-                ).catch(() => {
+                ).catch((error) => {
+                    console.log(error)
                     //token is not valid
                     reject();
                 });
