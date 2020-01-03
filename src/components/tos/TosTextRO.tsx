@@ -74,7 +74,10 @@ class TosTextRO extends React.Component {
                             utilizator.
                         </b>
                     </li>
-                    <li className="pt-2">Termeni:</li>
+                    <li className={"p-2"}>
+                        CharityDiscount își rezervă dreptul de a dona bani din conturile inactive de 2 ani.
+                    </li>
+                    <li className="p-2">Termeni:</li>
                     <ul>
                         <li className="p-2">
                             <b>Platforma</b>: Mediul în care
