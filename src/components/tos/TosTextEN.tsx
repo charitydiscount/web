@@ -13,6 +13,20 @@ class TosTextEN extends React.Component {
                 </p>
                 <ol>
                     <li className="p-2">
+                        Prezentul document este valabil
+                        pentru toate mediile de folosire ale
+                        platformei CharityDiscount:
+                        aplicațiile mobile android și ios,
+                        interfața web desktop/mobile și
+                        orice alta interfața care se
+                        conecteaza prin API la plaforma
+                        CharityDiscount deținută și operată
+                        de CLOVER TECH ROMANIA SRL cu sediul
+                        în Cluj - Napoca, numărul de înregistrare
+                        J12/4417/15.11.2019, CUI 41908127 folosind
+                        domeniul 'charitydiscount.ro'.
+                    </li>
+                    <li className="p-2">
                         Platforma CharityDiscount permite
                         utilizatorilor sa primească înapoi o
                         parte din banii cheltuiti la
@@ -36,16 +50,6 @@ class TosTextEN extends React.Component {
                         Politica de Confidențialitate" și
                         bifând căsuța aferentă din procedura
                         de înregistrare pe plaformă.
-                    </li>
-                    <li className="p-2">
-                        Prezentul document este valabil
-                        pentru toate mediile de folosire ale
-                        platformei CharityDiscount:
-                        aplicațiile mobile android și ios,
-                        interfața web desktop/mobile și
-                        orice alta interfața care se
-                        conecteaza prin API la plaforma
-                        CharityDiscount.
                     </li>
                     <li className="p-2">
                         CharityDiscount își rezerva dreptul
