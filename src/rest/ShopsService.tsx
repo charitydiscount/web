@@ -1,13 +1,13 @@
-import { DB } from '../index';
+import {DB} from '../index';
 import {
     getLocalStorage,
     removeLocalStorage,
     setLocalStorage,
 } from '../helper/StorageHelper';
-import { FirebaseTable, StorageKey } from '../helper/Constants';
-import { computeUrl, getUserKeyFromStorage } from '../helper/AppHelper';
-import { getPercentage } from './ConfigService';
-import { firestore } from 'firebase/app';
+import {FirebaseTable, StorageKey} from '../helper/Constants';
+import {computeUrl, getUserKeyFromStorage} from '../helper/AppHelper';
+import {getPercentage} from './ConfigService';
+import {firestore} from 'firebase/app';
 
 export interface FavoriteShopsDto {
     programs: { [shopUniqueCode: string]: ShopDto };
@@ -167,20 +167,7 @@ export function fetchShops() {
                             ) as ShopDto;
 
                             //calculate commission
-                            let percentage = getPercentage();
-                            parsedShop.commission =
-                                parsedShop.defaultLeadCommissionAmount != null
-                                    ? (
-                                          parseFloat(
-                                              parsedShop.defaultLeadCommissionAmount
-                                          ) * percentage
-                                      ).toFixed(2) + ' RON'
-                                    : (
-                                          parseFloat(
-                                              parsedShop.defaultSaleCommissionRate
-                                          ) * percentage
-                                      ).toFixed(2) + ' %';
-
+                            parsedShop.commission = getProgramCommission(parsedShop);
                             parsedShop.computeUrl = computeUrl(
                                 parsedShop.uniqueCode,
                                 parsedShop.mainUrl
@@ -205,6 +192,44 @@ export function fetchShops() {
                 reject(); //DB not working.
             });
     });
+}
+
+export enum CommissionType {
+    fixed,
+    variable,
+    percent
+}
+
+export function getProgramCommission(program) {
+    let commission = '';
+    let percent = getPercentage();
+    if (program.defaultSaleCommissionRate != null) {
+        switch (CommissionType[program.defaultSaleCommissionType].toString()) {
+            case CommissionType.fixed.toString():
+                commission = (parseFloat(program.defaultSaleCommissionRate) * percent)
+                        .toFixed(2) + ' RON';
+                break;
+            case CommissionType.variable.toString():
+            case CommissionType.percent.toString():
+                commission = (parseFloat(program.defaultSaleCommissionRate) * percent)
+                    .toFixed(2) + ' %';
+                break;
+        }
+    }
+
+    if (program.defaultLeadCommissionAmount != null &&
+        program.defaultSaleCommissionRate == null) {
+        switch (CommissionType[program.defaultLeadCommissionType].toString()) {
+            case CommissionType.fixed.toString():
+            case CommissionType.variable.toString():
+                commission = (parseFloat(program.defaultLeadCommissionAmount) * percent)
+                    .toFixed(2) + ' RON';
+                break;
+            default:
+        }
+    }
+
+    return commission;
 }
 
 export function getShopById(id) {
