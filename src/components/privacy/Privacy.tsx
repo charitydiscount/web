@@ -24,7 +24,7 @@ class Privacy extends React.Component<IPrivacyProps> {
     public render() {
         return (
             <React.Fragment>
-                <div className="container pt-5">
+                <div className="container p_120">
                     <div className="p-2 p-md-4">
                         <h3 className="mb-30 title_color">
                             <FormattedMessage
@@ -32,13 +32,11 @@ class Privacy extends React.Component<IPrivacyProps> {
                                 defaultMessage="Privacy"
                             />
                         </h3>
-                        <div className="row">
-                            <div className="mt-sm-20 left-align-p">
-                                {this.props.currentLocale === "ro" ?
-                                    <PrivacyTextRO/> :
-                                    <PrivacyTextEN/>
-                                }
-                            </div>
+                        <div className="mt-sm-20 left-align-p">
+                            {this.props.currentLocale === "ro" ?
+                                <PrivacyTextRO/> :
+                                <PrivacyTextEN/>
+                            }
                         </div>
                     </div>
                 </div>
