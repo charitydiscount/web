@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {auth, store} from '../../index';
-import {connect} from 'react-redux';
 import {Redirect} from 'react-router';
-import {Routes} from '../helper/Routes';
 import LoginComponent from "../login/LoginComponent";
 import {getUrlParameter, spinnerCss} from "../../helper/AppHelper";
 import {UserActions} from "../login/UserActions";
@@ -16,7 +14,6 @@ interface ExternalAccessState {
 }
 
 interface ExternalAccessProps {
-    isUserLogged: boolean;
 }
 
 class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccessState> {
@@ -65,8 +62,7 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
                             isLoading: false
                         });
                     }
-                ).catch((error) => {
-                    console.log(error);
+                ).catch(() => {
                     this.setState({
                         isLoading: false
                     });
@@ -86,14 +82,10 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
                 />
                 {!this.state.isLoading &&
                 <React.Fragment>
-                    {this.props.isUserLogged &&
-                    this.state.page &&
-                    this.state.caseId &&
-                    this.state.page === "wallet" ? (
-                            <Redirect to={Routes.WALLET + "/donate/" + this.state.caseId}/>
-                        ) :
-                        <LoginComponent/>
+                    {this.state.page && this.state.caseId &&
+                        <Redirect to={"/" + this.state.page + "/donate/" + this.state.caseId}/>
                     }
+                    <LoginComponent/>
                 </React.Fragment>
                 }
             </React.Fragment>
@@ -101,10 +93,5 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
     }
 }
 
-const mapStateToProps = (state: any) => {
-    return {
-        isUserLogged: state.user.isLoggedIn
-    };
-};
 
-export default connect(mapStateToProps)(ExternalAccess);
+export default ExternalAccess;
