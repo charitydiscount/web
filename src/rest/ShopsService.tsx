@@ -202,7 +202,7 @@ export enum CommissionType {
     percent
 }
 
-export function getProgramCommission(program, sortCommision) {
+export function getProgramCommission(program, sortCommission) {
     let commission = '';
     let percent = getPercentage();
     if (program.defaultSaleCommissionRate != null) {
@@ -212,11 +212,9 @@ export function getProgramCommission(program, sortCommision) {
                     .toFixed(2) + ' RON';
                 break;
             case CommissionType.variable.toString():
-                if (!sortCommision) {
-                    commission = '~ ' + (parseFloat(program.defaultSaleCommissionRate) * percent)
-                        .toFixed(2) + ' %';
-                    break;
-                }
+                commission = (sortCommission ? '' : '~ ') + (parseFloat(program.defaultSaleCommissionRate) * percent)
+                    .toFixed(2) + ' %';
+                break;
             case CommissionType.percent.toString():
                 commission = (parseFloat(program.defaultSaleCommissionRate) * percent)
                     .toFixed(2) + ' %';
@@ -228,11 +226,9 @@ export function getProgramCommission(program, sortCommision) {
         program.defaultSaleCommissionRate == null) {
         switch (CommissionType[program.defaultLeadCommissionType].toString()) {
             case CommissionType.variable.toString():
-                if (!sortCommision) {
-                    commission = '~ ' + (parseFloat(program.defaultLeadCommissionAmount) * percent)
-                        .toFixed(2) + ' RON';
-                    break;
-                }
+                commission = (sortCommission ? '' : '~ ') + (parseFloat(program.defaultLeadCommissionAmount) * percent)
+                    .toFixed(2) + ' RON';
+                break;
             case CommissionType.fixed.toString():
                 commission = (parseFloat(program.defaultLeadCommissionAmount) * percent)
                     .toFixed(2) + ' RON';

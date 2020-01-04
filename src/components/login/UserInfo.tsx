@@ -15,9 +15,11 @@ import {connect} from "react-redux";
 import FileUploader from 'react-firebase-file-uploader';
 import Modal from 'react-awesome-modal';
 import {InjectedIntlProps, injectIntl, FormattedMessage} from 'react-intl';
-import {getUserFromStorage} from "../../helper/AppHelper";
+import {getUserFromStorage, smallerSpinnerCss, spinnerCss} from "../../helper/AppHelper";
 import {fetchProfilePhoto} from "../../rest/StorageService";
 import {addContactMessageToDb} from "../../rest/ContactService";
+import FadeLoader from 'react-spinners/FadeLoader';
+
 
 interface IUserInfoProps {
     logout: () => void
@@ -30,7 +32,9 @@ interface IUserInfoState {
     providerType: ProviderType,
     userId: string,
     modalVisible: boolean,
-    modalMessage: string
+    modalMessage: string,
+    isLoading: boolean,
+    isLoadingPhoto: boolean
 }
 
 class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUserInfoState> {
@@ -44,7 +48,9 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
             userId: "",
             providerType: ProviderType.NORMAL,
             modalVisible: false,
-            modalMessage: ""
+            modalMessage: "",
+            isLoading: false,
+            isLoadingPhoto: false
         };
         this.handleLogOut = this.handleLogOut.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -78,14 +84,20 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
             });
 
             if (!userParsed.photoURL) {
+                this.setState({
+                    isLoadingPhoto: true
+                });
                 try {
                     const response = await fetchProfilePhoto(userParsed.uid);
                     this.setState({
                         photoURL: response as string,
+                        isLoadingPhoto: false
                     });
                 } catch (error) {
                     this.setState({
-                        photoURL: noImagePath
+                        photoURL: noImagePath,
+                        isLoadingPhoto: false
+
                     });
                 }
             } else {
@@ -107,16 +119,21 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
         if (question === true) {
             const user = getUserFromStorage();
             if (user) {
+                this.setState({
+                    isLoading: true
+                });
                 await addContactMessageToDb(user,
                     "Request to delete account with id:" + (JSON.parse(user) as LoginDto).uid,
                     "Delete account with id:" + (JSON.parse(user) as LoginDto).uid).then(() => {
                     this.setState({
                         modalVisible: true,
+                        isLoading: false,
                         modalMessage: this.props.intl.formatMessage({id: "userInfo.delete.account.ok"}),
                     });
                 }).catch(() => {
                     this.setState({
                         modalVisible: true,
+                        isLoading: false,
                         modalMessage: this.props.intl.formatMessage({id: "userInfo.delete.account.not.ok"})
                     });
                 });
@@ -132,6 +149,7 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
     handleEmailResetSent(success) {
         this.setState({
             modalVisible: true,
+            isLoading: false,
             modalMessage: success ?
                 this.props.intl.formatMessage(
                     {id: "userInfo.email.reset.sent"}
@@ -143,6 +161,9 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
     }
 
     sendPasswordResetEmail() {
+        this.setState({
+            isLoading: true
+        });
         auth.sendPasswordResetEmail(
             this.state.email)
             .then((succes) =>
@@ -165,6 +186,7 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
     handleUploadSuccess() {
         this.setState({
             modalVisible: true,
+            isLoadingPhoto: false,
             modalMessage: this.props.intl.formatMessage(
                 {id: "userInfo.profile.picture.uploaded"}
             )
@@ -174,6 +196,7 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
     handleUploadError(event) {
         this.setState({
             modalVisible: true,
+            isLoadingPhoto: false,
             modalMessage:
                 this.props.intl.formatMessage(
                     {id: "userInfo.profile.picture.error"}
@@ -184,11 +207,17 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
     public render() {
         return (
             <React.Fragment>
+                <FadeLoader
+                    loading={this.state.isLoading}
+                    color={'#1641ff'}
+                    css={spinnerCss}
+                />
                 <Modal visible={this.state.modalVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
                     <h3 style={{padding: 15}}>
                         {this.state.modalMessage}
                     </h3>
                 </Modal>
+                {!this.state.isLoading &&
                 <div className="product_image_area">
                     <div className="container p_90">
                         <div className="row s_product_inner">
@@ -197,8 +226,15 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                                 <div className="s_product_img">
                                     <div className="blog_right_sidebar">
                                         <aside className="single_sidebar_widget author_widget">
+                                            <FadeLoader
+                                                loading={this.state.isLoadingPhoto}
+                                                color={'#1641ff'}
+                                                css={smallerSpinnerCss}
+                                            />
+                                            {!this.state.isLoadingPhoto &&
                                             <img className="author_img rounded-circle" src={this.state.photoURL}
                                                  alt="Missing" width={200} height={200}/>
+                                            }
                                             <h4>{this.state.displayName}</h4>
                                             <p>{this.state.email}</p>
                                             <div className="br"/>
@@ -225,6 +261,7 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                                                                 storageRef={storage.ref(StorageRef.PROFILE_PHOTOS + this.state.userId)}
                                                                 onUploadError={this.handleUploadError}
                                                                 onUploadSuccess={this.handleUploadSuccess}
+                                                                onUploadStart={() => this.setState({isLoadingPhoto: true})}
                                                             />
                                                         </label>
                                                     </a>
@@ -284,6 +321,7 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                         </div>
                     </div>
                 </div>
+                }
             </React.Fragment>
         );
     }

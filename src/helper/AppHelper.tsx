@@ -39,6 +39,11 @@ export const spinnerCss = css`
     margin: 200px auto;
 `;
 
+export const smallerSpinnerCss = css`
+    display: block;
+    margin: 50px auto;
+`;
+
 export const emptyBackgroundCss = css`
    height: 0px !important;
 `;

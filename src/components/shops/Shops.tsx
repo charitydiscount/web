@@ -212,6 +212,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                         if (a > b) return -1;
                         if (a < b) return 1;
                     }
+                    return 0;
                 });
             } else if (sortType === 'ascAtoZ' || sortType === 'descAtoZ') {
                 shopsFilled.sort(function (x, y) {
@@ -224,6 +225,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                         if (a > b) return -1;
                         if (a < b) return 1;
                     }
+                    return 0;
                 });
             }
 
