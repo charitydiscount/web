@@ -169,10 +169,10 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
     }
 
     sortAfterReviewsNumber(event) {
+        this.setState({
+            reviewsSort: event.target.value,
+        });
         if (event.target.value) {
-            this.setState({
-                reviewsSort: event.target.value,
-            });
             let sortType = event.target.value;
             let shopsFilled = this.props.shops.map(shop => {
                 let ratingObj = this.props.ratings.get(shop.uniqueCode);
@@ -203,8 +203,8 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                 });
             } else if (sortType === 'ascCommission' || sortType === 'descCommission') {
                 shopsFilled.sort(function (x, y) {
-                    let a = x.commission,
-                        b = y.commission;
+                    let a = parseFloat(x.commission),
+                        b = parseFloat(y.commission);
                     if (sortType === 'ascCommission') {
                         if (a > b) return 1;
                         if (a < b) return -1;
@@ -212,7 +212,18 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                         if (a > b) return -1;
                         if (a < b) return 1;
                     }
-                    return 0;
+                });
+            } else if (sortType === 'ascAtoZ' || sortType === 'descAtoZ') {
+                shopsFilled.sort(function (x, y) {
+                    let a = x.name.toLowerCase(),
+                        b = y.name.toLowerCase();
+                    if (sortType === 'ascAtoZ') {
+                        if (a > b) return 1;
+                        if (a < b) return -1;
+                    } else {
+                        if (a > b) return -1;
+                        if (a < b) return 1;
+                    }
                 });
             }
 
@@ -334,20 +345,20 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                                                         defaultMessage="None"
                                                     />
                                                 </MenuItem>
-                                                <MenuItem value={'ascReview'}>
+                                                <MenuItem value={'ascAtoZ'}>
                                                     <FormattedMessage
                                                         id={
-                                                            'shops.filters.sorting.ascending'
+                                                            'shops.filters.sorting.atoz.asc'
                                                         }
-                                                        defaultMessage="Sort after review numbers ascending"
+                                                        defaultMessage="Sort after name ascending"
                                                     />
                                                 </MenuItem>
-                                                <MenuItem value={'descReview'}>
+                                                <MenuItem value={'descAtoZ'}>
                                                     <FormattedMessage
                                                         id={
-                                                            'shops.filters.sorting.descending'
+                                                            'shops.filters.sorting.atoz.desc'
                                                         }
-                                                        defaultMessage="Sort after review numbers descending"
+                                                        defaultMessage="Sort after name descending"
                                                     />
                                                 </MenuItem>
                                                 <MenuItem value={'ascCommission'}>
@@ -364,6 +375,22 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                                                             'shops.filters.sorting.commission.descending'
                                                         }
                                                         defaultMessage="Sort after commissions descending"
+                                                    />
+                                                </MenuItem>
+                                                <MenuItem value={'ascReview'}>
+                                                    <FormattedMessage
+                                                        id={
+                                                            'shops.filters.sorting.ascending'
+                                                        }
+                                                        defaultMessage="Sort after review numbers ascending"
+                                                    />
+                                                </MenuItem>
+                                                <MenuItem value={'descReview'}>
+                                                    <FormattedMessage
+                                                        id={
+                                                            'shops.filters.sorting.descending'
+                                                        }
+                                                        defaultMessage="Sort after review numbers descending"
                                                     />
                                                 </MenuItem>
                                             </Select>

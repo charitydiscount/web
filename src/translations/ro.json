@@ -135,15 +135,17 @@
   "products.filters.sorting": "Sortare",
   "products.filters.sorting.ascending": "Crescator",
   "products.filters.sorting.descending": "Descrescator",
-  "shops.filters.sorting.ascending": "Sorteaza dupa nr. de review-uri crescator",
-  "shops.filters.sorting.descending": "Sorteaza dupa nr. de review-uri descrescator",
+  "shops.filters.sorting.ascending": "Nr. de review-uri ↑",
+  "shops.filters.sorting.descending": "Nr. de review-uri ↓",
   "sort.key": "Sorteaza",
   "none.key": "Fara sortare",
   "product.cashback.money": "Bani economisiti: ",
   "shop.promotions": "Promotii",
   "wallet.commission.shop.inactive": "Magazinul nu mai este disponibil si comisionul se poate sa nu mai fie primit",
-  "shops.filters.sorting.commission.ascending": "Sorteaza dupa comision crescator",
-  "shops.filters.sorting.commission.descending": "Sorteaza dupa comision descrescator",
+  "shops.filters.sorting.commission.ascending": "Comision ↑",
+  "shops.filters.sorting.commission.descending": "Comision ↓",
   "cookie.key": "Acest site foloseste cookies. Continuarea navigarii presupune ca esti de acord cu utilizarea cookie-urilor",
-  "cookie.button": "Am înțeles"
+  "cookie.button": "Am înțeles",
+  "shops.filters.sorting.atoz.asc" : "Nume ↑",
+  "shops.filters.sorting.atoz.desc" : "Nume ↓"
 }
