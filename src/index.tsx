@@ -13,7 +13,7 @@ import 'firebase/firestore';
 import 'firebase/performance';
 import 'firebase/storage';
 import 'firebase/remote-config';
-import registerServiceWorker from './registerServiceWorker';
+import * as serviceWorker from './registerServiceWorker';
 import { UserActions } from './components/login/UserActions';
 import { getLocalStorage } from './helper/StorageHelper';
 import { StorageKey } from './helper/Constants';
@@ -22,7 +22,7 @@ import { LoginDto } from './components/login/LoginComponent';
 import I18nApp from './I18nApp';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '1.8.4';
+export const appVersion = '1.8.5';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};
@@ -85,4 +85,8 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-registerServiceWorker();
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.register();
+
