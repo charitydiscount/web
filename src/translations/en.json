@@ -147,5 +147,7 @@
   "cookie.key": "This website uses cookies. By continuing you accept cookies usage",
   "cookie.button": "I understand",
   "shops.filters.sorting.atoz.asc": "Name ↑",
-  "shops.filters.sorting.atoz.desc": "Name ↓"
+  "shops.filters.sorting.atoz.desc": "Name ↓",
+  "cause.contribute.button": "Contribute",
+  "cause.donated": "Donated: "
 }

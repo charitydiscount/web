@@ -1,33 +1,70 @@
 import * as React from "react";
-import {ImageDto} from "../../rest/CauseService";
+import {CauseDto} from "../../rest/CauseService";
+import {Routes} from "../helper/Routes";
+import {Redirect} from "react-router";
+import {emptyHrefLink} from "../../helper/Constants";
+import {FormattedMessage} from 'react-intl';
 
-interface ICauseProps {
-    description: string;
-    images: ImageDto[]
-    site: string;
-    title: string;
+interface ICauseState {
+    redirect: boolean
 }
 
-class Cause extends React.Component<ICauseProps> {
+interface ICauseProps {
+    cause: CauseDto
+}
+
+class Cause extends React.Component<ICauseProps, ICauseState> {
+
+    constructor(props: Readonly<ICauseProps>) {
+        super(props);
+        this.state = {
+            redirect: false
+        }
+    }
+
+    setRedirect = () => {
+        this.setState({
+            redirect: true
+        })
+    };
+
+    renderRedirect = () => {
+        if (this.state.redirect) {
+            return <Redirect to={Routes.WALLET + "/donate/" + this.props.cause.id}/>;
+        }
+    };
 
     public render() {
-        const imagesList = this.props.images ? this.props.images.map((image, index) => {
-            return <img key={this.props.title + index} src={image.url} alt="" width={300} height={300} className="img-fluid"/>
-        }) : null;
-
         return (
-            <div className={"p_20"}>
-                <h3 className="mb-30 title_color">{this.props.title}</h3>
-                <div className="row">
-                    <div className="mt-sm-20 left-align-p">
-                        <p>{this.props.description}</p>
+            <React.Fragment>
+                {this.renderRedirect()}
+                <div className="col-lg-6">
+                    <h2>{this.props.cause.details.title}</h2>
+                    <h4>
+                        <FormattedMessage
+                            id="cause.donated"
+                            defaultMessage="Donated: "
+                        />
+                        {this.props.cause.details.funds} RON
+                    </h4>
+                    <div className="hot_deal_box">
+                        <img src={this.props.cause.details.images[0].url} alt="" className="img-fluid"/>
+                        <div className="content">
+                            <a style={{color: "#fff"}} href={this.props.cause.details.site}>
+                                Website
+                            </a>
+                        </div>
+                        <a className="hot_deal_link" href={this.props.cause.details.site}/>
                     </div>
-
-                    <div>
-                        {imagesList}
-                    </div>
+                    <br/>
+                    <a href={emptyHrefLink} className="btn submit_btn genric-btn circle" onClick={this.setRedirect}>
+                        <FormattedMessage
+                            id="cause.contribute.button"
+                            defaultMessage="Contribute"
+                        />
+                    </a>
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
 }

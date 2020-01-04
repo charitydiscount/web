@@ -10,7 +10,8 @@ export interface CauseDetailDto {
     description: string,
     images: ImageDto[],
     site: string,
-    title: string
+    title: string,
+    funds: string
 }
 
 export interface CauseDto {

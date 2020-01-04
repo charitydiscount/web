@@ -48,9 +48,7 @@ class Causes extends React.Component<ICausesProps, ICausesState> {
 
     public render() {
         const causesList = this.state.causes ? this.state.causes.map(cause => {
-            return <Cause key={cause.details.title} description={cause.details.description}
-                          images={cause.details.images}
-                          site={cause.details.site} title={cause.details.title}/>
+            return <Cause key={cause.id} cause={cause}/>
         }) : null;
 
         return (
@@ -61,8 +59,14 @@ class Causes extends React.Component<ICausesProps, ICausesState> {
                     css={spinnerCss}
                 />
                 {!this.state.isLoading &&
-                <div className="container p_120">
-                    {causesList}
+                <div className="container">
+                    <section className="hot_deals_area section_gap">
+                        <div className="container-fluid">
+                            <div className="row">
+                                {causesList}
+                            </div>
+                        </div>
+                    </section>
                 </div>
                 }
             </React.Fragment>

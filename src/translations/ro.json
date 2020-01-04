@@ -147,5 +147,7 @@
   "cookie.key": "Acest site foloseste cookies. Continuarea navigarii presupune ca esti de acord cu utilizarea cookie-urilor",
   "cookie.button": "Am înțeles",
   "shops.filters.sorting.atoz.asc" : "Nume ↑",
-  "shops.filters.sorting.atoz.desc" : "Nume ↓"
+  "shops.filters.sorting.atoz.desc" : "Nume ↓",
+  "cause.contribute.button": "Contribuie",
+  "cause.donated": "Donat: "
 }
