@@ -143,5 +143,7 @@
   "shop.promotions": "Promotions",
   "wallet.commission.shop.inactive": "Shop is not active anymore and the commission may not be received",
   "shops.filters.sorting.commission.ascending": "Sort after commissions ascending",
-  "shops.filters.sorting.commission.descending": "Sort after commissions descending"
+  "shops.filters.sorting.commission.descending": "Sort after commissions descending",
+  "cookie.key": "This website uses cookies. By continuing you accept cookies usage",
+  "cookie.button": "I understand"
 }

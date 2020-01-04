@@ -143,5 +143,7 @@
   "shop.promotions": "Promotii",
   "wallet.commission.shop.inactive": "Magazinul nu mai este disponibil si comisionul se poate sa nu mai fie primit",
   "shops.filters.sorting.commission.ascending": "Sorteaza dupa comision crescator",
-  "shops.filters.sorting.commission.descending": "Sorteaza dupa comision descrescator"
+  "shops.filters.sorting.commission.descending": "Sorteaza dupa comision descrescator",
+  "cookie.key": "Acest site foloseste cookies. Continuarea navigarii presupune ca esti de acord cu utilizarea cookie-urilor",
+  "cookie.button": "Am înțeles"
 }
