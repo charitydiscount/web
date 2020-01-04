@@ -39,6 +39,7 @@ export interface ShopDto {
 
     //cashback
     commission: string;
+    sortCommission: string;
 
     //linkUrl
     computeUrl: string;
@@ -167,7 +168,8 @@ export function fetchShops() {
                             ) as ShopDto;
 
                             //calculate commission
-                            parsedShop.commission = getProgramCommission(parsedShop);
+                            parsedShop.commission = getProgramCommission(parsedShop, false);
+                            parsedShop.sortCommission = getProgramCommission(parsedShop, true);
                             parsedShop.computeUrl = computeUrl(
                                 parsedShop.uniqueCode,
                                 parsedShop.mainUrl
@@ -200,7 +202,7 @@ export enum CommissionType {
     percent
 }
 
-export function getProgramCommission(program) {
+export function getProgramCommission(program, sortCommision) {
     let commission = '';
     let percent = getPercentage();
     if (program.defaultSaleCommissionRate != null) {
@@ -210,9 +212,11 @@ export function getProgramCommission(program) {
                     .toFixed(2) + ' RON';
                 break;
             case CommissionType.variable.toString():
-                commission = '~ ' + (parseFloat(program.defaultSaleCommissionRate) * percent)
-                    .toFixed(2) + ' %';
-                break;
+                if (!sortCommision) {
+                    commission = '~ ' + (parseFloat(program.defaultSaleCommissionRate) * percent)
+                        .toFixed(2) + ' %';
+                    break;
+                }
             case CommissionType.percent.toString():
                 commission = (parseFloat(program.defaultSaleCommissionRate) * percent)
                     .toFixed(2) + ' %';
@@ -223,12 +227,14 @@ export function getProgramCommission(program) {
     if (program.defaultLeadCommissionAmount != null &&
         program.defaultSaleCommissionRate == null) {
         switch (CommissionType[program.defaultLeadCommissionType].toString()) {
+            case CommissionType.variable.toString():
+                if (!sortCommision) {
+                    commission = '~ ' + (parseFloat(program.defaultLeadCommissionAmount) * percent)
+                        .toFixed(2) + ' RON';
+                    break;
+                }
             case CommissionType.fixed.toString():
                 commission = (parseFloat(program.defaultLeadCommissionAmount) * percent)
-                    .toFixed(2) + ' RON';
-                break;
-            case CommissionType.variable.toString():
-                commission = '~ ' + (parseFloat(program.defaultLeadCommissionAmount) * percent)
                     .toFixed(2) + ' RON';
                 break;
             default:

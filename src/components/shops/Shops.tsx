@@ -203,8 +203,8 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                 });
             } else if (sortType === 'ascCommission' || sortType === 'descCommission') {
                 shopsFilled.sort(function (x, y) {
-                    let a = parseFloat(x.commission),
-                        b = parseFloat(y.commission);
+                    let a = parseFloat(x.sortCommission),
+                        b = parseFloat(y.sortCommission);
                     if (sortType === 'ascCommission') {
                         if (a > b) return 1;
                         if (a < b) return -1;
