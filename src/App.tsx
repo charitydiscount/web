@@ -16,6 +16,7 @@ class App extends React.Component {
                 <PageLayout/>
                 <FooterLayout/>
                 <CookieConsent
+                    cookieName={"CookieCharityDiscount"}
                     buttonText={
                         <FormattedMessage id={"cookie.button"}
                                           defaultMessage="I understand"/>
