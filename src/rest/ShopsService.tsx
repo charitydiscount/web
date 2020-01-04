@@ -207,9 +207,12 @@ export function getProgramCommission(program) {
         switch (CommissionType[program.defaultSaleCommissionType].toString()) {
             case CommissionType.fixed.toString():
                 commission = (parseFloat(program.defaultSaleCommissionRate) * percent)
-                        .toFixed(2) + ' RON';
+                    .toFixed(2) + ' RON';
                 break;
             case CommissionType.variable.toString():
+                commission = '~ ' + (parseFloat(program.defaultSaleCommissionRate) * percent)
+                    .toFixed(2) + ' %';
+                break;
             case CommissionType.percent.toString():
                 commission = (parseFloat(program.defaultSaleCommissionRate) * percent)
                     .toFixed(2) + ' %';
@@ -221,8 +224,11 @@ export function getProgramCommission(program) {
         program.defaultSaleCommissionRate == null) {
         switch (CommissionType[program.defaultLeadCommissionType].toString()) {
             case CommissionType.fixed.toString():
-            case CommissionType.variable.toString():
                 commission = (parseFloat(program.defaultLeadCommissionAmount) * percent)
+                    .toFixed(2) + ' RON';
+                break;
+            case CommissionType.variable.toString():
+                commission = '~ ' + (parseFloat(program.defaultLeadCommissionAmount) * percent)
                     .toFixed(2) + ' RON';
                 break;
             default:
