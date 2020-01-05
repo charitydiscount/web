@@ -159,6 +159,18 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
     }
 
     async cashout() {
+        if (!this.state.amount
+            || this.state.amount.length < 1
+            || parseFloat(this.state.amount) < 50) {
+            alert(this.props.intl.formatMessage({id: "wallet.cashout.amount.error"}));
+            return;
+        }
+
+        if (parseFloat(this.state.amount) > this.props.approved) {
+            alert(this.props.intl.formatMessage({id: "wallet.cashout.no.amount.error"}));
+            return;
+        }
+
         if (!this.state.name) {
             alert(this.props.intl.formatMessage({id: "wallet.cashout.name.error"}));
             return;
@@ -169,13 +181,6 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
             return;
         }
 
-        if (!this.state.amount
-            || this.state.amount.length < 1
-            || parseFloat(this.state.amount) < 50
-            || parseFloat(this.state.amount) > this.props.approved) {
-            alert(this.props.intl.formatMessage({id: "wallet.cashout.amount.error"}));
-            return;
-        }
         try {
             await updateUserAccount(this.state.name, this.state.iban);
         } catch (error) {
@@ -207,11 +212,16 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
     async donate() {
         if (!this.state.amount
             || this.state.amount.length < 1
-            || parseFloat(this.state.amount) < 1
-            || parseFloat(this.state.amount) > this.props.approved) {
+            || parseFloat(this.state.amount) < 1) {
             alert(this.props.intl.formatMessage({id: "wallet.donate.amount.error"}));
             return;
         }
+
+        if (parseFloat(this.state.amount) > this.props.approved) {
+            alert(this.props.intl.formatMessage({id: "wallet.cashout.no.amount.error"}));
+            return;
+        }
+
         if (!this.state.targetId) {
             alert(this.props.intl.formatMessage({id: "wallet.donate.cause.error"}));
             return;

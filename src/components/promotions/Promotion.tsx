@@ -17,7 +17,7 @@ class Promotion extends React.Component<PromotionProps, PromotionState> {
             <React.Fragment>
                 <tr>
                     <td>
-                        <p style={!this.props.comingFromShopReview ? {maxWidth: 300} : {}}>{this.props.promotion.name} - {this.props.promotion.description}</p>
+                        <p style={!this.props.comingFromShopReview ? {maxWidth: 300} : {}}>{this.props.promotion.name}</p>
                     </td>
                 </tr>
             </React.Fragment>

@@ -76,6 +76,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
             reviewsSort: '',
         };
         this.onSearchUpdate = this.onSearchUpdate.bind(this);
+        this.onSearchUpdateEvent = this.onSearchUpdateEvent.bind(this);
         this.updatePageNumber = this.updatePageNumber.bind(this);
         this.sortAfterReviewsNumber = this.sortAfterReviewsNumber.bind(this);
     }
@@ -127,11 +128,21 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
         } catch (error) {
             //ratings not loaded
         }
+
+        let openShop = this.props.match.params.shopName;
+        if (openShop) {
+            this.onSearchUpdate(openShop);
+        }
+
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
     }
 
-    public onSearchUpdate(event) {
-        if (!event.target.value) {
+    public onSearchUpdateEvent(event) {
+        this.onSearchUpdate(event.target.value);
+    }
+
+    public onSearchUpdate(shopName) {
+        if (!shopName) {
             const shops = getLocalStorage(StorageKey.SHOPS);
             if (shops) {
                 this.props.setShops(JSON.parse(shops));
@@ -151,7 +162,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                     const data = shops.filter(shop =>
                         shop.name
                             .toLowerCase()
-                            .includes(event.target.value.toLowerCase())
+                            .includes(shopName.toLowerCase())
                     );
                     if (data) {
                         this.props.setShops(data);
@@ -239,6 +250,11 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
     }
 
     public updatePageNumber(data) {
+        if (window.innerWidth > 800) {
+            window.scrollTo(0, 0);
+        } else {
+            window.scrollTo(0, 1100);
+        }
         this.props.setCurrentPage(data.selected);
     }
 
@@ -324,7 +340,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                                         placeholder={this.props.intl.formatMessage(
                                             {id: 'shops.search'}
                                         )}
-                                        onKeyUp={this.onSearchUpdate}
+                                        onKeyUp={this.onSearchUpdateEvent}
                                     />
                                 </div>
                                 <div className="product_top_bar">
@@ -334,6 +350,9 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                                                 <FormattedMessage id={"sort.key"} defaultMessage="Sort"/>
                                             </InputLabel>
                                             <Select
+                                                MenuProps={{
+                                                    disableScrollLock: true
+                                                }}
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 value={this.state.reviewsSort}

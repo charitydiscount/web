@@ -24,6 +24,7 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.CONTACT} component={Contact}/>
                     <Route exact={true} path={Routes.CATEGORIES + '/:favShops'} component={Shops}/>
                     <Route exact={true} path={Routes.CATEGORIES} component={Shops}/>
+                    <Route exact={true} path={Routes.CATEGORIES + '/shop/:shopName'} component={Shops}/>
                     <Route exact={true} path={Routes.DEALS} component={HotDeals}/>
                     <Route exact={true} path={Routes.USER} component={UserInfo}/>
                     <Route exact={true} path={Routes.CAUSES} component={Causes}/>

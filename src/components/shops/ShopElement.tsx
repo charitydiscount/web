@@ -12,6 +12,8 @@ import {InjectedIntlProps, injectIntl} from 'react-intl';
 import {FormattedMessage} from 'react-intl';
 import {getPromotions, PromotionDTO} from "../../rest/DealsService";
 import Promotion from "../promotions/Promotion";
+import {smallerSpinnerCss} from "../../helper/AppHelper";
+import FadeLoader from 'react-spinners/FadeLoader';
 
 interface IShopElementProps {
     shop: ShopDto,
@@ -20,8 +22,9 @@ interface IShopElementProps {
 }
 
 interface IShopElementState {
-    favShop: boolean
-    promotions: PromotionDTO[]
+    favShop: boolean,
+    promotions: PromotionDTO[],
+    promotionLoading: boolean
 }
 
 class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
@@ -31,7 +34,8 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
         super(props);
         this.state = {
             favShop: false,
-            promotions: []
+            promotions: [],
+            promotionLoading: true
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
@@ -45,8 +49,13 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
         let response = await getPromotions(this.props.shop.id);
         if (response) {
             this.setState({
-                promotions: response as PromotionDTO[]
+                promotions: response as PromotionDTO[],
+                promotionLoading: false
             });
+        } else {
+            this.setState({
+                promotionLoading: false
+            })
         }
     }
 
@@ -245,24 +254,33 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                             </div>
                         </div>
                     </div>
-                    {promotions && promotions.length > 0 &&
-                    <div>
-                        <h3>
-                            <FormattedMessage id={"shop.promotions"} defaultMessage={"Promotions"}/>
-                        </h3>
-                        <div className="table-responsive"
-                             style={!this.props.comingFromShopReview ? {overflowY: 'auto', maxHeight: 200}
-                                 : {}}>
-                            <table className="table" style={
-                                !this.props.comingFromShopReview ? {
-                                    maxWidth: 300,
-                                } : {}}>
-                                <tbody>
-                                {promotions}
-                                </tbody>
-                            </table>
+                    <FadeLoader
+                        loading={this.state.promotionLoading}
+                        color={'#1641ff'}
+                        css={smallerSpinnerCss}
+                    />
+                    {!this.state.promotionLoading &&
+                    <React.Fragment>
+                        {promotions && promotions.length > 0 &&
+                        <div>
+                            <h3>
+                                <FormattedMessage id={"shop.promotions"} defaultMessage={"Promotions"}/>
+                            </h3>
+                            <div className="table-responsive"
+                                 style={!this.props.comingFromShopReview ? {overflowY: 'auto', maxHeight: 200}
+                                     : {}}>
+                                <table className="table" style={
+                                    !this.props.comingFromShopReview ? {
+                                        maxWidth: 300,
+                                    } : {}}>
+                                    <tbody>
+                                    {promotions}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
+                        }
+                    </React.Fragment>
                     }
                 </div>
             </React.Fragment>

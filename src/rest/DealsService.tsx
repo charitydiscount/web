@@ -3,7 +3,6 @@ import {auth, remoteConfig} from '../index';
 
 export interface PromotionDTO {
     name: string,
-    description: string,
     promotionEnd: string,
     promotionStart: string,
     id: number

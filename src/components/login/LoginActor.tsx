@@ -17,7 +17,6 @@ interface ILoginRendererProps {
 class LoginActor extends React.Component<ILoginRendererProps> {
 
     async componentDidMount() {
-        clearStorage();
         this.verifyUserLoggedInFirebase();
         store.dispatch(NavigationsAction.setStageAction(Stages.EMPTY));
     }
@@ -36,6 +35,7 @@ class LoginActor extends React.Component<ILoginRendererProps> {
     }
 
     public render() {
+        clearStorage();
         return this.props.isUserLogged ? (
             <Redirect to={Routes.CATEGORIES}/>
         ) : (

@@ -63,6 +63,11 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
     }
 
     updatePageNumber(data) {
+        if (window.innerWidth > 800) {
+            window.scrollTo(0, 0);
+        } else {
+            window.scrollTo(0, 400);
+        }
         this.setState({
             currentPage: data.selected as number
         });
@@ -261,6 +266,9 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
 
                                             <FormControl fullWidth disabled={!this.state.searchActive}>
                                                 <Select
+                                                    MenuProps={{
+                                                        disableScrollLock: true
+                                                    }}
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
                                                     value={this.state.sort}

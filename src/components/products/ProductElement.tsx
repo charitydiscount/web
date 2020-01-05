@@ -2,6 +2,9 @@ import * as React from "react";
 import {InjectedIntlProps} from 'react-intl';
 import {FormattedMessage} from 'react-intl';
 import {ProductDTO} from "../../rest/ProductsService";
+import {Redirect} from "react-router";
+import {Routes} from "../helper/Routes";
+import {emptyHrefLink} from "../../helper/Constants";
 
 interface ProductElementProps {
     product: ProductDTO,
@@ -9,14 +12,34 @@ interface ProductElementProps {
 }
 
 interface ProductElementState {
-
+    redirect: boolean
 }
 
 class ProductElement extends React.Component<ProductElementProps & InjectedIntlProps, ProductElementState> {
 
+    constructor(props: Readonly<ProductElementProps>) {
+        super(props);
+        this.state = {
+            redirect: false
+        }
+    }
+
+    setRedirect = () => {
+        this.setState({
+            redirect: true
+        })
+    };
+
+    renderRedirect = () => {
+        if (this.state.redirect) {
+            return <Redirect to={Routes.CATEGORIES + "/shop/" + this.props.product.shopName}/>;
+        }
+    };
+
     public render() {
         return (
             <React.Fragment>
+                {this.renderRedirect()}
                 <div className="text-center p-4">
                     <div style={{textAlign: 'right'}}>
                         <i onClick={this.props.onCloseModal} className="fa fa-times"/>
@@ -27,7 +50,9 @@ class ProductElement extends React.Component<ProductElementProps & InjectedIntlP
                             id={'product.shop'}
                             defaultMessage="Shop: "
                         />
-                        {this.props.product.shopName}
+                        <a href={emptyHrefLink} onClick={this.setRedirect} style={{color: "#1641ff"}}>
+                            {this.props.product.shopName}
+                        </a>
                     </h6>
                     <h6>
                         <FormattedMessage
