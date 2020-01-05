@@ -35,8 +35,8 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
         this.escFunction = this.escFunction.bind(this);
     }
 
-    escFunction(event){
-        if(event.keyCode === 27) {
+    escFunction(event) {
+        if (event.keyCode === 27) {
             this.closeModal();
         }
     }
@@ -126,9 +126,13 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
                                     </div>
                                     <br/>
                                     <div className="info_item">
-                                        <i className="fa fa-instagram"></i>
+                                        <a href="https://www.instagram.com/charitydiscount/" target="_blank"
+                                           rel="noopener noreferrer">
+                                            <i className="fa fa-instagram"></i>
+                                        </a>
                                         <h6>
-                                            <a href={emptyHrefLink}>Charity Discount Instagram</a>
+                                            <a href="https://www.instagram.com/charitydiscount/" target="_blank"
+                                               rel="noopener noreferrer">Charity Discount Instagram</a>
                                         </h6>
                                     </div>
                                 </div>

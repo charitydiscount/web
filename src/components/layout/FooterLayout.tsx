@@ -64,7 +64,8 @@ class FooterLayout extends React.Component {
                                 </li>
                             </ul>
                         </div>
-                        <div className="d-flex flex-column flex-md-row col-6 col-md-8 mx-0 px-0 justify-content-start justify-content-md-between">
+                        <div
+                            className="d-flex flex-column flex-md-row col-6 col-md-8 mx-0 px-0 justify-content-start justify-content-md-between">
                             <div className="w-100 col-md-6 single-footer-widget">
                                 <div className="f_social_wd">
                                     <h6 className="footer_title">
@@ -77,7 +78,8 @@ class FooterLayout extends React.Component {
                                         <a href={emptyHrefLink}>
                                             <i className="fa fa-facebook"></i>
                                         </a>
-                                        <a href={emptyHrefLink}>
+                                        <a href="https://www.instagram.com/charitydiscount/" target="_blank"
+                                           rel="noopener noreferrer">
                                             <i className="fa fa-instagram"></i>
                                         </a>
                                     </div>
@@ -91,7 +93,8 @@ class FooterLayout extends React.Component {
                                             defaultMessage="Get it on mobile"
                                         />
                                     </h6>
-                                    <a href="https://play.google.com/store/apps/details?id=com.clover.charity_discount">
+                                    <a href="https://play.google.com/store/apps/details?id=com.clover.charity_discount"
+                                       target="_blank" rel="noopener noreferrer">
                                         <img
                                             src={
                                                 '/img/mobile/google-play-badge.svg'
@@ -100,13 +103,16 @@ class FooterLayout extends React.Component {
                                             width={135}
                                             alt={''}
                                         />
-                                    </a>{' '}
-                                    {/* <img
-                                    src={'/img/mobile/app-store-badge.svg'}
-                                    height={40}
-                                    width={135}
-                                    alt={''}
-                                /> */}
+                                    </a>
+                                    <a href="https://apps.apple.com/us/app/charitydiscount/id1492115913?ls=1"
+                                       target="_blank" rel="noopener noreferrer">
+                                        <img
+                                            src={'/img/mobile/app-store-badge.svg'}
+                                            height={40}
+                                            width={135}
+                                            alt={''}
+                                        />
+                                    </a>
                                 </div>
                             </div>
                         </div>
