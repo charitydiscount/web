@@ -187,7 +187,7 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
                 .map(product => {
                     let shop = getShopByName(product.shopName);
                     if (shop) {
-                        product.commission = ((product.price * parseFloat(shop.commission)) / 100).toFixed(2);
+                        product.commission = ((product.price * parseFloat(shop.sortCommission)) / 100).toFixed(2);
                     }
                     return product
                 });
