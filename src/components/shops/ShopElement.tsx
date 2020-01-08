@@ -204,7 +204,7 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                                 id={'shop.category'}
                                 defaultMessage="Category:"
                             />
-                            {this.props.shop.category}
+                            <FormattedMessage id={this.props.shop.category.replace(/\s/g, '')}/>
                         </h5>
                         <div className="s_product_text" style={{marginTop: 20, marginBottom: 20}}>
                             <div className="card_area p_20">
