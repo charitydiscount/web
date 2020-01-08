@@ -40,6 +40,7 @@ class Cause extends React.Component<ICauseProps, ICauseState> {
                 {this.renderRedirect()}
                 <div className="col-lg-6">
                     <h2>{this.props.cause.details.title}</h2>
+                    {this.props.cause.details.funds &&
                     <h4>
                         <FormattedMessage
                             id="cause.donated"
@@ -47,14 +48,17 @@ class Cause extends React.Component<ICauseProps, ICauseState> {
                         />
                         {this.props.cause.details.funds} RON
                     </h4>
+                    }
                     <div className="hot_deal_box">
                         <img src={this.props.cause.details.images[0].url} alt="" className="img-fluid"/>
                         <div className="content">
-                            <a style={{color: "#fff"}} href={this.props.cause.details.site} target="_blank" rel="noopener noreferrer">
+                            <a style={{color: "#fff"}} href={this.props.cause.details.site} target="_blank"
+                               rel="noopener noreferrer">
                                 Website
                             </a>
                         </div>
-                        <a className="hot_deal_link" href={this.props.cause.details.site} target="_blank" rel="noopener noreferrer"/>
+                        <a className="hot_deal_link" href={this.props.cause.details.site} target="_blank"
+                           rel="noopener noreferrer"/>
                     </div>
                     <br/>
                     <a href={emptyHrefLink} className="btn submit_btn genric-btn circle" onClick={this.setRedirect}>
