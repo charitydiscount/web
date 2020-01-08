@@ -5,7 +5,13 @@ export interface PromotionDTO {
     name: string,
     promotionEnd: string,
     promotionStart: string,
+    landingPageLink: string,
+    program: PromotionProgramDto
     id: number
+}
+
+export interface PromotionProgramDto {
+    id: string
 }
 
 export async function getPromotions(programId: number) {

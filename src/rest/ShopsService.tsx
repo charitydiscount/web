@@ -39,7 +39,7 @@ export interface ShopDto {
 
     //cashback
     commission: string;
-    sortCommission: string;
+    uiCommission: string;
 
     //linkUrl
     computeUrl: string;
@@ -80,9 +80,16 @@ export async function fetchFavoriteShops() {
         return [];
     }
 
-    const favoriteShops = Object.values(
+    let favoriteShops = Object.values(
         (favoriteShopsDoc.data() as FavoriteShopsDto).programs
     );
+    const favShopsId = favoriteShops.map(value => value.id);
+    const shops = getLocalStorage(StorageKey.SHOPS);
+    if (shops) {
+        let stEntry = JSON.parse(shops) as ShopDto[];
+        stEntry = stEntry.filter(value => favShopsId.includes(value.id));
+        favoriteShops = stEntry;
+    }
     setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favoriteShops));
 
     return favoriteShops;
@@ -168,8 +175,8 @@ export function fetchShops() {
                             ) as ShopDto;
 
                             //calculate commission
-                            parsedShop.commission = getProgramCommission(parsedShop, false);
-                            parsedShop.sortCommission = getProgramCommission(parsedShop, true);
+                            parsedShop.uiCommission = getProgramCommission(parsedShop, false);
+                            parsedShop.commission = getProgramCommission(parsedShop, true);
                             parsedShop.computeUrl = computeUrl(
                                 parsedShop.uniqueCode,
                                 parsedShop.mainUrl
@@ -202,7 +209,7 @@ export enum CommissionType {
     percent
 }
 
-export function getProgramCommission(program, sortCommission) {
+export function getProgramCommission(program, normalCommission) {
     let commission = '';
     let percent = getPercentage();
     if (program.defaultSaleCommissionRate != null) {
@@ -212,7 +219,7 @@ export function getProgramCommission(program, sortCommission) {
                     .toFixed(2) + ' RON';
                 break;
             case CommissionType.variable.toString():
-                commission = (sortCommission ? '' : '~ ') + (parseFloat(program.defaultSaleCommissionRate) * percent)
+                commission = (normalCommission ? '' : '~ ') + (parseFloat(program.defaultSaleCommissionRate) * percent)
                     .toFixed(2) + ' %';
                 break;
             case CommissionType.percent.toString():
@@ -226,7 +233,7 @@ export function getProgramCommission(program, sortCommission) {
         program.defaultSaleCommissionRate == null) {
         switch (CommissionType[program.defaultLeadCommissionType].toString()) {
             case CommissionType.variable.toString():
-                commission = (sortCommission ? '' : '~ ') + (parseFloat(program.defaultLeadCommissionAmount) * percent)
+                commission = (normalCommission ? '' : '~ ') + (parseFloat(program.defaultLeadCommissionAmount) * percent)
                     .toFixed(2) + ' RON';
                 break;
             case CommissionType.fixed.toString():

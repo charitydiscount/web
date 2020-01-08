@@ -129,9 +129,9 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
             //ratings not loaded
         }
 
-        let openShop = this.props.match.params.shopName;
-        if (openShop) {
-            this.onSearchUpdate(openShop);
+        let searchShop = this.props.match.params.shopName;
+        if (searchShop) {
+            this.onSearchUpdate(searchShop);
         }
 
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
@@ -214,8 +214,8 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                 });
             } else if (sortType === 'ascCommission' || sortType === 'descCommission') {
                 shopsFilled.sort(function (x, y) {
-                    let a = parseFloat(x.sortCommission),
-                        b = parseFloat(y.sortCommission);
+                    let a = parseFloat(x.commission),
+                        b = parseFloat(y.commission);
                     if (sortType === 'ascCommission') {
                         if (a > b) return 1;
                         if (a < b) return -1;

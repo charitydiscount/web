@@ -114,7 +114,7 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                             id={'shop.cashback'}
                             defaultMessage="Cashback:"
                         />
-                        {this.props.shop.commission}
+                        {this.props.shop.uiCommission}
                     </h4>
                     <h6>
                         <FormattedMessage
@@ -204,7 +204,9 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                                 id={'shop.category'}
                                 defaultMessage="Category:"
                             />
-                            <FormattedMessage id={this.props.shop.category.replace(/\s/g, '')}/>
+                            {this.props.shop.category &&
+                                <FormattedMessage id={this.props.shop.category.replace(/\s/g, '')}/>
+                            }
                         </h5>
                         <div className="s_product_text" style={{marginTop: 20, marginBottom: 20}}>
                             <div className="card_area p_20">

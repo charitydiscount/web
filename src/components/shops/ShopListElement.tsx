@@ -63,7 +63,7 @@ class ShopListElement extends React.Component<ShopListElementProps & InjectedInt
                             onClick={() => this.openModal()}
                             style={{cursor: 'pointer'}}
                         >
-                            <h6 className="blue-color">{this.props.shop.commission}</h6>
+                            <h6 className="blue-color">{this.props.shop.uiCommission}</h6>
                             <div className="f_p_img">
                                 <img
                                     className="img-fluid img-min img"
