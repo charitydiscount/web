@@ -36,12 +36,10 @@ interface IWalletState {
     //sort commissions
     comSortDateAsc: string,
     comSortStatusAsc: string,
-    comSortAmountAsc: string,
 
     //sort transactions
     tranSortDateAsc: string,
-    tranSortTypeAsc: string,
-    tranSortAmount: string
+    tranSortTypeAsc: string
 }
 
 class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
@@ -61,10 +59,8 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
             causes: [],
             comSortDateAsc: 'true',
             comSortStatusAsc: '',
-            comSortAmountAsc: '',
             tranSortDateAsc: 'true',
             tranSortTypeAsc: '',
-            tranSortAmount: ''
         };
     }
 
@@ -152,13 +148,6 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                             return a.type < b.type ? -1 : 1;
                         }
                     }
-                    if (this.state.tranSortAmount) {
-                        if (this.state.tranSortAmount === "true") {
-                            return a.amount < b.amount ? -1 : 1;
-                        } else {
-                            return a.amount > b.amount ? -1 : 1;
-                        }
-                    }
                     return 0;
                 }
             ).map((value, index) => {
@@ -185,13 +174,6 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                             return a.status > b.status ? -1 : 1;
                         } else {
                             return a.status < b.status ? -1 : 1;
-                        }
-                    }
-                    if (this.state.comSortAmountAsc) {
-                        if (this.state.comSortAmountAsc === "true") {
-                            return a.amount < b.amount ? -1 : 1;
-                        } else {
-                            return a.amount > b.amount ? -1 : 1;
                         }
                     }
                     return 0;
@@ -285,12 +267,10 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                                                    this.setState(
                                                                        {
                                                                            comSortDateAsc: "false",
-                                                                           comSortAmountAsc: '',
                                                                            comSortStatusAsc: ''
                                                                        }) :
                                                                    this.setState({
                                                                        comSortDateAsc: "true",
-                                                                       comSortAmountAsc: '',
                                                                        comSortStatusAsc: ''
                                                                    })
                                                            }}>
@@ -314,12 +294,10 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                                                        this.setState(
                                                                            {
                                                                                comSortStatusAsc: "false",
-                                                                               comSortAmountAsc: '',
                                                                                comSortDateAsc: ''
                                                                            }) :
                                                                        this.setState({
                                                                            comSortStatusAsc: "true",
-                                                                           comSortAmountAsc: '',
                                                                            comSortDateAsc: ''
                                                                        })
                                                                }}>
@@ -334,33 +312,10 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                                         </a>
                                                     </div>
                                                     <div className="country">
-                                                        <a href={emptyHrefLink}
-                                                           onClick={
-                                                               event => {
-                                                                   event.preventDefault();
-                                                                   this.state.comSortAmountAsc
-                                                                   && this.state.comSortAmountAsc === "true" ?
-                                                                       this.setState(
-                                                                           {
-                                                                               comSortAmountAsc: "false",
-                                                                               comSortStatusAsc: '',
-                                                                               comSortDateAsc: ''
-                                                                           }) :
-                                                                       this.setState({
-                                                                           comSortAmountAsc: "true",
-                                                                           comSortStatusAsc: '',
-                                                                           comSortDateAsc: ''
-                                                                       })
-                                                               }}>
-                                                            <FormattedMessage
-                                                                id="wallet.table.amount"
-                                                                defaultMessage="Amount"
-                                                            />
-                                                            {this.state.comSortAmountAsc && this.state.comSortAmountAsc === "true" &&
-                                                            <i className="fa fa-arrow-down"/>}
-                                                            {this.state.comSortAmountAsc && this.state.comSortAmountAsc === "false" &&
-                                                            <i className="fa fa-arrow-up"/>}
-                                                        </a>
+                                                        <FormattedMessage
+                                                            id="wallet.table.amount"
+                                                            defaultMessage="Amount"
+                                                        />
                                                     </div>
                                                     <div className="country">
                                                         <FormattedMessage
@@ -396,12 +351,10 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                                                    this.setState(
                                                                        {
                                                                            tranSortDateAsc: "false",
-                                                                           tranSortAmount: '',
                                                                            tranSortTypeAsc: ''
                                                                        }) :
                                                                    this.setState({
                                                                        tranSortDateAsc: "true",
-                                                                       tranSortAmount: '',
                                                                        tranSortTypeAsc: ''
                                                                    })
                                                            }}>
@@ -424,13 +377,11 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                                                    this.setState(
                                                                        {
                                                                            tranSortTypeAsc: "false",
-                                                                           tranSortDateAsc: '',
-                                                                           tranSortAmount: ''
+                                                                           tranSortDateAsc: ''
                                                                        }) :
                                                                    this.setState({
                                                                        tranSortTypeAsc: "true",
-                                                                       tranSortDateAsc: '',
-                                                                       tranSortAmount: ''
+                                                                       tranSortDateAsc: ''
                                                                    })
                                                            }}>
                                                             <FormattedMessage
@@ -444,34 +395,10 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                                         </a>
                                                     </div>
                                                     <div className="country">
-                                                        <a href={emptyHrefLink}
-                                                           onClick={
-                                                               event => {
-                                                                   event.preventDefault();
-                                                                   this.state.tranSortAmount
-                                                                   && this.state.tranSortAmount === "true" ?
-                                                                       this.setState(
-                                                                           {
-                                                                               tranSortAmount: "false",
-                                                                               tranSortDateAsc: '',
-                                                                               tranSortTypeAsc: ''
-                                                                           }) :
-                                                                       this.setState({
-                                                                           tranSortAmount: "true",
-                                                                           tranSortDateAsc: '',
-                                                                           tranSortTypeAsc: ''
-                                                                       })
-                                                               }
-                                                           }>
-                                                            <FormattedMessage
-                                                                id="wallet.table.amount"
-                                                                defaultMessage="Amount"
-                                                            />
-                                                            {this.state.tranSortAmount && this.state.tranSortAmount === "true" &&
-                                                            <i className="fa fa-arrow-down"/>}
-                                                            {this.state.tranSortAmount && this.state.tranSortAmount === "false" &&
-                                                            <i className="fa fa-arrow-up"/>}
-                                                        </a>
+                                                        <FormattedMessage
+                                                            id="wallet.table.amount"
+                                                            defaultMessage="Amount"
+                                                        />
                                                     </div>
                                                     <div className="country">
                                                         <FormattedMessage

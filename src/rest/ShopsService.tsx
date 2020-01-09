@@ -83,12 +83,13 @@ export async function fetchFavoriteShops() {
     let favoriteShops = Object.values(
         (favoriteShopsDoc.data() as FavoriteShopsDto).programs
     );
-    const favShopsId = favoriteShops.map(value => value.id);
+
     const shops = getLocalStorage(StorageKey.SHOPS);
     if (shops) {
-        let stEntry = JSON.parse(shops) as ShopDto[];
-        stEntry = stEntry.filter(value => favShopsId.includes(value.id));
-        favoriteShops = stEntry;
+        const favShopsId = favoriteShops.map(value => value.id);
+        let shopsFromStorage = JSON.parse(shops) as ShopDto[];
+        shopsFromStorage = shopsFromStorage.filter(value => favShopsId.includes(value.id));
+        favoriteShops = shopsFromStorage;
     }
     setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favoriteShops));
 

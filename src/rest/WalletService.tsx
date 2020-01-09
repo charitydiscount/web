@@ -15,10 +15,11 @@ export interface WalletInfoDto {
 }
 
 export interface TransactionDto {
-    amount: number;
-    date: firestore.Timestamp;
-    target: string;
-    type: string;
+    amount: number,
+    currency: string,
+    date: firestore.Timestamp,
+    target: string,
+    type: string
 }
 
 export function fetchWalletInfo() {
@@ -57,6 +58,7 @@ export function fetchWalletInfo() {
 export interface CommissionDto {
     amount: number;
     createdAt: firestore.Timestamp;
+    currency: string,
     shopId: string;
     program: ProgramDto
     status: string;

@@ -55,7 +55,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps & I
                     <div className="country">
                         <h3>{cmTitle}</h3>
                     </div>
-                    <div className="country">{this.props.commission.amount.toFixed(1)}</div>
+                    <div className="country">{this.props.commission.amount.toFixed(1)} {this.props.commission.currency}</div>
                     {inactiveShop &&
                     <div className="country">
                         <a title={this.props.intl.formatMessage({id: "wallet.commission.shop.inactive"})}

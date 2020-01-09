@@ -70,7 +70,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps & 
                             {txTitle}
                         </h3>
                     </div>
-                    <div className="country">{this.props.transaction.amount.toFixed(1)}</div>
+                    <div className="country">{this.props.transaction.amount.toFixed(1)} {this.props.transaction.currency}</div>
                     <div className="country">
                         {txType === TxType.DONATION.toString() ?
                             <a href={Routes.CAUSES}>
