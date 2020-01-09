@@ -5,7 +5,7 @@ import {
     setLocalStorage,
 } from '../helper/StorageHelper';
 import {FirebaseTable, StorageKey} from '../helper/Constants';
-import {computeUrl, getUserKeyFromStorage} from '../helper/AppHelper';
+import {computeUrl, getUserKeyFromStorage, roundCommission} from '../helper/AppHelper';
 import {getPercentage} from './ConfigService';
 import {firestore} from 'firebase/app';
 
@@ -19,30 +19,31 @@ export interface ShopDtoWrapper {
 }
 
 export interface ShopDto {
-    category: string;
-    defaultLeadCommissionAmount: string;
-    defaultLeadCommissionType: string;
-    defaultSaleCommissionRate: string;
-    defaultSaleCommissionType: string;
-    logoPath: string;
-    mainUrl: string;
-    id: number;
-    name: string;
-    status: string;
-    uniqueCode: string;
-    averagePaymentTime: number;
-    sellingCountries: SellingCountriesDto[];
+    currency: string,
+    category: string,
+    defaultLeadCommissionAmount: string,
+    defaultLeadCommissionType: string,
+    defaultSaleCommissionRate: string,
+    defaultSaleCommissionType: string,
+    logoPath: string,
+    mainUrl: string,
+    id: number,
+    name: string,
+    status: string,
+    uniqueCode: string,
+    averagePaymentTime: number,
+    sellingCountries: SellingCountriesDto[],
 
     //reviews
-    totalReviews: number;
-    reviewsRating: number;
+    totalReviews: number,
+    reviewsRating: number,
 
     //cashback
-    commission: string;
-    uiCommission: string;
+    commission: string,
+    uiCommission: string,
 
     //linkUrl
-    computeUrl: string;
+    computeUrl: string
 }
 
 export interface SellingCountriesDto {
@@ -54,6 +55,7 @@ export interface SellingCountriesDto {
 
 export var ShopDtoMap = {
     category: 'category',
+    currency: 'currency',
     defaultLeadCommissionAmount: 'defaultLeadCommissionAmount',
     defaultLeadCommissionType: 'defaultLeadCommissionType',
     defaultSaleCommissionRate: 'defaultSaleCommissionRate',
@@ -216,16 +218,16 @@ export function getProgramCommission(program, normalCommission) {
     if (program.defaultSaleCommissionRate != null) {
         switch (CommissionType[program.defaultSaleCommissionType].toString()) {
             case CommissionType.fixed.toString():
-                commission = (parseFloat(program.defaultSaleCommissionRate) * percent)
-                    .toFixed(2) + ' RON';
+                commission = roundCommission(parseFloat(program.defaultSaleCommissionRate) * percent) + ' ' +
+                    program.currency;
                 break;
             case CommissionType.variable.toString():
-                commission = (normalCommission ? '' : '~ ') + (parseFloat(program.defaultSaleCommissionRate) * percent)
-                    .toFixed(2) + ' %';
+                commission = (normalCommission ? '' : '~ ') + roundCommission(parseFloat(program.defaultSaleCommissionRate) * percent)
+                    + ' %';
                 break;
             case CommissionType.percent.toString():
-                commission = (parseFloat(program.defaultSaleCommissionRate) * percent)
-                    .toFixed(2) + ' %';
+                commission = roundCommission(parseFloat(program.defaultSaleCommissionRate) * percent)
+                    + ' %';
                 break;
         }
     }
@@ -234,12 +236,12 @@ export function getProgramCommission(program, normalCommission) {
         program.defaultSaleCommissionRate == null) {
         switch (CommissionType[program.defaultLeadCommissionType].toString()) {
             case CommissionType.variable.toString():
-                commission = (normalCommission ? '' : '~ ') + (parseFloat(program.defaultLeadCommissionAmount) * percent)
-                    .toFixed(2) + ' RON';
+                commission = (normalCommission ? '' : '~ ') + roundCommission(parseFloat(program.defaultLeadCommissionAmount) * percent)
+                    + ' ' + program.currency;
                 break;
             case CommissionType.fixed.toString():
-                commission = (parseFloat(program.defaultLeadCommissionAmount) * percent)
-                    .toFixed(2) + ' RON';
+                commission = roundCommission(parseFloat(program.defaultLeadCommissionAmount) * percent)
+                    + ' ' + program.currency;
                 break;
             default:
         }

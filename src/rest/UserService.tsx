@@ -2,6 +2,7 @@ import {DB, store} from "../index";
 import {UserActions} from "../components/login/UserActions";
 import {FirebaseTable} from "../helper/Constants";
 import {getUserKeyFromStorage} from "../helper/AppHelper";
+import {firestore} from 'firebase/app';
 
 export interface UserDto {
     accounts: AccountDto[]
@@ -34,32 +35,12 @@ export function updateUser(user: UserDto, userFromIndex) {
 }
 
 export function updateUserAccount(accountName, accountIban) {
-    return new Promise((resolve, reject) => {
-        let userKey = getUserKeyFromStorage();
-        if (userKey) {
-            let docRef = DB.collection(FirebaseTable.USERS).doc(userKey);
-            docRef.get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        let accountList = [] as AccountDto[];
-                        accountList.push({
-                            name: accountName,
-                            iban: accountIban,
-                            nickname: ''
-                        });
-                        docRef.update({
-                            accounts: accountList
-                        });
-                        resolve();
-                    } else {
-                        reject();
-                    }
-                }).catch(() =>
-                reject()
-            );
-        } else {
-            reject();
-        }
+    return DB.collection(FirebaseTable.USERS).doc(getUserKeyFromStorage()).update({
+        accounts: firestore.FieldValue.arrayUnion(...[{
+            name: accountName,
+            iban: accountIban,
+            nickname: ''
+        }])
     });
 }
 

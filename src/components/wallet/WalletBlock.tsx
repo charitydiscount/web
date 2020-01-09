@@ -7,7 +7,7 @@ import GenericInput from "../input/GenericInput";
 import {createOtpRequest, createRequest, validateOtpCode} from "../../rest/WalletService";
 import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
-import {emptyBackgroundCss} from "../../helper/AppHelper";
+import {emptyBackgroundCss, roundMoney} from "../../helper/AppHelper";
 import FadeLoader from 'react-spinners/FadeLoader';
 import {AccountDto, getUserAccountInfo, updateUserAccount} from "../../rest/UserService";
 import {publicUrl} from "../../index";
@@ -342,7 +342,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                             <h6>
                                                 <FormattedMessage id="wallet.block.available.amount"
                                                                   defaultMessage="Available amount: "/>
-                                                <i className="blue-color">{this.props.approved.toFixed(1) + ' RON'}</i>
+                                                <i className="blue-color">{roundMoney(this.props.approved) + ' RON'}</i>
                                             </h6>
                                             <h6>
                                                 <FormattedMessage id="wallet.block.minimum.amount"
@@ -396,7 +396,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                             <h6>
                                                 <FormattedMessage id="wallet.block.available.amount"
                                                                   defaultMessage="Available amount: "/>
-                                                <i className="blue-color">{this.props.approved.toFixed(1) + ' RON'}</i>
+                                                <i className="blue-color">{roundMoney(this.props.approved) + ' RON'}</i>
                                             </h6>
                                             <GenericInput type={InputType.NUMBER} id={'amount-text-field-donation'}
                                                           max={this.props.approved.toString()}
@@ -435,11 +435,11 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                 <div className="col-lg-4 total_rate">
                     <div className="box_total">
                         <h5>{this.props.title}</h5>
-                        <h4>{this.props.approved ? this.props.approved.toFixed(1) : 0}</h4>
+                        <h4>{this.props.approved ? roundMoney(this.props.approved) : 0}</h4>
                         {this.props.pendingExists ?
                             <div>
                                 <h6><FormattedMessage id="wallet.block.pending" defaultMessage="Pending:"/>
-                                    {this.props.pending ? this.props.pending.toFixed(1) + " RON" : 0}</h6>
+                                    {this.props.pending ? roundMoney(this.props.pending) + ' RON' : 0}</h6>
                                 {this.props.money ?
                                     <div>
                                         <div>

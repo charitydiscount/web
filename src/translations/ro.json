@@ -43,7 +43,8 @@
   "review.placeholder": "Parere",
   "review.submit.button": "Trimite parerea",
   "wallet.cashback": "Bani disponibili",
-  "wallet.charity.points": "Charity points",
+  "wallet.charity.points": "Puncte bonus",
+  "wallet.cashout": "Retragere",
   "wallet.history": "Istoric",
   "wallet.block.pending": "In asteptare:",
   "wallet.block.cashout": "Retrage",
@@ -150,5 +151,8 @@
   "shops.filters.sorting.atoz.asc" : "Nume ↑",
   "shops.filters.sorting.atoz.desc" : "Nume ↓",
   "cause.contribute.button": "Contribuie",
-  "cause.donated": "Donat: "
+  "cause.donated": "Donat: ",
+  "RON": "RON",
+  "EUR": "EUR",
+  "Charity Points": "Puncte bonus"
 }

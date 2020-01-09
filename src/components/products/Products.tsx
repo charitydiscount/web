@@ -5,7 +5,7 @@ import {NavigationsAction} from "../../redux/actions/NavigationsAction";
 import {Stages} from "../helper/Stages";
 import {fetchConfigInfo} from "../../rest/ConfigService";
 import ReactPaginate from 'react-paginate';
-import {spinnerCss} from "../../helper/AppHelper";
+import {roundCommission, spinnerCss} from "../../helper/AppHelper";
 import GenericInput from "../input/GenericInput";
 import {FadeLoader} from "react-spinners";
 import {
@@ -164,8 +164,8 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
         }
     }
 
-    searchFunction(event){
-        if(event.keyCode === 13) {
+    searchFunction(event) {
+        if (event.keyCode === 13) {
             this.startSearch();
         }
     }
@@ -187,9 +187,9 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
                 .map(product => {
                     let shop = getShopByName(product.shopName);
                     if (shop) {
-                        product.commission = ((product.price * parseFloat(shop.commission)) / 100).toFixed(2);
+                        product.commission = roundCommission((product.price * parseFloat(shop.commission)) / 100);
                     }
-                    return product
+                    return product;
                 });
         }
 

@@ -3,7 +3,7 @@ import {CommissionStatus, emptyHrefLink} from "../../helper/Constants";
 import {getShopById, ShopDto} from "../../rest/ShopsService";
 import {InjectedIntlProps, injectIntl} from "react-intl";
 import {CommissionDto} from "../../rest/WalletService";
-import {dateOptions} from "../../helper/AppHelper";
+import {dateOptions, roundMoney} from "../../helper/AppHelper";
 
 interface IWalletTransactionRowProps {
     commission: CommissionDto;
@@ -28,15 +28,11 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps & I
         let cmTitle;
         switch (commissionStatus) {
             case CommissionStatus.paid.toString():
-                cmTitle = <i className="fa fa-money" aria-hidden="true"
+                cmTitle = <i className="fa fa-money" aria-hidden="true" style={{color: 'green'}}
                              title={this.props.intl.formatMessage({id: "wallet.tx.status.paid"})}/>;
                 break;
-            case CommissionStatus.accepted.toString():
-                cmTitle = <i className="fa fa-thumbs-up" aria-hidden="true" title={
-                    this.props.intl.formatMessage({id: "wallet.tx.status.approved"})}/>;
-                break;
             case CommissionStatus.rejected.toString():
-                cmTitle = <i className="fa fa-ban" aria-hidden="true" title={
+                cmTitle = <i className="fa fa-ban" aria-hidden="true" style={{color: 'red'}} title={
                     this.props.intl.formatMessage({id: "wallet.tx.status.rejected"})}/>;
                 break;
             default:
@@ -55,7 +51,8 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps & I
                     <div className="country">
                         <h3>{cmTitle}</h3>
                     </div>
-                    <div className="country">{this.props.commission.amount.toFixed(1)} {this.props.commission.currency}</div>
+                    <div
+                        className="country">{roundMoney(this.props.commission.amount)} {this.props.intl.formatMessage({id: this.props.commission.currency})}</div>
                     {inactiveShop &&
                     <div className="country">
                         <a title={this.props.intl.formatMessage({id: "wallet.commission.shop.inactive"})}

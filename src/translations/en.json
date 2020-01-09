@@ -44,6 +44,7 @@
   "review.submit.button": "Submit review",
   "wallet.cashback": "Cashback",
   "wallet.charity.points": "Charity points",
+  "wallet.cashout": "Cashout",
   "wallet.history": "History",
   "wallet.block.pending": "Pending:",
   "wallet.block.cashout": "Cashout",
@@ -150,5 +151,8 @@
   "shops.filters.sorting.atoz.asc": "Name ↑",
   "shops.filters.sorting.atoz.desc": "Name ↓",
   "cause.contribute.button": "Contribute",
-  "cause.donated": "Donated: "
+  "cause.donated": "Donated: ",
+  "RON": "RON",
+  "EUR": "EUR",
+  "Charity Points": "Charity points"
 }

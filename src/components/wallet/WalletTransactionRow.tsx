@@ -4,7 +4,7 @@ import {getLocalStorage} from "../../helper/StorageHelper";
 import {CauseDto} from "../../rest/CauseService";
 import {Routes} from "../helper/Routes";
 import {InjectedIntlProps, injectIntl} from "react-intl";
-import {dateOptions, getUserFromStorage} from "../../helper/AppHelper";
+import {dateOptions, getUserFromStorage, roundMoney} from "../../helper/AppHelper";
 import {LoginDto} from "../login/LoginComponent";
 import {TransactionDto} from "../../rest/WalletService";
 
@@ -31,20 +31,17 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps & 
                     target = cause.details.title;
                 }
 
-                txTitle = <i className="fa fa-heart" aria-hidden="true"
+                txTitle = <i className="fa fa-heart" aria-hidden="true" style={{color: 'red'}}
                              title={this.props.intl.formatMessage({id: "wallet.tx.type.donation"})}/>;
                 break;
             case TxType.BONUS.toString():
                 target = this.props.intl.formatMessage({id: "wallet.charity.points"});
-                txTitle = <i className="fa fa-thumbs-up" aria-hidden="true" title={
+                txTitle = <i className="fa fa-thumbs-up" aria-hidden="true" style={{color: 'blue'}} title={
                     this.props.intl.formatMessage({id: "wallet.tx.type.bonus"})
                 }/>;
                 break;
             case TxType.CASHOUT.toString():
-                if (user) {
-                    const userParsed = JSON.parse(user) as LoginDto;
-                    target = userParsed.displayName;
-                }
+                target = this.props.intl.formatMessage({id: "wallet.cashout"});
                 txTitle = <i className="fa fa-money" aria-hidden="true"
                              title={this.props.intl.formatMessage({id: "wallet.tx.type.cashout"})}/>;
                 break;
@@ -53,7 +50,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps & 
                     const userParsed = JSON.parse(user) as LoginDto;
                     target = userParsed.displayName;
                 }
-                txTitle = <i className="fa fa-money" aria-hidden="true" title={
+                txTitle = <i className="fa fa-money" aria-hidden="true" style={{color: 'green'}} title={
                     this.props.intl.formatMessage({id: "wallet.tx.type.commission"})
                 }/>;
                 break;
@@ -70,7 +67,8 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps & 
                             {txTitle}
                         </h3>
                     </div>
-                    <div className="country">{this.props.transaction.amount.toFixed(1)} {this.props.transaction.currency}</div>
+                    <div
+                        className="country">{roundMoney(this.props.transaction.amount)} {this.props.intl.formatMessage({id: this.props.transaction.currency})}</div>
                     <div className="country">
                         {txType === TxType.DONATION.toString() ?
                             <a href={Routes.CAUSES}>

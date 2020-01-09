@@ -64,7 +64,6 @@ export function getUserKeyFromStorage() {
     }
     //the app can't work without user key from storage, so when reloading it will be created again
     window.location.reload();
-    return null;
 }
 
 export function getUserFromStorage() {
@@ -90,6 +89,14 @@ export function getUrlParameter(param: string) {
     return results === null
         ? ''
         : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+export function roundCommission(comission) {
+    return comission.toFixed(2)
+}
+
+export function roundMoney(money) {
+    return money.toFixed(2);
 }
 
 export const dateOptions = {
