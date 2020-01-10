@@ -119,9 +119,15 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
                                         </p>
                                     </div>
                                     <div className="info_item">
-                                        <i className="fa fa-facebook"></i>
+                                        <a href="https://www.facebook.com/charitydiscount"
+                                           target="_blank"
+                                           rel="noopener noreferrer">
+                                            <i className="fa fa-facebook"></i>
+                                        </a>
                                         <h6>
-                                            <a href={emptyHrefLink}>Charity Discount Facebook</a>
+                                            <a href="https://www.facebook.com/charitydiscount"
+                                               target="_blank"
+                                               rel="noopener noreferrer">Charity Discount Facebook</a>
                                         </h6>
                                     </div>
                                     <br/>

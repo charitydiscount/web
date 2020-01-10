@@ -75,7 +75,8 @@ class FooterLayout extends React.Component {
                                         />
                                     </h6>
                                     <div className="f_social">
-                                        <a href={emptyHrefLink}>
+                                        <a href="https://www.facebook.com/charitydiscount" target="_blank"
+                                          rel="noopener noreferrer">
                                             <i className="fa fa-facebook"></i>
                                         </a>
                                         <a href="https://www.instagram.com/charitydiscount/" target="_blank"
