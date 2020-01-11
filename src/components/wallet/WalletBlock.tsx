@@ -1,9 +1,8 @@
 import * as React from "react";
-import {emptyHrefLink, InputType} from "../../helper/Constants";
+import {emptyHrefLink} from "../../helper/Constants";
 import Modal from 'react-awesome-modal';
 import {CauseDto} from "../../rest/CauseService";
 import CauseDonate from "./CauseDonate";
-import GenericInput from "../input/GenericInput";
 import {createOtpRequest, createRequest, validateOtpCode} from "../../rest/WalletService";
 import {FormattedMessage} from 'react-intl';
 import {InjectedIntlProps, injectIntl} from "react-intl";
@@ -12,6 +11,11 @@ import FadeLoader from 'react-spinners/FadeLoader';
 import {AccountDto, getUserAccountInfo, updateUserAccount} from "../../rest/UserService";
 import {publicUrl} from "../../index";
 import {Routes} from "../helper/Routes";
+import {TextField} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 
 interface IWalletBlockState {
     donateVisible: boolean,
@@ -292,19 +296,25 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                                               defaultMessage="A mail was sent with the code to validate the
                                                            transaction."/>
                                         </h3>
-                                        <GenericInput type={InputType.NUMBER} id={"otpCode"}
-                                                      handleChange={event => this.setState({otpCode: parseInt(event.target.value)})}
-                                                      placeholder={
-                                                          this.props.intl.formatMessage({id: "wallet.block.otp.request.placeholder"})
-                                                      }/>
-                                        <h3>
-                                            <a href={emptyHrefLink} onClick={this.creatRequest}>
-                                                <i className="fa fa-thumbs-up blue-color" aria-hidden="true">
-                                                    <FormattedMessage id="wallet.block.otp.proceed"
-                                                                      defaultMessage="Validate "/>
-                                                </i>
-                                            </a>
-                                        </h3>
+
+                                        <TextField id="otpCode"
+                                                   variant="filled"
+                                                   style={{width: '100%'}}
+                                                   label={this.props.intl.formatMessage({id: "wallet.block.otp.request.placeholder"})}
+                                                   onChange={event => this.setState({otpCode: parseInt(event.target.value)})}
+                                                   value={this.state.otpCode}/>
+
+                                        <div className="p_05">
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={this.creatRequest}
+                                                startIcon={<ThumbUpAltIcon/>}
+                                            >
+                                                <FormattedMessage id="wallet.block.otp.proceed"
+                                                                  defaultMessage="Validate "/>
+                                            </Button>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -326,18 +336,18 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                 <td>
                                     <div className="shipping_box">
                                         <React.Fragment>
-                                            <GenericInput type={InputType.TEXT} id={"name"}
-                                                          handleChange={event => this.setState({name: event.target.value})}
-                                                          value={this.state.name}
-                                                          placeholder={
-                                                              this.props.intl.formatMessage({id: "wallet.block.cashout.name"})
-                                                          }/>
-                                            <GenericInput type={InputType.TEXT} id={"iban"}
-                                                          handleChange={event => this.setState({iban: event.target.value})}
-                                                          value={this.state.iban}
-                                                          placeholder={
-                                                              this.props.intl.formatMessage({id: "wallet.block.cashout.iban"})
-                                                          }/>
+                                            <TextField id="name"
+                                                       label={this.props.intl.formatMessage({id: "wallet.block.cashout.name"})}
+                                                       onChange={event => this.setState({name: event.target.value})}
+                                                       variant="filled"
+                                                       style={{width: '100%'}}
+                                                       value={this.state.name}/>
+                                            <TextField id="iban"
+                                                       variant="filled"
+                                                       style={{width: '100%'}}
+                                                       label={this.props.intl.formatMessage({id: "wallet.block.cashout.iban"})}
+                                                       onChange={event => this.setState({iban: event.target.value})}
+                                                       value={this.state.iban}/>
 
                                             <h6>
                                                 <FormattedMessage id="wallet.block.available.amount"
@@ -349,23 +359,30 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                                                   defaultMessage="Minimum amount: "/>
                                                 <i className="blue-color">{'50 RON'}</i>
                                             </h6>
-                                            <GenericInput type={InputType.NUMBER} id={'amount-text-field-cashout'}
-                                                          max={this.props.approved.toString()}
-                                                          handleChange={event => this.setState({amount: event.target.value})}
-                                                          value={this.state.amount}
-                                                          min={"50"}
-                                                          step={0.1}
-                                                          placeholder={
-                                                              this.props.intl.formatMessage({id: "wallet.table.amount"})
-                                                          }/>
-                                            <h3>
-                                                <a href={emptyHrefLink} onClick={this.cashout}>
-                                                    <i className="fa fa-money blue-color" aria-hidden="true">
-                                                        <FormattedMessage id="wallet.block.cashout"
-                                                                          defaultMessage="Cashout "/>
-                                                    </i>
-                                                </a>
-                                            </h3>
+
+                                            <TextField id="amount-text-field-cashout"
+                                                       type="number"
+                                                       variant="filled"
+                                                       style={{width: '100%'}}
+                                                       inputProps={{
+                                                           min: "50",
+                                                           step: "0.1"
+                                                       }}
+                                                       label={this.props.intl.formatMessage({id: "wallet.table.amount"})}
+                                                       onChange={event => this.setState({amount: event.target.value})}
+                                                       value={this.state.amount}/>
+
+                                            <div className="p_05">
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={this.cashout}
+                                                    startIcon={<AttachMoneyIcon/>}
+                                                >
+                                                    <FormattedMessage id="wallet.block.cashout"
+                                                                      defaultMessage="Cashout "/>
+                                                </Button>
+                                            </div>
                                         </React.Fragment>
                                     </div>
                                 </td>
@@ -398,23 +415,29 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                                                                   defaultMessage="Available amount: "/>
                                                 <i className="blue-color">{roundMoney(this.props.approved) + ' RON'}</i>
                                             </h6>
-                                            <GenericInput type={InputType.NUMBER} id={'amount-text-field-donation'}
-                                                          max={this.props.approved.toString()}
-                                                          value={this.state.amount}
-                                                          min={"1"}
-                                                          handleChange={event => this.setState({amount: event.target.value})}
-                                                          step={0.1}
-                                                          placeholder={
-                                                              this.props.intl.formatMessage({id: "wallet.table.amount"})
-                                                          }/>
-                                            <h3>
-                                                <a href={emptyHrefLink} onClick={this.donate}>
-                                                    <i className="fa fa-heart blue-color" aria-hidden="true">
-                                                        <FormattedMessage id="wallet.block.donate"
-                                                                          defaultMessage="Donate "/>
-                                                    </i>
-                                                </a>
-                                            </h3>
+
+                                            <TextField id="amount-text-field-donation"
+                                                       type="number"
+                                                       variant="filled"
+                                                       style={{width: '100%'}}
+                                                       inputProps={{
+                                                           step: "0.1"
+                                                       }}
+                                                       label={this.props.intl.formatMessage({id: "wallet.table.amount"})}
+                                                       onChange={event => this.setState({amount: event.target.value})}
+                                                       value={this.state.amount}/>
+
+                                            <div className="p_05">
+                                                <Button
+                                                    variant="contained"
+                                                    color="primary"
+                                                    onClick={this.donate}
+                                                    startIcon={<FavoriteBorderIcon/>}
+                                                >
+                                                    <FormattedMessage id="wallet.block.donate"
+                                                                      defaultMessage="Donate "/>
+                                                </Button>
+                                            </div>
                                         </React.Fragment>
                                     </div>
                                 </td>
@@ -432,7 +455,7 @@ class WalletBlock extends React.Component<IWalletBlockProps & InjectedIntlProps,
                         css={emptyBackgroundCss}
                     />
                 </Modal>
-                <div className="col-lg-4 total_rate">
+                <div className="col-lg-6 total_rate">
                     <div className="box_total">
                         <h5>{this.props.title}</h5>
                         <h4>{this.props.approved ? roundMoney(this.props.approved) : 0}</h4>

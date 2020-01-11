@@ -34,8 +34,7 @@ interface ProductsState {
     searchActive: boolean,
     products: Array<ProductDTO>,
     currentPage: number,
-    sort: string,
-    total: number,
+    total: number
 }
 
 const pageLimit = 50; // products per page
@@ -45,6 +44,12 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
     private searchTerm: string = '';
     private minPrice: string = '';
     private maxPrice: string = '';
+    private sort: string = '';
+
+    private oldSearchTerm: string = '';
+    private oldMinPrice: string = '';
+    private oldMaxPrice: string = '';
+    private oldSort: string = '';
 
     constructor(props: ProductsProps & InjectedIntlProps) {
         super(props);
@@ -53,7 +58,6 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
             searchActive: false,
             products: {} as Array<ProductDTO>,
             currentPage: 0,
-            sort: '',
             total: 50
         };
         this.startSearch = this.startSearch.bind(this);
@@ -72,7 +76,7 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
             currentPage: data.selected as number
         });
         this.searchProducts(data.selected, this.searchTerm, this.minPrice,
-            this.maxPrice, this.state.sort);
+            this.maxPrice, this.sort);
     }
 
     async componentDidMount() {
@@ -120,6 +124,10 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
     }
 
     async searchProducts(pageNumber, title, minPrice, maxPrice, sort) {
+        this.oldMaxPrice = maxPrice;
+        this.oldMinPrice = minPrice;
+        this.oldSort = sort;
+        this.oldSearchTerm = title;
         this.setState({
             isLoading: true
         });
@@ -170,13 +178,17 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
         }
     }
 
-
     async startSearch() {
-        this.setState({
-            currentPage: 0
-        });
+        if (this.oldSearchTerm !== this.searchTerm
+            || this.oldSort !== this.sort
+            || this.oldMinPrice !== this.minPrice
+            || this.oldMaxPrice !== this.maxPrice) {
+            this.setState({
+                currentPage: 0
+            });
 
-        this.searchProducts(0, this.searchTerm, this.minPrice, this.maxPrice, this.state.sort);
+            this.searchProducts(0, this.searchTerm, this.minPrice, this.maxPrice, this.sort);
+        }
     }
 
     public render() {
@@ -267,14 +279,20 @@ class Products extends React.Component<ProductsProps & InjectedIntlProps, Produc
                                             <FormControl fullWidth disabled={!this.state.searchActive}>
                                                 <Select
                                                     MenuProps={{
-                                                        disableScrollLock: true
+                                                        disableScrollLock: true,
+                                                        getContentAnchorEl: null,
+                                                        anchorOrigin: {
+                                                            vertical: "bottom",
+                                                            horizontal: "left"
+                                                        }
                                                     }}
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
-                                                    value={this.state.sort}
-                                                    onChange={event => this.setState({
-                                                        sort: event.target.value as string
-                                                    })}
+                                                    value={this.sort}
+                                                    onChange={event => {
+                                                        this.sort = event.target.value as string;
+                                                        this.startSearch();
+                                                    }}
                                                 >
                                                     <MenuItem value="">
                                                         <FormattedMessage

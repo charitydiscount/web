@@ -351,7 +351,12 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                                             </InputLabel>
                                             <Select
                                                 MenuProps={{
-                                                    disableScrollLock: true
+                                                    disableScrollLock: true,
+                                                    getContentAnchorEl: null,
+                                                    anchorOrigin: {
+                                                        vertical: "bottom",
+                                                        horizontal: "left"
+                                                    }
                                                 }}
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"

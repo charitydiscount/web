@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {emptyHrefLink, StorageKey} from '../../helper/Constants';
+import {StorageKey} from '../../helper/Constants';
 import {FormattedMessage} from 'react-intl';
 import {Link} from 'react-router-dom';
 import {appVersion} from '../../index';

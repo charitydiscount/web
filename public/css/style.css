@@ -5044,16 +5044,6 @@ h6 {
     color: #777777;
 }
 
-.cart_inner .table tbody tr.shipping_area .shipping_box input {
-    height: 40px;
-    outline: none;
-    border: 1px solid #eeeeee;
-    background: #f9f9ff;
-    width: 100%;
-    padding: 0px 15px;
-    margin-bottom: 20px;
-}
-
 .cart_inner .table tbody tr.out_button_area .checkout_btn_inner {
     margin-left: -388px;
 }

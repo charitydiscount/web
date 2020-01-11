@@ -26,7 +26,6 @@ interface IWalletState {
     cashbackPending: number;
     pointsApproved: number;
     pointsPending: number;
-    totalTransactions: number;
     isLoading: boolean;
     isLoadingCommissions: boolean;
     transactions: TransactionDto[];
@@ -51,7 +50,6 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
             cashbackPending: 0,
             pointsApproved: 0,
             pointsPending: 0,
-            totalTransactions: 0,
             transactions: [],
             isLoading: true,
             isLoadingCommissions: true,
@@ -86,9 +84,6 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                     cashbackPending: data.cashback.pending,
                     pointsApproved: data.points.approved,
                     pointsPending: data.points.pending,
-                    totalTransactions: data.transactions
-                        ? data.transactions.length
-                        : 0,
                     transactions: data.transactions,
                     isLoading: false,
                 })
@@ -231,16 +226,6 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                                             approved={
                                                 this.state.pointsApproved
                                             }
-                                            money={false}
-                                        />
-                                        <WalletBlock
-                                            title={this.props.intl.formatMessage(
-                                                {id: 'wallet.history'}
-                                            )}
-                                            approved={
-                                                this.state.totalTransactions
-                                            }
-                                            pendingExists={false}
                                             money={false}
                                         />
                                     </div>
