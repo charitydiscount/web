@@ -16,7 +16,8 @@ export enum FirebaseTable {
     COMMISSIONS = "commissions",
     REQUESTS = "requests",
     OTP_REQUESTS = "otp-requests",
-    OTPS = "otps"
+    OTPS = "otps",
+    PROMOTIONS = "promotions"
 }
 
 export enum TableDocument {
