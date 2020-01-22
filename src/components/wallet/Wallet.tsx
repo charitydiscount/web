@@ -10,7 +10,7 @@ import {
     TransactionDto, WalletWrapper,
 } from '../../rest/WalletService';
 import WalletTransactionRow from './WalletTransactionRow';
-import {emptyHrefLink} from '../../helper/Constants';
+import {CommissionStatus, emptyHrefLink} from '../../helper/Constants';
 import WalletCommissionRow from './WalletCommissionRow';
 import FadeLoader from 'react-spinners/FadeLoader';
 import {spinnerCss} from '../../helper/AppHelper';
@@ -166,9 +166,9 @@ class Wallet extends React.Component<IWalletProps & InjectedIntlProps,
                     }
                     if (this.state.comSortStatusAsc) {
                         if (this.state.comSortStatusAsc === "true") {
-                            return a.status > b.status ? -1 : 1;
+                            return CommissionStatus[a.status] > CommissionStatus[b.status] ? -1 : 1;
                         } else {
-                            return a.status < b.status ? -1 : 1;
+                            return CommissionStatus[a.status] < CommissionStatus[b.status] ? -1 : 1;
                         }
                     }
                     return 0;

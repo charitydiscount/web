@@ -38,9 +38,9 @@ export enum TxType {
 
 export enum CommissionStatus {
     pending,
-    rejected,
     accepted,
-    paid
+    rejected,
+    paid,
 }
 
 export enum StorageKey {
