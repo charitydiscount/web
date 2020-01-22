@@ -5,7 +5,6 @@ import Contact from '../contact/Contact';
 import Shops from '../shops/Shops';
 import LoginActor from '../login/LoginActor';
 import UserInfo from '../login/UserInfo';
-import HotDeals from '../deals/HotDeals';
 import Causes from '../causes/Causes';
 import {getLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
@@ -15,6 +14,7 @@ import Privacy from "../privacy/Privacy";
 import ShopReview from "../shops/ShopReview";
 import Products from "../products/Products";
 import ExternalAccess from "../external/ExternalAccess";
+import Faq from "../faq/Faq";
 
 const PageLayout = () => {
     if (getLocalStorage(StorageKey.USER)) {
@@ -25,7 +25,6 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.CATEGORIES + '/:favShops'} component={Shops}/>
                     <Route exact={true} path={Routes.CATEGORIES} component={Shops}/>
                     <Route exact={true} path={Routes.CATEGORIES + '/shop/:shopName'} component={Shops}/>
-                    <Route exact={true} path={Routes.DEALS} component={HotDeals}/>
                     <Route exact={true} path={Routes.USER} component={UserInfo}/>
                     <Route exact={true} path={Routes.CAUSES} component={Causes}/>
                     <Route exact={true} path={Routes.LOGIN} component={LoginActor}/>
@@ -34,6 +33,7 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.REVIEW + "/:id"} component={ShopReview}/>
                     <Route exact={true} path={Routes.TOS} component={Tos}/>
                     <Route exact={true} path={Routes.PRIVACY} component={Privacy}/>
+                    <Route exact={true} path={Routes.FAQ} component={Faq}/>
                     <Route exact={true} path={Routes.PRODUCTS} component={Products}/>
                     <Route exact={true} path={Routes.AUTH} component={ExternalAccess}/>
                     <Route render={() => <Redirect to={Routes.LOGIN}/>}/>
@@ -47,6 +47,7 @@ const PageLayout = () => {
                     <Route exact={true} path={Routes.LOGIN} component={LoginActor}/>
                     <Route exact={true} path={Routes.TOS} component={Tos}/>
                     <Route exact={true} path={Routes.PRIVACY} component={Privacy}/>
+                    <Route exact={true} path={Routes.FAQ} component={Faq}/>
                     <Route exact={true} path={Routes.AUTH} component={ExternalAccess}/>
                     <Route render={() => <Redirect to={Routes.LOGIN}/>}/>
                 </Switch>

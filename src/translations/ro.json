@@ -68,6 +68,7 @@
   "userinfo.change.password.button": "Schimba parola",
   "userinfo.contact.us.button": "Contacteaza-ne",
   "userinfo.terms.button": "Termeni si conditii",
+  "userinfo.faq.button": "Ajutor",
   "userinfo.privacy.button": "Confidențialitate",
   "userinfo.logout.button": "Delogare",
   "privacy.title": "Confidențialitate",
@@ -127,7 +128,6 @@
   "average.waiting.time.days": " zile",
   "userinfo.about.label": "Despre",
   "footer.info": "Info",
-  "userinfo.faq.button": "FAQ",
   "products.search": "Scrie numele produsului aici...",
   "navigation.products": "Produse",
   "product.shop": "Magazin: ",
@@ -154,5 +154,6 @@
   "cause.donated": "Donat: ",
   "RON": "RON",
   "EUR": "EUR",
-  "Charity Points": "Puncte bonus"
+  "Charity Points": "Puncte bonus",
+  "faq.title": "Ajutor"
 }

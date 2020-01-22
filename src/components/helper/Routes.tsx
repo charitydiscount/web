@@ -4,10 +4,10 @@ export enum Routes {
     USER = "/user",
     CATEGORIES = "/categories",
     CAUSES = "/causes",
-    DEALS = "/deals",
     WALLET = "/wallet",
     REVIEW = "/review",
     TOS = "/tos", //terms of agreement
+    FAQ = "/faq", //frequently asked questions
     PRIVACY = "/privacy",
     PRODUCTS = "/products",
     AUTH = "/auth"

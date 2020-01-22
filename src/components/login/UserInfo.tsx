@@ -299,6 +299,13 @@ class UserInfo extends React.Component<IUserInfoProps & InjectedIntlProps, IUser
                                                 </a>
                                             </div>
                                             <div className="col-md-12 text-center p_05">
+                                                <a href={"/faq"}
+                                                   className="btn submit_btn userInfo_btn genric-btn circle">
+                                                    <FormattedMessage id="userinfo.faq.button"
+                                                                      defaultMessage="Faq"/>
+                                                </a>
+                                            </div>
+                                            <div className="col-md-12 text-center p_05">
                                                 <a href={emptyHrefLink}
                                                    className="btn submit_btn userInfo_btn genric-btn circle"
                                                    onClick={this.handleRequestDeleteAccount}>

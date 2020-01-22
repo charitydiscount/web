@@ -68,6 +68,7 @@
   "userinfo.change.password.button": "Change password",
   "userinfo.contact.us.button": "Contact us",
   "userinfo.terms.button": "Terms of agreement",
+  "userinfo.faq.button": "FAQ",
   "userinfo.privacy.button": "Privacy",
   "userinfo.logout.button": "Logout",
   "privacy.title": "Privacy",
@@ -127,7 +128,6 @@
   "average.waiting.time.days": " days",
   "userinfo.about.label": "About",
   "footer.info": "Info",
-  "userinfo.faq.button": "FAQ",
   "products.search": "Type product name here...",
   "navigation.products": "Products",
   "product.shop": "Shop: ",
@@ -154,5 +154,6 @@
   "cause.donated": "Donated: ",
   "RON": "RON",
   "EUR": "EUR",
-  "Charity Points": "Charity points"
+  "Charity Points": "Charity points",
+  "faq.title": "FAQ"
 }
