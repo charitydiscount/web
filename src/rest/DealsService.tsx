@@ -1,32 +1,39 @@
-import axios from 'axios';
-import {auth, remoteConfig} from '../index';
+import { auth, DB } from '../index';
+import { FirebaseTable } from '../helper/Constants';
 
 export interface PromotionDTO {
-    name: string,
-    promotionEnd: string,
-    promotionStart: string,
-    landingPageLink: string,
-    program: PromotionProgramDto
-    id: number
+    name: string;
+    promotionEnd: string;
+    promotionStart: string;
+    landingPageLink: string;
+    program: PromotionProgramDto;
+    id: number;
 }
 
 export interface PromotionProgramDto {
-    id: string
+    id: string;
+    name: string;
 }
 
-export async function getPromotions(programId: number) {
+export const getPromotions = async (programId: number) => {
     if (!auth.currentUser) {
         return;
     }
 
-    const token = await auth.currentUser.getIdToken();
-    const url = `${remoteConfig.getString(
-        'affiliate_endpoint'
-    )}/programs/${programId}/promotions`;
+    return DB.collection(FirebaseTable.PROMOTIONS)
+        .doc(`${programId}`)
+        .get()
+        .then(snap => (snap.exists ? snapToList(snap.data() || {}) : []));
+};
 
-    const response = await axios.get(url, {
-        headers: {Authorization: `Bearer ${token}`},
-    });
-
-    return response.data as PromotionDTO[];
-}
+const snapToList = (snap: { [promotionId: number]: PromotionDTO }) => {
+    const now = Date.now();
+    return Object.values(snap).reduce<PromotionDTO[]>(
+        (promotions, p) =>
+            Date.parse(p.promotionStart) <= now &&
+            now <= Date.parse(p.promotionEnd)
+                ? promotions.concat(p)
+                : promotions,
+        []
+    );
+};

@@ -1,36 +1,39 @@
-import * as React from "react";
-import {CauseDto} from "../../rest/CauseService";
-import {Routes} from "../helper/Routes";
-import {Redirect} from "react-router";
-import {emptyHrefLink} from "../../helper/Constants";
-import {FormattedMessage} from 'react-intl';
+import * as React from 'react';
+import { CauseDto } from '../../rest/CauseService';
+import { Routes } from '../helper/Routes';
+import { Redirect } from 'react-router';
+import { emptyHrefLink } from '../../helper/Constants';
+import { FormattedMessage } from 'react-intl';
 
 interface ICauseState {
-    redirect: boolean
+    redirect: boolean;
 }
 
 interface ICauseProps {
-    cause: CauseDto
+    cause: CauseDto;
 }
 
 class Cause extends React.Component<ICauseProps, ICauseState> {
-
     constructor(props: Readonly<ICauseProps>) {
         super(props);
         this.state = {
-            redirect: false
-        }
+            redirect: false,
+        };
     }
 
     setRedirect = () => {
         this.setState({
-            redirect: true
-        })
+            redirect: true,
+        });
     };
 
     renderRedirect = () => {
         if (this.state.redirect) {
-            return <Redirect to={Routes.WALLET + "/donate/" + this.props.cause.id}/>;
+            return (
+                <Redirect
+                    to={Routes.WALLET + '/donate/' + this.props.cause.id}
+                />
+            );
         }
     };
 
@@ -40,28 +43,45 @@ class Cause extends React.Component<ICauseProps, ICauseState> {
                 {this.renderRedirect()}
                 <div className="col-lg-6">
                     <h2>{this.props.cause.details.title}</h2>
-                    {this.props.cause.details.funds &&
-                    <h4>
-                        <FormattedMessage
-                            id="cause.donated"
-                            defaultMessage="Donated: "
-                        />
-                        {this.props.cause.details.funds} RON
-                    </h4>
-                    }
-                    <div className="hot_deal_box">
-                        <img src={this.props.cause.details.images[0].url} alt="" className="img-fluid"/>
-                        <div className="content">
-                            <a style={{color: "#fff"}} href={this.props.cause.details.site} target="_blank"
-                               rel="noopener noreferrer">
-                                Website
-                            </a>
+                    {this.props.cause.details.funds && (
+                        <h4>
+                            <FormattedMessage
+                                id="cause.donated"
+                                defaultMessage="Donated: "
+                            />
+                            {this.props.cause.details.funds} RON
+                        </h4>
+                    )}
+                    <a
+                        className="hot_deal_link"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={this.props.cause.details.site}
+                    >
+                        <div className="hot_deal_box">
+                            <img
+                                src={this.props.cause.details.images[0].url}
+                                alt=""
+                                className="img-fluid"
+                            />
+                            <div className="content">
+                                <a
+                                    style={{ color: '#fff' }}
+                                    href={this.props.cause.details.site}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Website
+                                </a>
+                            </div>
                         </div>
-                        <a className="hot_deal_link" href={this.props.cause.details.site} target="_blank"
-                           rel="noopener noreferrer"/>
-                    </div>
-                    <br/>
-                    <a href={emptyHrefLink} className="btn submit_btn genric-btn circle" onClick={this.setRedirect}>
+                    </a>
+                    <br />
+                    <a
+                        href={emptyHrefLink}
+                        className="btn submit_btn genric-btn circle"
+                        onClick={this.setRedirect}
+                    >
                         <FormattedMessage
                             id="cause.contribute.button"
                             defaultMessage="Contribute"
@@ -69,9 +89,8 @@ class Cause extends React.Component<ICauseProps, ICauseState> {
                     </a>
                 </div>
             </React.Fragment>
-        )
+        );
     }
 }
 
 export default Cause;
-
