@@ -1,39 +1,39 @@
 export enum InputType {
     TEXT = 'text',
     NUMBER = 'number',
-    EMAIL = 'email'
+    EMAIL = 'email',
 }
 
 export enum FirebaseTable {
-    CONTACT = "contact",
-    META = "meta",
-    FAVORITE_SHOPS = "favoriteShops",
-    REVIEWS = "reviews",
-    SHOPS = "shops",
-    CASES = "cases",
-    USERS = "users",
-    POINTS = "points",
-    COMMISSIONS = "commissions",
-    REQUESTS = "requests",
-    OTP_REQUESTS = "otp-requests",
-    OTPS = "otps",
-    PROMOTIONS = "promotions"
+    CONTACT = 'contact',
+    META = 'meta',
+    FAVORITE_SHOPS = 'favoriteShops',
+    REVIEWS = 'reviews',
+    SHOPS = 'programs',
+    CASES = 'cases',
+    USERS = 'users',
+    POINTS = 'points',
+    COMMISSIONS = 'commissions',
+    REQUESTS = 'requests',
+    OTP_REQUESTS = 'otp-requests',
+    OTPS = 'otps',
+    PROMOTIONS = 'promotions',
 }
 
 export enum TableDocument {
-    PERFORMANT2 = "2performant",
-    PROGRAMS = "programs"
+    PERFORMANT2 = '2performant',
+    PROGRAMS = 'programs',
 }
 
 export enum StorageRef {
-    PROFILE_PHOTOS = "profilePhotos/"
+    PROFILE_PHOTOS = 'profilePhotos/',
 }
 
 export enum TxType {
     CASHOUT,
     BONUS,
     DONATION,
-    COMMISSION
+    COMMISSION,
 }
 
 export enum CommissionStatus {
@@ -54,18 +54,18 @@ export enum StorageKey {
     REVIEWS = '/reviewsCD',
 
     //SESSION STORAGE
-    PERFORMANET_2_CODE = '/performant2CodeCD'
+    PERFORMANET_2_CODE = '/performant2CodeCD',
 }
 
 export enum ProviderType {
     GOOGLE,
     FACEBOOK,
-    NORMAL
+    NORMAL,
 }
 
 export const emptyHrefLink = '#';
 export const logoPath = '/img/logo.png';
-export const noImagePath = "/img/no-image.jpg";
-export const profilePictureSuffix = "?height=200";
-export const facebookPictureKey = "facebook";
-export const profilePictureDefaultName = "profilePicture.png";
+export const noImagePath = '/img/no-image.jpg';
+export const profilePictureSuffix = '?height=200';
+export const facebookPictureKey = 'facebook';
+export const profilePictureDefaultName = 'profilePicture.png';

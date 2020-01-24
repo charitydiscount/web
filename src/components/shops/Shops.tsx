@@ -1,20 +1,20 @@
 import * as React from 'react';
-import {store} from '../../index';
+import { store } from '../../index';
 import {
     NavigationsAction,
     setFavShopsIconFill,
 } from '../../redux/actions/NavigationsAction';
-import {Stages} from '../helper/Stages';
+import { Stages } from '../helper/Stages';
 import Categories from './Categories';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import {
     setCurrentPage,
     setRatings,
     setShops,
 } from '../../redux/actions/ShopsAction';
 import GenericInput from '../input/GenericInput';
-import {getLocalStorage} from '../../helper/StorageHelper';
-import {StorageKey} from '../../helper/Constants';
+import { getLocalStorage, setLocalStorage } from '../../helper/StorageHelper';
+import { StorageKey } from '../../helper/Constants';
 import ReactPaginate from 'react-paginate';
 import {
     setCurrentCategory,
@@ -22,21 +22,21 @@ import {
 } from '../../redux/actions/CategoriesAction';
 import {
     fetchFavoriteShops,
-    fetchShops,
     ShopDto,
+    fetchPrograms,
 } from '../../rest/ShopsService';
-import {fetchReviewRatings, ReviewRating} from '../../rest/ReviewService';
+import { fetchReviewRatings, ReviewRating } from '../../rest/ReviewService';
 import FadeLoader from 'react-spinners/FadeLoader';
-import {spinnerCss} from '../../helper/AppHelper';
-import {InjectedIntlProps, injectIntl} from 'react-intl';
+import { spinnerCss } from '../../helper/AppHelper';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import ReactAdBlock from '../../ReactAdBlock';
 import ShopListElement from './ShopListElement';
-import {fetchConfigInfo} from '../../rest/ConfigService';
+import { fetchConfigInfo } from '../../rest/ConfigService';
 import FormControl from '@material-ui/core/FormControl';
-import {FormattedMessage} from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import {InputLabel} from "@material-ui/core";
+import { InputLabel } from '@material-ui/core';
 
 interface IShopsProps {
     shops: Array<ShopDto>;
@@ -67,8 +67,10 @@ interface IShopsState {
 
 const pageLimit = 20; // shops per page
 
-class Shops extends React.Component<IShopsProps & InjectedIntlProps,
-    IShopsState> {
+class Shops extends React.Component<
+    IShopsProps & InjectedIntlProps,
+    IShopsState
+> {
     constructor(props: IShopsProps & InjectedIntlProps) {
         super(props);
         this.state = {
@@ -89,9 +91,16 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
             window.location.reload();
         }
         try {
-            let response = await fetchShops();
-            if (response) {
-                this.props.setShops(response as ShopDto[]);
+            const shopsJson = getLocalStorage(StorageKey.SHOPS);
+            let shops: ShopDto[];
+            if (shopsJson) {
+                shops = JSON.parse(shopsJson);
+            } else {
+                shops = await fetchPrograms();
+                setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
+            }
+            if (shops) {
+                this.props.setShops(shops);
                 this.setState({
                     isLoading: false,
                 });
@@ -141,7 +150,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
         this.onSearchUpdate(event.target.value);
     }
 
-    public onSearchUpdate(shopName) {
+    public onSearchUpdate(shopName: string) {
         if (!shopName) {
             const shops = getLocalStorage(StorageKey.SHOPS);
             if (shops) {
@@ -160,9 +169,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                 const shops = JSON.parse(storage) as Array<ShopDto>;
                 if (shops) {
                     const data = shops.filter(shop =>
-                        shop.name
-                            .toLowerCase()
-                            .includes(shopName.toLowerCase())
+                        shop.name.toLowerCase().includes(shopName.toLowerCase())
                     );
                     if (data) {
                         this.props.setShops(data);
@@ -200,7 +207,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
             });
 
             if (sortType === 'ascReview' || sortType === 'descReview') {
-                shopsFilled.sort(function (x, y) {
+                shopsFilled.sort(function(x, y) {
                     let a = x.totalReviews,
                         b = y.totalReviews;
                     if (sortType === 'ascReview') {
@@ -212,8 +219,11 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                     }
                     return 0;
                 });
-            } else if (sortType === 'ascCommission' || sortType === 'descCommission') {
-                shopsFilled.sort(function (x, y) {
+            } else if (
+                sortType === 'ascCommission' ||
+                sortType === 'descCommission'
+            ) {
+                shopsFilled.sort(function(x, y) {
                     let a = parseFloat(x.commission),
                         b = parseFloat(y.commission);
                     if (sortType === 'ascCommission') {
@@ -226,7 +236,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                     return 0;
                 });
             } else if (sortType === 'ascAtoZ' || sortType === 'descAtoZ') {
-                shopsFilled.sort(function (x, y) {
+                shopsFilled.sort(function(x, y) {
                     let a = x.name.toLowerCase(),
                         b = y.name.toLowerCase();
                     if (sortType === 'ascAtoZ') {
@@ -239,7 +249,6 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                     return 0;
                 });
             }
-
 
             this.props.setShops(shopsFilled);
         }
@@ -265,23 +274,23 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
             this.props.shops.length > 0 &&
             this.props.ratings.size > 0
                 ? this.props.shops.map(shop => {
-                    let ratingObj = this.props.ratings.get(shop.uniqueCode);
-                    let rr = 0;
-                    let rn = 0;
-                    if (ratingObj !== undefined) {
-                        rr = ratingObj.rating;
-                        rn = ratingObj.count;
-                    }
-                    shop.reviewsRating = rr;
-                    shop.totalReviews = rn;
+                      let ratingObj = this.props.ratings.get(shop.uniqueCode);
+                      let rr = 0;
+                      let rn = 0;
+                      if (ratingObj !== undefined) {
+                          rr = ratingObj.rating;
+                          rn = ratingObj.count;
+                      }
+                      shop.reviewsRating = rr;
+                      shop.totalReviews = rn;
 
-                    return (
-                        <ShopListElement
-                            key={'list' + shop.name}
-                            shop={shop}
-                        />
-                    );
-                })
+                      return (
+                          <ShopListElement
+                              key={'list' + shop.name}
+                              shop={shop}
+                          />
+                      );
+                  })
                 : null;
 
         let pageCount = 0;
@@ -321,13 +330,13 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
 
         return (
             <React.Fragment>
-                <ReactAdBlock/>
+                <ReactAdBlock />
                 <section className="cat_product_area section_gap">
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-lg-3">
                                 <div className="left_sidebar_area">
-                                    <Categories/>
+                                    <Categories />
                                 </div>
                             </div>
 
@@ -338,7 +347,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                                         id={'search'}
                                         className={'single-input'}
                                         placeholder={this.props.intl.formatMessage(
-                                            {id: 'shops.search'}
+                                            { id: 'shops.search' }
                                         )}
                                         onKeyUp={this.onSearchUpdateEvent}
                                     />
@@ -347,16 +356,19 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                                     <div className="col-lg-3">
                                         <FormControl fullWidth>
                                             <InputLabel>
-                                                <FormattedMessage id={"sort.key"} defaultMessage="Sort"/>
+                                                <FormattedMessage
+                                                    id={'sort.key'}
+                                                    defaultMessage="Sort"
+                                                />
                                             </InputLabel>
                                             <Select
                                                 MenuProps={{
                                                     disableScrollLock: true,
                                                     getContentAnchorEl: null,
                                                     anchorOrigin: {
-                                                        vertical: "bottom",
-                                                        horizontal: "left"
-                                                    }
+                                                        vertical: 'bottom',
+                                                        horizontal: 'left',
+                                                    },
                                                 }}
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
@@ -387,7 +399,9 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                                                         defaultMessage="Sort after name descending"
                                                     />
                                                 </MenuItem>
-                                                <MenuItem value={'ascCommission'}>
+                                                <MenuItem
+                                                    value={'ascCommission'}
+                                                >
                                                     <FormattedMessage
                                                         id={
                                                             'shops.filters.sorting.commission.ascending'
@@ -395,7 +409,9 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
                                                         defaultMessage="Sort after commissions ascending"
                                                     />
                                                 </MenuItem>
-                                                <MenuItem value={'descCommission'}>
+                                                <MenuItem
+                                                    value={'descCommission'}
+                                                >
                                                     <FormattedMessage
                                                         id={
                                                             'shops.filters.sorting.commission.descending'
@@ -473,7 +489,7 @@ class Shops extends React.Component<IShopsProps & InjectedIntlProps,
 
                         <div className="row">
                             <nav
-                                style={{marginTop: 30}}
+                                style={{ marginTop: 30 }}
                                 className="cat_page mx-auto"
                                 aria-label="Page navigation example"
                             >
