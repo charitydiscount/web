@@ -9,13 +9,14 @@ import {
     validateOtpCode,
 } from '../../rest/WalletService';
 import { FormattedMessage } from 'react-intl';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { emptyBackgroundCss, roundMoney } from '../../helper/AppHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import {
     AccountDto,
-    getUserAccountInfo,
+    getUserBankAccounts,
     updateUserAccount,
+    UserDto,
 } from '../../rest/UserService';
 import { publicUrl } from '../../index';
 import { Routes } from '../helper/Routes';
@@ -24,6 +25,7 @@ import Button from '@material-ui/core/Button';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import { connect } from 'react-redux';
 
 interface IWalletBlockState {
     donateVisible: boolean;
@@ -43,17 +45,19 @@ interface IWalletBlockState {
 }
 
 interface IWalletBlockProps {
-    title: string;
+    title: String;
     approved: number;
     pending?: number;
-    pendingExists: boolean;
+    pendingExists?: boolean;
     money: boolean;
     causes?: CauseDto[];
     openDonateWithCaseId?: string;
+    user: UserDto;
+    intl: IntlShape;
 }
 
 class WalletBlock extends React.Component<
-    IWalletBlockProps & InjectedIntlProps,
+    IWalletBlockProps,
     IWalletBlockState
 > {
     constructor(props: IWalletBlockProps) {
@@ -108,11 +112,11 @@ class WalletBlock extends React.Component<
 
     async openCashoutModal() {
         try {
-            let response = await getUserAccountInfo();
-            if (response) {
+            let accounts = await getUserBankAccounts(this.props.user.userId);
+            if (accounts && accounts.length > 0) {
                 this.setState({
-                    name: (response as AccountDto).name,
-                    iban: (response as AccountDto).iban,
+                    name: (accounts[0] as AccountDto).name,
+                    iban: (accounts[0] as AccountDto).iban,
                 });
             }
         } catch (error) {
@@ -719,4 +723,10 @@ class WalletBlock extends React.Component<
     }
 }
 
-export default injectIntl(WalletBlock);
+const mapStateToProps = (state: any) => {
+    return {
+        user: state.user.user,
+    };
+};
+
+export default connect(mapStateToProps)(injectIntl(WalletBlock));

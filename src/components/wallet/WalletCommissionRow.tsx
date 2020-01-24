@@ -1,17 +1,16 @@
 import * as React from 'react';
 import { CommissionStatus, emptyHrefLink } from '../../helper/Constants';
 import { getShopById } from '../../rest/ShopsService';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { CommissionDto } from '../../rest/WalletService';
 import { dateOptions, roundMoney } from '../../helper/AppHelper';
 
 interface IWalletTransactionRowProps {
     commission: CommissionDto;
+    intl: IntlShape;
 }
 
-class WalletCommissionRow extends React.Component<
-    IWalletTransactionRowProps & InjectedIntlProps
-> {
+class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
     public render() {
         let commissionStatus = CommissionStatus[
             this.props.commission.status

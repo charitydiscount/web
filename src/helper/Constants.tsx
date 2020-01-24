@@ -18,6 +18,7 @@ export enum FirebaseTable {
     OTP_REQUESTS = 'otp-requests',
     OTPS = 'otps',
     PROMOTIONS = 'promotions',
+    ACCOUNTS = 'accounts',
 }
 
 export enum TableDocument {

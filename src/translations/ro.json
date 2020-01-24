@@ -43,7 +43,7 @@
   "review.placeholder": "Parere",
   "review.submit.button": "Trimite parerea",
   "wallet.cashback": "Bani disponibili",
-  "wallet.charity.points": "Puncte bonus",
+  "wallet.charity.points": "Charity Points",
   "wallet.cashout": "Retragere",
   "wallet.history": "Istoric",
   "wallet.block.pending": "In asteptare:",
@@ -154,6 +154,6 @@
   "cause.donated": "Donat: ",
   "RON": "RON",
   "EUR": "EUR",
-  "Charity Points": "Puncte bonus",
+  "Charity Points": "Charity Points",
   "faq.title": "Ajutor"
 }

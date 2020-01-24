@@ -28,7 +28,7 @@ import {
 import { fetchReviewRatings, ReviewRating } from '../../rest/ReviewService';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { spinnerCss } from '../../helper/AppHelper';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import ReactAdBlock from '../../ReactAdBlock';
 import ShopListElement from './ShopListElement';
 import { fetchConfigInfo } from '../../rest/ConfigService';
@@ -56,6 +56,8 @@ interface IShopsProps {
     //parameters favshops redirect
     match: any;
     favShops: string;
+
+    intl: IntlShape;
 }
 
 interface IShopsState {
@@ -67,11 +69,8 @@ interface IShopsState {
 
 const pageLimit = 20; // shops per page
 
-class Shops extends React.Component<
-    IShopsProps & InjectedIntlProps,
-    IShopsState
-> {
-    constructor(props: IShopsProps & InjectedIntlProps) {
+class Shops extends React.Component<IShopsProps, IShopsState> {
+    constructor(props: IShopsProps) {
         super(props);
         this.state = {
             isLoading: true,

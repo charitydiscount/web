@@ -9,7 +9,7 @@ import Review from './Review';
 import { fetchReviews, ReviewDto, saveReview } from '../../rest/ReviewService';
 import { LoginDto } from '../login/LoginComponent';
 import { FormattedMessage } from 'react-intl';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { removeLocalStorage } from '../../helper/StorageHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import ShopElement from './ShopElement';
@@ -31,13 +31,14 @@ interface IProductReviewState {
 
 interface IProductReviewProps {
     match: any;
+    intl: IntlShape;
 }
 
 class ShopReview extends React.Component<
-    IProductReviewProps & InjectedIntlProps,
+    IProductReviewProps,
     IProductReviewState
 > {
-    constructor(props: IProductReviewProps & InjectedIntlProps) {
+    constructor(props: IProductReviewProps) {
         super(props);
         this.state = {
             shop: {} as ShopDto,

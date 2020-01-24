@@ -8,7 +8,7 @@ import {Redirect} from 'react-router';
 import {Routes} from '../helper/Routes';
 import {clearStorage, removeLocalStorage} from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
-import {UserActions} from "./UserActions";
+import {AuthActions} from "./UserActions";
 
 interface ILoginRendererProps {
     isUserLogged: boolean;
@@ -28,7 +28,7 @@ class LoginActor extends React.Component<ILoginRendererProps> {
     public verifyUserLoggedInFirebase() {
         auth.onAuthStateChanged(function (user) {
             if (!user) {
-                store.dispatch(UserActions.resetLoggedUserAction());
+                store.dispatch(AuthActions.resetLoggedUserAction());
                 removeLocalStorage(StorageKey.USER);
             }
         });

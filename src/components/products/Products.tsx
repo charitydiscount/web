@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { store } from '../../index';
 import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
@@ -25,7 +25,9 @@ import { FormattedMessage } from 'react-intl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-interface ProductsProps {}
+interface ProductsProps {
+    intl: IntlShape;
+}
 
 interface ProductsState {
     isLoading: boolean;
@@ -38,7 +40,7 @@ interface ProductsState {
 const pageLimit = 50; // products per page
 
 class Products extends React.Component<
-    ProductsProps & InjectedIntlProps,
+    ProductsProps,
     ProductsState
 > {
     private searchTerm: string = '';
@@ -51,7 +53,7 @@ class Products extends React.Component<
     private oldMaxPrice: string = '';
     private oldSort: string = '';
 
-    constructor(props: ProductsProps & InjectedIntlProps) {
+    constructor(props: ProductsProps) {
         super(props);
         this.state = {
             isLoading: false,

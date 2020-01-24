@@ -1,7 +1,7 @@
-import {FirebaseTable} from '../helper/Constants';
-import {DB} from '../index';
-import {firestore} from 'firebase/app';
-import {getUserKeyFromStorage} from "../helper/AppHelper";
+import { FirebaseTable } from '../helper/Constants';
+import { DB } from '../index';
+import { firestore } from 'firebase/app';
+import { getUserKeyFromStorage } from '../helper/AppHelper';
 
 export interface WalletWrapper {
     cashback: WalletInfoDto;
@@ -15,24 +15,26 @@ export interface WalletInfoDto {
 }
 
 export interface TransactionDto {
-    amount: number,
-    currency: string,
-    date: firestore.Timestamp,
-    target: string,
-    type: string
+    amount: number;
+    currency: string;
+    date: firestore.Timestamp;
+    target: string;
+    type: string;
 }
 
 export function fetchWalletInfo() {
     return new Promise((resolve, reject) => {
         let keyExist = getUserKeyFromStorage();
         if (keyExist) {
-            DB.collection(FirebaseTable.POINTS).doc(keyExist).get()
-                .then(function (doc) {
+            DB.collection(FirebaseTable.POINTS)
+                .doc(keyExist)
+                .get()
+                .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data() as WalletWrapper;
                         let transactionList = data.transactions as TransactionDto[];
                         if (transactionList) {
-                            transactionList.sort(function (x, y) {
+                            transactionList.sort(function(x, y) {
                                 let a = x.date.toDate(),
                                     b = y.date.toDate();
                                 if (a > b) return -1;
@@ -48,9 +50,9 @@ export function fetchWalletInfo() {
                 })
                 .catch(() => {
                     reject(); //DB not working
-                })
+                });
         } else {
-            reject() // not reachable state
+            reject(); // not reachable state
         }
     });
 }
@@ -58,38 +60,46 @@ export function fetchWalletInfo() {
 export interface CommissionDto {
     amount: number;
     createdAt: firestore.Timestamp;
-    currency: string,
+    currency: string;
     shopId: number;
-    program: ProgramDto
+    program: ProgramDto;
     status: string;
 }
 
 export interface ProgramDto {
-    name: string
+    name: string;
+    logo: string;
 }
 
 export function fetchCommissions() {
     return new Promise((resolve, reject) => {
         let keyExist = getUserKeyFromStorage();
         if (keyExist) {
-            DB.collection(FirebaseTable.COMMISSIONS).doc(keyExist).get()
-                .then(function (doc) {
+            DB.collection(FirebaseTable.COMMISSIONS)
+                .doc(keyExist)
+                .get()
+                .then(function(doc) {
                     if (doc.exists) {
                         const data = doc.data() as Map<String, CommissionDto>;
                         let commissions = [] as CommissionDto[];
-                        for (let i = 0; i < (Object.entries(data).length - 1); i++) {
-                            let element = Object.entries(data)[i][1] as CommissionDto;
+                        for (
+                            let i = 0;
+                            i < Object.entries(data).length - 1;
+                            i++
+                        ) {
+                            let element = Object.entries(data)[
+                                i
+                            ][1] as CommissionDto;
                             commissions.push(element as CommissionDto);
                         }
                         if (commissions) {
-                            commissions.sort(function (x, y) {
+                            commissions.sort(function(x, y) {
                                 let a = x.createdAt.toDate(),
                                     b = y.createdAt.toDate();
                                 if (a > b) return -1;
                                 if (a < b) return 1;
                                 return 0;
                             });
-
                         }
                         resolve(commissions);
                     } else {
@@ -98,9 +108,9 @@ export function fetchCommissions() {
                 })
                 .catch(() => {
                     reject(); //DB not working
-                })
+                });
         } else {
-            reject() // not reachable state
+            reject(); // not reachable state
         }
     });
 }
@@ -114,10 +124,11 @@ export function createOtpRequest() {
                 createdAt: firestore.FieldValue.serverTimestamp(),
             };
 
-            DB.collection(FirebaseTable.OTP_REQUESTS).doc(keyExist)
+            DB.collection(FirebaseTable.OTP_REQUESTS)
+                .doc(keyExist)
                 .set(data)
                 .then(() => {
-                    setTimeout(function () {
+                    setTimeout(function() {
                         resolve(true);
                     }, 2000);
                 })
@@ -125,9 +136,9 @@ export function createOtpRequest() {
                     reject();
                 });
         } else {
-            reject()
+            reject();
         }
-    })
+    });
 }
 
 export function validateOtpCode(code: number) {
@@ -160,7 +171,7 @@ export function createRequest(amount, type, targetId) {
             DB.collection(FirebaseTable.REQUESTS)
                 .add(data)
                 .then(() => {
-                    setTimeout(function () {
+                    setTimeout(function() {
                         resolve(true);
                     }, 6000);
                 })

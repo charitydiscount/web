@@ -8,7 +8,7 @@ import {
     verifyInFavoriteShops,
     fetchFavoriteShops,
 } from '../../rest/ShopsService';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import { getPromotions, PromotionDTO } from '../../rest/DealsService';
 import Promotion from '../promotions/Promotion';
@@ -19,6 +19,7 @@ interface IShopElementProps {
     shop: ShopDto;
     comingFromShopReview?: boolean;
     onCloseModal?: () => void;
+    intl: IntlShape;
 }
 
 interface IShopElementState {
@@ -28,7 +29,7 @@ interface IShopElementState {
 }
 
 class ShopElement extends React.Component<
-    IShopElementProps & InjectedIntlProps,
+    IShopElementProps,
     IShopElementState
 > {
     constructor(props: IShopElementProps) {

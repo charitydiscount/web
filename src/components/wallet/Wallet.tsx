@@ -15,11 +15,12 @@ import { CommissionStatus, emptyHrefLink } from '../../helper/Constants';
 import WalletCommissionRow from './WalletCommissionRow';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { spinnerCss } from '../../helper/AppHelper';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { CauseDto, fetchCauses } from '../../rest/CauseService';
 
 interface IWalletProps {
     match: any;
+    intl: IntlShape;
 }
 
 interface IWalletState {
@@ -42,11 +43,8 @@ interface IWalletState {
     tranSortTypeAsc: string;
 }
 
-class Wallet extends React.Component<
-    IWalletProps & InjectedIntlProps,
-    IWalletState
-> {
-    constructor(props: IWalletProps & InjectedIntlProps) {
+class Wallet extends React.Component<IWalletProps, IWalletState> {
+    constructor(props: IWalletProps) {
         super(props);
         this.state = {
             cashbackApproved: 0,
