@@ -59,7 +59,7 @@ export interface CommissionDto {
     amount: number;
     createdAt: firestore.Timestamp;
     currency: string,
-    shopId: string;
+    shopId: number;
     program: ProgramDto
     status: string;
 }

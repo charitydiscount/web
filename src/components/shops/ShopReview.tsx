@@ -66,7 +66,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
         document.addEventListener("keydown", this.escFunction, false);
-        let shop = getShopById(this.props.match.params.id) as ShopDto;
+        let shop = getShopById(parseInt(this.props.match.params.id)) as ShopDto;
         try {
             let response = await fetchReviews(shop.uniqueCode);
             if (response) {

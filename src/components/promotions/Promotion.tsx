@@ -15,7 +15,7 @@ interface PromotionState {
 class Promotion extends React.Component<PromotionProps, PromotionState> {
 
     public render() {
-        let shop = getShopById(this.props.promotion.program.id);
+        let shop = getShopById(parseInt(this.props.promotion.program.id));
         let computedPromotionUrl;
         if (shop && shop.uniqueCode) {
             computedPromotionUrl = computeUrl(shop.uniqueCode, this.props.promotion.landingPageLink);

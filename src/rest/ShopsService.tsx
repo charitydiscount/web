@@ -250,17 +250,17 @@ export function getProgramCommission(program, normalCommission) {
     return commission;
 }
 
-export function getShopById(id) {
+export function getShopById(id: number) {
     const shops = getLocalStorage(StorageKey.SHOPS);
     if (shops) {
         const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
         return shopsParsed.find(value => {
-            return value.id === parseInt(id);
+            return value.id === id;
         });
     }
 }
 
-export function getShopByUniqueCode(uniqueCode) {
+export function getShopByUniqueCode(uniqueCode: string) {
     const shops = getLocalStorage(StorageKey.SHOPS);
     if (shops) {
         const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
@@ -270,12 +270,3 @@ export function getShopByUniqueCode(uniqueCode) {
     }
 }
 
-export function getShopByName(name) {
-    const shops = getLocalStorage(StorageKey.SHOPS);
-    if (shops) {
-        const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
-        return shopsParsed.find(value => {
-            return value.name === name;
-        });
-    }
-}
