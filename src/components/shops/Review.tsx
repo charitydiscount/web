@@ -45,6 +45,20 @@ class Review extends React.Component<IReviewProps, IReviewState> {
     }
 
     public render() {
+        const rating = [1, 2, 3, 4, 5].map(star =>
+            star <= this.props.rating ? (
+                <i
+                    key={`star-${star}`}
+                    className="fa fa-star star-focus fa-lg"
+                />
+            ) : (
+                <i
+                    key={`star-${star}`}
+                    className="fa fa-star-o star-focus fa-lg"
+                />
+            )
+        );
+
         return (
             <React.Fragment>
                 <div className="review_item">
@@ -55,16 +69,7 @@ class Review extends React.Component<IReviewProps, IReviewState> {
                         </div>
                         <div className="media-body">
                             <h4>{this.props.name}</h4>
-                            {this.props.rating >= 1 ? <i className="fa fa-star"/> :
-                                <i className="fa fa-star-o"/>}
-                            {this.props.rating >= 2 ? <i className="fa fa-star"/> :
-                                <i className="fa fa-star-o"/>}
-                            {this.props.rating >= 3 ? <i className="fa fa-star"/> :
-                                <i className="fa fa-star-o"/>}
-                            {this.props.rating >= 4 ? <i className="fa fa-star"/> :
-                                <i className="fa fa-star-o"/>}
-                            {this.props.rating >= 5 ? <i className="fa fa-star"/> :
-                                <i className="fa fa-star-o"/>}
+                            {rating}
                         </div>
                     </div>
                     <p>{this.props.description}</p>

@@ -1,43 +1,46 @@
-import * as React from "react";
-import {store} from "../../index";
-import {NavigationsAction} from "../../redux/actions/NavigationsAction";
-import {Stages} from "../helper/Stages";
-import {getUserFromStorage, spinnerCss} from "../../helper/AppHelper";
-import {emptyHrefLink, StorageKey} from "../../helper/Constants";
+import * as React from 'react';
+import { store } from '../../index';
+import { NavigationsAction } from '../../redux/actions/NavigationsAction';
+import { Stages } from '../helper/Stages';
+import { getUserFromStorage, spinnerCss } from '../../helper/AppHelper';
+import { emptyHrefLink, StorageKey } from '../../helper/Constants';
+import { getShopById, ShopDto } from '../../rest/ShopsService';
+import Review from './Review';
 import {
-    getShopById,
-    ShopDto
-} from "../../rest/ShopsService";
-import Review from "./Review";
-import {fetchReviews, ReviewDto, updateReview} from "../../rest/ReviewService";
-import {LoginDto} from "../login/LoginComponent";
-import {FormattedMessage} from 'react-intl';
-import {InjectedIntlProps, injectIntl} from "react-intl";
-import {removeLocalStorage} from "../../helper/StorageHelper";
+    fetchReviews,
+    ReviewDto,
+    updateReview,
+} from '../../rest/ReviewService';
+import { LoginDto } from '../login/LoginComponent';
+import { FormattedMessage } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { removeLocalStorage } from '../../helper/StorageHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
-import ShopElement from "./ShopElement";
+import ShopElement from './ShopElement';
 import Modal from 'react-awesome-modal';
 
 interface IProductReviewState {
-    modalVisible: boolean,
-    modalMessage: string,
+    modalVisible: boolean;
+    modalMessage: string;
 
     //shop info
-    shop: ShopDto,
+    shop: ShopDto;
 
     //reviews
-    description: string,
-    rating: number,
-    reviews: Array<ReviewDto>,
-    reviewsLoading: boolean
+    description: string;
+    rating: number;
+    reviews: Array<ReviewDto>;
+    reviewsLoading: boolean;
 }
 
 interface IProductReviewProps {
-    match: any
+    match: any;
 }
 
-class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps, IProductReviewState> {
-
+class ShopReview extends React.Component<
+    IProductReviewProps & InjectedIntlProps,
+    IProductReviewState
+> {
     constructor(props: IProductReviewProps & InjectedIntlProps) {
         super(props);
         this.state = {
@@ -47,7 +50,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
             modalVisible: false,
             rating: 0,
             reviews: [],
-            reviewsLoading: true
+            reviewsLoading: true,
         };
         this.updateCurrentReview = this.updateCurrentReview.bind(this);
         this.handleStarFocusEnter = this.handleStarFocusEnter.bind(this);
@@ -56,29 +59,28 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
         this.escFunction = this.escFunction.bind(this);
     }
 
-
-    escFunction(event){
-        if(event.keyCode === 27) {
+    escFunction(event) {
+        if (event.keyCode === 27) {
             this.closeModal();
         }
     }
 
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
-        document.addEventListener("keydown", this.escFunction, false);
+        document.addEventListener('keydown', this.escFunction, false);
         let shop = getShopById(parseInt(this.props.match.params.id)) as ShopDto;
         try {
             let response = await fetchReviews(shop.uniqueCode);
             if (response) {
                 this.setState({
                     reviews: response as Array<ReviewDto>,
-                    reviewsLoading: false
+                    reviewsLoading: false,
                 });
             }
         } catch (error) {
             //reviews won't be loaded
             this.setState({
-                reviewsLoading: false
+                reviewsLoading: false,
             });
         }
 
@@ -94,7 +96,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
             shop.totalReviews = reviewNumber;
         }
         this.setState({
-            shop: shop
+            shop: shop,
         });
     }
 
@@ -104,14 +106,14 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
 
     closeModal() {
         this.setState({
-            modalVisible: false
+            modalVisible: false,
         });
         window.location.reload();
     }
 
     openModal() {
         this.setState({
-            modalVisible: true
+            modalVisible: true,
         });
     }
 
@@ -122,19 +124,39 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                 const userParsed = JSON.parse(user) as LoginDto;
                 if (userParsed) {
                     try {
-                        let response = await updateReview(this.state.shop.uniqueCode, this.state.rating, userParsed.uid,
-                            userParsed.photoURL, userParsed.displayName, this.state.description);
+                        let response = await updateReview(
+                            this.state.shop.uniqueCode,
+                            this.state.rating,
+                            userParsed.uid,
+                            userParsed.photoURL,
+                            userParsed.displayName,
+                            this.state.description
+                        );
                         if (response) {
                             removeLocalStorage(StorageKey.REVIEWS);
-                            this.handleShowModalMessage(this.props.intl.formatMessage({id: "review.update.message"}), null);
+                            this.handleShowModalMessage(
+                                this.props.intl.formatMessage({
+                                    id: 'review.update.message',
+                                }),
+                                null
+                            );
                         }
                     } catch (error) {
-                        this.handleShowModalMessage(this.props.intl.formatMessage({id: "review.failed.to.update.error.message"}), null);
+                        console.log(error);
+                        this.handleShowModalMessage(
+                            this.props.intl.formatMessage({
+                                id: 'review.failed.to.update.error.message',
+                            }),
+                            null
+                        );
                     }
                 }
             }
         } else {
-            this.handleShowModalMessage(this.props.intl.formatMessage({id: "review.error.message"}), null);
+            this.handleShowModalMessage(
+                this.props.intl.formatMessage({ id: 'review.error.message' }),
+                null
+            );
         }
     }
 
@@ -145,7 +167,7 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
             });
         } else {
             this.setState({
-                modalMessage: message
+                modalMessage: message,
             });
         }
         this.openModal();
@@ -153,17 +175,17 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
 
     handleStarClicked(event, starLevel) {
         for (let i = 1; i <= 5; i++) {
-            let element = document.getElementById("star-" + i);
+            let element = document.getElementById('star-' + i);
             if (i <= starLevel) {
                 if (element) {
-                    element.className = "fa fa-star star-focus";
+                    element.className = 'fa fa-star star-focus fa-lg';
                     this.setState({
-                        rating: starLevel
-                    })
+                        rating: starLevel,
+                    });
                 }
             } else {
                 if (element) {
-                    element.className = "fa fa-star-o";
+                    element.className = 'fa fa-star-o fa-lg';
                 }
             }
         }
@@ -171,10 +193,10 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
 
     handleStarFocusEnter(event, starLevel) {
         for (let i = 1; i <= starLevel; i++) {
-            const element = document.getElementById("star-" + i);
+            const element = document.getElementById('star-' + i);
             if (element) {
                 if (this.state.rating === 0 || this.state.rating < i) {
-                    element.className = "fa fa-star star-focus";
+                    element.className = 'fa fa-star star-focus fa-lg';
                 }
             }
         }
@@ -182,20 +204,54 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
 
     handleStarFocusRemove(event, starLevel) {
         for (let i = 1; i <= starLevel; i++) {
-            let element = document.getElementById("star-" + i);
+            let element = document.getElementById('star-' + i);
             if (element) {
                 if (this.state.rating === 0 || this.state.rating < i) {
-                    element.className = "fa fa-star-o";
+                    element.className = 'fa fa-star-o fa-lg';
                 }
             }
         }
     }
 
     public render() {
-        const reviewsList = this.state.reviews && this.state.reviews.length > 0 ? this.state.reviews.map(review => {
-            return <Review key={review.reviewer.name} photoUrl={review.reviewer.photoUrl} name={review.reviewer.name}
-                           description={review.description} rating={review.rating} userID={review.reviewer.userId}/>
-        }) : <FormattedMessage id={"review.no.reviews"} defaultMessage="No reviews yet"/>;
+        const reviewsList =
+            this.state.reviews && this.state.reviews.length > 0 ? (
+                this.state.reviews.map(review => {
+                    return (
+                        <Review
+                            key={review.reviewer.name}
+                            photoUrl={review.reviewer.photoUrl}
+                            name={review.reviewer.name}
+                            description={review.description}
+                            rating={review.rating}
+                            userID={review.reviewer.userId}
+                        />
+                    );
+                })
+            ) : (
+                <FormattedMessage
+                    id={'review.no.reviews'}
+                    defaultMessage="No reviews yet"
+                />
+            );
+
+        const rating = [1, 2, 3, 4, 5].map(star => (
+            <li key={`star-${star}`}>
+                <a href={emptyHrefLink}>
+                    <i
+                        id={`star-${star}`}
+                        className="fa fa-star-o fa-lg"
+                        onClick={() => this.handleStarClicked(this, star)}
+                        onMouseEnter={() =>
+                            this.handleStarFocusEnter(this, star)
+                        }
+                        onMouseLeave={() =>
+                            this.handleStarFocusRemove(this, star)
+                        }
+                    />
+                </a>
+            </li>
+        ));
 
         return (
             <React.Fragment>
@@ -204,78 +260,59 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                     effect="fadeInUp"
                     onClickAway={() => this.closeModal()}
                 >
-                    <h3 style={{padding: 15}}>
-                        {this.state.modalMessage}
-                    </h3>
+                    <h3 style={{ padding: 15 }}>{this.state.modalMessage}</h3>
                 </Modal>
-                <section className={"product_description_area"}>
-                    <div className={"container"}>
-                        <div className="row" style={{marginTop:70}}>
+                <section className={'product_description_area'}>
+                    <div className={'container'}>
+                        <div className="row" style={{ marginTop: 70 }}>
                             <div className="col-lg-6">
-                                <ShopElement key={this.state.shop.name} shop={this.state.shop}
-                                             comingFromShopReview={true}/>
+                                <ShopElement
+                                    key={this.state.shop.name}
+                                    shop={this.state.shop}
+                                    comingFromShopReview={true}
+                                />
                             </div>
                             <div className="col-lg-6">
-                                <div className="tab-pane fade show active p_20" id="review">
+                                <div
+                                    className="tab-pane fade show active p_20"
+                                    id="review"
+                                >
                                     <div className="review_box">
                                         <p>
-                                            <FormattedMessage id={"review.rating.label"} defaultMessage="Your rating:"/>
+                                            <FormattedMessage
+                                                id={'review.rating.label'}
+                                                defaultMessage="Your rating:"
+                                            />
                                         </p>
-                                        <ul className="list">
-                                            <li>
-                                                <a href={emptyHrefLink}>
-                                                    <i id={'star-1'} className="fa fa-star-o"
-                                                       onClick={() => this.handleStarClicked(this, 1)}
-                                                       onMouseEnter={() => this.handleStarFocusEnter(this, 1)}
-                                                       onMouseLeave={() => this.handleStarFocusRemove(this, 1)}/>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href={emptyHrefLink}>
-                                                    <i id={'star-2'} className="fa fa-star-o"
-                                                       onClick={() => this.handleStarClicked(this, 2)}
-                                                       onMouseEnter={() => this.handleStarFocusEnter(this, 2)}
-                                                       onMouseLeave={() => this.handleStarFocusRemove(this, 2)}/>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href={emptyHrefLink}>
-                                                    <i id={'star-3'} className="fa fa-star-o"
-                                                       onClick={() => this.handleStarClicked(this, 3)}
-                                                       onMouseEnter={() => this.handleStarFocusEnter(this, 3)}
-                                                       onMouseLeave={() => this.handleStarFocusRemove(this, 3)}/>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href={emptyHrefLink}>
-                                                    <i id={'star-4'} className="fa fa-star-o"
-                                                       onClick={() => this.handleStarClicked(this, 4)}
-                                                       onMouseEnter={() => this.handleStarFocusEnter(this, 4)}
-                                                       onMouseLeave={() => this.handleStarFocusRemove(this, 4)}/>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href={emptyHrefLink}>
-                                                    <i id={'star-5'} className="fa fa-star-o"
-                                                       onClick={() => this.handleStarClicked(this, 5)}
-                                                       onMouseEnter={() => this.handleStarFocusEnter(this, 5)}
-                                                       onMouseLeave={() => this.handleStarFocusRemove(this, 5)}/>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                        <ul className="list">{rating}</ul>
                                         <div className="form-group">
-                                             <textarea className="form-control"
-                                                       value={this.state.description}
-                                                       onChange={event => this.setState({description: event.target.value})}
-                                                       placeholder={this.props.intl.formatMessage({id: "review.placeholder"})}>
-                                             </textarea>
+                                            <textarea
+                                                className="form-control"
+                                                value={this.state.description}
+                                                onChange={event =>
+                                                    this.setState({
+                                                        description:
+                                                            event.target.value,
+                                                    })
+                                                }
+                                                placeholder={this.props.intl.formatMessage(
+                                                    { id: 'review.placeholder' }
+                                                )}
+                                            ></textarea>
                                         </div>
 
                                         <div className="col-md-12 text-right">
-                                            <a href={emptyHrefLink} onClick={this.updateCurrentReview}
-                                               className="btn submit_btn">
-                                                <FormattedMessage id={"review.submit.button"}
-                                                                  defaultMessage="Submit review"/>
+                                            <a
+                                                href={emptyHrefLink}
+                                                onClick={
+                                                    this.updateCurrentReview
+                                                }
+                                                className="btn submit_btn"
+                                            >
+                                                <FormattedMessage
+                                                    id={'review.submit.button'}
+                                                    defaultMessage="Submit review"
+                                                />
                                             </a>
                                         </div>
                                     </div>
@@ -285,7 +322,8 @@ class ShopReview extends React.Component<IProductReviewProps & InjectedIntlProps
                                             color={'#1641ff'}
                                             css={spinnerCss}
                                         />
-                                        {!this.state.reviewsLoading && reviewsList}
+                                        {!this.state.reviewsLoading &&
+                                            reviewsList}
                                     </div>
                                 </div>
                             </div>
