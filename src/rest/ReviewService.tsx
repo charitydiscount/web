@@ -1,7 +1,11 @@
-import {DB} from '../index';
-import {firestore} from 'firebase/app';
-import {getLocalStorage, removeLocalStorage, setLocalStorage} from "../helper/StorageHelper";
-import {FirebaseTable, StorageKey, TableDocument} from "../helper/Constants";
+import { DB } from '../index';
+import { firestore } from 'firebase/app';
+import {
+    getLocalStorage,
+    removeLocalStorage,
+    setLocalStorage,
+} from '../helper/StorageHelper';
+import { FirebaseTable, StorageKey, TableDocument } from '../helper/Constants';
 
 export interface ReviewsDBWrapper {
     reviews: ReviewDto[];
@@ -20,26 +24,22 @@ export interface ReviewerDto {
     userId: string;
 }
 
-export function fetchReviews(shopUniqueCode) {
-    return new Promise(((resolve, reject) => {
-        DB.collection(FirebaseTable.REVIEWS).doc(shopUniqueCode).get()
-            .then(doc => {
-                if (doc.exists) {
-                    const data = doc.data() as ReviewsDBWrapper;
-                    var reviews = new Array<ReviewDto>();
-                    new Map(Object.entries(data.reviews)).forEach(value => {
-                        reviews.push(value);
-                    });
-                    resolve(reviews);
-                } else {
-                    reject(); //entry can't be found in DB
-                }
-            })
-            .catch(() => {
-                reject(); //DB not working
-            });
-    }))
-}
+export const fetchReviews = (shopUniqueCode: string) =>
+    DB.collection(FirebaseTable.REVIEWS)
+        .doc(shopUniqueCode)
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                const data = doc.data() as ReviewsDBWrapper;
+                return Object.values(data.reviews).map(value => value);
+            } else {
+                return [];
+            }
+        })
+        .catch((e: any) => {
+            console.log(e);
+            return [];
+        });
 
 export interface MetaReviewsDBWrapper {
     ratings: Map<String, ReviewRating>;
@@ -51,7 +51,7 @@ export interface ReviewRating {
 }
 
 export function fetchReviewRatings() {
-    return new Promise(((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         const reviews = getLocalStorage(StorageKey.REVIEWS);
         if (reviews) {
             try {
@@ -68,11 +68,16 @@ export function fetchReviewRatings() {
             }
         }
 
-        DB.collection(FirebaseTable.META).doc(TableDocument.PROGRAMS).get()
-            .then(function (doc) {
+        DB.collection(FirebaseTable.META)
+            .doc(TableDocument.PROGRAMS)
+            .get()
+            .then(function(doc) {
                 if (doc.exists) {
                     let dbReviews = doc.data() as MetaReviewsDBWrapper;
-                    setLocalStorage(StorageKey.REVIEWS, JSON.stringify(dbReviews.ratings));
+                    setLocalStorage(
+                        StorageKey.REVIEWS,
+                        JSON.stringify(dbReviews.ratings)
+                    );
                     resolve(dbReviews.ratings);
                 } else {
                     reject(); //entry doesn't exist in DB
@@ -81,67 +86,49 @@ export function fetchReviewRatings() {
             .catch(() => {
                 reject(); //DB not working
             });
-    }));
+    });
 }
 
-export function updateReview(
+export const saveReview = (
     uniqueCode: string,
     rating: number,
-    userId: string,
-    photoUrl: string | null,
-    name: string,
-    description: string
-) {
-    return new Promise(((resolve, reject) => {
-        let review = {
-            createdAt: firestore.FieldValue.serverTimestamp(),
-            rating: rating,
-            description: description,
-            reviewer: {
-                name: name,
-                photoUrl: photoUrl ? photoUrl : '',
-                userId: userId,
-            },
-        };
-
-        let docRef = DB.collection(FirebaseTable.REVIEWS).doc(uniqueCode);
-        docRef.get()
-            .then(function (doc) {
-                if (doc.exists) {
-                    docRef
-                        .set(
-                            {
-                                reviews: {
-                                    [review.reviewer.userId]: review,
-                                },
-                            },
-                            {merge: true}
-                        )
-                        .then(function () {
-                            resolve(true);
-                        })
-                        .catch(() => {
-                            reject();
-                        });
-                } else {
-                    // create the first entry for the document
-                    docRef
-                        .set({
-                            shopUniqueCode: uniqueCode,
-                            reviews: {
-                                [review.reviewer.userId]: review,
-                            },
-                        })
-                        .then(function () {
-                            resolve(true);
-                        })
-                        .catch(() => {
-                            reject();
-                        });
-                }
-            })
-            .catch(() => {
-                reject();
-            });
-    }))
-}
+    description: string,
+    {
+        userId,
+        name,
+        photoUrl,
+    }: { userId: string; name: string; photoUrl: string }
+) =>
+    DB.collection(FirebaseTable.REVIEWS)
+        .doc(uniqueCode)
+        .get()
+        .then(reviewsSnap =>
+            reviewsSnap.exists
+                ? reviewsSnap.ref.update({
+                      [`reviews.${userId}`]: {
+                          reviewer: {
+                              userId,
+                              name,
+                              photoUrl,
+                          },
+                          rating: rating,
+                          description: description,
+                          createdAt: firestore.FieldValue.serverTimestamp(),
+                      },
+                  })
+                : reviewsSnap.ref.set({
+                      reviews: {
+                          [userId]: {
+                              reviewer: {
+                                  userId,
+                                  name,
+                                  photoUrl,
+                              },
+                              rating: rating,
+                              description: description,
+                              createdAt: firestore.FieldValue.serverTimestamp(),
+                          },
+                      },
+                      shopUniqueCode: uniqueCode,
+                  })
+        );

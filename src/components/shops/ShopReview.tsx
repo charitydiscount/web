@@ -6,11 +6,7 @@ import { getUserFromStorage, spinnerCss } from '../../helper/AppHelper';
 import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import { getShopById, ShopDto } from '../../rest/ShopsService';
 import Review from './Review';
-import {
-    fetchReviews,
-    ReviewDto,
-    updateReview,
-} from '../../rest/ReviewService';
+import { fetchReviews, ReviewDto, saveReview } from '../../rest/ReviewService';
 import { LoginDto } from '../login/LoginComponent';
 import { FormattedMessage } from 'react-intl';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -70,13 +66,12 @@ class ShopReview extends React.Component<
         document.addEventListener('keydown', this.escFunction, false);
         let shop = getShopById(parseInt(this.props.match.params.id)) as ShopDto;
         try {
-            let response = await fetchReviews(shop.uniqueCode);
-            if (response) {
-                this.setState({
-                    reviews: response as Array<ReviewDto>,
-                    reviewsLoading: false,
-                });
-            }
+            let reviews = await fetchReviews(shop.uniqueCode);
+            // const ownReview = reviews.find((review) => review.reviewer.userId = )
+            this.setState({
+                reviews: reviews,
+                reviewsLoading: false,
+            });
         } catch (error) {
             //reviews won't be loaded
             this.setState({
@@ -124,25 +119,24 @@ class ShopReview extends React.Component<
                 const userParsed = JSON.parse(user) as LoginDto;
                 if (userParsed) {
                     try {
-                        let response = await updateReview(
+                        await saveReview(
                             this.state.shop.uniqueCode,
                             this.state.rating,
-                            userParsed.uid,
-                            userParsed.photoURL,
-                            userParsed.displayName,
-                            this.state.description
+                            this.state.description,
+                            {
+                                userId: userParsed.uid,
+                                name: userParsed.displayName || '-',
+                                photoUrl: userParsed.photoURL || '',
+                            }
                         );
-                        if (response) {
-                            removeLocalStorage(StorageKey.REVIEWS);
-                            this.handleShowModalMessage(
-                                this.props.intl.formatMessage({
-                                    id: 'review.update.message',
-                                }),
-                                null
-                            );
-                        }
+                        removeLocalStorage(StorageKey.REVIEWS);
+                        this.handleShowModalMessage(
+                            this.props.intl.formatMessage({
+                                id: 'review.update.message',
+                            }),
+                            null
+                        );
                     } catch (error) {
-                        console.log(error);
                         this.handleShowModalMessage(
                             this.props.intl.formatMessage({
                                 id: 'review.failed.to.update.error.message',
@@ -173,22 +167,10 @@ class ShopReview extends React.Component<
         this.openModal();
     }
 
-    handleStarClicked(event, starLevel) {
-        for (let i = 1; i <= 5; i++) {
-            let element = document.getElementById('star-' + i);
-            if (i <= starLevel) {
-                if (element) {
-                    element.className = 'fa fa-star star-focus fa-lg';
-                    this.setState({
-                        rating: starLevel,
-                    });
-                }
-            } else {
-                if (element) {
-                    element.className = 'fa fa-star-o fa-lg';
-                }
-            }
-        }
+    handleStarClicked(event, starLevel: number) {
+        this.setState({
+            rating: starLevel,
+        });
     }
 
     handleStarFocusEnter(event, starLevel) {
@@ -238,17 +220,31 @@ class ShopReview extends React.Component<
         const rating = [1, 2, 3, 4, 5].map(star => (
             <li key={`star-${star}`}>
                 <a href={emptyHrefLink}>
-                    <i
-                        id={`star-${star}`}
-                        className="fa fa-star-o fa-lg"
-                        onClick={() => this.handleStarClicked(this, star)}
-                        onMouseEnter={() =>
-                            this.handleStarFocusEnter(this, star)
-                        }
-                        onMouseLeave={() =>
-                            this.handleStarFocusRemove(this, star)
-                        }
-                    />
+                    {star < this.state.rating ? (
+                        <i
+                            id={`star-${star}`}
+                            className="fa fa-star fa-lg"
+                            onClick={() => this.handleStarClicked(this, star)}
+                            onMouseEnter={() =>
+                                this.handleStarFocusEnter(this, star)
+                            }
+                            onMouseLeave={() =>
+                                this.handleStarFocusRemove(this, star)
+                            }
+                        />
+                    ) : (
+                        <i
+                            id={`star-${star}`}
+                            className="fa fa-star-o fa-lg"
+                            onClick={() => this.handleStarClicked(this, star)}
+                            onMouseEnter={() =>
+                                this.handleStarFocusEnter(this, star)
+                            }
+                            onMouseLeave={() =>
+                                this.handleStarFocusRemove(this, star)
+                            }
+                        />
+                    )}
                 </a>
             </li>
         ));
@@ -304,8 +300,8 @@ class ShopReview extends React.Component<
                                         <div className="col-md-12 text-right">
                                             <a
                                                 href={emptyHrefLink}
-                                                onClick={
-                                                    this.updateCurrentReview
+                                                onClick={() =>
+                                                    this.updateCurrentReview()
                                                 }
                                                 className="btn submit_btn"
                                             >
