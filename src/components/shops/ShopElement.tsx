@@ -230,7 +230,7 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                                                 this.props.shop.id
                                             }
                                         >
-                                            <i className="lnr lnr-bubble"/>
+                                            <i className="fa fa-list"/>
                                         </Link>
                                     </div>
                                 )}
