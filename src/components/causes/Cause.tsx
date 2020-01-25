@@ -64,16 +64,7 @@ class Cause extends React.Component<ICauseProps, ICauseState> {
                                 alt=""
                                 className="img-fluid"
                             />
-                            <div className="content">
-                                <a
-                                    style={{ color: '#fff' }}
-                                    href={this.props.cause.details.site}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    Website
-                                </a>
-                            </div>
+                            <div className="content">Website</div>
                         </div>
                     </a>
                     <br />

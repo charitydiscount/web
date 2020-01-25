@@ -14,7 +14,7 @@ import 'firebase/performance';
 import 'firebase/storage';
 import 'firebase/remote-config';
 import * as serviceWorker from './registerServiceWorker';
-import { UserActions } from './components/login/UserActions';
+import { AuthActions } from './components/login/UserActions';
 import { getLocalStorage } from './helper/StorageHelper';
 import { StorageKey } from './helper/Constants';
 import { updateUser } from './rest/UserService';
@@ -22,7 +22,7 @@ import { LoginDto } from './components/login/LoginComponent';
 import I18nApp from './I18nApp';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '2.0.1';
+export const appVersion = '2.1.0';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};
@@ -61,7 +61,6 @@ if (user && user.length > 0) {
         if (userCD > new Date()) {
             updateUser(
                 {
-                    accounts: [],
                     email: parsedUser.email,
                     name: parsedUser.displayName,
                     photoUrl: parsedUser.photoURL ? parsedUser.photoURL : '',
@@ -70,7 +69,7 @@ if (user && user.length > 0) {
                 user
             );
         } else {
-            store.dispatch(UserActions.setLoggedUserAction(user));
+            store.dispatch(AuthActions.setLoggedUserAction(user));
         }
     }
 }

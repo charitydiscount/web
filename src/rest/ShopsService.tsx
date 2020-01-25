@@ -1,49 +1,52 @@
-import {DB} from '../index';
-import {
-    getLocalStorage,
-    removeLocalStorage,
-    setLocalStorage,
-} from '../helper/StorageHelper';
-import {FirebaseTable, StorageKey} from '../helper/Constants';
-import {computeUrl, getUserKeyFromStorage, roundCommission} from '../helper/AppHelper';
-import {getPercentage} from './ConfigService';
-import {firestore} from 'firebase/app';
+import { DB, auth } from '../index';
+import { getLocalStorage, setLocalStorage } from '../helper/StorageHelper';
+import { FirebaseTable, StorageKey } from '../helper/Constants';
+import { computeUrl, roundCommission } from '../helper/AppHelper';
+import { getPercentage } from './ConfigService';
+import { firestore } from 'firebase/app';
 
 export interface FavoriteShopsDto {
     programs: { [shopUniqueCode: string]: ShopDto };
     userId: string;
 }
 
-export interface ShopDtoWrapper {
-    batch: ShopDto[];
+export interface ProgramDocDto {
+    [uniqueCode: string]: ShopDto;
 }
 
+type ProgramWrapperDto = ProgramDocDto & {
+    updatedAt: string;
+};
+
 export interface ShopDto {
-    currency: string,
-    category: string,
-    defaultLeadCommissionAmount: string,
-    defaultLeadCommissionType: string,
-    defaultSaleCommissionRate: string,
-    defaultSaleCommissionType: string,
-    logoPath: string,
-    mainUrl: string,
-    id: number,
-    name: string,
-    status: string,
-    uniqueCode: string,
-    averagePaymentTime: number,
-    sellingCountries: SellingCountriesDto[],
+    currency: string;
+    category: string;
+    defaultLeadCommissionAmount: string;
+    defaultLeadCommissionType: string;
+    defaultSaleCommissionRate: string;
+    defaultSaleCommissionType: string;
+    logoPath: string;
+    mainUrl: string;
+    id: number;
+    name: string;
+    status: string;
+    uniqueCode: string;
+    averagePaymentTime: number;
+    sellingCountries: SellingCountriesDto[];
 
     //reviews
-    totalReviews: number,
-    reviewsRating: number,
+    totalReviews: number;
+    reviewsRating: number;
 
     //cashback
-    commission: string,
-    uiCommission: string,
+    commission: string;
+    uiCommission: string;
 
     //linkUrl
-    computeUrl: string
+    computeUrl: string;
+
+    //
+    order: number;
 }
 
 export interface SellingCountriesDto {
@@ -71,13 +74,13 @@ export var ShopDtoMap = {
 };
 
 export async function fetchFavoriteShops() {
-    const userKey = getUserKeyFromStorage();
-    if (!userKey) {
+    if (!auth.currentUser) {
         return [];
     }
     const favoriteShopsDoc = await DB.collection(FirebaseTable.FAVORITE_SHOPS)
-        .doc(userKey)
+        .doc(auth.currentUser.uid)
         .get();
+
     if (!favoriteShopsDoc.exists) {
         return [];
     }
@@ -90,7 +93,9 @@ export async function fetchFavoriteShops() {
     if (shops) {
         const favShopsId = favoriteShops.map(value => value.id);
         let shopsFromStorage = JSON.parse(shops) as ShopDto[];
-        shopsFromStorage = shopsFromStorage.filter(value => favShopsId.includes(value.id));
+        shopsFromStorage = shopsFromStorage.filter(value =>
+            favShopsId.includes(value.id)
+        );
         favoriteShops = shopsFromStorage;
     }
     setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favoriteShops));
@@ -111,12 +116,13 @@ export function verifyInFavoriteShops(shopId: number) {
 }
 
 export async function updateFavoriteShops(shop: ShopDto, remove: boolean) {
-    const userKey = getUserKeyFromStorage();
-    if (!userKey) {
-        return;
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
     }
 
-    const docRef = DB.collection(FirebaseTable.FAVORITE_SHOPS).doc(userKey);
+    const docRef = DB.collection(FirebaseTable.FAVORITE_SHOPS).doc(
+        auth.currentUser.uid
+    );
     if (remove) {
         return docRef.update({
             [`programs.${shop.uniqueCode}`]: firestore.FieldValue.delete(),
@@ -129,153 +135,105 @@ export async function updateFavoriteShops(shop: ShopDto, remove: boolean) {
             });
         } else {
             return docRef.set({
-                userId: userKey,
+                userId: auth.currentUser.uid,
                 [`programs.${shop.uniqueCode}`]: shop,
             });
         }
     }
 }
 
-export function fetchShops() {
-    return new Promise((resolve, reject) => {
-        const shops = getLocalStorage(StorageKey.SHOPS);
-        if (shops) {
-            try {
-                let stEntry = JSON.parse(shops);
-                //verify localStorage valid
-                if (
-                    stEntry.length <= 0 ||
-                    stEntry[0] === undefined ||
-                    !stEntry[0].hasOwnProperty('category') ||
-                    !stEntry[0].hasOwnProperty('mainUrl') ||
-                    !stEntry[0].hasOwnProperty('uniqueCode')
-                ) {
-                    removeLocalStorage(StorageKey.SHOPS);
-                } else {
-                    resolve(stEntry);
-                    return;
-                }
-            } catch (error) {
-                removeLocalStorage(StorageKey.SHOPS);
-            }
-        }
+export const fetchPrograms = async (): Promise<ShopDto[]> => {
+    const snap = await DB.collection(FirebaseTable.SHOPS)
+        .doc('all')
+        .get();
 
-        DB.collection(FirebaseTable.SHOPS)
-            .orderBy('order')
-            .get()
-            .then(querySnapshot => {
-                const data = querySnapshot.docs.map(
-                    doc => doc.data() as ShopDtoWrapper
-                );
-                if (data) {
-                    let shops = new Array<ShopDto>();
-                    let objectMapper = require('object-mapper');
-                    data.forEach(element => {
-                        element.batch.forEach(shop => {
-                            let parsedShop = objectMapper(
-                                shop,
-                                ShopDtoMap
-                            ) as ShopDto;
+    if (!snap.exists) {
+        return [];
+    }
 
-                            //calculate commission
-                            parsedShop.uiCommission = getProgramCommission(parsedShop, false);
-                            parsedShop.commission = getProgramCommission(parsedShop, true);
-                            parsedShop.computeUrl = computeUrl(
-                                parsedShop.uniqueCode,
-                                parsedShop.mainUrl
-                            );
-
-                            shops.push(parsedShop);
-                        });
-                        return;
-                    });
-                    if (shops) {
-                        setLocalStorage(
-                            StorageKey.SHOPS,
-                            JSON.stringify(shops)
-                        );
-                        resolve(shops);
-                    } else {
-                        reject(); //shops not found
-                    }
-                }
-            })
-            .catch(() => {
-                reject(); //DB not working.
-            });
-    });
-}
+    return Object.entries((snap.data() || {}) as ProgramWrapperDto)
+        .filter(
+            ([uniqueCode, program]) =>
+                uniqueCode !== 'updatedAt' && program.status === 'active'
+        )
+        .map(([uniqueCode, program]) => {
+            program.uiCommission = getProgramCommission(program, false);
+            program.commission = getProgramCommission(program, true);
+            program.computeUrl = computeUrl(
+                program.uniqueCode,
+                program.mainUrl
+            );
+            return program;
+        })
+        .sort((p1, p2) => p1.order - p2.order);
+};
 
 export enum CommissionType {
     fixed,
     variable,
-    percent
+    percent,
 }
 
-export function getProgramCommission(program, normalCommission) {
+export function getProgramCommission(
+    program: ShopDto,
+    normalCommission: boolean
+) {
     let commission = '';
     let percent = getPercentage();
     if (program.defaultSaleCommissionRate != null) {
         switch (CommissionType[program.defaultSaleCommissionType].toString()) {
             case CommissionType.fixed.toString():
-                commission = roundCommission(parseFloat(program.defaultSaleCommissionRate) * percent) + ' ' +
+                commission =
+                    roundCommission(
+                        parseFloat(program.defaultSaleCommissionRate) * percent
+                    ) +
+                    ' ' +
                     program.currency;
                 break;
             case CommissionType.variable.toString():
-                commission = (normalCommission ? '' : '~ ') + roundCommission(parseFloat(program.defaultSaleCommissionRate) * percent)
-                    + ' %';
+                commission =
+                    (normalCommission ? '' : '~ ') +
+                    roundCommission(
+                        parseFloat(program.defaultSaleCommissionRate) * percent
+                    ) +
+                    ' %';
                 break;
             case CommissionType.percent.toString():
-                commission = roundCommission(parseFloat(program.defaultSaleCommissionRate) * percent)
-                    + ' %';
+                commission =
+                    roundCommission(
+                        parseFloat(program.defaultSaleCommissionRate) * percent
+                    ) + ' %';
                 break;
         }
     }
 
-    if (program.defaultLeadCommissionAmount != null &&
-        program.defaultSaleCommissionRate == null) {
+    if (
+        program.defaultLeadCommissionAmount != null &&
+        program.defaultSaleCommissionRate == null
+    ) {
         switch (CommissionType[program.defaultLeadCommissionType].toString()) {
             case CommissionType.variable.toString():
-                commission = (normalCommission ? '' : '~ ') + roundCommission(parseFloat(program.defaultLeadCommissionAmount) * percent)
-                    + ' ' + program.currency;
+                commission =
+                    (normalCommission ? '' : '~ ') +
+                    roundCommission(
+                        parseFloat(program.defaultLeadCommissionAmount) *
+                            percent
+                    ) +
+                    ' ' +
+                    program.currency;
                 break;
             case CommissionType.fixed.toString():
-                commission = roundCommission(parseFloat(program.defaultLeadCommissionAmount) * percent)
-                    + ' ' + program.currency;
+                commission =
+                    roundCommission(
+                        parseFloat(program.defaultLeadCommissionAmount) *
+                            percent
+                    ) +
+                    ' ' +
+                    program.currency;
                 break;
             default:
         }
     }
 
     return commission;
-}
-
-export function getShopById(id) {
-    const shops = getLocalStorage(StorageKey.SHOPS);
-    if (shops) {
-        const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
-        return shopsParsed.find(value => {
-            return value.id === parseInt(id);
-        });
-    }
-}
-
-export function getShopByUniqueCode(uniqueCode) {
-    const shops = getLocalStorage(StorageKey.SHOPS);
-    if (shops) {
-        const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
-        return shopsParsed.find(value => {
-            return value.uniqueCode === uniqueCode;
-        });
-    }
-}
-
-export function getShopByName(name) {
-    const shops = getLocalStorage(StorageKey.SHOPS);
-    if (shops) {
-        const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
-        return shopsParsed.find(value => {
-            return value.name === name;
-        });
-    }
 }

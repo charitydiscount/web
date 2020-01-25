@@ -47,6 +47,7 @@ export interface ProductDTO {
     category: string;
     url: string;
     shopName: string;
+    shopId: number;
     commission?: string;
 }
 
@@ -158,5 +159,6 @@ function toProductDTO(productResponse: ProductWrapper): ProductDTO {
         category: productResponse._source.category,
         url: computeProductUrl(productResponse._source.aff_code),
         shopName: productResponse._source.campaign_name,
+        shopId: productResponse._source.campaign_id,
     };
 }

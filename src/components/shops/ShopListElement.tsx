@@ -1,23 +1,26 @@
 import * as React from 'react';
 import Modal from 'react-awesome-modal';
-import {ShopDto} from '../../rest/ShopsService';
-import {InjectedIntlProps, injectIntl} from 'react-intl';
-import ShopElement from "./ShopElement";
+import { ShopDto } from '../../rest/ShopsService';
+import { injectIntl, IntlShape } from 'react-intl';
+import ShopElement from './ShopElement';
 
 interface ShopListElementState {
-    visible: boolean
+    visible: boolean;
 }
 
 interface ShopListElementProps {
-    shop: ShopDto
+    shop: ShopDto;
+    intl: IntlShape;
 }
 
-class ShopListElement extends React.Component<ShopListElementProps & InjectedIntlProps, ShopListElementState> {
-
+class ShopListElement extends React.Component<
+    ShopListElementProps,
+    ShopListElementState
+> {
     constructor(props: ShopListElementProps) {
         super(props);
         this.state = {
-            visible: false
+            visible: false,
         };
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -31,7 +34,7 @@ class ShopListElement extends React.Component<ShopListElementProps & InjectedInt
     }
 
     componentDidMount() {
-        document.addEventListener("keydown", this.escFunction, false);
+        document.addEventListener('keydown', this.escFunction, false);
     }
 
     closeModal() {
@@ -54,26 +57,30 @@ class ShopListElement extends React.Component<ShopListElementProps & InjectedInt
                     effect="fadeInUp"
                     onClickAway={() => this.closeModal()}
                 >
-                    {this.state.visible && <ShopElement key={"shop" + this.props.shop.name} onCloseModal={this.closeModal}
-                                                        shop={this.props.shop}/>}
+                    {this.state.visible && (
+                        <ShopElement
+                            key={'shop' + this.props.shop.name}
+                            onCloseModal={this.closeModal}
+                            shop={this.props.shop}
+                        />
+                    )}
                 </Modal>
-                <div className="col-lg-3 col-md-3 col-sm-6">
-                    <div className="f_p_item">
-                        <div
-                            onClick={() => this.openModal()}
-                            style={{cursor: 'pointer'}}
-                        >
-                            <h6 className="blue-color">{this.props.shop.uiCommission}</h6>
-                            <div className="f_p_img">
-                                <img
-                                    className="img-fluid img-min img"
-                                    src={this.props.shop.logoPath}
-                                    alt=""
-                                />
-                            </div>
-                            <h4>{this.props.shop.name}</h4>
-                        </div>
+                <div
+                    className="col-md-3 col-sm-6 f_p_item p-2"
+                    onClick={() => this.openModal()}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <h6 className="blue-color">
+                        {this.props.shop.uiCommission}
+                    </h6>
+                    <div className="f_p_img d-flex">
+                        <img
+                            className="img-fluid img-min img align-self-center"
+                            src={this.props.shop.logoPath}
+                            alt=""
+                        />
                     </div>
+                    <h4>{this.props.shop.name}</h4>
                 </div>
             </React.Fragment>
         );

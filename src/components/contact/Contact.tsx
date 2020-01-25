@@ -1,34 +1,34 @@
-import * as React from "react";
-import {store} from "../../index";
-import {NavigationsAction} from "../../redux/actions/NavigationsAction";
-import {Stages} from "../helper/Stages";
-import {emptyHrefLink, InputType} from "../../helper/Constants";
-import GenericInput from "../input/GenericInput";
-import {FormattedMessage} from 'react-intl';
-import {InjectedIntlProps, injectIntl} from "react-intl";
-import {getUserFromStorage, isEmptyString} from "../../helper/AppHelper";
+import * as React from 'react';
+import { store } from '../../index';
+import { NavigationsAction } from '../../redux/actions/NavigationsAction';
+import { Stages } from '../helper/Stages';
+import { emptyHrefLink, InputType } from '../../helper/Constants';
+import GenericInput from '../input/GenericInput';
+import { FormattedMessage } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
+import { getUserFromStorage, isEmptyString } from '../../helper/AppHelper';
 import Modal from 'react-awesome-modal';
-import {addContactMessageToDb} from "../../rest/ContactService";
+import { addContactMessageToDb } from '../../rest/ContactService';
 
 interface IContactProps {
+    intl: IntlShape;
 }
 
 interface IContactState {
-    subject: string,
-    message: string,
-    modalVisible: boolean,
-    modalMessage: string
+    subject: string;
+    message: string;
+    modalVisible: boolean;
+    modalMessage: string;
 }
 
-class Contact extends React.Component<IContactProps & InjectedIntlProps, IContactState> {
-
-    constructor(props: IContactProps & InjectedIntlProps) {
+class Contact extends React.Component<IContactProps, IContactState> {
+    constructor(props: IContactProps) {
         super(props);
         this.state = {
-            subject: "",
-            message: "",
+            subject: '',
+            message: '',
             modalVisible: false,
-            modalMessage: ""
+            modalMessage: '',
         };
         this.handleSendMessage = this.handleSendMessage.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -42,7 +42,7 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
     }
 
     public componentDidMount() {
-        document.addEventListener("keydown", this.escFunction, false);
+        document.addEventListener('keydown', this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.CONTACT));
     }
 
@@ -54,32 +54,45 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
         if (!isEmptyString(this.state.subject)) {
             this.setState({
                 modalVisible: true,
-                modalMessage: this.props.intl.formatMessage({id: "contact.subject.wrong"})
+                modalMessage: this.props.intl.formatMessage({
+                    id: 'contact.subject.wrong',
+                }),
             });
             return;
         }
         if (!isEmptyString(this.state.message)) {
             this.setState({
                 modalVisible: true,
-                modalMessage: this.props.intl.formatMessage({id: "contact.message.wrong"})
+                modalMessage: this.props.intl.formatMessage({
+                    id: 'contact.message.wrong',
+                }),
             });
             return;
         }
 
         const user = getUserFromStorage();
         if (user) {
-            await addContactMessageToDb(user, this.state.message, this.state.subject)
+            await addContactMessageToDb(
+                user,
+                this.state.message,
+                this.state.subject
+            )
                 .then(() => {
                     this.setState({
                         modalVisible: true,
-                        modalMessage: this.props.intl.formatMessage({id: "contact.sendMessage.ok"}),
-                        subject: "",
-                        message: ""
+                        modalMessage: this.props.intl.formatMessage({
+                            id: 'contact.sendMessage.ok',
+                        }),
+                        subject: '',
+                        message: '',
                     });
-                }).catch(() => {
+                })
+                .catch(() => {
                     this.setState({
                         modalVisible: true,
-                        modalMessage: this.props.intl.formatMessage({id: "contact.sendMessage.not.ok"})
+                        modalMessage: this.props.intl.formatMessage({
+                            id: 'contact.sendMessage.not.ok',
+                        }),
                     });
                 });
         }
@@ -87,58 +100,82 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
 
     public closeModal() {
         this.setState({
-            modalVisible: false
+            modalVisible: false,
         });
     }
 
     public render() {
         return (
             <React.Fragment>
-                <Modal visible={this.state.modalVisible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                    {this.state.modalMessage ?
-                        <h3 style={{padding: 15}}>
+                <Modal
+                    visible={this.state.modalVisible}
+                    effect="fadeInUp"
+                    onClickAway={() => this.closeModal()}
+                >
+                    {this.state.modalMessage ? (
+                        <h3 style={{ padding: 15 }}>
                             {this.state.modalMessage}
                         </h3>
-                        : ''
-                    }
+                    ) : (
+                        ''
+                    )}
                 </Modal>
                 <section className="contact_area p_120">
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-2"/>
+                            <div className="col-lg-2" />
                             <div className="col-lg-3">
                                 <div className="contact_info">
                                     <div className="info_item">
                                         <i className="lnr lnr-envelope"></i>
                                         <h6>
-                                            <a href={emptyHrefLink}> support@mail.charitydiscount.ro</a>
+                                            <a href={emptyHrefLink}>
+                                                {' '}
+                                                support@mail.charitydiscount.ro
+                                            </a>
                                         </h6>
                                         <p>
-                                            <FormattedMessage id="contact.mail.label"
-                                                              defaultMessage="Send us your message anytime!"/>
+                                            <FormattedMessage
+                                                id="contact.mail.label"
+                                                defaultMessage="Send us your message anytime!"
+                                            />
                                         </p>
                                     </div>
                                     <div className="info_item">
-                                        <a href="https://www.facebook.com/charitydiscount"
-                                           target="_blank"
-                                           rel="noopener noreferrer">
+                                        <a
+                                            href="https://www.facebook.com/charitydiscount"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
                                             <i className="fa fa-facebook"></i>
                                         </a>
                                         <h6>
-                                            <a href="https://www.facebook.com/charitydiscount"
-                                               target="_blank"
-                                               rel="noopener noreferrer">Charity Discount Facebook</a>
+                                            <a
+                                                href="https://www.facebook.com/charitydiscount"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Charity Discount Facebook
+                                            </a>
                                         </h6>
                                     </div>
-                                    <br/>
+                                    <br />
                                     <div className="info_item">
-                                        <a href="https://www.instagram.com/charitydiscount/" target="_blank"
-                                           rel="noopener noreferrer">
+                                        <a
+                                            href="https://www.instagram.com/charitydiscount/"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
                                             <i className="fa fa-instagram"></i>
                                         </a>
                                         <h6>
-                                            <a href="https://www.instagram.com/charitydiscount/" target="_blank"
-                                               rel="noopener noreferrer">Charity Discount Instagram</a>
+                                            <a
+                                                href="https://www.instagram.com/charitydiscount/"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Charity Discount Instagram
+                                            </a>
                                         </h6>
                                     </div>
                                 </div>
@@ -147,29 +184,49 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
                                 <div className="row contact_form">
                                     <div className="col-md-9">
                                         <div className="form-group">
-                                            <GenericInput className={"form-control"}
-                                                          placeholder={
-                                                              this.props.intl.formatMessage({id: "contact.subject"})
-                                                          }
-                                                          value={this.state.subject}
-                                                          type={InputType.TEXT} id={"subject"}
-                                                          handleChange={event => this.setState({subject: event.target.value})}/>
+                                            <GenericInput
+                                                className={'form-control'}
+                                                placeholder={this.props.intl.formatMessage(
+                                                    { id: 'contact.subject' }
+                                                )}
+                                                value={this.state.subject}
+                                                type={InputType.TEXT}
+                                                id={'subject'}
+                                                handleChange={event =>
+                                                    this.setState({
+                                                        subject:
+                                                            event.target.value,
+                                                    })
+                                                }
+                                            />
                                         </div>
                                         <div className="form-group">
-                                            <textarea className="form-control"
-                                                      id={"message"}
-                                                      value={this.state.message}
-                                                      onChange={event => this.setState({message: event.target.value})}
-                                                      placeholder={
-                                                          this.props.intl.formatMessage({id: "contact.message"})
-                                                      }>
-                                             </textarea>
+                                            <textarea
+                                                className="form-control"
+                                                id={'message'}
+                                                value={this.state.message}
+                                                onChange={event =>
+                                                    this.setState({
+                                                        message:
+                                                            event.target.value,
+                                                    })
+                                                }
+                                                placeholder={this.props.intl.formatMessage(
+                                                    { id: 'contact.message' }
+                                                )}
+                                            ></textarea>
                                         </div>
                                         <div className="col-md-12 text-right">
-                                            <button type="submit" value="submit" className="btn submit_btn"
-                                                    onClick={this.handleSendMessage}>
-                                                <FormattedMessage id="contact.send.message.button"
-                                                                  defaultMessage="Send Message"/>
+                                            <button
+                                                type="submit"
+                                                value="submit"
+                                                className="btn submit_btn"
+                                                onClick={this.handleSendMessage}
+                                            >
+                                                <FormattedMessage
+                                                    id="contact.send.message.button"
+                                                    defaultMessage="Send Message"
+                                                />
                                             </button>
                                         </div>
                                     </div>
@@ -179,10 +236,8 @@ class Contact extends React.Component<IContactProps & InjectedIntlProps, IContac
                     </div>
                 </section>
             </React.Fragment>
-        )
+        );
     }
 }
 
-
 export default injectIntl(Contact);
-

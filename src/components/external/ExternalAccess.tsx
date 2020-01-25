@@ -3,7 +3,7 @@ import {auth, store} from '../../index';
 import {Redirect} from 'react-router';
 import LoginComponent from "../login/LoginComponent";
 import {getUrlParameter, spinnerCss} from "../../helper/AppHelper";
-import {UserActions} from "../login/UserActions";
+import {AuthActions} from "../login/UserActions";
 import {parseAndSaveUser} from "../../helper/AuthHelper";
 import FadeLoader from 'react-spinners/FadeLoader';
 
@@ -52,7 +52,7 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
                 .then((response) => {
                         if (response.user) {
                             let parsedUser = parseAndSaveUser(response.user);
-                            store.dispatch(UserActions.setLoggedUserAction(parsedUser));
+                            store.dispatch(AuthActions.setLoggedUserAction(parsedUser));
                             this.setState({
                                 isLoading: false
                             });

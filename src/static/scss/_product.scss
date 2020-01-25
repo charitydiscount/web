@@ -16,10 +16,6 @@
         @media (max-width: 992px) {
             margin-bottom: 20px;
         }
-        .hot_deal_box1 {
-        }
-        .hot_deal_box2 {
-        }
         img {
             opacity: 0.5;
         }
@@ -68,8 +64,12 @@
 .f_p_item {
     text-align: center;
     margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     .f_p_img {
         position: relative;
+        flex: 1;
         overflow: hidden;
         .p_icon {
             position: absolute;
@@ -135,6 +135,7 @@
         color: $pfont;
     }
     &:hover {
+        box-shadow: 0 0 8px 4px rgba(0, 0, 0, 0.1);
         .f_p_img {
             .p_icon {
                 right: 35px;
@@ -208,9 +209,6 @@
             margin-bottom: 50px;
         }
     }
-}
-
-.left_sidebar_area {
 }
 
 .left_widgets {
@@ -498,9 +496,6 @@
     padding-top: 30px;
 }
 
-.s_product_inner {
-}
-
 .s_product_img {
     .carousel {
         position: relative;
@@ -776,9 +771,6 @@
     }
 }
 
-.review_list {
-}
-
 .review_item {
     margin-bottom: 15px;
     &:last-child {
@@ -860,11 +852,6 @@
     }
     .contact_form {
         margin-top: 15px;
-    }
-}
-
-.comment_list {
-    .review_item {
     }
 }
 
@@ -1127,9 +1114,6 @@
 
 /* End Cart Area css
 ============================================================================================ */
-
-.checkout_area {
-}
 
 .check_title {
     h2 {
@@ -1592,8 +1576,6 @@
     .login_form {
         max-width: 385px;
         margin: auto;
-        .form-group {
-        }
     }
     &.reg_form {
         padding-top: 60px;

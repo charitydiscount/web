@@ -1,23 +1,25 @@
-import * as React from "react";
-import {ProductDTO} from "../../rest/ProductsService";
+import * as React from 'react';
+import { ProductDTO } from '../../rest/ProductsService';
 import Modal from 'react-awesome-modal';
-import ProductElement from "./ProductElement";
+import ProductElement from './ProductElement';
 
 interface ProductListElementState {
-    visible: boolean
+    visible: boolean;
 }
 
 interface ProductListElementProps {
-    keyElement: string
-    product: ProductDTO
+    keyElement: string;
+    product: ProductDTO;
 }
 
-class ProductListElement extends React.Component<ProductListElementProps, ProductListElementState> {
-
+class ProductListElement extends React.Component<
+    ProductListElementProps,
+    ProductListElementState
+> {
     constructor(props: ProductListElementProps) {
         super(props);
         this.state = {
-            visible: false
+            visible: false,
         };
         this.escFunction = this.escFunction.bind(this);
         this.closeModal = this.closeModal.bind(this);
@@ -30,7 +32,7 @@ class ProductListElement extends React.Component<ProductListElementProps, Produc
     }
 
     componentDidMount() {
-        document.addEventListener("keydown", this.escFunction, false);
+        document.addEventListener('keydown', this.escFunction, false);
     }
 
     closeModal() {
@@ -48,21 +50,36 @@ class ProductListElement extends React.Component<ProductListElementProps, Produc
     public render() {
         return (
             <React.Fragment>
-                <Modal visible={this.state.visible} effect="fadeInUp" onClickAway={() => this.closeModal()}>
-                    {this.state.visible &&
-                    <ProductElement key={"element" + this.props.keyElement} onCloseModal={this.closeModal}
-                                    product={this.props.product}/>}
+                <Modal
+                    visible={this.state.visible}
+                    effect="fadeInUp"
+                    onClickAway={() => this.closeModal()}
+                >
+                    {this.state.visible && (
+                        <ProductElement
+                            key={'element' + this.props.keyElement}
+                            onCloseModal={this.closeModal}
+                            product={this.props.product}
+                        />
+                    )}
                 </Modal>
                 <div className="col-md-3">
                     <div className="f_p_item">
-                        <div onClick={() => this.openModal()} style={{cursor: 'pointer'}}>
-                            {this.props.product.price && <h6 className="blue-color">{this.props.product.price} lei</h6>}
+                        <div
+                            onClick={() => this.openModal()}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            {this.props.product.price && (
+                                <h6 className="blue-color">
+                                    {this.props.product.price} lei
+                                </h6>
+                            )}
                             <div className="f_p_img">
                                 <img
                                     className="img-fluid img-min img"
                                     style={{
                                         maxWidth: 200,
-                                        maxHeight: 200
+                                        maxHeight: 200,
                                     }}
                                     src={this.props.product.imageUrl}
                                     alt=""

@@ -1,6 +1,6 @@
-import {emptyHrefLink} from '../../helper/Constants';
-import {Link} from 'react-router-dom';
-import {Routes} from '../helper/Routes';
+import { emptyHrefLink } from '../../helper/Constants';
+import { Link } from 'react-router-dom';
+import { Routes } from '../helper/Routes';
 import * as React from 'react';
 import {
     ShopDto,
@@ -8,34 +8,35 @@ import {
     verifyInFavoriteShops,
     fetchFavoriteShops,
 } from '../../rest/ShopsService';
-import {InjectedIntlProps, injectIntl} from 'react-intl';
-import {FormattedMessage} from 'react-intl';
-import {getPromotions, PromotionDTO} from "../../rest/DealsService";
-import Promotion from "../promotions/Promotion";
-import {smallerSpinnerCss} from "../../helper/AppHelper";
-import FadeLoader from 'react-spinners/FadeLoader';
+import { injectIntl, IntlShape } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
+import { getPromotions, PromotionDTO } from '../../rest/DealsService';
+import Promotion from '../promotions/Promotion';
+import { Button } from '@material-ui/core';
 
 interface IShopElementProps {
-    shop: ShopDto,
-    comingFromShopReview?: boolean
-    onCloseModal?: () => void
+    shop: ShopDto;
+    comingFromShopReview?: boolean;
+    onCloseModal?: () => void;
+    intl: IntlShape;
 }
 
 interface IShopElementState {
-    favShop: boolean,
-    promotions: PromotionDTO[],
-    promotionLoading: boolean
+    favShop: boolean;
+    promotions: PromotionDTO[];
+    promotionLoading: boolean;
 }
 
-class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
-    IShopElementState> {
-
+class ShopElement extends React.Component<
+    IShopElementProps,
+    IShopElementState
+> {
     constructor(props: IShopElementProps) {
         super(props);
         this.state = {
             favShop: false,
             promotions: [],
-            promotionLoading: true
+            promotionLoading: true,
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
@@ -43,19 +44,19 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
     async componentDidMount() {
         if (verifyInFavoriteShops(this.props.shop.id)) {
             this.setState({
-                favShop: true
+                favShop: true,
             });
         }
         let response = await getPromotions(this.props.shop.id);
         if (response) {
             this.setState({
                 promotions: response as PromotionDTO[],
-                promotionLoading: false
+                promotionLoading: false,
             });
         } else {
             this.setState({
-                promotionLoading: false
-            })
+                promotionLoading: false,
+            });
         }
     }
 
@@ -92,55 +93,88 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
         let promotions =
             this.state.promotions &&
             this.state.promotions.length > 0 &&
-            this.state.promotions.filter(promotion => {
-                let startDate = new Date(promotion.promotionStart);
-                let endDate = new Date(promotion.promotionEnd);
-                return startDate < new Date() && endDate > new Date();
-            }).map(promotion => {
-                return <Promotion key={promotion.id} promotion={promotion}
-                                  comingFromShopReview={this.props.comingFromShopReview}/>
-            });
+            this.state.promotions
+                .filter(promotion => {
+                    let startDate = new Date(promotion.promotionStart);
+                    let endDate = new Date(promotion.promotionEnd);
+                    return startDate < new Date() && endDate > new Date();
+                })
+                .map(promotion => {
+                    return (
+                        <Promotion
+                            key={promotion.id}
+                            promotion={promotion}
+                            comingFromShopReview={
+                                this.props.comingFromShopReview
+                            }
+                        />
+                    );
+                });
+
+        const rating = [1, 2, 3, 4, 5].map(star =>
+            star <= this.props.shop.reviewsRating ? (
+                <i
+                    key={`star-${star}`}
+                    className="fa fa-star star-focus fa-lg"
+                />
+            ) : (
+                <i
+                    key={`star-${star}`}
+                    className="fa fa-star-o star-focus fa-lg"
+                />
+            )
+        );
 
         return (
             <React.Fragment>
                 <div className="text-center p-4">
-                    {!this.props.comingFromShopReview &&
-                    <div style={{textAlign: 'right'}}>
-                        <i onClick={this.props.onCloseModal} className="fa fa-times"/>
-                    </div>
-                    }
+                    {!this.props.comingFromShopReview && (
+                        <div style={{ textAlign: 'right' }}>
+                            <i
+                                onClick={this.props.onCloseModal}
+                                className="fa fa-times"
+                            />
+                        </div>
+                    )}
                     <h4 className="blue-color">
                         <FormattedMessage
                             id={'shop.cashback'}
                             defaultMessage="Cashback:"
                         />
                         {this.props.shop.uiCommission}
+                        <br />
+                        <small className="text-muted text-small">
+                            <FormattedMessage
+                                id={'shop.cashback.without.vat.and.transport'}
+                                defaultMessage="of the value without VAT and transport"
+                            />
+                        </small>
                     </h4>
                     <h6>
-                        <FormattedMessage
-                            id={'shop.cashback.without.vat.and.transport'}
-                            defaultMessage="of the value without VAT and transport"
-                        />
+                        {!!this.props.shop.averagePaymentTime ? (
+                            <span>
+                                <FormattedMessage
+                                    id={'average.waiting.time'}
+                                    defaultMessage="Average waiting time: "
+                                />
+                                {this.props.shop.averagePaymentTime}
+                                <FormattedMessage
+                                    id={'average.waiting.time.days'}
+                                    defaultMessage=" days"
+                                />
+                            </span>
+                        ) : (
+                            ''
+                        )}
                     </h6>
-                    <h6>
-                        <FormattedMessage
-                            id={'average.waiting.time'}
-                            defaultMessage="Average waiting time: "
-                        />
-                        {this.props.shop.averagePaymentTime}
-                        <FormattedMessage
-                            id={'average.waiting.time.days'}
-                            defaultMessage=" days"
-                        />
-                    </h6>
-                    <img src={this.props.shop.logoPath} alt=""/>
+                    <img src={this.props.shop.logoPath} alt="" />
                     <div className="blog_details">
                         <h2>{this.props.shop.name}</h2>
                         <h6
                             style={
                                 this.props.comingFromShopReview
                                     ? {}
-                                    : {maxWidth: 300}
+                                    : { maxWidth: 300 }
                             }
                         >
                             <FormattedMessage
@@ -149,66 +183,63 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                             />
                             {sellingCountries}
                         </h6>
-                        {this.props.shop.reviewsRating ? (
-                            <a href={emptyHrefLink}>
-                                {this.props.shop.reviewsRating >= 1 ? (
-                                    <i className="fa fa-star star-focus"/>
-                                ) : (
-                                    <i className="fa fa-star-o star-focus"/>
-                                )}
-                                {this.props.shop.reviewsRating >= 2 ? (
-                                    <i className="fa fa-star star-focus"/>
-                                ) : this.props.shop.reviewsRating > 1 &&
-                                this.props.shop.reviewsRating < 2 ? (
-                                    <i className="fa fa-star-half-o star-focus"/>
-                                ) : (
-                                    <i className="fa fa-star-o star-focus"/>
-                                )}
-                                {this.props.shop.reviewsRating >= 3 ? (
-                                    <i className="fa fa-star star-focus"/>
-                                ) : this.props.shop.reviewsRating > 2 &&
-                                this.props.shop.reviewsRating < 3 ? (
-                                    <i className="fa fa-star-half-o star-focus"/>
-                                ) : (
-                                    <i className="fa fa-star-o star-focus"/>
-                                )}
-                                {this.props.shop.reviewsRating >= 4 ? (
-                                    <i className="fa fa-star star-focus"/>
-                                ) : this.props.shop.reviewsRating > 3 &&
-                                this.props.shop.reviewsRating < 4 ? (
-                                    <i className="fa fa-star-half-o star-focus"/>
-                                ) : (
-                                    <i className="fa fa-star-o star-focus"/>
-                                )}
-                                {this.props.shop.reviewsRating >= 5 ? (
-                                    <i className="fa fa-star star-focus"/>
-                                ) : this.props.shop.reviewsRating > 4 &&
-                                this.props.shop.reviewsRating < 5 ? (
-                                    <i className="fa fa-star-half-o star-focus"/>
-                                ) : (
-                                    <i className="fa fa-star-o star-focus"/>
-                                )}
-                                <span> {this.props.shop.totalReviews}</span>
-                            </a>
-                        ) : (
-                            ''
-                        )}
                         <h5
                             style={
                                 this.props.comingFromShopReview
                                     ? {}
-                                    : {maxWidth: 300}
+                                    : { maxWidth: 300 }
                             }
                         >
                             <FormattedMessage
                                 id={'shop.category'}
                                 defaultMessage="Category:"
                             />
-                            {this.props.shop.category &&
-                                <FormattedMessage id={this.props.shop.category.replace(/\s/g, '')}/>
-                            }
+                            {this.props.shop.category && (
+                                <FormattedMessage
+                                    id={this.props.shop.category.replace(
+                                        /\s/g,
+                                        ''
+                                    )}
+                                />
+                            )}
                         </h5>
-                        <div className="s_product_text" style={{marginTop: 20, marginBottom: 20}}>
+                        <div className="mt-4">
+                            {this.props.shop.reviewsRating ? (
+                                <Link
+                                    to={
+                                        Routes.REVIEW + '/' + this.props.shop.id
+                                    }
+                                >
+                                    <p className="mt-4">
+                                        {rating}
+                                        <span>
+                                            {' '}
+                                            ({this.props.shop.totalReviews})
+                                        </span>
+                                    </p>
+                                </Link>
+                            ) : this.props.comingFromShopReview ? (
+                                ''
+                            ) : (
+                                <Link
+                                    to={
+                                        Routes.REVIEW + '/' + this.props.shop.id
+                                    }
+                                >
+                                    <Button color="secondary">
+                                        <span className="text-lowercase">
+                                            {this.props.intl.formatMessage({
+                                                id: 'review.tell.us',
+                                            })}
+                                        </span>
+                                    </Button>
+                                </Link>
+                            )}
+                        </div>
+                        <div
+                            className="s_product_text"
+                            style={{ marginTop: 20, marginBottom: 20 }}
+                        >
                             <div className="card_area p_20">
                                 <a
                                     href={this.props.shop.computeUrl}
@@ -221,21 +252,10 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                                         defaultMessage="Access"
                                     />
                                 </a>
-                                {!this.props.comingFromShopReview && (
-                                    <div style={{padding: 0}} className={'icon_btn p_icon'}>
-                                        <Link
-                                            to={
-                                                Routes.REVIEW +
-                                                '/' +
-                                                this.props.shop.id
-                                            }
-                                        >
-                                            <i className="lnr lnr-bubble"/>
-                                        </Link>
-                                    </div>
-                                )}
-
-                                <div style={{padding: 0}} className={'icon_btn p_icon'}>
+                                <div
+                                    style={{ padding: 0 }}
+                                    className={'icon_btn p_icon'}
+                                >
                                     <a
                                         href={emptyHrefLink}
                                         onClick={() =>
@@ -256,34 +276,44 @@ class ShopElement extends React.Component<IShopElementProps & InjectedIntlProps,
                             </div>
                         </div>
                     </div>
-                    <FadeLoader
-                        loading={this.state.promotionLoading}
-                        color={'#1641ff'}
-                        css={smallerSpinnerCss}
-                    />
-                    {!this.state.promotionLoading &&
-                    <React.Fragment>
-                        {promotions && promotions.length > 0 &&
-                        <div>
-                            <h3>
-                                <FormattedMessage id={"shop.promotions"} defaultMessage={"Promotions"}/>
-                            </h3>
-                            <div className="table-responsive"
-                                 style={!this.props.comingFromShopReview ? {overflowY: 'auto', maxHeight: 200}
-                                     : {}}>
-                                <table className="table" style={
-                                    !this.props.comingFromShopReview ? {
-                                        maxWidth: 300,
-                                    } : {}}>
-                                    <tbody>
-                                    {promotions}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        }
-                    </React.Fragment>
-                    }
+                    {!this.state.promotionLoading && (
+                        <React.Fragment>
+                            {promotions && promotions.length > 0 && (
+                                <div>
+                                    <h3>
+                                        <FormattedMessage
+                                            id={'shop.promotions'}
+                                            defaultMessage={'Promotions'}
+                                        />
+                                    </h3>
+                                    <div
+                                        className="table-responsive"
+                                        style={
+                                            !this.props.comingFromShopReview
+                                                ? {
+                                                      overflowY: 'auto',
+                                                      maxHeight: 200,
+                                                  }
+                                                : {}
+                                        }
+                                    >
+                                        <table
+                                            className="table"
+                                            style={
+                                                !this.props.comingFromShopReview
+                                                    ? {
+                                                          maxWidth: 300,
+                                                      }
+                                                    : {}
+                                            }
+                                        >
+                                            <tbody>{promotions}</tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            )}
+                        </React.Fragment>
+                    )}
                 </div>
             </React.Fragment>
         );

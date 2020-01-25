@@ -1,22 +1,22 @@
 import * as React from 'react';
-import {Stages} from '../helper/Stages';
-import {connect} from 'react-redux';
-import {doLogoutAction} from '../login/UserActions';
-import {setShops} from '../../redux/actions/ShopsAction';
-import {getLocalStorage} from '../../helper/StorageHelper';
-import {emptyHrefLink, logoPath, StorageKey} from '../../helper/Constants';
-import {ShopDto} from '../../rest/ShopsService';
+import { Stages } from '../helper/Stages';
+import { connect } from 'react-redux';
+import { doLogoutAction } from '../login/UserActions';
+import { setShops } from '../../redux/actions/ShopsAction';
+import { getLocalStorage } from '../../helper/StorageHelper';
+import { emptyHrefLink, logoPath, StorageKey } from '../../helper/Constants';
+import { ShopDto } from '../../rest/ShopsService';
 import {
     setCurrentCategory,
     setSelections,
 } from '../../redux/actions/CategoriesAction';
-import {LoginDto} from '../login/LoginComponent';
-import {Routes} from '../helper/Routes';
-import {FormattedMessage} from 'react-intl';
+import { Routes } from '../helper/Routes';
+import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
-import {onLanguageChange} from '../../helper/AppHelper';
-import {Link} from 'react-router-dom';
-import {setFavShopsIconFill} from "../../redux/actions/NavigationsAction";
+import { onLanguageChange } from '../../helper/AppHelper';
+import { Link } from 'react-router-dom';
+import { setFavShopsIconFill } from '../../redux/actions/NavigationsAction';
+import { auth } from '../..';
 
 type IHeaderLayoutProps = {
     isLoggedIn?: boolean;
@@ -35,39 +35,64 @@ type IHeaderLayoutProps = {
 
     //fav shops loading
     setFavShopsIconFill?: any;
-    favShopsIconFill?: boolean
+    favShopsIconFill?: boolean;
 };
 
 interface IHeaderLayoutState {
-    username: string
+    username: string;
+    fixedHeader: boolean;
 }
 
 const options: any[] = [
-    {value: 'ro', label: 'RO'},
-    {value: 'en', label: 'EN'},
+    { value: 'ro', label: 'RO' },
+    { value: 'en', label: 'EN' },
 ];
 const optionFromValue = (value: string) => options.find(o => o.value === value);
 
-class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutState> {
-
+class HeaderLayout extends React.Component<
+    IHeaderLayoutProps,
+    IHeaderLayoutState
+> {
     constructor(props: IHeaderLayoutProps) {
         super(props);
         this.state = {
             username: '',
+            fixedHeader: false,
         };
         this.handleLogOut = this.handleLogOut.bind(this);
         this.loadFavoriteShops = this.loadFavoriteShops.bind(this);
     }
 
     public componentDidMount() {
-        const user = getLocalStorage(StorageKey.USER);
+        const user = auth.currentUser;
         if (user) {
-            const userParsed = JSON.parse(user) as LoginDto;
             this.setState({
-                username: userParsed.displayName || userParsed.email,
+                username: user.displayName || user.email || '',
             });
         }
+        window.addEventListener('scroll', this.handleScroll, true);
     }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    handleScroll = () => {
+        let scrollTop = window.scrollY;
+        if (scrollTop > 50) {
+            if (!this.state.fixedHeader) {
+                this.setState({
+                    fixedHeader: true,
+                });
+            }
+        } else {
+            if (this.state.fixedHeader) {
+                this.setState({
+                    fixedHeader: false,
+                });
+            }
+        }
+    };
 
     public handleLogOut(event: any) {
         event.preventDefault();
@@ -94,7 +119,11 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
         const isLoggedIn = this.props.isLoggedIn;
 
         return (
-            <header className="header_area">
+            <header
+                className={`header_area ${
+                    this.state.fixedHeader ? 'navbar_fixed' : ''
+                }`}
+            >
                 <div className="top_menu row m0">
                     <div className="container-fluid">
                         <div className="float-left">
@@ -151,12 +180,12 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                         <div className="container-fluid">
                             {(isLoggedIn ||
                                 (!isLoggedIn && (isTos || isPrivacy))) && (
-                                <a
+                                <Link
                                     className="navbar-brand logo_h"
-                                    href={'/login'}
+                                    to={'/login'}
                                 >
-                                    <img src={logoPath} alt=""/>
-                                </a>
+                                    <img src={logoPath} alt="" />
+                                </Link>
                             )}
                             {isLoggedIn && (
                                 <button
@@ -168,9 +197,9 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                     aria-expanded="false"
                                     aria-label="Toggle navigation"
                                 >
-                                    <span className="icon-bar"/>
-                                    <span className="icon-bar"/>
-                                    <span className="icon-bar"/>
+                                    <span className="icon-bar" />
+                                    <span className="icon-bar" />
+                                    <span className="icon-bar" />
                                 </button>
                             )}
                             <div
@@ -190,9 +219,9 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                                                 : '')
                                                         }
                                                     >
-                                                        <a
+                                                        <Link
                                                             className="nav-link"
-                                                            href={
+                                                            to={
                                                                 Routes.CATEGORIES
                                                             }
                                                         >
@@ -200,7 +229,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                                                 id="navigation.shops"
                                                                 defaultMessage="Magazine"
                                                             />
-                                                        </a>
+                                                        </Link>
                                                     </li>
 
                                                     <li
@@ -211,17 +240,15 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                                                 : '')
                                                         }
                                                     >
-                                                        <a
+                                                        <Link
+                                                            to={Routes.PRODUCTS}
                                                             className="nav-link"
-                                                            href={
-                                                                Routes.PRODUCTS
-                                                            }
                                                         >
                                                             <FormattedMessage
                                                                 id="navigation.products"
                                                                 defaultMessage="Products"
                                                             />
-                                                        </a>
+                                                        </Link>
                                                     </li>
 
                                                     <li
@@ -232,15 +259,15 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                                                 : '')
                                                         }
                                                     >
-                                                        <a
+                                                        <Link
+                                                            to={Routes.CAUSES}
                                                             className="nav-link"
-                                                            href={Routes.CAUSES}
                                                         >
                                                             <FormattedMessage
                                                                 id="navigation.causes"
                                                                 defaultMessage="Cauze"
                                                             />
-                                                        </a>
+                                                        </Link>
                                                     </li>
 
                                                     <li
@@ -251,15 +278,15 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                                                 : '')
                                                         }
                                                     >
-                                                        <a
+                                                        <Link
                                                             className="nav-link"
-                                                            href={Routes.WALLET}
+                                                            to={Routes.WALLET}
                                                         >
                                                             <FormattedMessage
                                                                 id="navigation.wallet"
                                                                 defaultMessage="Portofel"
                                                             />
-                                                        </a>
+                                                        </Link>
                                                     </li>
                                                 </React.Fragment>
                                             )}
@@ -269,7 +296,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                     {isLoggedIn && (
                                         <div className="col-lg-5">
                                             <ul className="nav navbar-nav navbar-right right_nav pull-right">
-                                                <hr/>
+                                                <hr />
 
                                                 <li className="nav-item">
                                                     <Link
@@ -283,33 +310,34 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps, IHeaderLayoutStat
                                                         }
                                                         className={'icons'}
                                                     >
-                                                        {this.props.favShopsIconFill ?
+                                                        {this.props
+                                                            .favShopsIconFill ? (
                                                             <i
                                                                 className="fa fa-heart"
                                                                 aria-hidden="true"
                                                             />
-                                                            :
+                                                        ) : (
                                                             <i
                                                                 className="fa fa-heart-o"
                                                                 aria-hidden="true"
                                                             />
-                                                        }
+                                                        )}
                                                     </Link>
                                                 </li>
 
                                                 <li className="nav-item">
-                                                    <a
-                                                        href={Routes.USER}
+                                                    <Link
+                                                        to={Routes.USER}
                                                         className="icons"
                                                     >
                                                         <i
                                                             className="fa fa-user"
                                                             aria-hidden="true"
                                                         />
-                                                    </a>
+                                                    </Link>
                                                 </li>
 
-                                                <hr/>
+                                                <hr />
                                             </ul>
                                         </div>
                                     )}
@@ -335,8 +363,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         logout: () => dispatch(doLogoutAction()),
-        setShops: (shops: Array<ShopDto>) =>
-            dispatch(setShops(shops)),
+        setShops: (shops: Array<ShopDto>) => dispatch(setShops(shops)),
         setFavShopsIconFill: (favShopIconFill: boolean) =>
             dispatch(setFavShopsIconFill(favShopIconFill)),
         setCurrentCategory: (currentCategory: String) =>

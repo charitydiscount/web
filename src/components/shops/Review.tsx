@@ -1,21 +1,24 @@
-import * as React from "react";
-import {fetchProfilePhoto} from "../../rest/StorageService";
-import {facebookPictureKey, noImagePath, profilePictureSuffix} from "../../helper/Constants";
+import * as React from 'react';
+import { fetchProfilePhoto } from '../../rest/StorageService';
+import {
+    facebookPictureKey,
+    noImagePath,
+    profilePictureSuffix,
+} from '../../helper/Constants';
 
 interface IReviewState {
-    photoURL: string
+    photoURL: string;
 }
 
 interface IReviewProps {
-    photoUrl: string,
-    name: string,
-    description: string,
-    rating: number,
-    userID: string
+    photoUrl: string;
+    name: string;
+    description: string;
+    rating: number;
+    userID: string;
 }
 
 class Review extends React.Component<IReviewProps, IReviewState> {
-
     constructor(props: IReviewProps) {
         super(props);
         let photoUrl = this.props.photoUrl;
@@ -27,7 +30,7 @@ class Review extends React.Component<IReviewProps, IReviewState> {
             }
         }
         this.state = {
-            photoURL: photoUrl
+            photoURL: photoUrl,
         };
     }
 
@@ -45,32 +48,42 @@ class Review extends React.Component<IReviewProps, IReviewState> {
     }
 
     public render() {
+        const rating = [1, 2, 3, 4, 5].map(star =>
+            star <= this.props.rating ? (
+                <i
+                    key={`star-${star}`}
+                    className="fa fa-star star-focus fa-lg"
+                />
+            ) : (
+                <i
+                    key={`star-${star}`}
+                    className="fa fa-star-o star-focus fa-lg"
+                />
+            )
+        );
+
         return (
             <React.Fragment>
                 <div className="review_item">
                     <div className="media">
                         <div className="d-flex">
-                            <img src={this.state.photoURL} alt="N" width={80} height={80}
-                                 style={{borderRadius: 70}}/>
+                            <img
+                                src={this.state.photoURL}
+                                alt="N"
+                                width={80}
+                                height={80}
+                                style={{ borderRadius: 70 }}
+                            />
                         </div>
                         <div className="media-body">
                             <h4>{this.props.name}</h4>
-                            {this.props.rating >= 1 ? <i className="fa fa-star"/> :
-                                <i className="fa fa-star-o"/>}
-                            {this.props.rating >= 2 ? <i className="fa fa-star"/> :
-                                <i className="fa fa-star-o"/>}
-                            {this.props.rating >= 3 ? <i className="fa fa-star"/> :
-                                <i className="fa fa-star-o"/>}
-                            {this.props.rating >= 4 ? <i className="fa fa-star"/> :
-                                <i className="fa fa-star-o"/>}
-                            {this.props.rating >= 5 ? <i className="fa fa-star"/> :
-                                <i className="fa fa-star-o"/>}
+                            {rating}
                         </div>
                     </div>
                     <p>{this.props.description}</p>
                 </div>
             </React.Fragment>
-        )
+        );
     }
 }
 

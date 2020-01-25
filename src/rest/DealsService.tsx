@@ -11,7 +11,7 @@ export interface PromotionDTO {
 }
 
 export interface PromotionProgramDto {
-    id: string;
+    id: number;
     name: string;
 }
 
