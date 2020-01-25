@@ -1,5 +1,4 @@
 import {NavigationActionTypes} from "./Actions";
-import {store} from "../../index";
 import {Stages} from "../../components/helper/Stages";
 import {createAction} from "../helper/ActionHelper";
 import {ActionTypesUnion} from "../helper/TypesHelper";

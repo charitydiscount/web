@@ -50,6 +50,9 @@
             .nav-item {
                 margin-right: 45px;
                 .nav-link {
+                    @media (min-width: 992px) {
+                        font: 500 12px/80px $rob;
+                    }
                     font: 500 12px/40px $rob;
                     text-transform: uppercase;
                     color: $dip;
