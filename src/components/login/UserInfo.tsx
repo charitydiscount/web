@@ -35,7 +35,7 @@ interface IUserInfoState {
     photoURL: string;
     displayName: string;
     email: string;
-    providerType: ProviderType;
+    providerType: string;
     userId: string;
     modalVisible: boolean;
     modalMessage: string;
@@ -51,7 +51,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             displayName: '',
             email: '',
             userId: '',
-            providerType: ProviderType.NORMAL,
+            providerType: ProviderType.NORMAL.toString(),
             modalVisible: false,
             modalMessage: '',
             isLoading: false,
@@ -78,24 +78,23 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     async componentDidMount() {
         document.addEventListener('keydown', this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
-        const user = getUserFromStorage();
-        if (user) {
-            const userParsed = JSON.parse(user) as LoginDto;
-
+        if (auth.currentUser) {
             this.setState({
-                photoURL: userParsed.photoURL ? userParsed.photoURL : '',
-                displayName: userParsed.displayName,
-                email: userParsed.email,
-                providerType: userParsed.providerType,
-                userId: userParsed.uid,
+                photoURL: auth.currentUser.photoURL || '',
+                displayName: auth.currentUser.displayName || '',
+                email: auth.currentUser.email || '',
+                providerType: auth.currentUser.providerId || '',
+                userId: auth.currentUser.uid || '',
             });
 
-            if (!userParsed.photoURL) {
+            if (!auth.currentUser.photoURL) {
                 this.setState({
                     isLoadingPhoto: true,
                 });
                 try {
-                    const response = await fetchProfilePhoto(userParsed.uid);
+                    const response = await fetchProfilePhoto(
+                        auth.currentUser.uid
+                    );
                     this.setState({
                         photoURL: response as string,
                         isLoadingPhoto: false,
@@ -270,7 +269,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                             </aside>
                                             <aside className="single_sidebar_widget popular_post_widget">
                                                 {this.state.providerType ===
-                                                    ProviderType.NORMAL && (
+                                                    ProviderType.NORMAL.toString() && (
                                                     <div>
                                                         <div className="col-md-12 text-center p_05">
                                                             <a

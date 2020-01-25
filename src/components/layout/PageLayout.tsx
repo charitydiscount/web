@@ -13,10 +13,15 @@ import ShopReview from '../shops/ShopReview';
 import Products from '../products/Products';
 import ExternalAccess from '../external/ExternalAccess';
 import Faq from '../faq/Faq';
-import { auth } from '../..';
+import { AppState } from '../../redux/reducer/RootReducer';
+import { connect } from 'react-redux';
 
-const PageLayout = () => {
-    if (auth.currentUser) {
+interface PageLayoutProps {
+    isLoggedIn: boolean;
+}
+
+const PageLayout = (props: PageLayoutProps) => {
+    if (props.isLoggedIn) {
         return (
             <main>
                 <Switch>
@@ -118,4 +123,11 @@ const PageLayout = () => {
         );
     }
 };
-export default PageLayout;
+
+const mapStateToProps = (state: AppState) => {
+    return {
+        isLoggedIn: state.user.isLoggedIn,
+    };
+};
+
+export default connect(mapStateToProps)(PageLayout);

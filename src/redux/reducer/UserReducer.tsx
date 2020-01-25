@@ -1,18 +1,15 @@
-import { LoginActionTypes, UserActionTypes } from '../actions/Actions';
+import { LoginActionTypes } from '../actions/Actions';
 import { AuthActions } from '../../components/login/UserActions';
-import { UserDto } from '../../rest/UserService';
 import { UserActions } from '../actions/UserActions';
 
 export interface IUserState {
     isLoggedIn: boolean;
     userKey: string | null;
-    user: UserDto | null;
 }
 
 const initialState: IUserState = {
     isLoggedIn: false,
     userKey: null,
-    user: null,
 };
 
 export default function(
@@ -25,15 +22,10 @@ export default function(
                 ...state,
                 isLoggedIn: true,
                 userKey: action.payload,
-                user: action.payload ? JSON.parse(action.payload) : null,
             };
         case LoginActionTypes.RESET_LOGGED_USER_ACTION:
-            return initialState;
-        case UserActionTypes.SET_USER:
-            return {
-                ...state,
-                user: action.payload,
-            };
+            console.log('reset');
+            return { ...initialState };
         default:
             return state;
     }
