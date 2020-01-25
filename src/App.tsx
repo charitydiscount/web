@@ -11,6 +11,7 @@ import { AppState } from './redux/reducer/RootReducer';
 import { FadeLoader } from 'react-spinners';
 import { spinnerCss } from './helper/AppHelper';
 import ScrollToTop from './components/layout/Scroll';
+import ReactAdBlock from './ReactAdBlock';
 
 interface StateProps {
     loaded: boolean;
@@ -28,6 +29,7 @@ class App extends React.Component<StateProps & DispatchProps> {
     render() {
         return this.props.loaded ? (
             <React.Fragment>
+                <ReactAdBlock />
                 <ScrollToTop />
                 <HeaderLayout />
                 <PageLayout />

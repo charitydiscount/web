@@ -14,7 +14,6 @@ import {
     ProductResult,
     searchProduct,
 } from '../../rest/ProductsService';
-import ReactAdBlock from '../../ReactAdBlock';
 import ProductListElement from './ProductListElement';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -242,7 +241,6 @@ class Products extends React.Component<ProductsProps, ProductsState> {
 
         return (
             <React.Fragment>
-                <ReactAdBlock />
                 <section className="cat_product_area section_gap">
                     <div className="container-fluid">
                         <div className="row">

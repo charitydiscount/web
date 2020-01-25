@@ -65,25 +65,22 @@ class ShopListElement extends React.Component<
                         />
                     )}
                 </Modal>
-                <div className="col-lg-3 col-md-3 col-sm-6">
-                    <div className="f_p_item">
-                        <div
-                            onClick={() => this.openModal()}
-                            style={{ cursor: 'pointer' }}
-                        >
-                            <h6 className="blue-color">
-                                {this.props.shop.uiCommission}
-                            </h6>
-                            <div className="f_p_img">
-                                <img
-                                    className="img-fluid img-min img"
-                                    src={this.props.shop.logoPath}
-                                    alt=""
-                                />
-                            </div>
-                            <h4>{this.props.shop.name}</h4>
-                        </div>
+                <div
+                    className="col-md-3 col-sm-6 f_p_item p-2"
+                    onClick={() => this.openModal()}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <h6 className="blue-color">
+                        {this.props.shop.uiCommission}
+                    </h6>
+                    <div className="f_p_img d-flex">
+                        <img
+                            className="img-fluid img-min img align-self-center"
+                            src={this.props.shop.logoPath}
+                            alt=""
+                        />
                     </div>
+                    <h4>{this.props.shop.name}</h4>
                 </div>
             </React.Fragment>
         );

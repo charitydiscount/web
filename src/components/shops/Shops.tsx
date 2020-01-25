@@ -23,7 +23,6 @@ import { fetchReviewRatings, ReviewRating } from '../../rest/ReviewService';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { spinnerCss } from '../../helper/AppHelper';
 import { injectIntl, IntlShape } from 'react-intl';
-import ReactAdBlock from '../../ReactAdBlock';
 import ShopListElement from './ShopListElement';
 import { fetchConfigInfo } from '../../rest/ConfigService';
 import FormControl from '@material-ui/core/FormControl';
@@ -286,7 +285,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
         return (
             <React.Fragment>
-                <ReactAdBlock />
                 <section className="cat_product_area section_gap">
                     <div className="container-fluid">
                         <div className="row">
@@ -433,7 +431,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                     color={'#1641ff'}
                                     css={spinnerCss}
                                 />
-                                <div className="latest_product_inner row">
+                                <div className="latest_product_inner row d-flex align-items-stretch">
                                     {!this.state.isLoading && (
                                         <React.Fragment>
                                             {shopsList}

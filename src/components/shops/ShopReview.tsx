@@ -70,7 +70,6 @@ class ShopReview extends React.Component<
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
         document.addEventListener('keydown', this.escFunction, false);
-        // let shop = getShopById(parseInt(this.props.match.params.id)) as ShopDto;
         try {
             let reviews = await fetchReviews(this.state.shop.uniqueCode);
             // const ownReview = reviews.find(
@@ -86,21 +85,6 @@ class ShopReview extends React.Component<
                 reviewsLoading: false,
             });
         }
-
-        // let reviewAverage = 0;
-        // let reviewNumber = 0;
-
-        // if (this.state.reviews) {
-        //     this.state.reviews.forEach(value => {
-        //         reviewAverage += value.rating;
-        //         reviewNumber += 1;
-        //     });
-        //     shop.reviewsRating = reviewAverage / reviewNumber;
-        //     shop.totalReviews = reviewNumber;
-        // }
-        // this.setState({
-        //     shop: shop,
-        // });
     }
 
     public componentWillUnmount() {
@@ -219,10 +203,12 @@ class ShopReview extends React.Component<
                     );
                 })
             ) : (
-                <FormattedMessage
-                    id={'review.no.reviews'}
-                    defaultMessage="No reviews yet"
-                />
+                <div className="text-muted">
+                    <FormattedMessage
+                        id={'review.no.reviews'}
+                        defaultMessage="No reviews yet"
+                    />
+                </div>
             );
 
         const rating = [1, 2, 3, 4, 5].map(star => (
