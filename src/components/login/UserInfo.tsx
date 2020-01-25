@@ -1,6 +1,6 @@
-import { auth, storage, store } from '../../index';
-import { NavigationsAction } from '../../redux/actions/NavigationsAction';
-import { Stages } from '../helper/Stages';
+import {auth, storage, store} from '../../index';
+import {NavigationsAction} from '../../redux/actions/NavigationsAction';
+import {Stages} from '../helper/Stages';
 import * as React from 'react';
 import {
     emptyHrefLink,
@@ -11,19 +11,15 @@ import {
     ProviderType,
     StorageRef,
 } from '../../helper/Constants';
-import { LoginDto } from './LoginComponent';
-import { doLogoutAction } from './UserActions';
-import { connect } from 'react-redux';
+import {LoginDto} from './LoginComponent';
+import {doLogoutAction} from './UserActions';
+import {connect} from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
 import Modal from 'react-awesome-modal';
-import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
-import {
-    getUserFromStorage,
-    smallerSpinnerCss,
-    spinnerCss,
-} from '../../helper/AppHelper';
-import { fetchProfilePhoto } from '../../rest/StorageService';
-import { addContactMessageToDb } from '../../rest/ContactService';
+import {FormattedMessage, injectIntl, IntlShape} from 'react-intl';
+import {getUserFromStorage, smallerSpinnerCss, spinnerCss,} from '../../helper/AppHelper';
+import {fetchProfilePhoto} from '../../rest/StorageService';
+import {addContactMessageToDb} from '../../rest/ContactService';
 import FadeLoader from 'react-spinners/FadeLoader';
 
 interface IUserInfoProps {
@@ -35,7 +31,7 @@ interface IUserInfoState {
     photoURL: string;
     displayName: string;
     email: string;
-    providerType: string;
+    providerType: ProviderType;
     userId: string;
     modalVisible: boolean;
     modalMessage: string;
@@ -51,7 +47,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             displayName: '',
             email: '',
             userId: '',
-            providerType: ProviderType.NORMAL.toString(),
+            providerType: ProviderType.NORMAL,
             modalVisible: false,
             modalMessage: '',
             isLoading: false,
@@ -79,13 +75,17 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         document.addEventListener('keydown', this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
         if (auth.currentUser) {
-            this.setState({
-                photoURL: auth.currentUser.photoURL || '',
-                displayName: auth.currentUser.displayName || '',
-                email: auth.currentUser.email || '',
-                providerType: auth.currentUser.providerId || '',
-                userId: auth.currentUser.uid || '',
-            });
+            const user = getUserFromStorage();
+            if (user) {
+                const userParsed = JSON.parse(user) as LoginDto;
+                this.setState({
+                    photoURL: userParsed.photoURL ? userParsed.photoURL : '',
+                    displayName: userParsed.displayName,
+                    email: userParsed.email,
+                    providerType: userParsed.providerType,
+                    userId: userParsed.uid
+                });
+            }
 
             if (!auth.currentUser.photoURL) {
                 this.setState({
@@ -134,9 +134,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                 await addContactMessageToDb(
                     user,
                     'Request to delete account with id:' +
-                        (JSON.parse(user) as LoginDto).uid,
+                    (JSON.parse(user) as LoginDto).uid,
                     'Delete account with id:' +
-                        (JSON.parse(user) as LoginDto).uid
+                    (JSON.parse(user) as LoginDto).uid
                 )
                     .then(() => {
                         this.setState({
@@ -171,11 +171,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             isLoading: false,
             modalMessage: success
                 ? this.props.intl.formatMessage({
-                      id: 'userInfo.email.reset.sent',
-                  })
+                    id: 'userInfo.email.reset.sent',
+                })
                 : this.props.intl.formatMessage({
-                      id: 'userInfo.email.reset.error',
-                  }),
+                    id: 'userInfo.email.reset.error',
+                }),
         });
     }
 
@@ -231,13 +231,13 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                     effect="fadeInUp"
                     onClickAway={() => this.closeModal()}
                 >
-                    <h3 style={{ padding: 15 }}>{this.state.modalMessage}</h3>
+                    <h3 style={{padding: 15}}>{this.state.modalMessage}</h3>
                 </Modal>
                 {!this.state.isLoading && (
                     <div className="product_image_area">
                         <div className="container p_90">
                             <div className="row s_product_inner">
-                                <div className="col-lg-4" />
+                                <div className="col-lg-4"/>
                                 <div className="col-lg-4">
                                     <div className="s_product_img">
                                         <div className="blog_right_sidebar">
@@ -265,11 +265,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     {this.state.displayName}
                                                 </h4>
                                                 <p>{this.state.email}</p>
-                                                <div className="br" />
+                                                <div className="br"/>
                                             </aside>
                                             <aside className="single_sidebar_widget popular_post_widget">
                                                 {this.state.providerType ===
-                                                    ProviderType.NORMAL.toString() && (
+                                                ProviderType.NORMAL && (
                                                     <div>
                                                         <div className="col-md-12 text-center p_05">
                                                             <a
@@ -300,9 +300,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                         }
                                                                         storageRef={storage.ref(
                                                                             StorageRef.PROFILE_PHOTOS +
-                                                                                this
-                                                                                    .state
-                                                                                    .userId
+                                                                            this
+                                                                                .state
+                                                                                .userId
                                                                         )}
                                                                         onUploadError={
                                                                             this
@@ -340,7 +340,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                 />
                                                             </a>
                                                         </div>
-                                                        <div className="br" />
+                                                        <div className="br"/>
                                                     </div>
                                                 )}
                                                 <div className="col-md-12 text-center p_05">
