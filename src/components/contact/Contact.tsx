@@ -128,7 +128,7 @@ class Contact extends React.Component<IContactProps, IContactState> {
                             <div className="col-lg-3">
                                 <div className="contact_info">
                                     <div className="info_item">
-                                        <i className="lnr lnr-envelope"></i>
+                                        <i className="fa fa-envelope"></i>
                                         <h6>
                                             <a href={emptyHrefLink}>
                                                 {' '}
