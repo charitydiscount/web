@@ -1,21 +1,20 @@
 import * as React from 'react';
-import { store } from '../../index';
-import { NavigationsAction } from '../../redux/actions/NavigationsAction';
-import { Stages } from '../helper/Stages';
-import { getUserFromStorage, spinnerCss } from '../../helper/AppHelper';
-import { emptyHrefLink, StorageKey } from '../../helper/Constants';
-import { ShopDto } from '../../rest/ShopsService';
+import {auth, store} from '../../index';
+import {NavigationsAction} from '../../redux/actions/NavigationsAction';
+import {Stages} from '../helper/Stages';
+import {spinnerCss} from '../../helper/AppHelper';
+import {emptyHrefLink, StorageKey} from '../../helper/Constants';
+import {ShopDto} from '../../rest/ShopsService';
 import Review from './Review';
-import { fetchReviews, ReviewDto, saveReview } from '../../rest/ReviewService';
-import { LoginDto } from '../login/LoginComponent';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl, IntlShape } from 'react-intl';
-import { removeLocalStorage } from '../../helper/StorageHelper';
+import {fetchReviews, ReviewDto, saveReview} from '../../rest/ReviewService';
+import {FormattedMessage} from 'react-intl';
+import {injectIntl, IntlShape} from 'react-intl';
+import {removeLocalStorage} from '../../helper/StorageHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import ShopElement from './ShopElement';
 import Modal from 'react-awesome-modal';
-import { connect } from 'react-redux';
-import { AppState } from '../../redux/reducer/RootReducer';
+import {connect} from 'react-redux';
+import {AppState} from '../../redux/reducer/RootReducer';
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -36,10 +35,8 @@ interface IProductReviewProps {
     shops: ShopDto[];
 }
 
-class ShopReview extends React.Component<
-    IProductReviewProps,
-    IProductReviewState
-> {
+class ShopReview extends React.Component<IProductReviewProps,
+    IProductReviewState> {
     constructor(props: IProductReviewProps) {
         super(props);
         this.state = {
@@ -106,41 +103,38 @@ class ShopReview extends React.Component<
 
     async updateCurrentReview() {
         if (this.state.rating > 0) {
-            const user = getUserFromStorage();
-            if (user) {
-                const userParsed = JSON.parse(user) as LoginDto;
-                if (userParsed) {
-                    try {
-                        await saveReview(
-                            this.state.shop.uniqueCode,
-                            this.state.rating,
-                            this.state.description,
-                            {
-                                userId: userParsed.uid,
-                                name: userParsed.displayName || '-',
-                                photoUrl: userParsed.photoURL || '',
-                            }
-                        );
-                        removeLocalStorage(StorageKey.REVIEWS);
-                        this.handleShowModalMessage(
-                            this.props.intl.formatMessage({
-                                id: 'review.update.message',
-                            }),
-                            null
-                        );
-                    } catch (error) {
-                        this.handleShowModalMessage(
-                            this.props.intl.formatMessage({
-                                id: 'review.failed.to.update.error.message',
-                            }),
-                            null
-                        );
-                    }
+            if (auth.currentUser) {
+                try {
+                    await saveReview(
+                        this.state.shop.uniqueCode,
+                        this.state.rating,
+                        this.state.description,
+                        {
+                            userId: auth.currentUser.uid,
+                            name: auth.currentUser.displayName || '-',
+                            photoUrl: auth.currentUser.photoURL || '',
+                        }
+                    );
+                    removeLocalStorage(StorageKey.REVIEWS);
+                    this.handleShowModalMessage(
+                        this.props.intl.formatMessage({
+                            id: 'review.update.message',
+                        }),
+                        null
+                    );
+                } catch (error) {
+                    this.handleShowModalMessage(
+                        this.props.intl.formatMessage({
+                            id: 'review.failed.to.update.error.message',
+                        }),
+                        null
+                    );
+
                 }
             }
         } else {
             this.handleShowModalMessage(
-                this.props.intl.formatMessage({ id: 'review.error.message' }),
+                this.props.intl.formatMessage({id: 'review.error.message'}),
                 null
             );
         }
@@ -250,11 +244,11 @@ class ShopReview extends React.Component<
                     effect="fadeInUp"
                     onClickAway={() => this.closeModal()}
                 >
-                    <h3 style={{ padding: 15 }}>{this.state.modalMessage}</h3>
+                    <h3 style={{padding: 15}}>{this.state.modalMessage}</h3>
                 </Modal>
                 <section className={'product_description_area'}>
                     <div className={'container'}>
-                        <div className="row" style={{ marginTop: 70 }}>
+                        <div className="row" style={{marginTop: 70}}>
                             <div className="col-lg-6">
                                 <ShopElement
                                     key={this.state.shop.name}
@@ -282,11 +276,11 @@ class ShopReview extends React.Component<
                                                 onChange={event =>
                                                     this.setState({
                                                         description:
-                                                            event.target.value,
+                                                        event.target.value,
                                                     })
                                                 }
                                                 placeholder={this.props.intl.formatMessage(
-                                                    { id: 'review.placeholder' }
+                                                    {id: 'review.placeholder'}
                                                 )}
                                             ></textarea>
                                         </div>
@@ -313,7 +307,7 @@ class ShopReview extends React.Component<
                                             css={spinnerCss}
                                         />
                                         {!this.state.reviewsLoading &&
-                                            reviewsList}
+                                        reviewsList}
                                     </div>
                                 </div>
                             </div>

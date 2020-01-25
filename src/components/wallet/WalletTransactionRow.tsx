@@ -6,11 +6,10 @@ import { Routes } from '../helper/Routes';
 import { injectIntl, IntlShape } from 'react-intl';
 import {
     dateOptions,
-    getUserFromStorage,
     roundMoney,
 } from '../../helper/AppHelper';
-import { LoginDto } from '../login/LoginComponent';
 import { TransactionDto } from '../../rest/WalletService';
+import {auth} from "../../index";
 
 interface IWalletTransactionRowProps {
     transaction: TransactionDto;
@@ -18,8 +17,9 @@ interface IWalletTransactionRowProps {
 }
 
 class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
+
     public render() {
-        let user = getUserFromStorage();
+
         let target;
         let txType = TxType[this.props.transaction.type].toString();
         let txTitle;
@@ -78,9 +78,8 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                 );
                 break;
             case TxType.COMMISSION.toString():
-                if (user) {
-                    const userParsed = JSON.parse(user) as LoginDto;
-                    target = userParsed.displayName;
+                if (auth.currentUser) {
+                    target = auth.currentUser.displayName;
                 }
                 txTitle = (
                     <i
