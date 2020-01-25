@@ -1,9 +1,9 @@
 import { ActionTypesUnion } from '../../redux/helper/TypesHelper';
 import { createAction } from '../../redux/helper/ActionHelper';
 import { LoginActionTypes } from '../../redux/actions/Actions';
-import { auth } from '../../index';
 import { removeLocalStorage } from '../../helper/StorageHelper';
 import { StorageKey } from '../../helper/Constants';
+import { auth } from '../..';
 
 export const AuthActions = {
     setLoggedUserAction: (loginInfo: string | null) =>
@@ -13,11 +13,8 @@ export const AuthActions = {
 };
 export type AuthActions = ActionTypesUnion<typeof AuthActions>;
 
-export function doLogoutAction(): any {
-    return (dispatch: any) => {
-        dispatch(AuthActions.resetLoggedUserAction());
-        auth.signOut();
-        removeLocalStorage(StorageKey.USER);
-        window.location.reload();
-    };
-}
+export const doLogoutAction = () => async (dispatch: any) => {
+    await auth.signOut();
+    removeLocalStorage(StorageKey.USER);
+    dispatch(AuthActions.resetLoggedUserAction());
+};

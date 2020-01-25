@@ -1,5 +1,4 @@
-import { DB, store, auth } from '../index';
-import { AuthActions } from '../components/login/UserActions';
+import { DB, auth } from '../index';
 import { FirebaseTable } from '../helper/Constants';
 
 export interface UserDto {
@@ -13,21 +12,6 @@ export interface AccountDto {
     iban: string;
     name: string;
     nickname: string;
-}
-
-export function updateUser(user: UserDto, userFromIndex) {
-    let docRef = DB.collection(FirebaseTable.USERS).doc(user.userId);
-    docRef.get().then(function(doc) {
-        if (!doc.exists) {
-            docRef.set({
-                email: user.email,
-                name: user.name,
-                photoUrl: user.photoUrl,
-                userId: user.userId,
-            });
-        }
-        store.dispatch(AuthActions.setLoggedUserAction(userFromIndex));
-    });
 }
 
 export function updateUserAccount(accountName: string, accountIban: string) {
