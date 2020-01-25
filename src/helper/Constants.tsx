@@ -58,11 +58,8 @@ export enum StorageKey {
     PERFORMANET_2_CODE = '/performant2CodeCD',
 }
 
-export enum ProviderType {
-    GOOGLE,
-    FACEBOOK,
-    NORMAL,
-}
+export const ProviderType = ["google", "facebook", "normal"];
+
 
 export const emptyHrefLink = '#';
 export const logoPath = '/img/logo.png';

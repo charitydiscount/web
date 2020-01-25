@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { store } from '../../index';
-import { NavigationsAction } from '../../redux/actions/NavigationsAction';
-import { Stages } from '../helper/Stages';
-import { emptyHrefLink, InputType } from '../../helper/Constants';
+import {auth, store} from '../../index';
+import {NavigationsAction} from '../../redux/actions/NavigationsAction';
+import {Stages} from '../helper/Stages';
+import {emptyHrefLink, InputType} from '../../helper/Constants';
 import GenericInput from '../input/GenericInput';
-import { FormattedMessage } from 'react-intl';
-import { injectIntl, IntlShape } from 'react-intl';
-import { getUserFromStorage, isEmptyString } from '../../helper/AppHelper';
+import {FormattedMessage} from 'react-intl';
+import {injectIntl, IntlShape} from 'react-intl';
+import {isEmptyString} from '../../helper/AppHelper';
 import Modal from 'react-awesome-modal';
-import { addContactMessageToDb } from '../../rest/ContactService';
+import {addContactMessageToDb} from '../../rest/ContactService';
 
 interface IContactProps {
     intl: IntlShape;
@@ -70,10 +70,11 @@ class Contact extends React.Component<IContactProps, IContactState> {
             return;
         }
 
-        const user = getUserFromStorage();
-        if (user) {
+        if (auth.currentUser) {
             await addContactMessageToDb(
-                user,
+                auth.currentUser.displayName,
+                auth.currentUser.email,
+                auth.currentUser.uid,
                 this.state.message,
                 this.state.subject
             )
@@ -113,7 +114,7 @@ class Contact extends React.Component<IContactProps, IContactState> {
                     onClickAway={() => this.closeModal()}
                 >
                     {this.state.modalMessage ? (
-                        <h3 style={{ padding: 15 }}>
+                        <h3 style={{padding: 15}}>
                             {this.state.modalMessage}
                         </h3>
                     ) : (
@@ -123,7 +124,7 @@ class Contact extends React.Component<IContactProps, IContactState> {
                 <section className="contact_area p_120">
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-2" />
+                            <div className="col-lg-2"/>
                             <div className="col-lg-3">
                                 <div className="contact_info">
                                     <div className="info_item">
@@ -159,7 +160,7 @@ class Contact extends React.Component<IContactProps, IContactState> {
                                             </a>
                                         </h6>
                                     </div>
-                                    <br />
+                                    <br/>
                                     <div className="info_item">
                                         <a
                                             href="https://www.instagram.com/charitydiscount/"
@@ -187,7 +188,7 @@ class Contact extends React.Component<IContactProps, IContactState> {
                                             <GenericInput
                                                 className={'form-control'}
                                                 placeholder={this.props.intl.formatMessage(
-                                                    { id: 'contact.subject' }
+                                                    {id: 'contact.subject'}
                                                 )}
                                                 value={this.state.subject}
                                                 type={InputType.TEXT}
@@ -195,7 +196,7 @@ class Contact extends React.Component<IContactProps, IContactState> {
                                                 handleChange={event =>
                                                     this.setState({
                                                         subject:
-                                                            event.target.value,
+                                                        event.target.value,
                                                     })
                                                 }
                                             />
@@ -208,11 +209,11 @@ class Contact extends React.Component<IContactProps, IContactState> {
                                                 onChange={event =>
                                                     this.setState({
                                                         message:
-                                                            event.target.value,
+                                                        event.target.value,
                                                     })
                                                 }
                                                 placeholder={this.props.intl.formatMessage(
-                                                    { id: 'contact.message' }
+                                                    {id: 'contact.message'}
                                                 )}
                                             ></textarea>
                                         </div>

@@ -1,14 +1,13 @@
 import {DB} from "../index";
 import {FirebaseTable} from "../helper/Constants";
-import {LoginDto} from "../components/login/LoginComponent";
 
-export function addContactMessageToDb(user, message, subject) {
+export function addContactMessageToDb(displayName, email, uid, message, subject) {
     const data = {
-        name: (JSON.parse(user) as LoginDto).displayName,
-        email: (JSON.parse(user) as LoginDto).email,
+        name: displayName,
+        email: email,
         message: message,
         subject: subject,
-        userId: (JSON.parse(user) as LoginDto).uid
+        userId: uid
     };
 
     return DB.collection(FirebaseTable.CONTACT).add(

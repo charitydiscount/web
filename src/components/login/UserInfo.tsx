@@ -8,16 +8,14 @@ import {
     noImagePath,
     profilePictureDefaultName,
     profilePictureSuffix,
-    ProviderType,
     StorageRef,
 } from '../../helper/Constants';
-import {LoginDto} from './LoginComponent';
 import {doLogoutAction} from './UserActions';
 import {connect} from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
 import Modal from 'react-awesome-modal';
 import {FormattedMessage, injectIntl, IntlShape} from 'react-intl';
-import {getUserFromStorage, smallerSpinnerCss, spinnerCss,} from '../../helper/AppHelper';
+import {smallerSpinnerCss, spinnerCss,} from '../../helper/AppHelper';
 import {fetchProfilePhoto} from '../../rest/StorageService';
 import {addContactMessageToDb} from '../../rest/ContactService';
 import FadeLoader from 'react-spinners/FadeLoader';
@@ -31,7 +29,7 @@ interface IUserInfoState {
     photoURL: string;
     displayName: string;
     email: string;
-    providerType: ProviderType;
+    normalUser: boolean,
     userId: string;
     modalVisible: boolean;
     modalMessage: string;
@@ -47,8 +45,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             displayName: '',
             email: '',
             userId: '',
-            providerType: ProviderType.NORMAL,
             modalVisible: false,
+            normalUser: false,
             modalMessage: '',
             isLoading: false,
             isLoadingPhoto: false,
@@ -75,21 +73,17 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         document.addEventListener('keydown', this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
         if (auth.currentUser) {
-            const user = getUserFromStorage();
-            if (user) {
-                const userParsed = JSON.parse(user) as LoginDto;
-                this.setState({
-                    photoURL: userParsed.photoURL ? userParsed.photoURL : '',
-                    displayName: userParsed.displayName,
-                    email: userParsed.email,
-                    providerType: userParsed.providerType,
-                    userId: userParsed.uid
-                });
-            }
+            this.setState({
+                photoURL: auth.currentUser.photoURL || '',
+                displayName: auth.currentUser.displayName || '',
+                email: auth.currentUser.email || '',
+                userId: auth.currentUser.uid || ''
+            });
 
             if (!auth.currentUser.photoURL) {
                 this.setState({
                     isLoadingPhoto: true,
+                    normalUser: true
                 });
                 try {
                     const response = await fetchProfilePhoto(
@@ -98,17 +92,20 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                     this.setState({
                         photoURL: response as string,
                         isLoadingPhoto: false,
+                        normalUser: true
                     });
                 } catch (error) {
                     this.setState({
                         photoURL: noImagePath,
                         isLoadingPhoto: false,
+                        normalUser: true
                     });
                 }
             } else {
                 if (this.state.photoURL.includes(facebookPictureKey)) {
                     this.setState({
                         photoURL: this.state.photoURL + profilePictureSuffix,
+                        normalUser: false
                     });
                 }
             }
@@ -126,17 +123,18 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             })
         );
         if (question === true) {
-            const user = getUserFromStorage();
-            if (user) {
+            if (auth.currentUser) {
                 this.setState({
                     isLoading: true,
                 });
                 await addContactMessageToDb(
-                    user,
+                    auth.currentUser.displayName,
+                    auth.currentUser.email,
+                    auth.currentUser.uid,
                     'Request to delete account with id:' +
-                    (JSON.parse(user) as LoginDto).uid,
+                    auth.currentUser.uid,
                     'Delete account with id:' +
-                    (JSON.parse(user) as LoginDto).uid
+                    auth.currentUser.uid
                 )
                     .then(() => {
                         this.setState({
@@ -268,8 +266,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                 <div className="br"/>
                                             </aside>
                                             <aside className="single_sidebar_widget popular_post_widget">
-                                                {this.state.providerType ===
-                                                ProviderType.NORMAL && (
+                                                {this.state.normalUser && (
                                                     <div>
                                                         <div className="col-md-12 text-center p_05">
                                                             <a

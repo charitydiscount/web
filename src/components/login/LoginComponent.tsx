@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import firebase from 'firebase/app';
 import {auth} from '../../index';
 import FirebaseUIAuth from 'react-firebaseui-localized';
-import {ProviderType} from '../../helper/Constants';
 import {parseAndSaveUser} from "../../helper/AuthHelper";
 
 export interface LoginDto {
@@ -11,7 +10,6 @@ export interface LoginDto {
     photoURL: string | null;
     displayName: string;
     email: string;
-    providerType: ProviderType;
     locale: string;
     creationTime: string;
 }
