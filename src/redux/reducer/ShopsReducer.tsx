@@ -1,36 +1,49 @@
-import {ShopsActionTypes} from "../actions/Actions";
-import {ShopsActions} from "../actions/ShopsAction";
-import {ShopDto} from "../../rest/ShopsService";
-import {ReviewRating} from "../../rest/ReviewService";
+import { ShopsActionTypes } from '../actions/Actions';
+import { ShopDto } from '../../rest/ShopsService';
+import { ReviewRating } from '../../rest/ReviewService';
+import { AnyAction } from 'redux';
 
-interface IShopsState {
-    shops: Array<ShopDto>,
-    ratings: Map<String, ReviewRating>,
-    currentPage: number
+export interface IShopsState {
+    allShops: ShopDto[];
+    shops: ShopDto[];
+    ratings: Map<String, ReviewRating>;
+    currentPage: number;
+    shopsLoaded: boolean;
 }
 
 const initialState: IShopsState = {
+    allShops: [],
     shops: [],
     ratings: new Map(),
-    currentPage: 0
+    currentPage: 0,
+    shopsLoaded: false,
 };
 
-export default function (state: IShopsState = initialState, action: ShopsActions): IShopsState {
+export default function(
+    state: IShopsState = initialState,
+    action: AnyAction
+): IShopsState {
     switch (action.type) {
         case ShopsActionTypes.SET_RATINGS_ACTION:
             return {
                 ...state,
-                ratings: action.payload
+                ratings: action.payload,
             };
         case ShopsActionTypes.SET_SHOPS_ACTION:
             return {
                 ...state,
-                shops: action.payload
+                shops: action.payload,
             };
         case ShopsActionTypes.SET_CURRENT_PAGE_ACTION:
             return {
                 ...state,
-                currentPage: action.payload
+                currentPage: action.payload,
+            };
+        case ShopsActionTypes.SHOPS_LOADED:
+            return {
+                ...state,
+                allShops: action.payload,
+                shopsLoaded: true,
             };
         default:
             return state;

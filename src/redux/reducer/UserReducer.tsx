@@ -3,7 +3,7 @@ import { AuthActions } from '../../components/login/UserActions';
 import { UserDto } from '../../rest/UserService';
 import { UserActions } from '../actions/UserActions';
 
-interface IUserState {
+export interface IUserState {
     isLoggedIn: boolean;
     userKey: string | null;
     user: UserDto | null;

@@ -1,8 +1,6 @@
-import { DB, store } from '../index';
+import { DB, store, auth } from '../index';
 import { AuthActions } from '../components/login/UserActions';
 import { FirebaseTable } from '../helper/Constants';
-import { getUserKeyFromStorage } from '../helper/AppHelper';
-import { firestore } from 'firebase/app';
 
 export interface UserDto {
     email: string;
@@ -32,20 +30,22 @@ export function updateUser(user: UserDto, userFromIndex) {
     });
 }
 
-export function updateUserAccount(accountName, accountIban) {
+export function updateUserAccount(accountName: string, accountIban: string) {
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
+    }
+
     return DB.collection(FirebaseTable.USERS)
-        .doc(getUserKeyFromStorage())
-        .update({
-            accounts: firestore.FieldValue.arrayUnion(
-                ...[
-                    {
-                        name: accountName,
-                        iban: accountIban,
-                        nickname: '',
-                    },
-                ]
-            ),
-        });
+        .doc(auth.currentUser.uid)
+        .collection(FirebaseTable.ACCOUNTS)
+        .doc(accountIban)
+        .set(
+            {
+                name: accountName,
+                iban: accountIban,
+            },
+            { merge: true }
+        );
 }
 
 export const getUserBankAccounts = (userId: string): Promise<AccountDto[]> =>
@@ -57,25 +57,3 @@ export const getUserBankAccounts = (userId: string): Promise<AccountDto[]> =>
             query =>
                 query.docs.map(docSnap => docSnap.data() as AccountDto) || []
         );
-
-// export function getUserAccountInfo() {
-//     return new Promise((resolve, reject) => {
-//         let userKey = getUserKeyFromStorage();
-//         if (userKey) {
-//             let docRef = DB.collection(FirebaseTable.USERS).doc(userKey);
-//             docRef
-//                 .get()
-//                 .then(doc => {
-//                     if (doc.exists) {
-//                         let data = doc.data() as UserDto;
-//                         resolve(data.accounts[0]);
-//                     } else {
-//                         reject();
-//                     }
-//                 })
-//                 .catch(() => reject());
-//         } else {
-//             reject();
-//         }
-//     });
-// }

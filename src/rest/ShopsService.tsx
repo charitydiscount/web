@@ -1,11 +1,7 @@
-import { DB } from '../index';
+import { DB, auth } from '../index';
 import { getLocalStorage, setLocalStorage } from '../helper/StorageHelper';
 import { FirebaseTable, StorageKey } from '../helper/Constants';
-import {
-    computeUrl,
-    getUserKeyFromStorage,
-    roundCommission,
-} from '../helper/AppHelper';
+import { computeUrl, roundCommission } from '../helper/AppHelper';
 import { getPercentage } from './ConfigService';
 import { firestore } from 'firebase/app';
 
@@ -14,11 +10,7 @@ export interface FavoriteShopsDto {
     userId: string;
 }
 
-export interface ShopDtoWrapper {
-    batch: ShopDto[];
-}
-
-interface ProgramDocDto {
+export interface ProgramDocDto {
     [uniqueCode: string]: ShopDto;
 }
 
@@ -82,13 +74,13 @@ export var ShopDtoMap = {
 };
 
 export async function fetchFavoriteShops() {
-    const userKey = getUserKeyFromStorage();
-    if (!userKey) {
+    if (!auth.currentUser) {
         return [];
     }
     const favoriteShopsDoc = await DB.collection(FirebaseTable.FAVORITE_SHOPS)
-        .doc(userKey)
+        .doc(auth.currentUser.uid)
         .get();
+
     if (!favoriteShopsDoc.exists) {
         return [];
     }
@@ -124,12 +116,13 @@ export function verifyInFavoriteShops(shopId: number) {
 }
 
 export async function updateFavoriteShops(shop: ShopDto, remove: boolean) {
-    const userKey = getUserKeyFromStorage();
-    if (!userKey) {
-        return;
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
     }
 
-    const docRef = DB.collection(FirebaseTable.FAVORITE_SHOPS).doc(userKey);
+    const docRef = DB.collection(FirebaseTable.FAVORITE_SHOPS).doc(
+        auth.currentUser.uid
+    );
     if (remove) {
         return docRef.update({
             [`programs.${shop.uniqueCode}`]: firestore.FieldValue.delete(),
@@ -142,7 +135,7 @@ export async function updateFavoriteShops(shop: ShopDto, remove: boolean) {
             });
         } else {
             return docRef.set({
-                userId: userKey,
+                userId: auth.currentUser.uid,
                 [`programs.${shop.uniqueCode}`]: shop,
             });
         }
@@ -181,7 +174,10 @@ export enum CommissionType {
     percent,
 }
 
-export function getProgramCommission(program, normalCommission) {
+export function getProgramCommission(
+    program: ShopDto,
+    normalCommission: boolean
+) {
     let commission = '';
     let percent = getPercentage();
     if (program.defaultSaleCommissionRate != null) {
@@ -240,24 +236,4 @@ export function getProgramCommission(program, normalCommission) {
     }
 
     return commission;
-}
-
-export function getShopById(id: number) {
-    const shops = getLocalStorage(StorageKey.SHOPS);
-    if (shops) {
-        const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
-        return shopsParsed.find(value => {
-            return value.id === id;
-        });
-    }
-}
-
-export function getShopByUniqueCode(uniqueCode: string) {
-    const shops = getLocalStorage(StorageKey.SHOPS);
-    if (shops) {
-        const shopsParsed = JSON.parse(shops) as Array<ShopDto>;
-        return shopsParsed.find(value => {
-            return value.uniqueCode === uniqueCode;
-        });
-    }
 }

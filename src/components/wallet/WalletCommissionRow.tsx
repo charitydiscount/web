@@ -1,13 +1,16 @@
 import * as React from 'react';
 import { CommissionStatus, emptyHrefLink } from '../../helper/Constants';
-import { getShopById } from '../../rest/ShopsService';
 import { injectIntl, IntlShape } from 'react-intl';
 import { CommissionDto } from '../../rest/WalletService';
 import { dateOptions, roundMoney } from '../../helper/AppHelper';
+import { connect } from 'react-redux';
+import { AppState } from '../../redux/reducer/RootReducer';
+import { ShopDto } from '../../rest/ShopsService';
 
 interface IWalletTransactionRowProps {
     commission: CommissionDto;
     intl: IntlShape;
+    shops: ShopDto[];
 }
 
 class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
@@ -15,7 +18,9 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
         let commissionStatus = CommissionStatus[
             this.props.commission.status
         ].toString();
-        const isShopActive = !!getShopById(this.props.commission.shopId);
+        const isShopActive = !!this.props.shops.find(
+            shop => shop.id === this.props.commission.shopId
+        );
 
         let cmTitle: any;
         switch (commissionStatus) {
@@ -105,4 +110,10 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
     }
 }
 
-export default injectIntl(WalletCommissionRow);
+const mapStateToProps = (state: AppState) => {
+    return {
+        shops: state.shops.allShops,
+    };
+};
+
+export default connect(mapStateToProps)(injectIntl(WalletCommissionRow));

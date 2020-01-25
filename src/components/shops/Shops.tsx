@@ -13,18 +13,12 @@ import {
     setShops,
 } from '../../redux/actions/ShopsAction';
 import GenericInput from '../input/GenericInput';
-import { getLocalStorage, setLocalStorage } from '../../helper/StorageHelper';
-import { StorageKey } from '../../helper/Constants';
 import ReactPaginate from 'react-paginate';
 import {
     setCurrentCategory,
     setSelections,
 } from '../../redux/actions/CategoriesAction';
-import {
-    fetchFavoriteShops,
-    ShopDto,
-    fetchPrograms,
-} from '../../rest/ShopsService';
+import { fetchFavoriteShops, ShopDto } from '../../rest/ShopsService';
 import { fetchReviewRatings, ReviewRating } from '../../rest/ReviewService';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { spinnerCss } from '../../helper/AppHelper';
@@ -37,6 +31,7 @@ import { FormattedMessage } from 'react-intl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { InputLabel } from '@material-ui/core';
+import { AppState } from '../../redux/reducer/RootReducer';
 
 interface IShopsProps {
     shops: Array<ShopDto>;
@@ -58,6 +53,7 @@ interface IShopsProps {
     favShops: string;
 
     intl: IntlShape;
+    allShops: ShopDto[];
 }
 
 interface IShopsState {
@@ -89,25 +85,9 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             //configs not loaded, important part, refresh app
             window.location.reload();
         }
-        try {
-            const shopsJson = getLocalStorage(StorageKey.SHOPS);
-            let shops: ShopDto[];
-            if (shopsJson) {
-                shops = JSON.parse(shopsJson);
-            } else {
-                shops = await fetchPrograms();
-                setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
-            }
-            if (shops) {
-                this.props.setShops(shops);
-                this.setState({
-                    isLoading: false,
-                });
-            }
-        } catch (error) {
-            //shops not loaded, important part, refresh app
-            window.location.reload();
-        }
+
+        this.props.setShops(this.props.allShops);
+
         try {
             const favoriteShops = await fetchFavoriteShops();
             let favShop = this.props.match.params.favShops;
@@ -143,6 +123,10 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         }
 
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
+
+        this.setState({
+            isLoading: false,
+        });
     }
 
     public onSearchUpdateEvent(event) {
@@ -151,9 +135,20 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
     public onSearchUpdate(shopName: string) {
         if (!shopName) {
-            const shops = getLocalStorage(StorageKey.SHOPS);
-            if (shops) {
-                this.props.setShops(JSON.parse(shops));
+            this.props.setShops(this.props.allShops);
+            this.props.setSelections([]);
+            this.props.setCurrentCategory(String(''));
+            this.props.setFavShopsIconFill(false);
+            this.props.setCurrentPage(0);
+            this.setState({
+                isLoading: false,
+            });
+        } else {
+            const data = this.props.allShops.filter(shop =>
+                shop.name.toLowerCase().includes(shopName.toLowerCase())
+            );
+            if (data) {
+                this.props.setShops(data);
                 this.props.setSelections([]);
                 this.props.setCurrentCategory(String(''));
                 this.props.setFavShopsIconFill(false);
@@ -161,26 +156,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 this.setState({
                     isLoading: false,
                 });
-            }
-        } else {
-            const storage = getLocalStorage(StorageKey.SHOPS);
-            if (storage) {
-                const shops = JSON.parse(storage) as Array<ShopDto>;
-                if (shops) {
-                    const data = shops.filter(shop =>
-                        shop.name.toLowerCase().includes(shopName.toLowerCase())
-                    );
-                    if (data) {
-                        this.props.setShops(data);
-                        this.props.setSelections([]);
-                        this.props.setCurrentCategory(String(''));
-                        this.props.setFavShopsIconFill(false);
-                        this.props.setCurrentPage(0);
-                        this.setState({
-                            isLoading: false,
-                        });
-                    }
-                }
             }
         }
     }
@@ -193,14 +168,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             let sortType = event.target.value;
             let shopsFilled = this.props.shops.map(shop => {
                 let ratingObj = this.props.ratings.get(shop.uniqueCode);
-                let rr = 0;
-                let rn = 0;
-                if (ratingObj !== undefined) {
-                    rr = ratingObj.rating;
-                    rn = ratingObj.count;
-                }
-                shop.reviewsRating = rr;
-                shop.totalReviews = rn;
+                shop.reviewsRating = !!ratingObj ? ratingObj.rating : 0;
+                shop.totalReviews = !!ratingObj ? ratingObj.count : 0;
 
                 return shop;
             });
@@ -274,14 +243,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             this.props.ratings.size > 0
                 ? this.props.shops.map(shop => {
                       let ratingObj = this.props.ratings.get(shop.uniqueCode);
-                      let rr = 0;
-                      let rn = 0;
-                      if (ratingObj !== undefined) {
-                          rr = ratingObj.rating;
-                          rn = ratingObj.count;
-                      }
-                      shop.reviewsRating = rr;
-                      shop.totalReviews = rn;
+                      shop.reviewsRating = !!ratingObj ? ratingObj.rating : 0;
+                      shop.totalReviews = !!ratingObj ? ratingObj.count : 0;
 
                       return (
                           <ShopListElement
@@ -306,14 +269,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                     .slice(offset * pageLimit, (offset + 1) * pageLimit)
                     .map(shop => {
                         let ratingObj = this.props.ratings.get(shop.uniqueCode);
-                        let rr = 0;
-                        let rn = 0;
-                        if (ratingObj !== undefined) {
-                            rr = ratingObj.rating;
-                            rn = ratingObj.count;
-                        }
-                        shop.reviewsRating = rr;
-                        shop.totalReviews = rn;
+                        shop.reviewsRating = !!ratingObj ? ratingObj.rating : 0;
+                        shop.totalReviews = !!ratingObj ? ratingObj.count : 0;
 
                         return (
                             <ShopListElement
@@ -437,7 +394,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                             </Select>
                                         </FormControl>
                                     </div>
-                                    <div className="right_page ml-auto">
+                                    <div className="right_page ml-auto d-none d-md-block">
                                         <nav
                                             className="cat_page"
                                             aria-label="Page navigation example"
@@ -526,11 +483,12 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: AppState) => {
     return {
-        shops: state.shopReducer.shops,
-        ratings: state.shopReducer.ratings,
-        currentPage: state.shopReducer.currentPage,
+        shops: state.shops.shops,
+        allShops: state.shops.allShops,
+        ratings: state.shops.ratings,
+        currentPage: state.shops.currentPage,
     };
 };
 

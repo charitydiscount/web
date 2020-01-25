@@ -12,8 +12,7 @@ import { injectIntl, IntlShape } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import { getPromotions, PromotionDTO } from '../../rest/DealsService';
 import Promotion from '../promotions/Promotion';
-import { smallerSpinnerCss } from '../../helper/AppHelper';
-import FadeLoader from 'react-spinners/FadeLoader';
+import { Button } from '@material-ui/core';
 
 interface IShopElementProps {
     shop: ShopDto;
@@ -152,15 +151,21 @@ class ShopElement extends React.Component<
                         </small>
                     </h4>
                     <h6>
-                        <FormattedMessage
-                            id={'average.waiting.time'}
-                            defaultMessage="Average waiting time: "
-                        />
-                        {this.props.shop.averagePaymentTime}
-                        <FormattedMessage
-                            id={'average.waiting.time.days'}
-                            defaultMessage=" days"
-                        />
+                        {!!this.props.shop.averagePaymentTime ? (
+                            <span>
+                                <FormattedMessage
+                                    id={'average.waiting.time'}
+                                    defaultMessage="Average waiting time: "
+                                />
+                                {this.props.shop.averagePaymentTime}
+                                <FormattedMessage
+                                    id={'average.waiting.time.days'}
+                                    defaultMessage=" days"
+                                />
+                            </span>
+                        ) : (
+                            ''
+                        )}
                     </h6>
                     <img src={this.props.shop.logoPath} alt="" />
                     <div className="blog_details">
@@ -198,14 +203,39 @@ class ShopElement extends React.Component<
                                 />
                             )}
                         </h5>
-                        {this.props.shop.reviewsRating ? (
-                            <p className="mt-4">
-                                {rating}
-                                <span> ({this.props.shop.totalReviews})</span>
-                            </p>
-                        ) : (
-                            ''
-                        )}
+                        <div className="mt-4">
+                            {this.props.shop.reviewsRating ? (
+                                <Link
+                                    to={
+                                        Routes.REVIEW + '/' + this.props.shop.id
+                                    }
+                                >
+                                    <p className="mt-4">
+                                        {rating}
+                                        <span>
+                                            {' '}
+                                            ({this.props.shop.totalReviews})
+                                        </span>
+                                    </p>
+                                </Link>
+                            ) : this.props.comingFromShopReview ? (
+                                ''
+                            ) : (
+                                <Link
+                                    to={
+                                        Routes.REVIEW + '/' + this.props.shop.id
+                                    }
+                                >
+                                    <Button color="secondary">
+                                        <span className="text-lowercase">
+                                            {this.props.intl.formatMessage({
+                                                id: 'review.tell.us',
+                                            })}
+                                        </span>
+                                    </Button>
+                                </Link>
+                            )}
+                        </div>
                         <div
                             className="s_product_text"
                             style={{ marginTop: 20, marginBottom: 20 }}
@@ -222,23 +252,6 @@ class ShopElement extends React.Component<
                                         defaultMessage="Access"
                                     />
                                 </a>
-                                {!this.props.comingFromShopReview && (
-                                    <div
-                                        style={{ padding: 0 }}
-                                        className={'icon_btn p_icon'}
-                                    >
-                                        <Link
-                                            to={
-                                                Routes.REVIEW +
-                                                '/' +
-                                                this.props.shop.id
-                                            }
-                                        >
-                                            <i className="fa fa-star" />
-                                        </Link>
-                                    </div>
-                                )}
-
                                 <div
                                     style={{ padding: 0 }}
                                     className={'icon_btn p_icon'}
@@ -263,11 +276,6 @@ class ShopElement extends React.Component<
                             </div>
                         </div>
                     </div>
-                    <FadeLoader
-                        loading={this.state.promotionLoading}
-                        color={'#1641ff'}
-                        css={smallerSpinnerCss}
-                    />
                     {!this.state.promotionLoading && (
                         <React.Fragment>
                             {promotions && promotions.length > 0 && (

@@ -6,7 +6,7 @@ import WalletBlock from './WalletBlock';
 import {
     CommissionDto,
     fetchCommissions,
-    fetchWalletInfo,
+    fetchWallet,
     TransactionDto,
     WalletWrapper,
 } from '../../rest/WalletService';
@@ -63,6 +63,32 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
         };
     }
 
+    async loadWallet() {
+        if (!this.state.isLoading) {
+            this.setState({
+                isLoading: true,
+            });
+        }
+
+        try {
+            let response = await fetchWallet();
+            let data = response.data() as WalletWrapper;
+            this.setState({
+                cashbackApproved: data.cashback.approved,
+                cashbackPending: data.cashback.pending,
+                pointsApproved: data.points.approved,
+                pointsPending: data.points.pending,
+                transactions: data.transactions,
+                isLoading: false,
+            });
+        } catch (error) {
+            this.setState({
+                isLoading: false,
+            });
+            //transaction history info not loaded or empty values
+        }
+    }
+
     async componentDidMount() {
         try {
             let response = await fetchCauses();
@@ -75,29 +101,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
             //causes not loaded
         }
 
-        try {
-            let response = await fetchWalletInfo();
-            if (response) {
-                let data = response as WalletWrapper;
-                this.setState({
-                    cashbackApproved: data.cashback.approved,
-                    cashbackPending: data.cashback.pending,
-                    pointsApproved: data.points.approved,
-                    pointsPending: data.points.pending,
-                    transactions: data.transactions,
-                    isLoading: false,
-                });
-            } else {
-                this.setState({
-                    isLoading: false,
-                });
-            }
-        } catch (error) {
-            this.setState({
-                isLoading: false,
-            });
-            //transaction history info not loaded or empty values
-        }
+        this.loadWallet();
 
         try {
             let response = await fetchCommissions();
@@ -225,6 +229,9 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                                 openDonateWithCaseId={
                                                     this.props.match.params
                                                         .caseId
+                                                }
+                                                onTxCompleted={() =>
+                                                    this.loadWallet()
                                                 }
                                             />
                                             <WalletBlock

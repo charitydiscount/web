@@ -7,35 +7,35 @@ import {
 import { StorageKey } from './Constants';
 import { LoginDto } from '../components/login/LoginComponent';
 import { css } from '@emotion/core';
-import { store } from '../index';
+import { store, auth } from '../index';
 import { setLangResources } from '../redux/actions/LocaleAction';
 
 /**
  * Used to compute 2performant rest call and redirect
- * @param uniqueId - the unique code from entity
- * @param url - app url
+ * @param uniqueCode - shop unique code
+ * @param redirectUrl - the program url where the user should be redirected
+ * @param userId - the id of the user to which to commission must be assigned
  */
-export function computeUrl(uniqueId, url) {
-    let baseUrl =
-        'https://event.2performant.com/events/click?ad_type=quicklink';
-    let affCode = '&aff_code=' + getAffiliateCode();
-    let unique = '&unique=' + uniqueId;
-    let redirect = '&redirect_to=' + url;
-    let tag = '';
-    let userKey = getUserKeyFromStorage();
-    if (userKey) {
-        tag = '&st=' + userKey;
+export function computeUrl(uniqueCode: string, redirectUrl: string) {
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
     }
+    const baseUrl =
+        'https://event.2performant.com/events/click?ad_type=quicklink';
+    const affCode = '&aff_code=' + getAffiliateCode();
+    const unique = '&unique=' + uniqueCode;
+    const redirect = '&redirect_to=' + redirectUrl;
+    const tag = '&st=' + auth.currentUser.uid;
     return baseUrl + affCode + unique + redirect + tag;
 }
 
-export function computeProductUrl(affUrl) {
-    let baseUrl = affUrl;
-    let tag = '';
-    let userKey = getUserKeyFromStorage();
-    if (userKey) {
-        tag = '&st=' + userKey;
+export function computeProductUrl(affUrl: string) {
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
     }
+
+    const baseUrl = affUrl;
+    const tag = '&st=' + auth.currentUser.uid;
     return baseUrl + tag;
 }
 
@@ -84,7 +84,6 @@ export function getUserFromStorage() {
 export function onLanguageChange(event) {
     setLocalStorage(StorageKey.LANG, event.value);
     store.dispatch(setLangResources(event.value));
-    window.location.reload();
 }
 
 export function getUrlParameter(param: string) {

@@ -16,7 +16,6 @@ import {
 } from '../../rest/ProductsService';
 import ReactAdBlock from '../../ReactAdBlock';
 import ProductListElement from './ProductListElement';
-import { getShopById } from '../../rest/ShopsService';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -24,9 +23,13 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import { FormattedMessage } from 'react-intl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import { connect } from 'react-redux';
+import { AppState } from '../../redux/reducer/RootReducer';
+import { ShopDto } from '../../rest/ShopsService';
 
 interface ProductsProps {
     intl: IntlShape;
+    shops: ShopDto[];
 }
 
 interface ProductsState {
@@ -39,10 +42,7 @@ interface ProductsState {
 
 const pageLimit = 50; // products per page
 
-class Products extends React.Component<
-    ProductsProps,
-    ProductsState
-> {
+class Products extends React.Component<ProductsProps, ProductsState> {
     private searchTerm: string = '';
     private minPrice: string = '';
     private maxPrice: string = '';
@@ -208,10 +208,15 @@ class Products extends React.Component<
         if (this.state.products && this.state.products.length > 0) {
             productsState = this.state.products
                 .filter(
-                    product => getShopById(product.shopId) !== undefined
+                    product =>
+                        this.props.shops.find(
+                            shop => shop.id === product.shopId
+                        ) !== undefined
                 )
                 .map(product => {
-                    let shop = getShopById(product.shopId);
+                    let shop = this.props.shops.find(
+                        shop => shop.id === product.shopId
+                    );
                     if (shop) {
                         product.commission = roundCommission(
                             (product.price * parseFloat(shop.commission)) / 100
@@ -518,4 +523,10 @@ class Products extends React.Component<
     }
 }
 
-export default injectIntl(Products);
+const mapStateToProps = (state: AppState) => {
+    return {
+        shops: state.shops.allShops,
+    };
+};
+
+export default connect(mapStateToProps)(injectIntl(Products));

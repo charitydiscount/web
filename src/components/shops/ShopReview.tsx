@@ -4,7 +4,7 @@ import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import { getUserFromStorage, spinnerCss } from '../../helper/AppHelper';
 import { emptyHrefLink, StorageKey } from '../../helper/Constants';
-import { getShopById, ShopDto } from '../../rest/ShopsService';
+import { ShopDto } from '../../rest/ShopsService';
 import Review from './Review';
 import { fetchReviews, ReviewDto, saveReview } from '../../rest/ReviewService';
 import { LoginDto } from '../login/LoginComponent';
@@ -14,12 +14,13 @@ import { removeLocalStorage } from '../../helper/StorageHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import ShopElement from './ShopElement';
 import Modal from 'react-awesome-modal';
+import { connect } from 'react-redux';
+import { AppState } from '../../redux/reducer/RootReducer';
 
 interface IProductReviewState {
     modalVisible: boolean;
     modalMessage: string;
 
-    //shop info
     shop: ShopDto;
 
     //reviews
@@ -32,6 +33,7 @@ interface IProductReviewState {
 interface IProductReviewProps {
     match: any;
     intl: IntlShape;
+    shops: ShopDto[];
 }
 
 class ShopReview extends React.Component<
@@ -41,7 +43,10 @@ class ShopReview extends React.Component<
     constructor(props: IProductReviewProps) {
         super(props);
         this.state = {
-            shop: {} as ShopDto,
+            shop:
+                props.shops.find(
+                    shop => shop.id === parseInt(this.props.match.params.id)
+                ) || ({} as ShopDto),
             description: '',
             modalMessage: '',
             modalVisible: false,
@@ -65,10 +70,12 @@ class ShopReview extends React.Component<
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
         document.addEventListener('keydown', this.escFunction, false);
-        let shop = getShopById(parseInt(this.props.match.params.id)) as ShopDto;
+        // let shop = getShopById(parseInt(this.props.match.params.id)) as ShopDto;
         try {
-            let reviews = await fetchReviews(shop.uniqueCode);
-            // const ownReview = reviews.find((review) => review.reviewer.userId = )
+            let reviews = await fetchReviews(this.state.shop.uniqueCode);
+            // const ownReview = reviews.find(
+            //     review => (review.reviewer.userId = auth.currentUser.uid)
+            // );
             this.setState({
                 reviews: reviews,
                 reviewsLoading: false,
@@ -80,20 +87,20 @@ class ShopReview extends React.Component<
             });
         }
 
-        let reviewAverage = 0;
-        let reviewNumber = 0;
+        // let reviewAverage = 0;
+        // let reviewNumber = 0;
 
-        if (this.state.reviews) {
-            this.state.reviews.forEach(value => {
-                reviewAverage += value.rating;
-                reviewNumber += 1;
-            });
-            shop.reviewsRating = reviewAverage / reviewNumber;
-            shop.totalReviews = reviewNumber;
-        }
-        this.setState({
-            shop: shop,
-        });
+        // if (this.state.reviews) {
+        //     this.state.reviews.forEach(value => {
+        //         reviewAverage += value.rating;
+        //         reviewNumber += 1;
+        //     });
+        //     shop.reviewsRating = reviewAverage / reviewNumber;
+        //     shop.totalReviews = reviewNumber;
+        // }
+        // this.setState({
+        //     shop: shop,
+        // });
     }
 
     public componentWillUnmount() {
@@ -332,4 +339,10 @@ class ShopReview extends React.Component<
     }
 }
 
-export default injectIntl(ShopReview);
+const mapStateToProps = (state: AppState) => {
+    return {
+        shops: state.shops.allShops,
+    };
+};
+
+export default connect(mapStateToProps)(injectIntl(ShopReview));

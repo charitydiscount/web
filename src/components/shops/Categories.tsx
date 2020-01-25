@@ -1,34 +1,40 @@
-import * as React from "react";
-import {store} from "../../index";
-import {NavigationsAction, setFavShopsIconFill} from "../../redux/actions/NavigationsAction";
-import {Stages} from "../helper/Stages";
-import Category from "./Category";
-import {CategoryDto, fetchCategories} from "../../rest/CategoriesService";
-import {connect} from "react-redux";
-import {setCurrentCategory, setSelections} from "../../redux/actions/CategoriesAction";
-import {FormattedMessage} from 'react-intl';
+import * as React from 'react';
+import { store } from '../../index';
+import {
+    NavigationsAction,
+    setFavShopsIconFill,
+} from '../../redux/actions/NavigationsAction';
+import { Stages } from '../helper/Stages';
+import Category from './Category';
+import { CategoryDto, fetchCategories } from '../../rest/CategoriesService';
+import { connect } from 'react-redux';
+import {
+    setCurrentCategory,
+    setSelections,
+} from '../../redux/actions/CategoriesAction';
+import { FormattedMessage } from 'react-intl';
 import FadeLoader from 'react-spinners/FadeLoader';
-import {spinnerCss} from "../../helper/AppHelper";
+import { spinnerCss } from '../../helper/AppHelper';
+import { AppState } from '../../redux/reducer/RootReducer';
 
 interface ICategoryProps {
-    currentCategory?: String,
-    selections?: boolean[]
+    currentCategory?: String;
+    selections?: boolean[];
 
     //global state
-    setCurrentCategory?: any
-    setSelections?: any // used for showing a blue color when a category is activated
+    setCurrentCategory?: any;
+    setSelections?: any; // used for showing a blue color when a category is activated
 
     //fav shops loading
     setFavShopsIconFill?: any;
 }
 
 interface ICategoryState {
-    categories: CategoryDto[],
-    isLoading: boolean,
+    categories: CategoryDto[];
+    isLoading: boolean;
 }
 
 class Categories extends React.Component<ICategoryProps, ICategoryState> {
-
     constructor(props: ICategoryProps) {
         super(props);
         this.state = {
@@ -42,16 +48,14 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
         try {
             let response = await fetchCategories();
-            this.setState(
-                {
-                    categories: response as CategoryDto[],
-                    isLoading: false
-                });
+            this.setState({
+                categories: response as CategoryDto[],
+                isLoading: false,
+            });
         } catch (error) {
-            this.setState(
-                {
-                    isLoading: true
-                });
+            this.setState({
+                isLoading: true,
+            });
         }
     }
 
@@ -79,28 +83,47 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
                 <aside className="left_widgets cat_widgets">
                     <div className="l_w_title">
                         <h3>
-                            <FormattedMessage id="categories.title" defaultMessage="Categories"/>
-                            {this.props.currentCategory && this.props.currentCategory.length > 0
-                                ? "->"
+                            <FormattedMessage
+                                id="categories.title"
+                                defaultMessage="Categories"
+                            />
+                            {this.props.currentCategory &&
+                            this.props.currentCategory.length > 0
+                                ? ' / '
                                 : null}
-                            {this.props.currentCategory && this.props.currentCategory.length > 0
-                                ? <FormattedMessage id={this.props.currentCategory.replace(/\s/g, '')}/>
-                                : null}
+                            {this.props.currentCategory &&
+                            this.props.currentCategory.length > 0 ? (
+                                <FormattedMessage
+                                    id={this.props.currentCategory.replace(
+                                        /\s/g,
+                                        ''
+                                    )}
+                                />
+                            ) : null}
                         </h3>
                     </div>
                     <div className="widgets_inner">
                         <ul className="list">
-                            {!this.state.isLoading &&
-                            <React.Fragment>
-                                {
-                                    this.state.categories.map(data => {
-                                        return <Category key={data.category} name={data.category}
-                                                         selected={this.props.selections && this.props.selections[data.category]}
-                                                         id={data.category} onToggle={this.onChildToggle}/>
-                                    })
-                                }
-                            </React.Fragment>
-                            }
+                            {!this.state.isLoading && (
+                                <React.Fragment>
+                                    {this.state.categories.map(data => {
+                                        return (
+                                            <Category
+                                                key={data.category}
+                                                name={data.category}
+                                                selected={
+                                                    this.props.selections &&
+                                                    this.props.selections[
+                                                        data.category
+                                                    ]
+                                                }
+                                                id={data.category}
+                                                onToggle={this.onChildToggle}
+                                            />
+                                        );
+                                    })}
+                                </React.Fragment>
+                            )}
                             <FadeLoader
                                 loading={this.state.isLoading}
                                 color={'#1641ff'}
@@ -110,14 +133,14 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
                     </div>
                 </aside>
             </React.Fragment>
-        )
+        );
     }
 }
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: AppState) => {
     return {
-        currentCategory: state.categoryReducer.currentCategory,
-        selections: state.categoryReducer.selections
+        currentCategory: state.category.currentCategory,
+        selections: state.category.selections,
     };
 };
 
@@ -128,7 +151,7 @@ const mapDispatchToProps = (dispatch: any) => {
         setFavShopsIconFill: (favShopsIconFill: boolean) =>
             dispatch(setFavShopsIconFill(favShopsIconFill)),
         setSelections: (selections: boolean[]) =>
-            dispatch(setSelections(selections))
+            dispatch(setSelections(selections)),
     };
 };
 

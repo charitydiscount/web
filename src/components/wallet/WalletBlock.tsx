@@ -16,23 +16,22 @@ import {
     AccountDto,
     getUserBankAccounts,
     updateUserAccount,
-    UserDto,
 } from '../../rest/UserService';
-import { publicUrl } from '../../index';
-import { Routes } from '../helper/Routes';
 import { TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import { connect } from 'react-redux';
+import { auth } from '../..';
+import iban from 'iban';
 
 interface IWalletBlockState {
     donateVisible: boolean;
     cashoutVisible: boolean;
     otpRequestVisible: boolean;
     otpRequestValidateVisible: boolean;
-    otpType: string;
+    txType: string;
     otpCode?: number;
 
     //cashout/donate selection
@@ -52,14 +51,16 @@ interface IWalletBlockProps {
     money: boolean;
     causes?: CauseDto[];
     openDonateWithCaseId?: string;
-    user: UserDto;
     intl: IntlShape;
+    onTxCompleted?: Function;
 }
 
 class WalletBlock extends React.Component<
     IWalletBlockProps,
     IWalletBlockState
 > {
+    private firstTxEventReceived: boolean;
+
     constructor(props: IWalletBlockProps) {
         super(props);
         this.state = {
@@ -67,7 +68,7 @@ class WalletBlock extends React.Component<
             donateVisible: false,
             otpRequestVisible: false,
             otpRequestValidateVisible: false,
-            otpType: '',
+            txType: '',
             otpCode: undefined,
             amount: '',
             targetId: '',
@@ -81,6 +82,7 @@ class WalletBlock extends React.Component<
         this.cashout = this.cashout.bind(this);
         this.creatRequest = this.creatRequest.bind(this);
         this.escFunction = this.escFunction.bind(this);
+        this.firstTxEventReceived = false;
     }
 
     escFunction(event) {
@@ -111,8 +113,11 @@ class WalletBlock extends React.Component<
     }
 
     async openCashoutModal() {
+        if (!auth.currentUser) {
+            return;
+        }
         try {
-            let accounts = await getUserBankAccounts(this.props.user.userId);
+            let accounts = await getUserBankAccounts(auth.currentUser.uid);
             if (accounts && accounts.length > 0) {
                 this.setState({
                     name: (accounts[0] as AccountDto).name,
@@ -135,7 +140,7 @@ class WalletBlock extends React.Component<
             donateVisible: false,
             otpRequestVisible: false,
             otpRequestValidateVisible: false,
-            otpType: '',
+            txType: '',
             otpCode: undefined,
             amount: '',
             targetId: '',
@@ -162,15 +167,11 @@ class WalletBlock extends React.Component<
                     this.setState({
                         otpRequestValidateVisible: true,
                     });
-                    let response = await createRequest(
+                    await this.handleTxRequest(
                         parseFloat(this.state.amount),
-                        this.state.otpType,
+                        this.state.txType,
                         this.state.targetId
                     );
-                    if (response) {
-                        this.closeModal();
-                        window.location.reload();
-                    }
                 } catch (error) {
                     this.setState({
                         otpRequestValidateVisible: false,
@@ -190,6 +191,30 @@ class WalletBlock extends React.Component<
                 })
             );
         }
+    }
+
+    async handleTxRequest(amount: number, txType: string, targetId: string) {
+        this.setState({
+            faderVisible: true,
+        });
+        let txResult = await createRequest(amount, txType, targetId);
+        const unsubscribe = txResult.onSnapshot(snap => {
+            // There should be events fired
+            // 1st when the request is created
+            // 2nd after it is processed
+            if (!this.firstTxEventReceived) {
+                this.firstTxEventReceived = true;
+            } else {
+                unsubscribe();
+                this.closeModal();
+                this.setState({
+                    faderVisible: false,
+                });
+                if (this.props.onTxCompleted) {
+                    this.props.onTxCompleted();
+                }
+            }
+        });
     }
 
     async cashout() {
@@ -224,7 +249,7 @@ class WalletBlock extends React.Component<
             return;
         }
 
-        if (!this.state.iban) {
+        if (!this.state.iban || !iban.isValid(this.state.iban)) {
             alert(
                 this.props.intl.formatMessage({
                     id: 'wallet.cashout.iban.error',
@@ -244,15 +269,13 @@ class WalletBlock extends React.Component<
                 faderVisible: true,
             });
 
-            let response = await createOtpRequest();
-            if (response) {
-                this.setState({
-                    faderVisible: false,
-                    cashoutVisible: false,
-                    otpRequestVisible: true,
-                    otpType: 'CASHOUT',
-                });
-            }
+            await createOtpRequest();
+            this.setState({
+                faderVisible: false,
+                cashoutVisible: false,
+                otpRequestVisible: true,
+                txType: 'CASHOUT',
+            });
         } catch (error) {
             this.setState({
                 faderVisible: false,
@@ -293,19 +316,11 @@ class WalletBlock extends React.Component<
             return;
         }
         try {
-            this.setState({
-                faderVisible: true,
-            });
-
-            let response = await createRequest(
+            await this.handleTxRequest(
                 parseFloat(this.state.amount),
                 'DONATION',
                 this.state.targetId
             );
-            if (response) {
-                this.closeModal();
-                window.location.href = publicUrl + Routes.WALLET;
-            }
         } catch (error) {
             this.setState({
                 faderVisible: false,
@@ -350,80 +365,89 @@ class WalletBlock extends React.Component<
                     effect="fadeInUp"
                     onClickAway={() => this.closeModal()}
                 >
-                    <div className="container cart_inner">
-                        <table className="table">
-                            <tbody>
-                                <tr className="shipping_area">
-                                    <td>
-                                        <div className="shipping_box">
-                                            {this.state.otpType ===
-                                                'CASHOUT' && (
-                                                <React.Fragment>
-                                                    <h3 className="important-left-align">
-                                                        <FormattedMessage
-                                                            id="wallet.block.cashout.confirm.name"
-                                                            defaultMessage="Account holder name: "
-                                                        />
-                                                        {this.state.name}
-                                                    </h3>
-                                                    <h3 className="important-left-align">
-                                                        <FormattedMessage
-                                                            id="wallet.block.cashout.confirm.iban"
-                                                            defaultMessage="IBAN: "
-                                                        />
-                                                        {this.state.iban}
-                                                    </h3>
-                                                </React.Fragment>
-                                            )}
-                                            <h3 className="important-left-align">
-                                                <FormattedMessage
-                                                    id="wallet.block.otp.mail.mesasge"
-                                                    defaultMessage="A mail was sent with the code to validate the
-                                                           transaction."
-                                                />
-                                            </h3>
-
-                                            <TextField
-                                                id="otpCode"
-                                                variant="filled"
-                                                style={{ width: '100%' }}
-                                                label={this.props.intl.formatMessage(
-                                                    {
-                                                        id:
-                                                            'wallet.block.otp.request.placeholder',
-                                                    }
+                    (
+                    {this.state.otpRequestVisible ? (
+                        <div className="container cart_inner">
+                            <table className="table">
+                                <tbody>
+                                    <tr className="shipping_area">
+                                        <td>
+                                            <div className="shipping_box">
+                                                {this.state.txType ===
+                                                    'CASHOUT' && (
+                                                    <React.Fragment>
+                                                        <h3 className="important-left-align">
+                                                            <FormattedMessage
+                                                                id="wallet.block.cashout.confirm.name"
+                                                                defaultMessage="Account holder name: "
+                                                            />
+                                                            {this.state.name}
+                                                        </h3>
+                                                        <h3 className="important-left-align">
+                                                            <FormattedMessage
+                                                                id="wallet.block.cashout.confirm.iban"
+                                                                defaultMessage="IBAN: "
+                                                            />
+                                                            {this.state.iban}
+                                                        </h3>
+                                                    </React.Fragment>
                                                 )}
-                                                onChange={event =>
-                                                    this.setState({
-                                                        otpCode: parseInt(
-                                                            event.target.value
-                                                        ),
-                                                    })
-                                                }
-                                                value={this.state.otpCode}
-                                            />
-
-                                            <div className="p_05">
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={this.creatRequest}
-                                                    startIcon={
-                                                        <ThumbUpAltIcon />
-                                                    }
-                                                >
+                                                <h3 className="important-left-align">
                                                     <FormattedMessage
-                                                        id="wallet.block.otp.proceed"
-                                                        defaultMessage="Validate "
+                                                        id="wallet.block.otp.mail.mesasge"
+                                                        defaultMessage="A mail was sent with the code to validate the
+                                                           transaction."
                                                     />
-                                                </Button>
+                                                </h3>
+
+                                                <TextField
+                                                    id="otpCode"
+                                                    variant="filled"
+                                                    style={{ width: '100%' }}
+                                                    label={this.props.intl.formatMessage(
+                                                        {
+                                                            id:
+                                                                'wallet.block.otp.request.placeholder',
+                                                        }
+                                                    )}
+                                                    onChange={event =>
+                                                        this.setState({
+                                                            otpCode: parseInt(
+                                                                event.target
+                                                                    .value
+                                                            ),
+                                                        })
+                                                    }
+                                                    value={this.state.otpCode}
+                                                />
+
+                                                <div className="p_05">
+                                                    <Button
+                                                        variant="contained"
+                                                        color="primary"
+                                                        onClick={
+                                                            this.creatRequest
+                                                        }
+                                                        startIcon={
+                                                            <ThumbUpAltIcon />
+                                                        }
+                                                    >
+                                                        <FormattedMessage
+                                                            id="wallet.block.otp.proceed"
+                                                            defaultMessage="Validate "
+                                                        />
+                                                    </Button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        ''
+                    )}
+                    )
                 </Modal>
                 <Modal
                     visible={this.state.cashoutVisible}
@@ -723,10 +747,4 @@ class WalletBlock extends React.Component<
     }
 }
 
-const mapStateToProps = (state: any) => {
-    return {
-        user: state.user.user,
-    };
-};
-
-export default connect(mapStateToProps)(injectIntl(WalletBlock));
+export default connect()(injectIntl(WalletBlock));

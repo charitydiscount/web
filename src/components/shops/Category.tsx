@@ -1,24 +1,24 @@
-import * as React from "react";
-import {connect} from "react-redux";
-import {setCurrentPage, setShops} from "../../redux/actions/ShopsAction";
-import {getLocalStorage} from "../../helper/StorageHelper";
-import {emptyHrefLink, StorageKey} from "../../helper/Constants";
-import {ShopDto} from "../../rest/ShopsService";
-import {FormattedMessage} from 'react-intl';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { setCurrentPage, setShops } from '../../redux/actions/ShopsAction';
+import { emptyHrefLink } from '../../helper/Constants';
+import { ShopDto } from '../../rest/ShopsService';
+import { FormattedMessage } from 'react-intl';
+import { AppState } from '../../redux/reducer/RootReducer';
 
 interface ICategoryProps {
-    name: String,
-    selected : boolean,
-    id: string,
-    onToggle: (id: String, categoryName: String) => void,
+    name: String;
+    selected: boolean;
+    id: string;
+    onToggle: (id: String, categoryName: String) => void;
 
     // global state refresh shops
-    setShops?: any,
-    setCurrentPage?: any
+    setShops?: any;
+    setCurrentPage?: any;
+    allShops: ShopDto[];
 }
 
 class Category extends React.Component<ICategoryProps> {
-
     constructor(props: ICategoryProps) {
         super(props);
         this.updateShops = this.updateShops.bind(this);
@@ -35,25 +35,23 @@ class Category extends React.Component<ICategoryProps> {
     /**
      * Used to update shops list after a category is selected
      */
-    public updateShops(event) {
+    public updateShops(event: React.MouseEvent) {
         event.preventDefault(); // prevent default to not point to href location
-        const shopStorage = getLocalStorage(StorageKey.SHOPS);
-        if (shopStorage) {
-            const shops = JSON.parse(shopStorage) as Array<ShopDto>;
-            if (shops) {
-                if (this.props.name === "All") { // load all shops in this case
-                    if (shops) {
-                        this.props.setShops(shops);
-                        this.props.setCurrentPage(0);
-                    }
-                } else { //load shops from selected category in this case
-                    const result = shops.filter(value => value.category.toLowerCase() === this.props.name.toLowerCase());
-                    this.props.setShops(result);
-                    this.props.setCurrentPage(0);
-                }
-                this.onToggle();
-            }
+        if (this.props.name === 'All') {
+            // load all shops in this case
+            this.props.setShops(this.props.allShops);
+            this.props.setCurrentPage(0);
+        } else {
+            //load shops from selected category in this case
+            const result = this.props.allShops.filter(
+                shop =>
+                    shop.category.toLowerCase() ===
+                    this.props.name.toLowerCase()
+            );
+            this.props.setShops(result);
+            this.props.setCurrentPage(0);
         }
+        this.onToggle();
         window.scrollTo(0, 0);
     }
 
@@ -61,24 +59,36 @@ class Category extends React.Component<ICategoryProps> {
         return (
             <React.Fragment>
                 <li>
-                    <a href={emptyHrefLink} id={this.props.name.toString()}
-                       style={this.props.selected ? {color: 'blue'} : undefined}
-                       onClick={this.updateShops}>
-                        <FormattedMessage id={this.props.name.replace(/\s/g, '')}/>
+                    <a
+                        href={emptyHrefLink}
+                        id={this.props.name.toString()}
+                        style={
+                            this.props.selected ? { color: 'blue' } : undefined
+                        }
+                        onClick={this.updateShops}
+                    >
+                        <FormattedMessage
+                            id={this.props.name.replace(/\s/g, '')}
+                        />
                     </a>
                 </li>
             </React.Fragment>
-        )
+        );
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapStateToProps = (state: AppState) => {
     return {
-        setShops: (shops: Array<ShopDto>) =>
-            dispatch(setShops(shops)),
-        setCurrentPage: (currentPage: number) =>
-            dispatch(setCurrentPage(currentPage))
+        allShops: state.shops.allShops,
     };
 };
 
-export default connect(null, mapDispatchToProps)(Category);
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        setShops: (shops: Array<ShopDto>) => dispatch(setShops(shops)),
+        setCurrentPage: (currentPage: number) =>
+            dispatch(setCurrentPage(currentPage)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category);
