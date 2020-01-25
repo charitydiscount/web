@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { store } from '../../index';
 import {
-    NavigationsAction,
-    setFavShopsIconFill,
+    NavigationsAction
 } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import Category from './Category';
@@ -70,7 +69,6 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
 
         this.props.setSelections(selections);
         this.props.setCurrentCategory(name);
-        this.props.setFavShopsIconFill(false);
     }
 
     public componentWillUnmount() {
@@ -148,8 +146,6 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         setCurrentCategory: (currentCategory: String) =>
             dispatch(setCurrentCategory(currentCategory)),
-        setFavShopsIconFill: (favShopsIconFill: boolean) =>
-            dispatch(setFavShopsIconFill(favShopsIconFill)),
         setSelections: (selections: boolean[]) =>
             dispatch(setSelections(selections)),
     };

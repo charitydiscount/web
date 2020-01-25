@@ -2,7 +2,6 @@ import * as React from 'react';
 import { store } from '../../index';
 import {
     NavigationsAction,
-    setFavShopsIconFill,
 } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import Categories from './Categories';
@@ -95,7 +94,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                     this.props.setShops(favoriteShops);
                 }
                 this.props.setCurrentCategory('Favorite Shops');
-                this.props.setFavShopsIconFill(true);
                 this.props.setSelections([]);
             }
         } catch (error) {
@@ -137,7 +135,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             this.props.setShops(this.props.allShops);
             this.props.setSelections([]);
             this.props.setCurrentCategory(String(''));
-            this.props.setFavShopsIconFill(false);
             this.props.setCurrentPage(0);
             this.setState({
                 isLoading: false,
@@ -150,7 +147,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 this.props.setShops(data);
                 this.props.setSelections([]);
                 this.props.setCurrentCategory(String(''));
-                this.props.setFavShopsIconFill(false);
                 this.props.setCurrentPage(0);
                 this.setState({
                     isLoading: false,
@@ -498,8 +494,6 @@ const mapDispatchToProps = (dispatch: any) => {
             dispatch(setRatings(ratings)),
         setCurrentPage: (currentPage: number) =>
             dispatch(setCurrentPage(currentPage)),
-        setFavShopsIconFill: (favShopsIconFill: boolean) =>
-            dispatch(setFavShopsIconFill(favShopsIconFill)),
         setCurrentCategory: (currentCategory: String) =>
             dispatch(setCurrentCategory(currentCategory)),
         setSelections: (selections: boolean[]) =>

@@ -11,7 +11,6 @@ import {setLangResources} from '../redux/actions/LocaleAction';
  * Used to compute 2performant rest call and redirect
  * @param uniqueCode - shop unique code
  * @param redirectUrl - the program url where the user should be redirected
- * @param userId - the id of the user to which to commission must be assigned
  */
 export function computeUrl(uniqueCode: string, redirectUrl: string) {
     if (!auth.currentUser) {

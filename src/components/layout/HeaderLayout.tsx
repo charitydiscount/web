@@ -1,22 +1,21 @@
 import * as React from 'react';
-import { Stages } from '../helper/Stages';
-import { connect } from 'react-redux';
-import { doLogoutAction } from '../login/UserActions';
-import { setShops } from '../../redux/actions/ShopsAction';
-import { getLocalStorage } from '../../helper/StorageHelper';
-import { emptyHrefLink, logoPath, StorageKey } from '../../helper/Constants';
-import { ShopDto } from '../../rest/ShopsService';
+import {Stages} from '../helper/Stages';
+import {connect} from 'react-redux';
+import {doLogoutAction} from '../login/UserActions';
+import {setShops} from '../../redux/actions/ShopsAction';
+import {getLocalStorage} from '../../helper/StorageHelper';
+import {emptyHrefLink, logoPath, StorageKey} from '../../helper/Constants';
+import {ShopDto} from '../../rest/ShopsService';
 import {
     setCurrentCategory,
     setSelections,
 } from '../../redux/actions/CategoriesAction';
-import { Routes } from '../helper/Routes';
-import { FormattedMessage } from 'react-intl';
+import {Routes} from '../helper/Routes';
+import {FormattedMessage} from 'react-intl';
 import Select from 'react-select';
-import { onLanguageChange } from '../../helper/AppHelper';
-import { Link } from 'react-router-dom';
-import { setFavShopsIconFill } from '../../redux/actions/NavigationsAction';
-import { auth } from '../..';
+import {onLanguageChange} from '../../helper/AppHelper';
+import {Link} from 'react-router-dom';
+import {auth} from '../..';
 
 type IHeaderLayoutProps = {
     isLoggedIn?: boolean;
@@ -32,32 +31,28 @@ type IHeaderLayoutProps = {
     //used to refresh categories
     setCurrentCategory?: any;
     setSelections?: any;
-
-    //fav shops loading
-    setFavShopsIconFill?: any;
-    favShopsIconFill?: boolean;
 };
 
 interface IHeaderLayoutState {
     username: string;
     fixedHeader: boolean;
+    favShopsIconFill: boolean
 }
 
 const options: any[] = [
-    { value: 'ro', label: 'RO' },
-    { value: 'en', label: 'EN' },
+    {value: 'ro', label: 'RO'},
+    {value: 'en', label: 'EN'},
 ];
 const optionFromValue = (value: string) => options.find(o => o.value === value);
 
-class HeaderLayout extends React.Component<
-    IHeaderLayoutProps,
-    IHeaderLayoutState
-> {
+class HeaderLayout extends React.Component<IHeaderLayoutProps,
+    IHeaderLayoutState> {
     constructor(props: IHeaderLayoutProps) {
         super(props);
         this.state = {
             username: '',
             fixedHeader: false,
+            favShopsIconFill: false
         };
         this.handleLogOut = this.handleLogOut.bind(this);
         this.loadFavoriteShops = this.loadFavoriteShops.bind(this);
@@ -106,7 +101,9 @@ class HeaderLayout extends React.Component<
         }
         this.props.setCurrentCategory('Favorite Shops');
         this.props.setSelections([]);
-        this.props.setFavShopsIconFill(true);
+        this.setState({
+            favShopsIconFill: true
+        })
     }
 
     render() {
@@ -122,7 +119,7 @@ class HeaderLayout extends React.Component<
             <header
                 className={`header_area ${
                     this.state.fixedHeader ? 'navbar_fixed' : ''
-                }`}
+                    }`}
             >
                 <div className="top_menu row m0">
                     <div className="container-fluid">
@@ -184,7 +181,7 @@ class HeaderLayout extends React.Component<
                                     className="navbar-brand logo_h"
                                     to={'/login'}
                                 >
-                                    <img src={logoPath} alt="" />
+                                    <img src={logoPath} alt=""/>
                                 </Link>
                             )}
                             {isLoggedIn && (
@@ -197,9 +194,9 @@ class HeaderLayout extends React.Component<
                                     aria-expanded="false"
                                     aria-label="Toggle navigation"
                                 >
-                                    <span className="icon-bar" />
-                                    <span className="icon-bar" />
-                                    <span className="icon-bar" />
+                                    <span className="icon-bar"/>
+                                    <span className="icon-bar"/>
+                                    <span className="icon-bar"/>
                                 </button>
                             )}
                             <div
@@ -296,7 +293,7 @@ class HeaderLayout extends React.Component<
                                     {isLoggedIn && (
                                         <div className="col-lg-5">
                                             <ul className="nav navbar-nav navbar-right right_nav pull-right">
-                                                <hr />
+                                                <hr/>
 
                                                 <li className="nav-item">
                                                     <Link
@@ -308,9 +305,12 @@ class HeaderLayout extends React.Component<
                                                             this
                                                                 .loadFavoriteShops
                                                         }
+                                                        onMouseLeave={() => this.setState({
+                                                            favShopsIconFill: false
+                                                        })}
                                                         className={'icons'}
                                                     >
-                                                        {this.props
+                                                        {this.state
                                                             .favShopsIconFill ? (
                                                             <i
                                                                 className="fa fa-heart"
@@ -337,7 +337,7 @@ class HeaderLayout extends React.Component<
                                                     </Link>
                                                 </li>
 
-                                                <hr />
+                                                <hr/>
                                             </ul>
                                         </div>
                                     )}
@@ -364,8 +364,6 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         logout: () => dispatch(doLogoutAction()),
         setShops: (shops: Array<ShopDto>) => dispatch(setShops(shops)),
-        setFavShopsIconFill: (favShopIconFill: boolean) =>
-            dispatch(setFavShopsIconFill(favShopIconFill)),
         setCurrentCategory: (currentCategory: String) =>
             dispatch(setCurrentCategory(currentCategory)),
         setSelections: (selections: boolean[]) =>
