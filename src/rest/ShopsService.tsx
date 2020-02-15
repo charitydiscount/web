@@ -46,12 +46,14 @@ export interface ShopDto {
     //cashback
     commission: string;
     uiCommission: string;
+    commissionInterval: string;
 
     //linkUrl
     computeUrl: string;
 
     //
     order: number;
+    mainOrder: number;
 }
 
 export interface SellingCountriesDto {
@@ -160,7 +162,17 @@ export const fetchPrograms = async (): Promise<ShopDto[]> => {
             }
             return program;
         })
-        .sort((p1, p2) => p1.order - p2.order);
+        .sort((p1, p2) => {
+            if (p1.mainOrder && p2.mainOrder) {
+                return p1.mainOrder - p2.mainOrder;
+            } else if (p1.mainOrder) {
+                return p1.mainOrder - p2.order;
+            } else if (p2.mainOrder) {
+                return p1.order - p2.mainOrder;
+            } else {
+                return p1.order - p2.order
+            }
+        });
 };
 
 export enum CommissionType {
@@ -189,12 +201,16 @@ export function getProgramCommission(
                     program.currency;
                 break;
             case CommissionType.variable.toString():
-                commission =
-                    (normalCommission ? '' : '~ ') +
-                    roundCommission(
-                        parseFloat(program.defaultSaleCommissionRate) * percent
-                    ) +
-                    ' %';
+                if (!normalCommission && program.commissionInterval) {
+                    commission = program.commissionInterval + ' %';
+                } else {
+                    commission =
+                        (normalCommission ? '' : '~ ') +
+                        roundCommission(
+                            parseFloat(program.defaultSaleCommissionRate) * percent
+                        ) +
+                        ' %';
+                }
                 break;
             case CommissionType.percent.toString():
                 commission =
@@ -202,6 +218,7 @@ export function getProgramCommission(
                         parseFloat(program.defaultSaleCommissionRate) * percent
                     ) + ' %';
                 break;
+            default:
         }
     }
 
@@ -212,14 +229,18 @@ export function getProgramCommission(
     ) {
         switch (CommissionType[program.defaultLeadCommissionType].toString()) {
             case CommissionType.variable.toString():
-                commission =
-                    (normalCommission ? '' : '~ ') +
-                    roundCommission(
-                        parseFloat(program.defaultLeadCommissionAmount) *
+                if (!normalCommission && program.commissionInterval) {
+                    commission = program.commissionInterval + ' %';
+                } else {
+                    commission =
+                        (normalCommission ? '' : '~ ') +
+                        roundCommission(
+                            parseFloat(program.defaultLeadCommissionAmount) *
                             percent
-                    ) +
-                    ' ' +
-                    program.currency;
+                        ) +
+                        ' ' +
+                        program.currency;
+                }
                 break;
             case CommissionType.fixed.toString():
                 commission =
