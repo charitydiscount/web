@@ -51,6 +51,7 @@ export const loadShops = () => async (
         shops = await fetchPrograms();
         setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
     } catch (error) {
+        console.log(error);
         const shopsJson = getLocalStorage(StorageKey.SHOPS);
         if (shopsJson) {
             shops = JSON.parse(shopsJson);

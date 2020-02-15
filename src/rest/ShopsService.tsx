@@ -1,7 +1,11 @@
 import { DB, auth } from '../index';
 import { getLocalStorage, setLocalStorage } from '../helper/StorageHelper';
 import { FirebaseTable, StorageKey } from '../helper/Constants';
-import { computeUrl, roundCommission } from '../helper/AppHelper';
+import {
+    computeUrl,
+    roundCommission,
+    interpolateAffiliateUrl,
+} from '../helper/AppHelper';
 import { getPercentage } from './ConfigService';
 import { firestore } from 'firebase/app';
 
@@ -27,6 +31,7 @@ export interface ShopDto {
     defaultSaleCommissionType: string;
     logoPath: string;
     mainUrl: string;
+    affiliateUrl: string;
     id: number;
     name: string;
     status: string;
@@ -57,23 +62,6 @@ export interface SellingCountriesDto {
     name: string;
     id: number;
 }
-
-export var ShopDtoMap = {
-    category: 'category',
-    currency: 'currency',
-    defaultLeadCommissionAmount: 'defaultLeadCommissionAmount',
-    defaultLeadCommissionType: 'defaultLeadCommissionType',
-    defaultSaleCommissionRate: 'defaultSaleCommissionRate',
-    defaultSaleCommissionType: 'defaultSaleCommissionType',
-    logoPath: 'logoPath',
-    mainUrl: 'mainUrl',
-    id: 'id',
-    name: 'name',
-    status: 'status',
-    uniqueCode: 'uniqueCode',
-    sellingCountries: 'sellingCountries',
-    averagePaymentTime: 'averagePaymentTime',
-};
 
 export async function fetchFavoriteShops() {
     if (!auth.currentUser) {
@@ -161,10 +149,17 @@ export const fetchPrograms = async (): Promise<ShopDto[]> => {
         .map(([uniqueCode, program]) => {
             program.uiCommission = getProgramCommission(program, false);
             program.commission = getProgramCommission(program, true);
-            program.computeUrl = computeUrl(
-                program.uniqueCode,
-                program.mainUrl
-            );
+            if (program.affiliateUrl) {
+                program.computeUrl = interpolateAffiliateUrl(
+                    program.affiliateUrl,
+                    program.uniqueCode
+                );
+            } else {
+                program.computeUrl = computeUrl(
+                    program.uniqueCode,
+                    program.mainUrl
+                );
+            }
             return program;
         })
         .sort((p1, p2) => {
@@ -192,7 +187,10 @@ export function getProgramCommission(
 ) {
     let commission = '';
     let percent = getPercentage();
-    if (program.defaultSaleCommissionRate) {
+    if (
+        program.defaultSaleCommissionRate &&
+        CommissionType[program.defaultSaleCommissionType]
+    ) {
         switch (CommissionType[program.defaultSaleCommissionType].toString()) {
             case CommissionType.fixed.toString():
                 commission =
@@ -226,7 +224,8 @@ export function getProgramCommission(
 
     if (
         program.defaultLeadCommissionAmount &&
-        !program.defaultSaleCommissionRate
+        !program.defaultSaleCommissionRate &&
+        CommissionType[program.defaultLeadCommissionType]
     ) {
         switch (CommissionType[program.defaultLeadCommissionType].toString()) {
             case CommissionType.variable.toString():

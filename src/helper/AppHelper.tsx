@@ -1,11 +1,13 @@
-import {getAffiliateCode} from '../rest/ConfigService';
+import { getAffiliateCode } from '../rest/ConfigService';
+import { setLocalStorage } from './StorageHelper';
 import {
-    setLocalStorage,
-} from './StorageHelper';
-import {StorageKey} from './Constants';
-import {css} from '@emotion/core';
-import {store, auth} from '../index';
-import {setLangResources} from '../redux/actions/LocaleAction';
+    StorageKey,
+    PROGRAM_LINK_PLACEHOLDER,
+    USER_LINK_PLACEHOLDER,
+} from './Constants';
+import { css } from '@emotion/core';
+import { store, auth } from '../index';
+import { setLangResources } from '../redux/actions/LocaleAction';
 
 /**
  * Used to compute 2performant rest call and redirect
@@ -23,6 +25,20 @@ export function computeUrl(uniqueCode: string, redirectUrl: string) {
     const redirect = '&redirect_to=' + redirectUrl;
     const tag = '&st=' + auth.currentUser.uid;
     return baseUrl + affCode + unique + redirect + tag;
+}
+
+/**
+ * Replace the shop unique code and the user ID into the given url
+ * @param url
+ * @param shopUniqueCode
+ */
+export function interpolateAffiliateUrl(url: string, shopUniqueCode: string) {
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
+    }
+    return url
+        .replace(PROGRAM_LINK_PLACEHOLDER, shopUniqueCode)
+        .replace(USER_LINK_PLACEHOLDER, auth.currentUser.uid);
 }
 
 export function computeProductUrl(affUrl: string) {
