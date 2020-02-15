@@ -176,7 +176,7 @@ export function getProgramCommission(
     let commission = '';
     let percent = getPercentage();
     if (
-        program.defaultSaleCommissionRate != null &&
+        program.defaultSaleCommissionRate &&
         CommissionType[program.defaultSaleCommissionType]
     ) {
         switch (CommissionType[program.defaultSaleCommissionType].toString()) {
@@ -206,8 +206,8 @@ export function getProgramCommission(
     }
 
     if (
-        program.defaultLeadCommissionAmount != null &&
-        program.defaultSaleCommissionRate == null &&
+        program.defaultLeadCommissionAmount &&
+        !program.defaultSaleCommissionRate &&
         CommissionType[program.defaultLeadCommissionType]
     ) {
         switch (CommissionType[program.defaultLeadCommissionType].toString()) {
