@@ -58,8 +58,7 @@ export enum StorageKey {
     PERFORMANET_2_CODE = '/performant2CodeCD',
 }
 
-export const ProviderType = ["google", "facebook", "normal"];
-
+export const ProviderType = ['google', 'facebook', 'normal'];
 
 export const emptyHrefLink = '#';
 export const logoPath = '/img/logo.png';
@@ -67,3 +66,6 @@ export const noImagePath = '/img/no-image.jpg';
 export const profilePictureSuffix = '?height=200';
 export const facebookPictureKey = 'facebook';
 export const profilePictureDefaultName = 'profilePicture.png';
+
+export const USER_LINK_PLACEHOLDER = '{userId}';
+export const PROGRAM_LINK_PLACEHOLDER = '{programUniqueCode}';

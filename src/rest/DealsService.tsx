@@ -6,6 +6,7 @@ export interface PromotionDTO {
     promotionEnd: string;
     promotionStart: string;
     landingPageLink: string;
+    affiliateUrl: string;
     program: PromotionProgramDto;
     id: number;
 }
