@@ -69,7 +69,7 @@
   "userinfo.change.password.button": "Schimba parola",
   "userinfo.contact.us.button": "Contacteaza-ne",
   "userinfo.terms.button": "Termeni si conditii",
-  "userinfo.faq.button": "Ajutor",
+  "userinfo.faq.button": "Intrebari frecvente",
   "userinfo.privacy.button": "Confidențialitate",
   "userinfo.logout.button": "Delogare",
   "privacy.title": "Confidențialitate",
@@ -156,5 +156,5 @@
   "RON": "RON",
   "EUR": "EUR",
   "Charity Points": "Charity Points",
-  "faq.title": "Ajutor"
+  "faq.title": "Intrebari si raspunsuri frecvente"
 }
