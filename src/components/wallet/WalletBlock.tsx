@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { emptyHrefLink } from '../../helper/Constants';
+import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import Modal from 'react-awesome-modal';
 import { CauseDto } from '../../rest/CauseService';
 import CauseDonate from './CauseDonate';
@@ -25,6 +25,7 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import { connect } from 'react-redux';
 import { auth } from '../..';
 import iban from 'iban';
+import { removeLocalStorage } from "../../helper/StorageHelper";
 
 interface IWalletBlockState {
     donateVisible: boolean;
@@ -197,6 +198,9 @@ class WalletBlock extends React.Component<
         this.setState({
             faderVisible: true,
         });
+        if(txType === 'DONATION'){
+            removeLocalStorage(StorageKey.CAUSES);
+        }
         let txResult = await createRequest(amount, txType, targetId);
         const unsubscribe = txResult.onSnapshot(snap => {
             // There should be events fired

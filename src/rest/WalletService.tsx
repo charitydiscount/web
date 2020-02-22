@@ -60,44 +60,6 @@ export const fetchCommissions = async (): Promise<CommissionDto[]> => {
                       .map(([key, commission]) => commission)
                 : []
         );
-    //     return DB.collection(FirebaseTable.COMMISSIONS)
-    //             .doc(auth.currentUser.uid)
-    //             .get()
-    //             .then(function(doc) {
-    //                 if (doc.exists) {
-    //                     const data = doc.data() as Map<String, CommissionDto>;
-    //                     let commissions = [] as CommissionDto[];
-    //                     for (
-    //                         let i = 0;
-    //                         i < Object.entries(data).length - 1;
-    //                         i++
-    //                     ) {
-    //                         let element = Object.entries(data)[
-    //                             i
-    //                         ][1] as CommissionDto;
-    //                         commissions.push(element as CommissionDto);
-    //                     }
-    //                     if (commissions) {
-    //                         commissions.sort(function(x, y) {
-    //                             let a = x.createdAt.toDate(),
-    //                                 b = y.createdAt.toDate();
-    //                             if (a > b) return -1;
-    //                             if (a < b) return 1;
-    //                             return 0;
-    //                         });
-    //                     }
-    //                     resolve(commissions);
-    //                 } else {
-    //                     reject(); // entry not found in DB
-    //                 }
-    //             })
-    //             .catch(() => {
-    //                 reject(); //DB not working
-    //             });
-    //     } else {
-    //         reject(); // not reachable state
-    //     }
-    // });
 };
 
 export function createOtpRequest() {

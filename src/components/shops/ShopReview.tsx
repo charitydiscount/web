@@ -123,6 +123,7 @@ class ShopReview extends React.Component<IProductReviewProps,
                         }
                     );
                     removeLocalStorage(StorageKey.REVIEWS);
+                    removeLocalStorage(StorageKey.SHOPS);
                     this.handleShowModalMessage(
                         this.props.intl.formatMessage({
                             id: 'review.update.message',
