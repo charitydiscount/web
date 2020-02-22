@@ -9,6 +9,7 @@ export interface IShopsState {
     ratings: Map<String, ReviewRating>;
     currentPage: number;
     shopsLoaded: boolean;
+    currentShopUniqueCode: string
 }
 
 const initialState: IShopsState = {
@@ -17,9 +18,10 @@ const initialState: IShopsState = {
     ratings: new Map(),
     currentPage: 0,
     shopsLoaded: false,
+    currentShopUniqueCode: ''
 };
 
-export default function(
+export default function (
     state: IShopsState = initialState,
     action: AnyAction
 ): IShopsState {
@@ -44,6 +46,11 @@ export default function(
                 ...state,
                 allShops: action.payload,
                 shopsLoaded: true,
+            };
+        case ShopsActionTypes.SET_CURRENT_SHOP:
+            return {
+                ...state,
+                currentShopUniqueCode: action.payload,
             };
         default:
             return state;

@@ -1,20 +1,21 @@
 import * as React from 'react';
-import {auth, store} from '../../index';
-import {NavigationsAction} from '../../redux/actions/NavigationsAction';
-import {Stages} from '../helper/Stages';
-import {spinnerCss} from '../../helper/AppHelper';
-import {emptyHrefLink, StorageKey} from '../../helper/Constants';
-import {ShopDto} from '../../rest/ShopsService';
+import { auth, store } from '../../index';
+import { NavigationsAction } from '../../redux/actions/NavigationsAction';
+import { Stages } from '../helper/Stages';
+import { spinnerCss } from '../../helper/AppHelper';
+import { emptyHrefLink, StorageKey } from '../../helper/Constants';
+import { ShopDto } from '../../rest/ShopsService';
 import Review from './Review';
-import {fetchReviews, ReviewDto, saveReview} from '../../rest/ReviewService';
-import {FormattedMessage} from 'react-intl';
-import {injectIntl, IntlShape} from 'react-intl';
-import {removeLocalStorage} from '../../helper/StorageHelper';
+import { fetchReviews, ReviewDto, saveReview } from '../../rest/ReviewService';
+import { FormattedMessage } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
+import { removeLocalStorage } from '../../helper/StorageHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import ShopElement from './ShopElement';
 import Modal from 'react-awesome-modal';
-import {connect} from 'react-redux';
-import {AppState} from '../../redux/reducer/RootReducer';
+import { connect } from 'react-redux';
+import { AppState } from '../../redux/reducer/RootReducer';
+import { setCurrentShop } from "../../redux/actions/ShopsAction";
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -33,16 +34,21 @@ interface IProductReviewProps {
     match: any;
     intl: IntlShape;
     shops: ShopDto[];
+
+    // global state
+    setCurrentShop: any;
 }
 
 class ShopReview extends React.Component<IProductReviewProps,
     IProductReviewState> {
+
     constructor(props: IProductReviewProps) {
         super(props);
         this.state = {
             shop:
                 props.shops.find(
-                    shop => shop.id === parseInt(this.props.match.params.id)
+                    // eslint-disable-next-line
+                    shop => shop.id == this.props.match.params.id
                 ) || ({} as ShopDto),
             description: '',
             modalMessage: '',
@@ -67,6 +73,7 @@ class ShopReview extends React.Component<IProductReviewProps,
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
         document.addEventListener('keydown', this.escFunction, false);
+        this.props.setCurrentShop(this.state.shop.uniqueCode);
         try {
             let reviews = await fetchReviews(this.state.shop.uniqueCode);
             // const ownReview = reviews.find(
@@ -325,4 +332,11 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(ShopReview));
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        setCurrentShop: (uniqueCode: string) =>
+            dispatch(setCurrentShop(uniqueCode)),
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ShopReview));

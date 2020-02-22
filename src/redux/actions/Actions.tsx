@@ -18,6 +18,7 @@ export enum ShopsActionTypes {
     SET_RATINGS_ACTION = 'SET_RATINGS_ACTION',
     SET_CURRENT_PAGE_ACTION = 'SET_CURRENT_PAGE_ACTION',
     SHOPS_LOADED = 'SHOPS_LOADED',
+    SET_CURRENT_SHOP = 'SET_CURRENT_SHOP'
 }
 
 export enum CategoryActionTypes {

@@ -17,6 +17,8 @@ export const ShopsActions = {
         createAction(ShopsActionTypes.SET_CURRENT_PAGE_ACTION, currentPage),
     shopsLoaded: (shops: ShopDto[]) =>
         createAction(ShopsActionTypes.SHOPS_LOADED, shops),
+    setCurrentShopUniqueCode: (uniqueCode: string) =>
+        createAction(ShopsActionTypes.SET_CURRENT_SHOP, uniqueCode)
 };
 
 export function setShops(shops: Array<ShopDto>): any {
@@ -39,6 +41,14 @@ export function setCurrentPage(currentPage: number): any {
     if (currentPage !== undefined) {
         return (dispatch: any) => {
             dispatch(ShopsActions.setCurrentPage(currentPage));
+        };
+    }
+}
+
+export function setCurrentShop(uniqueCode: string): any {
+    if (uniqueCode !== undefined) {
+        return (dispatch: any) => {
+            dispatch(ShopsActions.setCurrentShopUniqueCode(uniqueCode));
         };
     }
 }
