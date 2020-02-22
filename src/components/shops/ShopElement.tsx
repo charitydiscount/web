@@ -27,10 +27,8 @@ interface IShopElementState {
     promotionLoading: boolean;
 }
 
-class ShopElement extends React.Component<
-    IShopElementProps,
-    IShopElementState
-> {
+class ShopElement extends React.Component<IShopElementProps,
+    IShopElementState> {
     constructor(props: IShopElementProps) {
         super(props);
         this.state = {
@@ -129,7 +127,7 @@ class ShopElement extends React.Component<
             <React.Fragment>
                 <div className="text-center p-4">
                     {!this.props.comingFromShopReview && (
-                        <div style={{ textAlign: 'right' }}>
+                        <div style={{textAlign: 'right'}}>
                             <i
                                 onClick={this.props.onCloseModal}
                                 className="fa fa-times"
@@ -142,7 +140,7 @@ class ShopElement extends React.Component<
                             defaultMessage="Cashback:"
                         />
                         {this.props.shop.uiCommission}
-                        <br />
+                        <br/>
                         <small className="text-muted text-small">
                             <FormattedMessage
                                 id={'shop.cashback.without.vat.and.transport'}
@@ -167,14 +165,17 @@ class ShopElement extends React.Component<
                             ''
                         )}
                     </h6>
-                    <img src={this.props.shop.logoPath} alt="" />
+                    <img src={this.props.shop.logoPath} alt="" style={{
+                        maxWidth: 300,
+                        maxHeight: 300
+                    }}/>
                     <div className="blog_details">
                         <h2>{this.props.shop.name}</h2>
                         <h6
                             style={
                                 this.props.comingFromShopReview
                                     ? {}
-                                    : { maxWidth: 300 }
+                                    : {maxWidth: 300}
                             }
                         >
                             <FormattedMessage
@@ -187,7 +188,7 @@ class ShopElement extends React.Component<
                             style={
                                 this.props.comingFromShopReview
                                     ? {}
-                                    : { maxWidth: 300 }
+                                    : {maxWidth: 300}
                             }
                         >
                             <FormattedMessage
@@ -238,7 +239,7 @@ class ShopElement extends React.Component<
                         </div>
                         <div
                             className="s_product_text"
-                            style={{ marginTop: 20, marginBottom: 20 }}
+                            style={{marginTop: 20, marginBottom: 20}}
                         >
                             <div className="card_area p_20">
                                 <a
@@ -253,7 +254,7 @@ class ShopElement extends React.Component<
                                     />
                                 </a>
                                 <div
-                                    style={{ padding: 0 }}
+                                    style={{padding: 0}}
                                     className={'icon_btn p_icon'}
                                 >
                                     <a
@@ -291,9 +292,9 @@ class ShopElement extends React.Component<
                                         style={
                                             !this.props.comingFromShopReview
                                                 ? {
-                                                      overflowY: 'auto',
-                                                      maxHeight: 200,
-                                                  }
+                                                    overflowY: 'auto',
+                                                    maxHeight: 200,
+                                                }
                                                 : {}
                                         }
                                     >
@@ -302,8 +303,8 @@ class ShopElement extends React.Component<
                                             style={
                                                 !this.props.comingFromShopReview
                                                     ? {
-                                                          maxWidth: 300,
-                                                      }
+                                                        maxWidth: 300,
+                                                    }
                                                     : {}
                                             }
                                         >
