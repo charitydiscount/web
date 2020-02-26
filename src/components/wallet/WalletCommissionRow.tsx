@@ -82,7 +82,10 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                         <div className="country">
                             <img
                                 className="img-min img"
-                                height="50px"
+                                style={{
+                                    maxHeight:50,
+                                    maxWidth:150
+                                }}
                                 src={this.props.commission.program.logo}
                                 alt={this.props.commission.program.name}
                                 title={this.props.commission.program.name}

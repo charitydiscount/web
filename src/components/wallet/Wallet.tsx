@@ -71,6 +71,17 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
         }
 
         try {
+            let response = await fetchCauses();
+            if (response) {
+                this.setState({
+                    causes: response as CauseDto[],
+                });
+            }
+        } catch (error) {
+            //causes not loaded
+        }
+
+        try {
             let response = await fetchWallet();
             let data = response.data() as WalletWrapper;
             this.setState({
@@ -90,17 +101,6 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
     }
 
     async componentDidMount() {
-        try {
-            let response = await fetchCauses();
-            if (response) {
-                this.setState({
-                    causes: response as CauseDto[],
-                });
-            }
-        } catch (error) {
-            //causes not loaded
-        }
-
         this.loadWallet();
 
         try {

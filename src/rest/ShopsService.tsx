@@ -38,6 +38,8 @@ export interface ShopDto {
     uniqueCode: string;
     averagePaymentTime: number;
     sellingCountries: SellingCountriesDto[];
+    commissionMin: string,
+    commissionMax: string,
 
     //reviews
     totalReviews: number;
@@ -201,8 +203,12 @@ export function getProgramCommission(
                     program.currency;
                 break;
             case CommissionType.variable.toString():
-                if (!normalCommission && program.commissionInterval) {
-                    commission = program.commissionInterval + ' %';
+                if (!normalCommission && program.commissionMin && program.commissionMax) {
+                    commission = roundCommission(
+                        parseFloat(program.commissionMin) * percent
+                    ) + ' - ' + roundCommission(
+                        parseFloat(program.commissionMax) * percent
+                    ) + ' %';
                 } else {
                     commission =
                         (normalCommission ? '' : '~ ') +
@@ -229,9 +235,12 @@ export function getProgramCommission(
     ) {
         switch (CommissionType[program.defaultLeadCommissionType].toString()) {
             case CommissionType.variable.toString():
-                if (!normalCommission && program.commissionInterval) {
-                    commission = program.commissionInterval + ' %';
-                } else {
+                if (!normalCommission && program.commissionMin && program.commissionMax) {
+                    commission = roundCommission(
+                        parseFloat(program.commissionMin) * percent
+                    ) + ' - ' + roundCommission(
+                        parseFloat(program.commissionMax) * percent
+                    ) + ' %';
                     commission =
                         (normalCommission ? '' : '~ ') +
                         roundCommission(
@@ -246,7 +255,7 @@ export function getProgramCommission(
                 commission =
                     roundCommission(
                         parseFloat(program.defaultLeadCommissionAmount) *
-                            percent
+                        percent
                     ) +
                     ' ' +
                     program.currency;

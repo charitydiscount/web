@@ -59,15 +59,17 @@ class Cause extends React.Component<ICauseProps, ICauseState> {
                         href={this.props.cause.details.site}
                     >
                         <div className="hot_deal_box">
+                            {this.props.cause.details.images && this.props.cause.details.images[0] && this.props.cause.details.images[0].url &&
                             <img
                                 src={this.props.cause.details.images[0].url}
                                 alt=""
                                 className="img-fluid"
                             />
+                            }
                             <div className="content">Website</div>
                         </div>
                     </a>
-                    <br />
+                    <br/>
                     <a
                         href={emptyHrefLink}
                         className="btn submit_btn genric-btn circle"

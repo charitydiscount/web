@@ -1,55 +1,58 @@
 {
-  "hosting": {
-    "public": "build",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/src/**",
-      "**/node_modules/**"
-    ],
-    "headers": [
-      {
-        "source": "/service-worker.js",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "no-cache"
-          }
-        ]
-      }
-    ],
-    "redirects": [
-      {
-        "source": "/",
-        "destination": "/landing-ro.html",
-        "type": 301
-      }
-    ],
-    "rewrites": [
-      {
-        "source": "/manifest.json",
-        "destination": "/manifest.json"
-      },
-      {
-        "source": "/robots.txt",
-        "destination": "/robots.txt"
-      },
-      {
-        "source": "/en",
-        "destination": "/landing-en.html"
-      },
-      {
-        "source": "/ro",
-        "destination": "/landing-ro.html"
-      },
-      {
-        "source": "/",
-        "destination": "/landing-ro.html"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
+  "hosting": [
+    {
+      "target": "main",
+      "public": "build",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/src/**",
+        "**/node_modules/**"
+      ],
+      "headers": [
+        {
+          "source": "/service-worker.js",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "no-cache"
+            }
+          ]
+        }
+      ],
+      "redirects": [
+        {
+          "source": "/",
+          "destination": "/landing-ro.html",
+          "type": 301
+        }
+      ],
+      "rewrites": [
+        {
+          "source": "/manifest.json",
+          "destination": "/manifest.json"
+        },
+        {
+          "source": "/robots.txt",
+          "destination": "/robots.txt"
+        },
+        {
+          "source": "/en",
+          "destination": "/landing-en.html"
+        },
+        {
+          "source": "/ro",
+          "destination": "/landing-ro.html"
+        },
+        {
+          "source": "/",
+          "destination": "/landing-ro.html"
+        },
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
 }
