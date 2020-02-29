@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { emptyHrefLink, StorageKey } from '../../helper/Constants';
+import { emptyHrefLink, StorageKey, TxType } from '../../helper/Constants';
 import Modal from 'react-awesome-modal';
 import { CauseDto } from '../../rest/CauseService';
 import CauseDonate from './CauseDonate';
@@ -25,7 +25,7 @@ import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import { connect } from 'react-redux';
 import { auth } from '../..';
 import iban from 'iban';
-import { removeLocalStorage } from "../../helper/StorageHelper";
+import { removeLocalStorage } from '../../helper/StorageHelper';
 
 interface IWalletBlockState {
     donateVisible: boolean;
@@ -163,6 +163,19 @@ class WalletBlock extends React.Component<
 
         try {
             let response = await validateOtpCode(this.state.otpCode);
+            const target =
+                this.state.txType === TxType.DONATION
+                    ? {
+                          id: this.state.targetId,
+                          name:
+                              this.props.causes?.find(
+                                  c => c.id === this.state.targetId
+                              )?.details.title || '',
+                      }
+                    : {
+                          id: this.state.iban,
+                          name: this.state.name,
+                      };
             if (response) {
                 try {
                     this.setState({
@@ -171,7 +184,7 @@ class WalletBlock extends React.Component<
                     await this.handleTxRequest(
                         parseFloat(this.state.amount),
                         this.state.txType,
-                        this.state.targetId
+                        target
                     );
                 } catch (error) {
                     this.setState({
@@ -194,14 +207,18 @@ class WalletBlock extends React.Component<
         }
     }
 
-    async handleTxRequest(amount: number, txType: string, targetId: string) {
+    async handleTxRequest(
+        amount: number,
+        txType: string,
+        target: { id: string; name: string }
+    ) {
         this.setState({
             faderVisible: true,
         });
-        if(txType === 'DONATION'){
+        if (txType === 'DONATION') {
             removeLocalStorage(StorageKey.CAUSES);
         }
-        let txResult = await createRequest(amount, txType, targetId);
+        let txResult = await createRequest(amount, txType, target);
         const unsubscribe = txResult.onSnapshot(snap => {
             // There should be events fired
             // 1st when the request is created
@@ -322,8 +339,14 @@ class WalletBlock extends React.Component<
         try {
             await this.handleTxRequest(
                 parseFloat(this.state.amount),
-                'DONATION',
-                this.state.targetId
+                TxType.DONATION,
+                {
+                    id: this.state.targetId,
+                    name:
+                        this.props.causes?.find(
+                            c => c.id === this.state.targetId
+                        )?.details.title || '',
+                }
             );
         } catch (error) {
             this.setState({
