@@ -2,7 +2,7 @@ import * as React from 'react';
 import {auth, store} from '../../index';
 import {NavigationsAction} from '../../redux/actions/NavigationsAction';
 import {Stages} from '../helper/Stages';
-import {emptyHrefLink, InputType} from '../../helper/Constants';
+import {InputType} from '../../helper/Constants';
 import GenericInput from '../input/GenericInput';
 import {FormattedMessage} from 'react-intl';
 import {injectIntl, IntlShape} from 'react-intl';

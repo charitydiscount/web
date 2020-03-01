@@ -36,7 +36,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     <i
                         className="fa fa-heart"
                         aria-hidden="true"
-                        style={{ color: 'red' }}
+                        style={{color: 'red'}}
                         title={this.props.intl.formatMessage({
                             id: 'wallet.tx.type.donation',
                         })}
@@ -51,7 +51,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     <i
                         className="fa fa-thumbs-up"
                         aria-hidden="true"
-                        style={{ color: 'blue' }}
+                        style={{color: 'blue'}}
                         title={this.props.intl.formatMessage({
                             id: 'wallet.tx.type.bonus',
                         })}
@@ -59,7 +59,10 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                 );
                 break;
             case TxType.CASHOUT.toString():
-                target = this.props.transaction.target.name;
+                target = <div>
+                    <p>IBAN: {this.props.transaction.target.id}</p>
+                    <p>{this.props.transaction.target.name}</p>
+                </div>;
                 txTitle = (
                     <i
                         className="fa fa-money"
@@ -78,7 +81,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     <i
                         className="fa fa-money"
                         aria-hidden="true"
-                        style={{ color: 'green' }}
+                        style={{color: 'green'}}
                         title={this.props.intl.formatMessage({
                             id: 'wallet.tx.type.commission',
                         })}
@@ -104,7 +107,8 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                             id: this.props.transaction.currency,
                         })}
                     </div>
-                    <div className="country">
+
+                    <div className="country" style={{overflow: 'auto'}}>
                         {txType === TxType.DONATION.toString() ? (
                             <a href={Routes.CAUSES}>{target}</a>
                         ) : (
