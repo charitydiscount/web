@@ -1,20 +1,20 @@
 import * as React from 'react';
-import {StorageKey} from '../../helper/Constants';
-import {FormattedMessage} from 'react-intl';
-import {Link} from 'react-router-dom';
-import {appVersion} from '../../index';
-import {getLocalStorage, removeLocalStorage} from "../../helper/StorageHelper";
+import { emptyHrefLink, StorageKey } from '../../helper/Constants';
+import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
+import { appVersion } from '../../index';
+import { getLocalStorage, removeLocalStorage } from "../../helper/StorageHelper";
 
 
 class FooterLayout extends React.Component {
 
-    render() {
-        let lang = getLocalStorage(StorageKey.LANG);
-        let startPageLocation = "/landing-en.html";
-        if (lang === 'ro') {
-            startPageLocation = "/landing-ro.html";
-        }
+    public redirectToAbout(event) {
+        event.preventDefault();
+        removeLocalStorage(StorageKey.USER);
+        window.location.href = window.location.origin + "/landing-" + getLocalStorage(StorageKey.LANG) + ".html";
+    }
 
+    render() {
         return (
             <footer className="footer-area">
                 <hr w-100="true"></hr>
@@ -29,9 +29,7 @@ class FooterLayout extends React.Component {
                             </h6>
                             <ul className="flex-column footer-text">
                                 <li className="d-flex">
-                                    <a href={startPageLocation} onClick={() => {
-                                        removeLocalStorage(StorageKey.USER)
-                                    }}>
+                                    <a href={emptyHrefLink} onClick={this.redirectToAbout}>
                                         <FormattedMessage
                                             id="userinfo.about.label"
                                             defaultMessage="About"
@@ -76,7 +74,7 @@ class FooterLayout extends React.Component {
                                     </h6>
                                     <div className="f_social">
                                         <a href="https://www.facebook.com/charitydiscount" target="_blank"
-                                          rel="noopener noreferrer">
+                                           rel="noopener noreferrer">
                                             <i className="fa fa-facebook"></i>
                                         </a>
                                         <a href="https://www.instagram.com/charitydiscount/" target="_blank"
