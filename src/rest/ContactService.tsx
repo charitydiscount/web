@@ -1,8 +1,10 @@
 import {DB} from "../index";
 import {FirebaseTable} from "../helper/Constants";
+import { firestore } from "firebase";
 
 export function addContactMessageToDb(displayName, email, uid, message, subject) {
     const data = {
+        createdAt: firestore.FieldValue.serverTimestamp(),
         name: displayName,
         email: email,
         message: message,
