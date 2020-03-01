@@ -129,12 +129,6 @@ class Contact extends React.Component<IContactProps, IContactState> {
                                 <div className="contact_info">
                                     <div className="info_item">
                                         <i className="fa fa-envelope"></i>
-                                        <h6>
-                                            <a href={emptyHrefLink}>
-                                                {' '}
-                                                support@mail.charitydiscount.ro
-                                            </a>
-                                        </h6>
                                         <p>
                                             <FormattedMessage
                                                 id="contact.mail.label"
