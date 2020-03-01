@@ -17,8 +17,13 @@ export interface TransactionDto {
     amount: number;
     currency: string;
     date: firestore.Timestamp;
-    target: string;
+    target: TransactionTarget;
     type: string;
+}
+
+export interface TransactionTarget {
+    id: string;
+    name: string;
 }
 
 export const fetchWallet = () => {
@@ -87,7 +92,11 @@ export function validateOtpCode(code: number) {
         .catch(() => false);
 }
 
-export function createRequest(amount: number, type: string, targetId: string) {
+export function createRequest(
+    amount: number,
+    type: string,
+    target: { id: string; name: string }
+) {
     if (!auth.currentUser) {
         throw Error('User not logged in');
     }
@@ -97,7 +106,7 @@ export function createRequest(amount: number, type: string, targetId: string) {
         type: type,
         amount: amount,
         currency: 'RON',
-        target: targetId,
+        target: target,
         createdAt: firestore.FieldValue.serverTimestamp(),
         status: 'PENDING',
     };

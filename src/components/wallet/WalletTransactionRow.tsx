@@ -4,12 +4,9 @@ import { getLocalStorage } from '../../helper/StorageHelper';
 import { CauseDto } from '../../rest/CauseService';
 import { Routes } from '../helper/Routes';
 import { injectIntl, IntlShape } from 'react-intl';
-import {
-    dateOptions,
-    roundMoney,
-} from '../../helper/AppHelper';
+import { dateOptions, roundMoney } from '../../helper/AppHelper';
 import { TransactionDto } from '../../rest/WalletService';
-import {auth} from "../../index";
+import { auth } from '../../index';
 
 interface IWalletTransactionRowProps {
     transaction: TransactionDto;
@@ -17,9 +14,7 @@ interface IWalletTransactionRowProps {
 }
 
 class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
-
     public render() {
-
         let target;
         let txType = TxType[this.props.transaction.type].toString();
         let txTitle;
@@ -31,7 +26,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     causes = JSON.parse(causesIdSt) as CauseDto[];
                 }
                 let cause = causes.find(
-                    value => value.id === this.props.transaction.target
+                    value => value.id === this.props.transaction.target.id
                 );
                 if (cause) {
                     target = cause.details.title;
@@ -64,9 +59,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                 );
                 break;
             case TxType.CASHOUT.toString():
-                target = this.props.intl.formatMessage({
-                    id: 'wallet.cashout',
-                });
+                target = this.props.transaction.target.name;
                 txTitle = (
                     <i
                         className="fa fa-money"

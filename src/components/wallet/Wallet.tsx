@@ -89,7 +89,13 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                 cashbackPending: data.cashback.pending,
                 pointsApproved: data.points.approved,
                 pointsPending: data.points.pending,
-                transactions: data.transactions,
+                transactions: data.transactions.map(t => {
+                    if (typeof t.target === 'string') {
+                        return { ...t, target: { id: t.target, name: '' } };
+                    } else {
+                        return t;
+                    }
+                }),
                 isLoading: false,
             });
         } catch (error) {
