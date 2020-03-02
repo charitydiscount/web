@@ -11,7 +11,7 @@ class FooterLayout extends React.Component {
     public redirectToAbout(event) {
         event.preventDefault();
         removeLocalStorage(StorageKey.USER);
-        window.location.href = window.location.origin + "/landing-" + getLocalStorage(StorageKey.LANG) + ".html";
+        window.location.href = window.location.origin + "/landing-" + (getLocalStorage(StorageKey.LANG) ? getLocalStorage(StorageKey.LANG) : 'ro') + ".html";
     }
 
     render() {
