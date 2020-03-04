@@ -2,7 +2,7 @@ import * as React from 'react';
 import {auth, store} from '../../index';
 import {NavigationsAction} from '../../redux/actions/NavigationsAction';
 import {Stages} from '../helper/Stages';
-import {emptyHrefLink, InputType} from '../../helper/Constants';
+import {InputType} from '../../helper/Constants';
 import GenericInput from '../input/GenericInput';
 import {FormattedMessage} from 'react-intl';
 import {injectIntl, IntlShape} from 'react-intl';
@@ -129,12 +129,6 @@ class Contact extends React.Component<IContactProps, IContactState> {
                                 <div className="contact_info">
                                     <div className="info_item">
                                         <i className="fa fa-envelope"></i>
-                                        <h6>
-                                            <a href={emptyHrefLink}>
-                                                {' '}
-                                                support@mail.charitydiscount.ro
-                                            </a>
-                                        </h6>
                                         <p>
                                             <FormattedMessage
                                                 id="contact.mail.label"

@@ -24,7 +24,6 @@ export default function(
                 userKey: action.payload,
             };
         case LoginActionTypes.RESET_LOGGED_USER_ACTION:
-            console.log('reset');
             return { ...initialState };
         default:
             return state;

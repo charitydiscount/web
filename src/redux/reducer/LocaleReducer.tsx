@@ -5,7 +5,6 @@ import messages_en from '../../translations/en.json';
 import { getLocalStorage } from '../../helper/StorageHelper';
 import { StorageKey } from '../../helper/Constants';
 
-let language = navigator.language.split(/[-_]/)[0]; // language without region code, browser language
 const messages = {
     ro: messages_ro,
     en: messages_en,
@@ -17,9 +16,9 @@ export interface ILocaleState {
 
 const initialState: ILocaleState = {
     langResources: {
-        language: language === 'ro' || language === 'en' ? language : 'ro',
+        language: 'ro',
         resources:
-            messages[language === 'ro' || language === 'en' ? language : 'ro'],
+            messages['ro'],
     },
 };
 
@@ -45,8 +44,8 @@ export default function(
                         };
                     } else {
                         state.langResources = {
-                            language: 'en',
-                            resources: messages['en'],
+                            language: 'ro',
+                            resources: messages['ro'],
                         };
                     }
                 }
