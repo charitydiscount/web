@@ -153,9 +153,10 @@ function toProductDTO(productResponse: ProductWrapper): ProductDTO {
         title: productResponse._source.title,
         id: productResponse._source.product_id,
         price: productResponse._source.price,
-        imageUrl: productResponse._source.image_urls.toString().includes(',')
+        imageUrl: (productResponse._source.image_urls.toString().includes(',')
             ? productResponse._source.image_urls.toString().split(',')[0]
-            : productResponse._source.image_urls,
+            : productResponse._source.image_urls
+        ).replace(/^http:/, 'https:'),
         category: productResponse._source.category,
         url: computeProductUrl(productResponse._source.aff_code),
         shopName: productResponse._source.campaign_name,

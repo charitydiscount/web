@@ -118,7 +118,7 @@
   "wallet.block.cashout.confirm.iban": "IBAN: ",
   "shop.cashback.without.vat.and.transport": "din valoarea fara TVA si transport",
   "shop.available.in": "Valabil in : ",
-  "adblock.message": "AdBlock trebuie sa fie dezactivat pentru a putea continua  ",
+  "adblock.message": "Se pare ca folosesti adblock; e de inteles. Totusi, CharityDiscount nu poate functiona impreuna cu acesta (adica nu se pot inregistra comisioanele). Te rugam sa il dezactivezi si te asiguram ca nu vei avea parte de nicio reclama. Spor la cumparaturi!",
   "userinfo.delete.account.button": "Cerere stergere cont",
   "userInfo.delete.account.question": "Sigur doriti stergerea contului?",
   "userInfo.delete.account.ok": "Cererea de stergere a contului a fost trimisa",

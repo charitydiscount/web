@@ -17,11 +17,13 @@ class ReactAdBlock extends React.Component {
         if (this.state.usingAdblock === true) {
             return (
                 <Modal visible={true} effect="fadeInUp">
-                    <h3 style={{ padding: 15 }}>
-                        <FormattedMessage
-                            id={'adblock.message'}
-                            defaultMessage="Disable AdBlock or similar programs to continue"
-                        />
+                    <div style={{ padding: 15, maxWidth: 600 }}>
+                        <h4>
+                            <FormattedMessage
+                                id={'adblock.message'}
+                                defaultMessage="Disable AdBlock or similar programs to continue"
+                            />
+                        </h4>
                         <a
                             href={emptyHrefLink}
                             onClick={() => window.location.reload()}
@@ -32,7 +34,7 @@ class ReactAdBlock extends React.Component {
                                 defaultMessage="Reload"
                             />
                         </a>
-                    </h3>
+                    </div>
                 </Modal>
             );
         }
