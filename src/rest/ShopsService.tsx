@@ -177,32 +177,22 @@ export const fetchPrograms = async (): Promise<ShopDto[]> => {
         });
 };
 
-export enum CommissionType {
-    fixed,
-    variable,
-    percent,
-}
 
-export function getProgramCommission(
-    program: ShopDto,
-    normalCommission: boolean
-) {
+export function getProgramCommission(program: ShopDto, normalCommission: boolean) {
     let commission = '';
     let percent = getPercentage();
-    if (
-        program.defaultSaleCommissionRate &&
-        CommissionType[program.defaultSaleCommissionType]
-    ) {
-        switch (CommissionType[program.defaultSaleCommissionType].toString()) {
-            case CommissionType.fixed.toString():
+    if (program.defaultSaleCommissionRate && program.defaultSaleCommissionType) {
+        switch (program.defaultSaleCommissionType) {
+            case "fixed" : {
                 commission =
                     roundCommission(
                         parseFloat(program.defaultSaleCommissionRate) * percent
                     ) +
                     ' ' +
                     program.currency;
-                break;
-            case CommissionType.variable.toString():
+                return commission;
+            }
+            case "variable":
                 if (!normalCommission && program.commissionMin && program.commissionMax) {
                     commission = roundCommission(
                         parseFloat(program.commissionMin) * percent
@@ -217,41 +207,36 @@ export function getProgramCommission(
                         ) +
                         ' %';
                 }
-                break;
-            case CommissionType.percent.toString():
+                return commission;
+            case "percent":
                 commission =
                     roundCommission(
                         parseFloat(program.defaultSaleCommissionRate) * percent
                     ) + ' %';
-                break;
+                return commission;
             default:
         }
     }
 
-    if (
-        program.defaultLeadCommissionAmount &&
-        !program.defaultSaleCommissionRate &&
-        CommissionType[program.defaultLeadCommissionType]
-    ) {
-        switch (CommissionType[program.defaultLeadCommissionType].toString()) {
-            case CommissionType.variable.toString():
+    if (program.defaultLeadCommissionAmount && program.defaultLeadCommissionType ) {
+        switch (program.defaultLeadCommissionType) {
+            case "variable":
                 if (!normalCommission && program.commissionMin && program.commissionMax) {
                     commission = roundCommission(
                         parseFloat(program.commissionMin) * percent
                     ) + ' - ' + roundCommission(
                         parseFloat(program.commissionMax) * percent
                     ) + ' %';
+                } else {
                     commission =
                         (normalCommission ? '' : '~ ') +
                         roundCommission(
                             parseFloat(program.defaultLeadCommissionAmount) *
                             percent
-                        ) +
-                        ' ' +
-                        program.currency;
+                        ) + ' ' + program.currency;
                 }
                 break;
-            case CommissionType.fixed.toString():
+            case "fixed":
                 commission =
                     roundCommission(
                         parseFloat(program.defaultLeadCommissionAmount) *
