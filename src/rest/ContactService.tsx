@@ -1,8 +1,14 @@
-import { DB } from "../index";
-import { FirebaseTable } from "../helper/Constants";
-import { firestore } from "firebase";
+import { DB } from '../index';
+import { FirebaseTable } from '../helper/Constants';
+import { firestore } from 'firebase/app';
 
-export function addContactMessageToDb(displayName, email, uid, message, subject) {
+export function addContactMessageToDb(
+    displayName,
+    email,
+    uid,
+    message,
+    subject
+) {
     const data = {
         createdAt: firestore.FieldValue.serverTimestamp(),
         status: 'NEW',
@@ -10,10 +16,8 @@ export function addContactMessageToDb(displayName, email, uid, message, subject)
         email: email,
         message: message,
         subject: subject,
-        userId: uid
+        userId: uid,
     };
 
-    return DB.collection(FirebaseTable.CONTACT).add(
-        data
-    );
+    return DB.collection(FirebaseTable.CONTACT).add(data);
 }
