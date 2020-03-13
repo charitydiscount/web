@@ -60,6 +60,11 @@ class FooterLayout extends React.Component {
                                         />
                                     </Link>
                                 </li>
+                                <li className="d-flex">
+                                    <a href="https://anpc.ro/">
+                                        ANPC
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <div
