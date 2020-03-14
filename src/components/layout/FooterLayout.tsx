@@ -61,7 +61,7 @@ class FooterLayout extends React.Component {
                                     </Link>
                                 </li>
                                 <li className="d-flex">
-                                    <a href="https://anpc.ro/">
+                                    <a href="https://anpc.ro/" target="_blank" rel="noopener noreferrer">
                                         ANPC
                                     </a>
                                 </li>
