@@ -19,7 +19,15 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
             this.props.commission.status
         ].toString();
         const isShopActive = !!this.props.shops.find(
-            shop => shop.id === this.props.commission.shopId
+            shop => {
+                let result = shop.id.toString().localeCompare(this.props.commission.shopId.toString());
+                if (result == 0) {
+                    return true;
+                } else {
+                    result = shop.uniqueCode.toString().localeCompare(this.props.commission.shopId.toString())
+                }
+                return result == 0;
+            }
         );
 
         let cmTitle: any;
