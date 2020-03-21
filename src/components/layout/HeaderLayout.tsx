@@ -112,6 +112,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
         const isTos = this.props.view === Stages.TOS;
         const isPrivacy = this.props.view === Stages.PRIVACY;
         const isCauses = this.props.view === Stages.CAUSES;
+        const isFriends = this.props.view === Stages.FRIENDS;
         const isWallet = this.props.view === Stages.WALLET;
         const isLoggedIn = this.props.isLoggedIn;
 
@@ -282,6 +283,24 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                             <FormattedMessage
                                                                 id="navigation.wallet"
                                                                 defaultMessage="Portofel"
+                                                            />
+                                                        </Link>
+                                                    </li>
+                                                    <li
+                                                        className={
+                                                            'nav-item ' +
+                                                            (isFriends
+                                                                ? 'active'
+                                                                : '')
+                                                        }
+                                                    >
+                                                        <Link
+                                                            to={Routes.FRIENDS}
+                                                            className="nav-link"
+                                                        >
+                                                            <FormattedMessage
+                                                                id="navigation.friends"
+                                                                defaultMessage="Prieteni"
                                                             />
                                                         </Link>
                                                     </li>

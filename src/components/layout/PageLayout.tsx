@@ -15,6 +15,7 @@ import ExternalAccess from '../external/ExternalAccess';
 import Faq from '../faq/Faq';
 import { AppState } from '../../redux/reducer/RootReducer';
 import { connect } from 'react-redux';
+import Friends from "../friends/Friends";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -72,10 +73,15 @@ const PageLayout = (props: PageLayoutProps) => {
                     />
                     <Route
                         exact={true}
+                        path={Routes.FRIENDS}
+                        component={Friends}
+                    />
+                    <Route
+                        exact={true}
                         path={Routes.REVIEW + '/:id'}
                         component={ShopReview}
                     />
-                    <Route exact={true} path={Routes.TOS} component={Tos} />
+                    <Route exact={true} path={Routes.TOS} component={Tos}/>
                     <Route
                         exact={true}
                         path={Routes.PRIVACY}

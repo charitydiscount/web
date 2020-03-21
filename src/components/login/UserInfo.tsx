@@ -1,40 +1,31 @@
-import {auth, storage, store} from '../../index';
-import {NavigationsAction} from '../../redux/actions/NavigationsAction';
-import {Stages} from '../helper/Stages';
+import { auth, storage, store } from '../../index';
+import { NavigationsAction } from '../../redux/actions/NavigationsAction';
+import { Stages } from '../helper/Stages';
 import * as React from 'react';
 import {
     emptyHrefLink,
-    facebookPictureKey,
-    noImagePath,
     profilePictureDefaultName,
-    profilePictureSuffix,
     StorageRef,
 } from '../../helper/Constants';
-import {doLogoutAction} from './UserActions';
-import {connect} from 'react-redux';
+import { doLogoutAction } from './UserActions';
+import { connect } from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
 import Modal from 'react-awesome-modal';
-import {FormattedMessage, injectIntl, IntlShape} from 'react-intl';
-import {smallerSpinnerCss, spinnerCss,} from '../../helper/AppHelper';
-import {fetchProfilePhoto} from '../../rest/StorageService';
-import {addContactMessageToDb} from '../../rest/ContactService';
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
+import { smallerSpinnerCss, spinnerCss, } from '../../helper/AppHelper';
+import { addContactMessageToDb } from '../../rest/ContactService';
 import FadeLoader from 'react-spinners/FadeLoader';
+import { loadUserPhoto, UserPhotoState } from "./UserPhotoHelper";
 
 interface IUserInfoProps {
     intl: IntlShape;
     logout: () => void;
 }
 
-interface IUserInfoState {
-    photoURL: string;
-    displayName: string;
-    email: string;
-    normalUser: boolean,
-    userId: string;
+interface IUserInfoState extends UserPhotoState {
     modalVisible: boolean;
     modalMessage: string;
     isLoading: boolean;
-    isLoadingPhoto: boolean;
 }
 
 class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
@@ -72,44 +63,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     async componentDidMount() {
         document.addEventListener('keydown', this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
-        if (auth.currentUser) {
-            this.setState({
-                photoURL: auth.currentUser.photoURL || '',
-                displayName: auth.currentUser.displayName || '',
-                email: auth.currentUser.email || '',
-                userId: auth.currentUser.uid || ''
-            });
-
-            if (!auth.currentUser.photoURL) {
-                this.setState({
-                    isLoadingPhoto: true,
-                    normalUser: true
-                });
-                try {
-                    const response = await fetchProfilePhoto(
-                        auth.currentUser.uid
-                    );
-                    this.setState({
-                        photoURL: response as string,
-                        isLoadingPhoto: false,
-                        normalUser: true
-                    });
-                } catch (error) {
-                    this.setState({
-                        photoURL: noImagePath,
-                        isLoadingPhoto: false,
-                        normalUser: true
-                    });
-                }
-            } else {
-                if (this.state.photoURL.includes(facebookPictureKey)) {
-                    this.setState({
-                        photoURL: this.state.photoURL + profilePictureSuffix,
-                        normalUser: false
-                    });
-                }
-            }
-        }
+        await loadUserPhoto(this);
     }
 
     public componentWillUnmount() {

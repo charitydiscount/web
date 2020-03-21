@@ -6,6 +6,7 @@ export enum Routes {
     CAUSES = "/causes",
     WALLET = "/wallet",
     REVIEW = "/review",
+    FRIENDS = "/friends",
     TOS = "/tos", //terms of agreement
     FAQ = "/faq", //frequently asked questions
     PRIVACY = "/privacy",

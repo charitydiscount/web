@@ -1,6 +1,7 @@
 {
   "navigation.wallet": "Portofel",
   "navigation.causes": "Caritate",
+  "navigation.friends": "Prieteni",
   "navigation.shops": "Magazine",
   "navigation.welcome": "Bine ai venit: ",
   "navigation.logout": "Delogare ",
@@ -156,5 +157,6 @@
   "RON": "RON",
   "EUR": "EUR",
   "Charity Points": "Charity Points",
-  "faq.title": "Intrebari si raspunsuri frecvente"
+  "faq.title": "Intrebari si raspunsuri frecvente",
+  "friends.general.message": "Invitati prieteni vostri pe charityDiscout cu link-ul de mai jos si primiti 10% pe langa cashback-ul primit de ei la fiecare achizitie prin charityDiscount"
 }
