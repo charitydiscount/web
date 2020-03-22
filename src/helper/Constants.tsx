@@ -8,6 +8,7 @@ export enum FirebaseTable {
     CONTACT = 'contact',
     META = 'meta',
     FAVORITE_SHOPS = 'favoriteShops',
+    REFERRAL_REQUESTS = 'referral-requests',
     REVIEWS = 'reviews',
     SHOPS = 'programs',
     CASES = 'cases',
@@ -48,6 +49,7 @@ export enum StorageKey {
     //LOCAL STORAGE
     CATEGORIES = '/categoriesCD',
     SHOPS = '/shopsCD',
+    REFERRAL_KEY = '/referralCD',
     FAVORITE_SHOPS = '/favoriteShopsCD',
     CAUSES = '/causesCD',
     USER = '/userCD',

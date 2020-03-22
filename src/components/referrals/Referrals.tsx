@@ -7,17 +7,17 @@ import FadeLoader from 'react-spinners/FadeLoader';
 import { smallerSpinnerCss } from "../../helper/AppHelper";
 import { FormattedMessage } from "react-intl";
 
-interface FriendsState extends UserPhotoState {
+interface ReferralsState extends UserPhotoState {
 
 }
 
-interface FriendsProps {
+interface ReferralsProps {
 
 }
 
-class Friends extends React.Component<FriendsProps, FriendsState> {
+class Referrals extends React.Component<ReferralsProps, ReferralsState> {
 
-    constructor(props: FriendsProps) {
+    constructor(props: ReferralsProps) {
         super(props);
         this.state = {
             photoURL: '',
@@ -70,13 +70,13 @@ class Friends extends React.Component<FriendsProps, FriendsState> {
                                 <br/>
                                 <p>
                                     <FormattedMessage
-                                        id="friends.general.message"
+                                        id="referral.general.message"
                                         defaultMessage="Invitati prieteni vostri pe charityDiscout cu link-ul de mai jos si primiti 10%
                                     pe langa cashback-ul primit de ei la fiecare achizitie prin charityDiscount"
                                     />
                                 </p>
                                 <p>
-                                    <b>www.charitydiscount.ro/friends?key={this.state.userId}</b>
+                                    <b>www.charitydiscount.ro/referral/login/{this.state.userId}</b>
                                 </p>
                             </div>
                         </div>
@@ -87,4 +87,4 @@ class Friends extends React.Component<FriendsProps, FriendsState> {
     }
 }
 
-export default Friends;
+export default Referrals;

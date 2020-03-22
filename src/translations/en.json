@@ -1,7 +1,7 @@
 {
   "navigation.wallet": "Wallet",
   "navigation.causes": "Causes",
-  "navigation.friends": "Friends",
+  "navigation.referral": "Friends",
   "navigation.shops": "Shops",
   "navigation.welcome": "Welcome: ",
   "navigation.logout": "Logout ",
@@ -158,5 +158,5 @@
   "EUR": "EUR",
   "Charity Points": "Charity points",
   "faq.title": "Frequently Asked Questions",
-  "friends.general.message": "Invite you're friends on charityDiscount and earn a total of 10% beside their cashback for each transaction they made on charityDiscount"
+  "referral.general.message": "Invite you're friends on charityDiscount and earn a total of 10% beside their cashback for each transaction they made on charityDiscount"
 }

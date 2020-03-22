@@ -15,7 +15,8 @@ import ExternalAccess from '../external/ExternalAccess';
 import Faq from '../faq/Faq';
 import { AppState } from '../../redux/reducer/RootReducer';
 import { connect } from 'react-redux';
-import Friends from "../friends/Friends";
+import Referrals from "../referrals/Referrals";
+import ReferralLogin from "../referrals/ReferralLogin";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -26,6 +27,11 @@ const PageLayout = (props: PageLayoutProps) => {
         return (
             <main>
                 <Switch>
+                    <Route
+                        exact={true}
+                        path={Routes.REFFERRAL_LOGIN + '/:key'}
+                        component={ReferralLogin}
+                    />
                     <Route
                         exact={true}
                         path={Routes.CONTACT}
@@ -73,8 +79,8 @@ const PageLayout = (props: PageLayoutProps) => {
                     />
                     <Route
                         exact={true}
-                        path={Routes.FRIENDS}
-                        component={Friends}
+                        path={Routes.REFERRALS}
+                        component={Referrals}
                     />
                     <Route
                         exact={true}
@@ -106,6 +112,11 @@ const PageLayout = (props: PageLayoutProps) => {
         return (
             <main>
                 <Switch>
+                    <Route
+                        exact={true}
+                        path={Routes.REFFERRAL_LOGIN + '/:key'}
+                        component={ReferralLogin}
+                    />
                     <Route
                         exact={true}
                         path={Routes.LOGIN}

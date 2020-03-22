@@ -295,11 +295,11 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                         }
                                                     >
                                                         <Link
-                                                            to={Routes.FRIENDS}
+                                                            to={Routes.REFERRALS}
                                                             className="nav-link"
                                                         >
                                                             <FormattedMessage
-                                                                id="navigation.friends"
+                                                                id="navigation.referral"
                                                                 defaultMessage="Prieteni"
                                                             />
                                                         </Link>

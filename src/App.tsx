@@ -12,6 +12,7 @@ import { FadeLoader } from 'react-spinners';
 import { spinnerCss } from './helper/AppHelper';
 import ScrollToTop from './components/layout/Scroll';
 import ReactAdBlock from './ReactAdBlock';
+import ReferralUpdate from "./components/referrals/ReferralUpdate";
 
 interface StateProps {
     loaded: boolean;
@@ -22,6 +23,7 @@ interface DispatchProps {
 }
 
 class App extends React.Component<StateProps & DispatchProps> {
+
     componentDidMount() {
         this.props.loadShops();
     }
@@ -30,6 +32,7 @@ class App extends React.Component<StateProps & DispatchProps> {
         return this.props.loaded ? (
             <React.Fragment>
                 <ReactAdBlock />
+                <ReferralUpdate/>
                 <ScrollToTop />
                 <HeaderLayout />
                 <PageLayout />

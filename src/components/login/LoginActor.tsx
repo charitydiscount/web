@@ -6,7 +6,7 @@ import Login from './LoginComponent';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router';
 import {Routes} from '../helper/Routes';
-import {clearStorage, removeLocalStorage} from "../../helper/StorageHelper";
+import { clearStorage, removeLocalStorage } from "../../helper/StorageHelper";
 import {StorageKey} from "../../helper/Constants";
 import {AuthActions} from "./UserActions";
 
@@ -17,8 +17,9 @@ interface ILoginRendererProps {
 class LoginActor extends React.Component<ILoginRendererProps> {
 
     async componentDidMount() {
-        this.verifyUserLoggedInFirebase();
         store.dispatch(NavigationsAction.setStageAction(Stages.EMPTY));
+
+        this.verifyUserLoggedInFirebase();
     }
 
     public componentWillUnmount() {
