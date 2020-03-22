@@ -307,7 +307,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         if (
             !this.state.amount ||
             this.state.amount.length < 1 ||
-            parseFloat(this.state.amount) < 0
+            parseFloat(this.state.amount) < 1
         ) {
             alert(
                 this.props.intl.formatMessage({
