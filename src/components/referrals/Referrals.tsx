@@ -76,7 +76,7 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                                     />
                                 </p>
                                 <p>
-                                    <b>www.charitydiscount.ro/referral/login/{this.state.userId}</b>
+                                    <b>www.charitydiscount.ro/referral/{this.state.userId}</b>
                                 </p>
                             </div>
                         </div>
