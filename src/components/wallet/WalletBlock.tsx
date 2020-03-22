@@ -250,7 +250,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
             return;
         }
 
-        if (parseFloat(this.state.amount) > this.props.approved) {
+        if (roundMoney(parseFloat(this.state.amount)) > roundMoney(this.props.approved)) {
             alert(
                 this.props.intl.formatMessage({
                     id: 'wallet.cashout.no.amount.error',
@@ -307,7 +307,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         if (
             !this.state.amount ||
             this.state.amount.length < 1 ||
-            parseFloat(this.state.amount) < 1
+            parseFloat(this.state.amount) < 0
         ) {
             alert(
                 this.props.intl.formatMessage({
@@ -317,7 +317,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
             return;
         }
 
-        if (parseFloat(this.state.amount) > this.props.approved) {
+        if (roundMoney(parseFloat(this.state.amount)) > roundMoney(this.props.approved)) {
             alert(
                 this.props.intl.formatMessage({
                     id: 'wallet.cashout.no.amount.error',
@@ -562,7 +562,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                                                     }}
                                                     inputProps={{
                                                         min: '50',
-                                                        step: '0.1',
+                                                        step: '0.01',
                                                     }}
                                                     label={this.props.intl.formatMessage(
                                                         {
@@ -651,7 +651,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                                                         width: '100%',
                                                     }}
                                                     inputProps={{
-                                                        step: '0.1',
+                                                        step: '0.01',
                                                     }}
                                                     label={this.props.intl.formatMessage(
                                                         {

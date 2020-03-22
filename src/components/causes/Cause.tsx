@@ -4,6 +4,7 @@ import { Routes } from '../helper/Routes';
 import { Redirect } from 'react-router';
 import { emptyHrefLink } from '../../helper/Constants';
 import { FormattedMessage } from 'react-intl';
+import { roundMoney } from "../../helper/AppHelper";
 
 interface ICauseState {
     redirect: boolean;
@@ -49,7 +50,7 @@ class Cause extends React.Component<ICauseProps, ICauseState> {
                                 id="cause.donated"
                                 defaultMessage="Donated: "
                             />
-                            {this.props.cause.details.funds} RON
+                            {roundMoney(this.props.cause.details.funds)} RON
                         </h4>
                     )}
                     <a
