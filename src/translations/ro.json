@@ -95,7 +95,7 @@
   "userInfo.select.language.placeholder": "Alege limba...",
   "userInfo.profile.picture.uploaded": "Poza de profil s-a incarcat cu success",
   "userInfo.profile.picture.error": "Incarcarea nu a reusit, dimensiunea pozei trebuie sa fie mai mica de 5MB",
-  "userInfo.email.reset.sent": "A fost trimis un mail de recuperare a parolei",
+  "userInfo.email.reset.sent": "A fost trimis un mail de schimbare a parolei",
   "userInfo.email.reset.error": "Mail-ul de recuperare a parolei nu a putut fi trimis",
   "review.error.message": "Trebuie introdusa o descriere si ales un rating",
   "review.failed.to.update.error.message": "Mesajul nu a putut fi trimis, te rog incearca din nou",
