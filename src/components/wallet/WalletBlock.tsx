@@ -56,8 +56,10 @@ interface IWalletBlockProps {
     onTxCompleted?: Function;
 }
 
-class WalletBlock extends React.Component<IWalletBlockProps,
-    IWalletBlockState> {
+class WalletBlock extends React.Component<
+    IWalletBlockProps,
+    IWalletBlockState
+> {
     private firstTxEventReceived: boolean;
 
     constructor(props: IWalletBlockProps) {
@@ -164,16 +166,16 @@ class WalletBlock extends React.Component<IWalletBlockProps,
             const target =
                 this.state.txType === TxType.DONATION
                     ? {
-                        id: this.state.targetId,
-                        name:
-                            this.props.causes?.find(
-                                c => c.id === this.state.targetId
-                            )?.details.title || '',
-                    }
+                          id: this.state.targetId,
+                          name:
+                              this.props.causes?.find(
+                                  c => c.id === this.state.targetId
+                              )?.details.title || '',
+                      }
                     : {
-                        id: this.state.iban,
-                        name: this.state.name,
-                    };
+                          id: this.state.iban,
+                          name: this.state.name,
+                      };
             if (response) {
                 try {
                     this.setState({
@@ -250,7 +252,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
             return;
         }
 
-        if (roundMoney(parseFloat(this.state.amount)) > roundMoney(this.props.approved)) {
+        if (parseFloat(this.state.amount) > this.props.approved) {
             alert(
                 this.props.intl.formatMessage({
                     id: 'wallet.cashout.no.amount.error',
@@ -317,7 +319,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
             return;
         }
 
-        if (roundMoney(parseFloat(this.state.amount)) > roundMoney(this.props.approved)) {
+        if (parseFloat(this.state.amount) > this.props.approved) {
             alert(
                 this.props.intl.formatMessage({
                     id: 'wallet.cashout.no.amount.error',
@@ -371,16 +373,16 @@ class WalletBlock extends React.Component<IWalletBlockProps,
     public render() {
         const causesList = this.props.causes
             ? this.props.causes.map(cause => {
-                return (
-                    <CauseDonate
-                        key={cause.id}
-                        id={cause.id}
-                        causeTitle={cause.details.title}
-                        onUpdate={this.onChildUpdate}
-                        selections={this.state.selections}
-                    />
-                );
-            })
+                  return (
+                      <CauseDonate
+                          key={cause.id}
+                          id={cause.id}
+                          causeTitle={cause.details.title}
+                          onUpdate={this.onChildUpdate}
+                          selections={this.state.selections}
+                      />
+                  );
+              })
             : null;
 
         return (
@@ -394,77 +396,77 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                         <div className="container cart_inner">
                             <table className="table">
                                 <tbody>
-                                <tr className="shipping_area">
-                                    <td>
-                                        <div className="shipping_box">
-                                            {this.state.txType ===
-                                            'CASHOUT' && (
-                                                <React.Fragment>
-                                                    <h3 className="important-left-align">
-                                                        <FormattedMessage
-                                                            id="wallet.block.cashout.confirm.name"
-                                                            defaultMessage="Account holder name: "
-                                                        />
-                                                        {this.state.name}
-                                                    </h3>
-                                                    <h3 className="important-left-align">
-                                                        <FormattedMessage
-                                                            id="wallet.block.cashout.confirm.iban"
-                                                            defaultMessage="IBAN: "
-                                                        />
-                                                        {this.state.iban}
-                                                    </h3>
-                                                </React.Fragment>
-                                            )}
-                                            <h3 className="important-left-align">
-                                                <FormattedMessage
-                                                    id="wallet.block.otp.mail.mesasge"
-                                                    defaultMessage="A mail was sent with the code to validate the
-                                                           transaction."
-                                                />
-                                            </h3>
-
-                                            <TextField
-                                                id="otpCode"
-                                                variant="filled"
-                                                style={{width: '100%'}}
-                                                label={this.props.intl.formatMessage(
-                                                    {
-                                                        id:
-                                                            'wallet.block.otp.request.placeholder',
-                                                    }
+                                    <tr className="shipping_area">
+                                        <td>
+                                            <div className="shipping_box">
+                                                {this.state.txType ===
+                                                    'CASHOUT' && (
+                                                    <React.Fragment>
+                                                        <h3 className="important-left-align">
+                                                            <FormattedMessage
+                                                                id="wallet.block.cashout.confirm.name"
+                                                                defaultMessage="Account holder name: "
+                                                            />
+                                                            {this.state.name}
+                                                        </h3>
+                                                        <h3 className="important-left-align">
+                                                            <FormattedMessage
+                                                                id="wallet.block.cashout.confirm.iban"
+                                                                defaultMessage="IBAN: "
+                                                            />
+                                                            {this.state.iban}
+                                                        </h3>
+                                                    </React.Fragment>
                                                 )}
-                                                onChange={event =>
-                                                    this.setState({
-                                                        otpCode: parseInt(
-                                                            event.target
-                                                                .value
-                                                        ),
-                                                    })
-                                                }
-                                                value={this.state.otpCode}
-                                            />
-
-                                            <div className="p_05">
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={
-                                                        this.creatRequest
-                                                    }
-                                                    startIcon={
-                                                        <ThumbUpAltIcon/>
-                                                    }
-                                                >
+                                                <h3 className="important-left-align">
                                                     <FormattedMessage
-                                                        id="wallet.block.otp.proceed"
-                                                        defaultMessage="Validate "
+                                                        id="wallet.block.otp.mail.mesasge"
+                                                        defaultMessage="A mail was sent with the code to validate the
+                                                           transaction."
                                                     />
-                                                </Button>
+                                                </h3>
+
+                                                <TextField
+                                                    id="otpCode"
+                                                    variant="filled"
+                                                    style={{ width: '100%' }}
+                                                    label={this.props.intl.formatMessage(
+                                                        {
+                                                            id:
+                                                                'wallet.block.otp.request.placeholder',
+                                                        }
+                                                    )}
+                                                    onChange={event =>
+                                                        this.setState({
+                                                            otpCode: parseInt(
+                                                                event.target
+                                                                    .value
+                                                            ),
+                                                        })
+                                                    }
+                                                    value={this.state.otpCode}
+                                                />
+
+                                                <div className="p_05">
+                                                    <Button
+                                                        variant="contained"
+                                                        color="primary"
+                                                        onClick={
+                                                            this.creatRequest
+                                                        }
+                                                        startIcon={
+                                                            <ThumbUpAltIcon />
+                                                        }
+                                                    >
+                                                        <FormattedMessage
+                                                            id="wallet.block.otp.proceed"
+                                                            defaultMessage="Validate "
+                                                        />
+                                                    </Button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -484,125 +486,125 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                         <div className="container cart_inner">
                             <table className="table">
                                 <tbody>
-                                <tr className="shipping_area">
-                                    <td>
-                                        <div className="shipping_box">
-                                            <React.Fragment>
-                                                <TextField
-                                                    id="name"
-                                                    label={this.props.intl.formatMessage(
-                                                        {
-                                                            id:
-                                                                'wallet.block.cashout.name',
+                                    <tr className="shipping_area">
+                                        <td>
+                                            <div className="shipping_box">
+                                                <React.Fragment>
+                                                    <TextField
+                                                        id="name"
+                                                        label={this.props.intl.formatMessage(
+                                                            {
+                                                                id:
+                                                                    'wallet.block.cashout.name',
+                                                            }
+                                                        )}
+                                                        onChange={event =>
+                                                            this.setState({
+                                                                name:
+                                                                    event.target
+                                                                        .value,
+                                                            })
                                                         }
-                                                    )}
-                                                    onChange={event =>
-                                                        this.setState({
-                                                            name:
-                                                            event.target
-                                                                .value,
-                                                        })
-                                                    }
-                                                    variant="filled"
-                                                    style={{
-                                                        width: '100%',
-                                                    }}
-                                                    value={this.state.name}
-                                                />
-                                                <TextField
-                                                    id="iban"
-                                                    variant="filled"
-                                                    style={{
-                                                        width: '100%',
-                                                    }}
-                                                    label={this.props.intl.formatMessage(
-                                                        {
-                                                            id:
-                                                                'wallet.block.cashout.iban',
-                                                        }
-                                                    )}
-                                                    onChange={event =>
-                                                        this.setState({
-                                                            iban:
-                                                            event.target
-                                                                .value,
-                                                        })
-                                                    }
-                                                    value={this.state.iban}
-                                                />
-
-                                                <h6>
-                                                    <FormattedMessage
-                                                        id="wallet.block.available.amount"
-                                                        defaultMessage="Available amount: "
+                                                        variant="filled"
+                                                        style={{
+                                                            width: '100%',
+                                                        }}
+                                                        value={this.state.name}
                                                     />
-                                                    <i className="blue-color">
-                                                        {roundMoney(
-                                                            this.props
-                                                                .approved
-                                                        ) + ' RON'}
-                                                    </i>
-                                                </h6>
-                                                <h6>
-                                                    <FormattedMessage
-                                                        id="wallet.block.minimum.amount"
-                                                        defaultMessage="Minimum amount: "
+                                                    <TextField
+                                                        id="iban"
+                                                        variant="filled"
+                                                        style={{
+                                                            width: '100%',
+                                                        }}
+                                                        label={this.props.intl.formatMessage(
+                                                            {
+                                                                id:
+                                                                    'wallet.block.cashout.iban',
+                                                            }
+                                                        )}
+                                                        onChange={event =>
+                                                            this.setState({
+                                                                iban:
+                                                                    event.target
+                                                                        .value,
+                                                            })
+                                                        }
+                                                        value={this.state.iban}
                                                     />
-                                                    <i className="blue-color">
-                                                        {'50 RON'}
-                                                    </i>
-                                                </h6>
 
-                                                <TextField
-                                                    id="amount-text-field-cashout"
-                                                    type="number"
-                                                    variant="filled"
-                                                    style={{
-                                                        width: '100%',
-                                                    }}
-                                                    inputProps={{
-                                                        min: '50',
-                                                        step: '0.01',
-                                                    }}
-                                                    label={this.props.intl.formatMessage(
-                                                        {
-                                                            id:
-                                                                'wallet.table.amount',
-                                                        }
-                                                    )}
-                                                    onChange={event =>
-                                                        this.setState({
-                                                            amount:
-                                                            event.target
-                                                                .value,
-                                                        })
-                                                    }
-                                                    value={
-                                                        this.state.amount
-                                                    }
-                                                />
-
-                                                <div className="p_05">
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        onClick={
-                                                            this.cashout
-                                                        }
-                                                        startIcon={
-                                                            <AttachMoneyIcon/>
-                                                        }
-                                                    >
+                                                    <h6>
                                                         <FormattedMessage
-                                                            id="wallet.block.cashout"
-                                                            defaultMessage="Cashout "
+                                                            id="wallet.block.available.amount"
+                                                            defaultMessage="Available amount: "
                                                         />
-                                                    </Button>
-                                                </div>
-                                            </React.Fragment>
-                                        </div>
-                                    </td>
-                                </tr>
+                                                        <i className="blue-color">
+                                                            {roundMoney(
+                                                                this.props
+                                                                    .approved
+                                                            ) + ' RON'}
+                                                        </i>
+                                                    </h6>
+                                                    <h6>
+                                                        <FormattedMessage
+                                                            id="wallet.block.minimum.amount"
+                                                            defaultMessage="Minimum amount: "
+                                                        />
+                                                        <i className="blue-color">
+                                                            {'50 RON'}
+                                                        </i>
+                                                    </h6>
+
+                                                    <TextField
+                                                        id="amount-text-field-cashout"
+                                                        type="number"
+                                                        variant="filled"
+                                                        style={{
+                                                            width: '100%',
+                                                        }}
+                                                        inputProps={{
+                                                            min: '50',
+                                                            step: '0.01',
+                                                        }}
+                                                        label={this.props.intl.formatMessage(
+                                                            {
+                                                                id:
+                                                                    'wallet.table.amount',
+                                                            }
+                                                        )}
+                                                        onChange={event =>
+                                                            this.setState({
+                                                                amount:
+                                                                    event.target
+                                                                        .value,
+                                                            })
+                                                        }
+                                                        value={
+                                                            this.state.amount
+                                                        }
+                                                    />
+
+                                                    <div className="p_05">
+                                                        <Button
+                                                            variant="contained"
+                                                            color="primary"
+                                                            onClick={
+                                                                this.cashout
+                                                            }
+                                                            startIcon={
+                                                                <AttachMoneyIcon />
+                                                            }
+                                                        >
+                                                            <FormattedMessage
+                                                                id="wallet.block.cashout"
+                                                                defaultMessage="Cashout "
+                                                            />
+                                                        </Button>
+                                                    </div>
+                                                </React.Fragment>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -622,76 +624,76 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                         <div className="container cart_inner">
                             <table className="table">
                                 <tbody>
-                                <tr className="shipping_area">
-                                    <td>
-                                        <div className="shipping_box">
-                                            <React.Fragment>
-                                                <ul className="list">
-                                                    {causesList}
-                                                </ul>
+                                    <tr className="shipping_area">
+                                        <td>
+                                            <div className="shipping_box">
+                                                <React.Fragment>
+                                                    <ul className="list">
+                                                        {causesList}
+                                                    </ul>
 
-                                                <h6>
-                                                    <FormattedMessage
-                                                        id="wallet.block.available.amount"
-                                                        defaultMessage="Available amount: "
-                                                    />
-                                                    <i className="blue-color">
-                                                        {roundMoney(
-                                                            this.props
-                                                                .approved
-                                                        ) + ' RON'}
-                                                    </i>
-                                                </h6>
-
-                                                <TextField
-                                                    id="amount-text-field-donation"
-                                                    type="number"
-                                                    variant="filled"
-                                                    style={{
-                                                        width: '100%',
-                                                    }}
-                                                    inputProps={{
-                                                        step: '0.01',
-                                                    }}
-                                                    label={this.props.intl.formatMessage(
-                                                        {
-                                                            id:
-                                                                'wallet.table.amount',
-                                                        }
-                                                    )}
-                                                    onChange={event =>
-                                                        this.setState({
-                                                            amount:
-                                                            event.target
-                                                                .value,
-                                                        })
-                                                    }
-                                                    value={
-                                                        this.state.amount
-                                                    }
-                                                />
-
-                                                <div className="p_05">
-                                                    <Button
-                                                        variant="contained"
-                                                        color="primary"
-                                                        onClick={
-                                                            this.donate
-                                                        }
-                                                        startIcon={
-                                                            <FavoriteBorderIcon/>
-                                                        }
-                                                    >
+                                                    <h6>
                                                         <FormattedMessage
-                                                            id="wallet.block.donate"
-                                                            defaultMessage="Donate "
+                                                            id="wallet.block.available.amount"
+                                                            defaultMessage="Available amount: "
                                                         />
-                                                    </Button>
-                                                </div>
-                                            </React.Fragment>
-                                        </div>
-                                    </td>
-                                </tr>
+                                                        <i className="blue-color">
+                                                            {roundMoney(
+                                                                this.props
+                                                                    .approved
+                                                            ) + ' RON'}
+                                                        </i>
+                                                    </h6>
+
+                                                    <TextField
+                                                        id="amount-text-field-donation"
+                                                        type="number"
+                                                        variant="filled"
+                                                        style={{
+                                                            width: '100%',
+                                                        }}
+                                                        inputProps={{
+                                                            step: '0.01',
+                                                        }}
+                                                        label={this.props.intl.formatMessage(
+                                                            {
+                                                                id:
+                                                                    'wallet.table.amount',
+                                                            }
+                                                        )}
+                                                        onChange={event =>
+                                                            this.setState({
+                                                                amount:
+                                                                    event.target
+                                                                        .value,
+                                                            })
+                                                        }
+                                                        value={
+                                                            this.state.amount
+                                                        }
+                                                    />
+
+                                                    <div className="p_05">
+                                                        <Button
+                                                            variant="contained"
+                                                            color="primary"
+                                                            onClick={
+                                                                this.donate
+                                                            }
+                                                            startIcon={
+                                                                <FavoriteBorderIcon />
+                                                            }
+                                                        >
+                                                            <FormattedMessage
+                                                                id="wallet.block.donate"
+                                                                defaultMessage="Donate "
+                                                            />
+                                                        </Button>
+                                                    </div>
+                                                </React.Fragment>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -725,13 +727,13 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                                     />
                                     {this.props.pending
                                         ? roundMoney(this.props.pending) +
-                                        ' RON'
+                                          ' RON'
                                         : 0}
                                 </h6>
                                 {this.props.money ? (
                                     <div>
                                         <div>
-                                            <br/>
+                                            <br />
                                             <a
                                                 href={emptyHrefLink}
                                                 className="btn submit_btn genric-btn circle m-2"

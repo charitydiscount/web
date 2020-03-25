@@ -21,12 +21,12 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
         const isShopActive = !!this.props.shops.find(
             shop => {
                 let result = shop.id.toString().localeCompare(this.props.commission.shopId.toString());
-                if (result == 0) {
+                if (result === 0) {
                     return true;
                 } else {
                     result = shop.uniqueCode.toString().localeCompare(this.props.commission.shopId.toString())
                 }
-                return result == 0;
+                return result === 0;
             }
         );
 
