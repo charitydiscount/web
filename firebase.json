@@ -54,6 +54,10 @@
           "dynamicLinks": true
         },
         {
+          "source": "/invite/**",
+          "dynamicLinks": true
+        },
+        {
           "source": "**",
           "destination": "/index.html"
         }
