@@ -41,6 +41,7 @@ export interface CommissionDto {
     createdAt: firestore.Timestamp;
     currency: string;
     shopId: number;
+    source: string
     program: ProgramDto;
     status: string;
 }

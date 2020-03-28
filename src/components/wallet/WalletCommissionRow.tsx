@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CommissionStatus, emptyHrefLink } from '../../helper/Constants';
+import { CmType, CommissionStatus, emptyHrefLink } from '../../helper/Constants';
 import { injectIntl, IntlShape } from 'react-intl';
 import { CommissionDto } from '../../rest/WalletService';
 import { dateOptions, roundMoney } from '../../helper/AppHelper';
@@ -17,18 +17,56 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
     public render() {
         let commissionStatus = CommissionStatus[
             this.props.commission.status
-        ].toString();
-        const isShopActive = !!this.props.shops.find(
-            shop => {
-                let result = shop.id.toString().localeCompare(this.props.commission.shopId.toString());
-                if (result === 0) {
-                    return true;
-                } else {
-                    result = shop.uniqueCode.toString().localeCompare(this.props.commission.shopId.toString())
+            ].toString();
+
+        let source;
+        if (this.props.commission.source && this.props.commission.source.localeCompare(CmType.REFERRAL) === 0) {
+            source = <div className="country">{this.props.intl.formatMessage({
+                id: 'wallet.commission.source.friend',
+            })}</div>;
+        } else {
+            const isShopActive = !!this.props.shops.find(
+                shop => {
+                    let result = shop.id.toString().localeCompare(this.props.commission.shopId.toString());
+                    if (result === 0) {
+                        return true;
+                    } else {
+                        result = shop.uniqueCode.toString().localeCompare(this.props.commission.shopId.toString())
+                    }
+                    return result === 0;
                 }
-                return result === 0;
-            }
-        );
+            );
+
+            source = isShopActive ? (
+                <div className="country">
+                    <img
+                        className="img-min img"
+                        style={{
+                            maxHeight: 50,
+                            maxWidth: 150
+                        }}
+                        src={this.props.commission.program.logo}
+                        alt={this.props.commission.program.name}
+                        title={this.props.commission.program.name}
+                    />
+                </div>
+            ) : (
+                <div className="country">
+                    <a
+                        title={this.props.intl.formatMessage({
+                            id: 'wallet.commission.shop.inactive',
+                        })}
+                        href={emptyHrefLink}
+                        style={{
+                            color: 'red',
+                            textDecoration: 'underline',
+                        }}
+                    >
+                        {this.props.commission.program.name}
+                    </a>
+                </div>
+            );
+        }
 
         let cmTitle: any;
         switch (commissionStatus) {
@@ -37,7 +75,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                     <i
                         className="fa fa-money"
                         aria-hidden="true"
-                        style={{ color: 'green' }}
+                        style={{color: 'green'}}
                         title={this.props.intl.formatMessage({
                             id: 'wallet.tx.status.paid',
                         })}
@@ -49,7 +87,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                     <i
                         className="fa fa-ban"
                         aria-hidden="true"
-                        style={{ color: 'red' }}
+                        style={{color: 'red'}}
                         title={this.props.intl.formatMessage({
                             id: 'wallet.tx.status.rejected',
                         })}
@@ -86,35 +124,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                             id: this.props.commission.currency,
                         })}
                     </div>
-                    {isShopActive ? (
-                        <div className="country">
-                            <img
-                                className="img-min img"
-                                style={{
-                                    maxHeight:50,
-                                    maxWidth:150
-                                }}
-                                src={this.props.commission.program.logo}
-                                alt={this.props.commission.program.name}
-                                title={this.props.commission.program.name}
-                            />
-                        </div>
-                    ) : (
-                        <div className="country">
-                            <a
-                                title={this.props.intl.formatMessage({
-                                    id: 'wallet.commission.shop.inactive',
-                                })}
-                                href={emptyHrefLink}
-                                style={{
-                                    color: 'red',
-                                    textDecoration: 'underline',
-                                }}
-                            >
-                                {this.props.commission.program.name}
-                            </a>
-                        </div>
-                    )}
+                    {source}
                 </div>
             </React.Fragment>
         );

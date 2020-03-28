@@ -37,6 +37,12 @@ export enum TxType {
     BONUS = 'BONUS',
     DONATION = 'DONATION',
     COMMISSION = 'COMMISSION',
+    REFERRAL = 'REFERRAL'
+}
+
+export enum CmType {
+    TWO_PERFORMANT = '2p',
+    REFERRAL = 'referral'
 }
 
 export enum CommissionStatus {
