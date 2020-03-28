@@ -300,7 +300,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                         >
                                                             <FormattedMessage
                                                                 id="navigation.referral"
-                                                                defaultMessage="Prieteni"
+                                                                defaultMessage="Invitati"
                                                             />
                                                         </Link>
                                                     </li>

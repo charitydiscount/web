@@ -34,9 +34,9 @@ class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
                     className="col-md-3 col-sm-6 f_p_item p-2"
                     style={{cursor: 'pointer'}}
                 >
-                    <h6 className="blue-color">
-                        0.0
-                    </h6>
+                    {/*<h6 className="blue-color">*/}
+                        {/*0.0*/}
+                    {/*</h6>*/}
                     <div className="f_p_img d-flex">
                         {!this.state.isLoadingPhoto && (
                             <img
