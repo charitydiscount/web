@@ -3,6 +3,7 @@
     {
       "target": "main",
       "public": "build",
+      "appAssociation": "AUTO",
       "ignore": [
         "firebase.json",
         "**/.*",
@@ -47,6 +48,14 @@
         {
           "source": "/",
           "destination": "/landing-ro.html"
+        },
+        {
+          "source": "/link/**",
+          "dynamicLinks": true
+        },
+        {
+          "source": "/invite/**",
+          "dynamicLinks": true
         },
         {
           "source": "**",

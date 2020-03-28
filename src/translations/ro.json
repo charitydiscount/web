@@ -105,7 +105,7 @@
   "wallet.cashout.iban.error": "Introdu un IBAN valid",
   "wallet.cashout.amount.error": "Alege o suma corecta, suma minima este 50 RON",
   "wallet.cashout.no.amount.error": "Nu ai suficienti bani",
-  "wallet.donate.amount.error": "Alege o suma",
+  "wallet.donate.amount.error": "Alege o suma, suma minima este de 1 RON",
   "wallet.donate.cause.error": "Alege o cauza",
   "wallet.block.otp.request.placeholder": "Codul primit pe mail",
   "wallet.block.otp.proceed": "Valideaza",
