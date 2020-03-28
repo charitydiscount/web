@@ -15,7 +15,7 @@ import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { smallerSpinnerCss, spinnerCss, } from '../../helper/AppHelper';
 import { addContactMessageToDb } from '../../rest/ContactService';
 import FadeLoader from 'react-spinners/FadeLoader';
-import { loadUserPhoto, UserPhotoState } from "./UserPhotoHelper";
+import { loadCurrentUserPhoto, UserPhotoState } from "./UserPhotoHelper";
 
 interface IUserInfoProps {
     intl: IntlShape;
@@ -63,7 +63,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     async componentDidMount() {
         document.addEventListener('keydown', this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
-        await loadUserPhoto(this);
+        await loadCurrentUserPhoto(this);
     }
 
     public componentWillUnmount() {
@@ -135,7 +135,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         this.setState({
             isLoading: true,
         });
-        auth.sendPasswordResetEmail(this.state.email)
+        auth.sendPasswordResetEmail(this.state.email || '')
             .then(
                 succes => this.handleEmailResetSent(true) // Password reset email sent.
             )

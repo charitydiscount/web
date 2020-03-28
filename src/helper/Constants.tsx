@@ -9,6 +9,7 @@ export enum FirebaseTable {
     META = 'meta',
     FAVORITE_SHOPS = 'favoriteShops',
     REFERRAL_REQUESTS = 'referral-requests',
+    REFERRALS = 'referrals',
     REVIEWS = 'reviews',
     SHOPS = 'programs',
     CASES = 'cases',

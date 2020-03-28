@@ -1,14 +1,17 @@
 import React from "react";
-import { store } from "../../index";
+import {store } from "../../index";
 import { NavigationsAction } from "../../redux/actions/NavigationsAction";
 import { Stages } from "../helper/Stages";
-import { loadUserPhoto, UserPhotoState } from "../login/UserPhotoHelper";
+import { loadCurrentUserPhoto, UserPhotoState } from "../login/UserPhotoHelper";
 import FadeLoader from 'react-spinners/FadeLoader';
 import { smallerSpinnerCss } from "../../helper/AppHelper";
 import { FormattedMessage } from "react-intl";
+import ReferralRow from "./ReferralRow";
+import { fetchReferrals, ReferralDto } from "../../rest/ReferralService";
 
 interface ReferralsState extends UserPhotoState {
-
+    referrals: ReferralDto[],
+    isLoadingReferrals: boolean
 }
 
 interface ReferralsProps {
@@ -21,17 +24,33 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
         super(props);
         this.state = {
             photoURL: '',
-            displayName: '',
-            email: '',
-            userId: '',
-            normalUser: false,
-            isLoadingPhoto: false
+            isLoadingPhoto: false,
+            isLoadingReferrals: true,
+            referrals: []
         };
     }
 
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.FRIENDS));
-        await loadUserPhoto(this);
+        await loadCurrentUserPhoto(this);
+        try {
+            let response = await fetchReferrals();
+            if (response) {
+                this.setState({
+                    referrals: response as ReferralDto[],
+                    isLoadingReferrals: false
+                })
+            } else {
+                this.setState({
+                    isLoadingReferrals: false
+                })
+            }
+        } catch (e) {
+            this.setState({
+                isLoadingReferrals: false
+            })
+            //referrals not loaded
+        }
     }
 
     public componentWillUnmount() {
@@ -39,49 +58,73 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
     }
 
     public render() {
+        const referralList = this.state.referrals && this.state.referrals.length > 0 ?
+            this.state.referrals.map((referral, index) => {
+                return <ReferralRow key={index} referral={referral}/>
+            }) : null;
+
         return (
             <React.Fragment>
-                <div className="container p_100">
-                    <div className="section-top-border">
-                        <div className="row">
-                            <div className="col-md-3">
-                                <FadeLoader
-                                    loading={
-                                        this.state
-                                            .isLoadingPhoto
-                                    }
-                                    color={'#1641ff'}
-                                    css={smallerSpinnerCss}
-                                />
-                                {!this.state.isLoadingPhoto && (
-                                    <img
-                                        className="author_img rounded-circle"
-                                        src={
-                                            this.state.photoURL
+                <section className={'product_description_area'}>
+                    <div className={'container'}>
+                        <div className={'tab-content'}>
+                            <div className="row">
+                                <div className="col-md-3">
+                                    <FadeLoader
+                                        loading={
+                                            this.state
+                                                .isLoadingPhoto
                                         }
-                                        alt="Missing"
-                                        width={200}
-                                        height={200}
+                                        color={'#1641ff'}
+                                        css={smallerSpinnerCss}
                                     />
-                                )}
-                            </div>
-                            <div className="col-md-9 mt-sm-20 left-align-p">
-                                <br/>
-                                <br/>
-                                <p>
-                                    <FormattedMessage
-                                        id="referral.general.message"
-                                        defaultMessage="Invitati prieteni vostri pe charityDiscout cu link-ul de mai jos si primiti 10%
+                                    {!this.state.isLoadingPhoto && (
+                                        <img
+                                            className="author_img rounded-circle"
+                                            src={
+                                                this.state.photoURL
+                                            }
+                                            alt="Missing"
+                                            width={200}
+                                            height={200}
+                                        />
+                                    )}
+                                </div>
+                                <div className="col-md-9 mt-sm-20 left-align-p">
+                                    <br/>
+                                    <br/>
+                                    <p>
+                                        <FormattedMessage
+                                            id="referral.general.message"
+                                            defaultMessage="Invitati prieteni vostri pe charityDiscout cu link-ul de mai jos si primiti 10%
                                     pe langa cashback-ul primit de ei la fiecare achizitie prin charityDiscount"
-                                    />
-                                </p>
-                                <p>
-                                    <b>www.charitydiscount.ro/referral/{this.state.userId}</b>
-                                </p>
+                                        />
+                                    </p>
+                                    <p>
+                                        <b style={{overflowWrap: 'break-word'}}>www.charitydiscount.ro/referral/{this.state.userId}</b>
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                        <FadeLoader
+                            loading={
+                                this.state
+                                    .isLoadingReferrals
+                            }
+                            color={'#1641ff'}
+                            css={smallerSpinnerCss}
+                        />
+                        {!this.state.isLoadingReferrals && referralList && referralList.length > 0 && (
+                            <React.Fragment>
+                                <div className={'tab-content'}>
+                                    <div className={"row"}>
+                                        {referralList}
+                                    </div>
+                                </div>
+                            </React.Fragment>
+                        )}
                     </div>
-                </div>
+                </section>
             </React.Fragment>
         )
     }

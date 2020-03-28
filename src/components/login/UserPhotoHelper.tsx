@@ -4,14 +4,44 @@ import { facebookPictureKey, noImagePath, profilePictureSuffix } from "../../hel
 
 export interface UserPhotoState {
     photoURL: string,
-    displayName: string,
-    email: string,
-    userId: string,
+    displayName?: string,
+    email?: string,
+    userId?: string,
     isLoadingPhoto: boolean,
-    normalUser: boolean
+    normalUser?: boolean
 }
 
-export async function loadUserPhoto(component) {
+export async function loadUserIdPhoto(component, photoUrl, userId){
+    if (!photoUrl) {
+        component.setState({
+            isLoadingPhoto: true
+        });
+        try {
+            const response = await fetchProfilePhoto(
+                userId
+            );
+            component.setState({
+                photoURL: response as string,
+                isLoadingPhoto: false
+            });
+        } catch (error) {
+            component.setState({
+                photoURL: noImagePath,
+                isLoadingPhoto: false
+            });
+        }
+    } else {
+        if (photoUrl.includes(facebookPictureKey)) {
+            component.setState({
+                photoURL: photoUrl + profilePictureSuffix,
+                normalUser: false
+            });
+        }
+    }
+}
+
+
+export async function loadCurrentUserPhoto(component) {
     if (auth.currentUser) {
         component.setState({
             photoURL: auth.currentUser.photoURL || '',
@@ -42,9 +72,9 @@ export async function loadUserPhoto(component) {
                 });
             }
         } else {
-            if (component.state.photoURL.includes(facebookPictureKey)) {
+            if (auth.currentUser.photoURL.includes(facebookPictureKey)) {
                 component.setState({
-                    photoURL: component.state.photoURL + profilePictureSuffix,
+                    photoURL: auth.currentUser.photoURL + profilePictureSuffix,
                     normalUser: false
                 });
             }
