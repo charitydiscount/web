@@ -43,8 +43,8 @@ class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
                                 className="author_img rounded-circle"
                                 src={this.state.photoURL}
                                 alt=""
-                                height={200}
-                                width={200}
+                                height={95}
+                                width={95}
                             />
                         )}
                     </div>
