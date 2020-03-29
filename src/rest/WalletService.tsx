@@ -1,4 +1,4 @@
-import { FirebaseTable } from '../helper/Constants';
+import { CommissionStatus, FirebaseTable } from '../helper/Constants';
 import { DB, auth } from '../index';
 import { firestore } from 'firebase/app';
 import { roundMoney } from "../helper/AppHelper";
@@ -78,7 +78,8 @@ export async function getSumForReferralId(referralId) {
     let commissions = await fetchCommissions();
     let sum = 0;
     commissions
-        .filter(value => value.referralId ? value.referralId.localeCompare(referralId) === 0 : false)
+        .filter(value => CommissionStatus[value.status] !== CommissionStatus.rejected && value.referralId ?
+            value.referralId.localeCompare(referralId) === 0 : false)
         .forEach(value => {
             sum += value.amount;
         });
