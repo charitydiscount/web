@@ -96,9 +96,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
 
     public loadFavoriteShops() {
         const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
-        if (favoriteShops) {
-            this.props.setShops(JSON.parse(favoriteShops));
-        }
+        this.props.setShops(favoriteShops ? JSON.parse(favoriteShops) : []);
         this.props.setCurrentCategory('Favorite Shops');
         this.props.setSelections([]);
         this.setState({
