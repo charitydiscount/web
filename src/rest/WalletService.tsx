@@ -1,6 +1,7 @@
 import { FirebaseTable } from '../helper/Constants';
 import { DB, auth } from '../index';
 import { firestore } from 'firebase/app';
+import { roundMoney } from "../helper/AppHelper";
 
 export interface WalletWrapper {
     cashback: WalletInfoDto;
@@ -41,8 +42,9 @@ export interface CommissionDto {
     createdAt: firestore.Timestamp;
     currency: string;
     shopId: number;
-    source: string
+    source: string;
     program: ProgramDto;
+    referralId: string;
     status: string;
 }
 
@@ -62,11 +64,26 @@ export const fetchCommissions = async (): Promise<CommissionDto[]> => {
         .then(snap =>
             snap.exists
                 ? Object.entries(snap.data() as Map<String, CommissionDto>)
-                      .filter(([key, commission]) => key !== 'userId')
-                      .map(([key, commission]) => commission)
+                    .filter(([key, commission]) => key !== 'userId')
+                    .map(([key, commission]) => commission)
                 : []
         );
 };
+
+export async function getSumForReferralId(referralId) {
+    if (!auth.currentUser) {
+        return 0;
+    }
+
+    let commissions = await fetchCommissions();
+    let sum = 0;
+    commissions
+        .filter(value => value.referralId ? value.referralId.localeCompare(referralId) === 0 : false)
+        .forEach(value => {
+            sum += value.amount;
+        });
+    return roundMoney(sum);
+}
 
 export function createOtpRequest() {
     if (!auth.currentUser) {
