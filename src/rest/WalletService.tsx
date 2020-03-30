@@ -70,7 +70,7 @@ export const fetchCommissions = async (): Promise<CommissionDto[]> => {
         );
 };
 
-export async function getSumForReferralId(referralId) {
+export async function getNotPaidSumForReferralId(referralId) {
     if (!auth.currentUser) {
         return 0;
     }
@@ -78,8 +78,26 @@ export async function getSumForReferralId(referralId) {
     let commissions = await fetchCommissions();
     let sum = 0;
     commissions
-        .filter(value => CommissionStatus[value.status] !== CommissionStatus.rejected && value.referralId ?
+        .filter(value => CommissionStatus[value.status] !== CommissionStatus.rejected &&
+        CommissionStatus[value.status] !== CommissionStatus.paid &&
+        value.referralId ?
             value.referralId.localeCompare(referralId) === 0 : false)
+        .forEach(value => {
+            sum += value.amount;
+        });
+    return roundMoney(sum);
+}
+
+export async function getPaidSumForReferralId(referralId) {
+    if (!auth.currentUser) {
+        return 0;
+    }
+
+    let commissions = await fetchCommissions();
+    let sum = 0;
+    commissions
+        .filter(value => CommissionStatus[value.status] === CommissionStatus.paid &&
+        value.referralId ? value.referralId.localeCompare(referralId) === 0 : false)
         .forEach(value => {
             sum += value.amount;
         });

@@ -2,10 +2,11 @@ import { injectIntl, IntlShape } from "react-intl";
 import * as React from "react";
 import { ReferralDto } from "../../rest/ReferralService";
 import { loadUserIdPhoto, UserPhotoState } from "../login/UserPhotoHelper";
-import { getSumForReferralId } from "../../rest/WalletService";
+import { getNotPaidSumForReferralId, getPaidSumForReferralId } from "../../rest/WalletService";
 
 interface ReferralRowState extends UserPhotoState {
-    referralSum: number
+    referralPaidSum: number
+    referralNotPaidSum: number
 }
 
 interface ReferralRowProps {
@@ -20,7 +21,8 @@ class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
         this.state = {
             photoURL: '',
             userId: '',
-            referralSum: 0,
+            referralPaidSum: 0,
+            referralNotPaidSum: 0,
             isLoadingPhoto: false
         };
     }
@@ -28,10 +30,12 @@ class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
     async componentDidMount() {
         await loadUserIdPhoto(this, this.props.referral.photoUrl, this.props.referral.userId);
         try {
-            let response = await getSumForReferralId(this.props.referral.userId);
-            if (response) {
+            let paidResponse = await getPaidSumForReferralId(this.props.referral.userId);
+            let notPaidResponse = await getNotPaidSumForReferralId(this.props.referral.userId);
+            if (paidResponse && notPaidResponse) {
                 this.setState({
-                    referralSum: response
+                    referralPaidSum: paidResponse,
+                    referralNotPaidSum: notPaidResponse
                 })
             }
         } catch (e) {
@@ -47,7 +51,10 @@ class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
                     style={{cursor: 'pointer'}}
                 >
                     <h6 className="blue-color">
-                        {this.state.referralSum}
+                        {this.state.referralPaidSum}
+                    </h6>
+                    <h6 className="pending-color">
+                        {this.state.referralNotPaidSum > 0 ? this.state.referralNotPaidSum : '-'}
                     </h6>
                     <div className="f_p_img d-flex">
                         {!this.state.isLoadingPhoto && (

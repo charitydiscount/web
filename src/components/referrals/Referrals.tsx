@@ -93,6 +93,12 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                                 <div className="col-md-9 mt-sm-20 left-align-p">
                                     <br/>
                                     <br/>
+                                    <h5>
+                                        <FormattedMessage
+                                            id="referral.title.message"
+                                            defaultMessage="Invită-ți prietenii și economisiți împreună"
+                                        />
+                                    </h5>
                                     <p>
                                         <FormattedMessage
                                             id="referral.general.message"

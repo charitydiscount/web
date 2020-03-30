@@ -1,7 +1,7 @@
 {
   "navigation.wallet": "Portofel",
   "navigation.causes": "Caritate",
-  "navigation.referral": "Invitati",
+  "navigation.referral": "Invita un prieten",
   "navigation.shops": "Magazine",
   "navigation.welcome": "Bine ai venit: ",
   "navigation.logout": "Delogare ",
@@ -158,6 +158,7 @@
   "EUR": "EUR",
   "Charity Points": "Charity Points",
   "faq.title": "Intrebari si raspunsuri frecvente",
-  "referral.general.message": "Invitati prieteni vostri pe charityDiscout cu link-ul de mai jos si primiti 10% pe langa cashback-ul primit de ei la fiecare achizitie prin charityDiscount",
+  "referral.general.message": "Primești bonus echivalentul a 10% din fiecare cashback obținut de aceștia. Tot ce trebuie să facă este să se înregistreze folosind link-ul următor.",
+  "referral.title.message": "Invită-ți prietenii și economisiți împreună",
   "wallet.commission.source.friend": "Invitat"
 }

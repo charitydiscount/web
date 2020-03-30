@@ -1,7 +1,7 @@
 {
   "navigation.wallet": "Wallet",
   "navigation.causes": "Causes",
-  "navigation.referral": "Referral",
+  "navigation.referral": "Refer a friend",
   "navigation.shops": "Shops",
   "navigation.welcome": "Welcome: ",
   "navigation.logout": "Logout ",
@@ -158,6 +158,7 @@
   "EUR": "EUR",
   "Charity Points": "Charity points",
   "faq.title": "Frequently Asked Questions",
-  "referral.general.message": "Invite you're friends on charityDiscount and earn a total of 10% beside their cashback for each transaction they made on charityDiscount",
+  "referral.general.message": "With each cashback they receive, you gain the equivalent of 10% of its value. All they have to do is to use your custom link to register",
+  "referral.title.message": "Invite your friends",
   "wallet.commission.source.friend": "Referral"
 }
