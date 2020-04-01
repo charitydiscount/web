@@ -1,0 +1,12 @@
+[
+    {
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.clover.charity_discount",
+            "sha256_cert_fingerprints": [
+                "FD:88:52:D2:23:A9:CD:0E:63:71:7A:98:3C:01:D7:19:0F:D1:98:BE:26:D0:42:E3:13:2F:21:37:68:66:DD:B8"
+            ]
+        }
+    }
+]
