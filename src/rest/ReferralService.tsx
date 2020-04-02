@@ -12,7 +12,7 @@ export interface ReferralDto {
     userId: string;
 }
 
-export async function updateReferralForKey(referralCode) {
+export async function updateReferralForKey(referralCode: string) {
     if (!auth.currentUser) {
         return;
     }
@@ -65,12 +65,16 @@ export const buildDynamicLink = async (
         return _cachedDynamicLink;
     }
 
+    const targetBase =
+        remoteConfig.getString('dynamic_link_target') ||
+        'https://charitydiscount.ro';
+
     const response = await axios.post(
         `https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${process.env.REACT_APP_FB_API_KEY}`,
         {
             dynamicLinkInfo: {
                 domainUriPrefix: remoteConfig.getString('dynamic_link_prefix'),
-                link: `https://charitydiscount.ro/referral/${auth.currentUser?.uid}`,
+                link: `${targetBase}/referral/${auth.currentUser?.uid}`,
                 androidInfo: {
                     androidPackageName: 'com.clover.charity_discount',
                     androidMinPackageVersionCode: '500',
