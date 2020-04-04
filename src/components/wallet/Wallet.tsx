@@ -383,8 +383,8 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                                             </div>
                                                             <div className="country">
                                                                 <FormattedMessage
-                                                                    id="wallet.table.shop"
-                                                                    defaultMessage="Shop"
+                                                                    id="wallet.table.source"
+                                                                    defaultMessage="Source"
                                                                 />
                                                             </div>
                                                         </div>

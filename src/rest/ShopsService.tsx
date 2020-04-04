@@ -128,7 +128,9 @@ export async function updateFavoriteShops(shop: ShopDto, remove: boolean) {
         } else {
             return docRef.set({
                 userId: auth.currentUser.uid,
-                [`programs.${shop.uniqueCode}`]: shop,
+                programs: {
+                    [`${shop.uniqueCode}`]: shop
+                }
             });
         }
     }

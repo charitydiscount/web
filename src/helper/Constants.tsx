@@ -8,6 +8,8 @@ export enum FirebaseTable {
     CONTACT = 'contact',
     META = 'meta',
     FAVORITE_SHOPS = 'favoriteShops',
+    REFERRAL_REQUESTS = 'referral-requests',
+    REFERRALS = 'referrals',
     REVIEWS = 'reviews',
     SHOPS = 'programs',
     CASES = 'cases',
@@ -35,6 +37,12 @@ export enum TxType {
     BONUS = 'BONUS',
     DONATION = 'DONATION',
     COMMISSION = 'COMMISSION',
+    REFERRAL = 'REFERRAL'
+}
+
+export enum CmType {
+    TWO_PERFORMANT = '2p',
+    REFERRAL = 'referral'
 }
 
 export enum CommissionStatus {
@@ -48,6 +56,7 @@ export enum StorageKey {
     //LOCAL STORAGE
     CATEGORIES = '/categoriesCD',
     SHOPS = '/shopsCD',
+    REFERRAL_KEY = '/referralCD',
     FAVORITE_SHOPS = '/favoriteShopsCD',
     CAUSES = '/causesCD',
     USER = '/userCD',

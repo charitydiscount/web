@@ -74,6 +74,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                 );
                 break;
             case TxType.COMMISSION.toString():
+            case TxType.REFERRAL.toString():
                 if (auth.currentUser) {
                     target = auth.currentUser.displayName;
                 }

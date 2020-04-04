@@ -3,6 +3,7 @@ export enum Stages {
     USER = "stage-user",
     CONTACT = "stage-contact",
     CAUSES = "stage-causes",
+    FRIENDS = "stage-friends",
     CATEGORIES = "stage-categories",
     PRODUCTS = "stage-products",
     TOS = "stage-tos",
