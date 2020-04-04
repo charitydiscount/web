@@ -1,6 +1,7 @@
 {
   "navigation.wallet": "Portofel",
   "navigation.causes": "Caritate",
+  "navigation.referral": "Invita un prieten",
   "navigation.shops": "Magazine",
   "navigation.welcome": "Bine ai venit: ",
   "navigation.logout": "Delogare ",
@@ -12,7 +13,7 @@
   "Beauty": "Frumusete",
   "BooksMovies&Music": "Divertisment",
   "Dating": "Intalniri",
-  "ElectronicsIT&C": "IT",
+  "ElectronicsIT&C": "Electrocasnice & IT",
   "Fashion": "Moda",
   "Financialservices": "Servici financiare",
   "Games": "Jocuri",
@@ -54,7 +55,7 @@
   "wallet.table.date": "Data",
   "wallet.table.status": "Status",
   "wallet.table.amount": "Suma",
-  "wallet.table.shop": "Magazin",
+  "wallet.table.source": "Sursa",
   "wallet.table.type": "Tip",
   "wallet.table.target": "Destinatar",
   "wallet.tx.type.donation": "Donatie",
@@ -94,7 +95,7 @@
   "userInfo.select.language.placeholder": "Alege limba...",
   "userInfo.profile.picture.uploaded": "Poza de profil s-a incarcat cu success",
   "userInfo.profile.picture.error": "Incarcarea nu a reusit, dimensiunea pozei trebuie sa fie mai mica de 5MB",
-  "userInfo.email.reset.sent": "A fost trimis un mail de recuperare a parolei",
+  "userInfo.email.reset.sent": "A fost trimis un mail de schimbare a parolei",
   "userInfo.email.reset.error": "Mail-ul de recuperare a parolei nu a putut fi trimis",
   "review.error.message": "Trebuie introdusa o descriere si ales un rating",
   "review.failed.to.update.error.message": "Mesajul nu a putut fi trimis, te rog incearca din nou",
@@ -156,5 +157,10 @@
   "RON": "RON",
   "EUR": "EUR",
   "Charity Points": "Charity Points",
-  "faq.title": "Intrebari si raspunsuri frecvente"
+  "faq.title": "Intrebari si raspunsuri frecvente",
+  "referral.general.message": "Primești bonus echivalentul a 10% din fiecare cashback obținut de aceștia. Tot ce trebuie să facă este să se înregistreze folosind link-ul următor.",
+  "referral.title.message": "Invită-ți prietenii și economisiți împreună",
+  "wallet.commission.source.friend": "Invitat",
+  "referral.meta.title": "Cumpără inteligent prin CharityDiscount",
+  "referral.meta.description": "Alege și cumpără inteligent din sutele de magazine și milioanele de produse disponibile prin CharityDiscount"
 }

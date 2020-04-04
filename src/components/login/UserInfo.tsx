@@ -4,10 +4,7 @@ import { Stages } from '../helper/Stages';
 import * as React from 'react';
 import {
     emptyHrefLink,
-    facebookPictureKey,
-    noImagePath,
     profilePictureDefaultName,
-    profilePictureSuffix,
     StorageRef,
 } from '../../helper/Constants';
 import { doLogoutAction } from './UserActions';
@@ -15,27 +12,20 @@ import { connect } from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
 import Modal from 'react-awesome-modal';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { smallerSpinnerCss, spinnerCss } from '../../helper/AppHelper';
-import { fetchProfilePhoto } from '../../rest/StorageService';
+import { smallerSpinnerCss, spinnerCss, } from '../../helper/AppHelper';
 import { addContactMessageToDb } from '../../rest/ContactService';
 import FadeLoader from 'react-spinners/FadeLoader';
-import { Link } from 'react-router-dom';
+import { loadCurrentUserPhoto, UserPhotoState } from "./UserPhotoHelper";
 
 interface IUserInfoProps {
     intl: IntlShape;
     logout: () => void;
 }
 
-interface IUserInfoState {
-    photoURL: string;
-    displayName: string;
-    email: string;
-    normalUser: boolean;
-    userId: string;
+interface IUserInfoState extends UserPhotoState {
     modalVisible: boolean;
     modalMessage: string;
     isLoading: boolean;
-    isLoadingPhoto: boolean;
 }
 
 class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
@@ -73,44 +63,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     async componentDidMount() {
         document.addEventListener('keydown', this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
-        if (auth.currentUser) {
-            this.setState({
-                photoURL: auth.currentUser.photoURL || '',
-                displayName: auth.currentUser.displayName || '',
-                email: auth.currentUser.email || '',
-                userId: auth.currentUser.uid || '',
-            });
-
-            if (!auth.currentUser.photoURL) {
-                this.setState({
-                    isLoadingPhoto: true,
-                    normalUser: true,
-                });
-                try {
-                    const response = await fetchProfilePhoto(
-                        auth.currentUser.uid
-                    );
-                    this.setState({
-                        photoURL: response as string,
-                        isLoadingPhoto: false,
-                        normalUser: true,
-                    });
-                } catch (error) {
-                    this.setState({
-                        photoURL: noImagePath,
-                        isLoadingPhoto: false,
-                        normalUser: true,
-                    });
-                }
-            } else {
-                if (this.state.photoURL.includes(facebookPictureKey)) {
-                    this.setState({
-                        photoURL: this.state.photoURL + profilePictureSuffix,
-                        normalUser: false,
-                    });
-                }
-            }
-        }
+        await loadCurrentUserPhoto(this);
     }
 
     public componentWillUnmount() {
@@ -132,8 +85,10 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                     auth.currentUser.displayName,
                     auth.currentUser.email,
                     auth.currentUser.uid,
-                    'Request to delete account with id:' + auth.currentUser.uid,
-                    'Delete account with id:' + auth.currentUser.uid
+                    'Request to delete account with id:' +
+                    auth.currentUser.uid,
+                    'Delete account with id:' +
+                    auth.currentUser.uid
                 )
                     .then(() => {
                         this.setState({
@@ -168,11 +123,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             isLoading: false,
             modalMessage: success
                 ? this.props.intl.formatMessage({
-                      id: 'userInfo.email.reset.sent',
-                  })
+                    id: 'userInfo.email.reset.sent',
+                })
                 : this.props.intl.formatMessage({
-                      id: 'userInfo.email.reset.error',
-                  }),
+                    id: 'userInfo.email.reset.error',
+                }),
         });
     }
 
@@ -180,7 +135,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         this.setState({
             isLoading: true,
         });
-        auth.sendPasswordResetEmail(this.state.email)
+        auth.sendPasswordResetEmail(this.state.email || '')
             .then(
                 succes => this.handleEmailResetSent(true) // Password reset email sent.
             )
@@ -228,13 +183,13 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                     effect="fadeInUp"
                     onClickAway={() => this.closeModal()}
                 >
-                    <h3 style={{ padding: 15 }}>{this.state.modalMessage}</h3>
+                    <h3 style={{padding: 15}}>{this.state.modalMessage}</h3>
                 </Modal>
                 {!this.state.isLoading && (
                     <div className="product_image_area">
                         <div className="container p_90">
                             <div className="row s_product_inner">
-                                <div className="col-lg-4" />
+                                <div className="col-lg-4"/>
                                 <div className="col-lg-4">
                                     <div className="s_product_img">
                                         <div className="blog_right_sidebar">
@@ -262,7 +217,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     {this.state.displayName}
                                                 </h4>
                                                 <p>{this.state.email}</p>
-                                                <div className="br" />
+                                                <div className="br"/>
                                             </aside>
                                             <aside className="single_sidebar_widget popular_post_widget">
                                                 {this.state.normalUser && (
@@ -296,9 +251,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                         }
                                                                         storageRef={storage.ref(
                                                                             StorageRef.PROFILE_PHOTOS +
-                                                                                this
-                                                                                    .state
-                                                                                    .userId
+                                                                            this
+                                                                                .state
+                                                                                .userId
                                                                         )}
                                                                         onUploadError={
                                                                             this
@@ -336,52 +291,52 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                 />
                                                             </a>
                                                         </div>
-                                                        <div className="br" />
+                                                        <div className="br"/>
                                                     </div>
                                                 )}
                                                 <div className="col-md-12 text-center p_05">
-                                                    <Link
+                                                    <a
+                                                        href={'/contact'}
                                                         className="btn submit_btn userInfo_btn genric-btn circle"
-                                                        to="/contact"
                                                     >
                                                         <FormattedMessage
                                                             id="userinfo.contact.us.button"
                                                             defaultMessage="Contact us"
                                                         />
-                                                    </Link>
+                                                    </a>
                                                 </div>
                                                 <div className="col-md-12 text-center p_05">
-                                                    <Link
+                                                    <a
+                                                        href={'/tos'}
                                                         className="btn submit_btn userInfo_btn genric-btn circle"
-                                                        to="/tos"
                                                     >
                                                         <FormattedMessage
                                                             id="userinfo.terms.button"
-                                                            defaultMessage="Terms and Conditions"
+                                                            defaultMessage="Terms of agreement"
                                                         />
-                                                    </Link>
+                                                    </a>
                                                 </div>
                                                 <div className="col-md-12 text-center p_05">
-                                                    <Link
+                                                    <a
+                                                        href={'/privacy'}
                                                         className="btn submit_btn userInfo_btn genric-btn circle"
-                                                        to="/privacy"
                                                     >
                                                         <FormattedMessage
                                                             id="userinfo.privacy.button"
                                                             defaultMessage="Privacy"
                                                         />
-                                                    </Link>
+                                                    </a>
                                                 </div>
                                                 <div className="col-md-12 text-center p_05">
-                                                    <Link
+                                                    <a
+                                                        href={'/faq'}
                                                         className="btn submit_btn userInfo_btn genric-btn circle"
-                                                        to="/faq"
                                                     >
                                                         <FormattedMessage
                                                             id="userinfo.faq.button"
                                                             defaultMessage="Faq"
                                                         />
-                                                    </Link>
+                                                    </a>
                                                 </div>
                                                 <div className="col-md-12 text-center p_05">
                                                     <a

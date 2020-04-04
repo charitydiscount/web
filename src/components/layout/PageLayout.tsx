@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router';
 import { Routes } from '../helper/Routes';
 import Contact from '../contact/Contact';
@@ -15,14 +15,27 @@ import ExternalAccess from '../external/ExternalAccess';
 import Faq from '../faq/Faq';
 import { AppState } from '../../redux/reducer/RootReducer';
 import { connect } from 'react-redux';
+import Referrals from '../referrals/Referrals';
+import ReferralLogin from '../referrals/ReferralLogin';
+import { FadeLoader } from 'react-spinners';
+import { spinnerCss } from '../../helper/AppHelper';
+import { loadShops } from '../../redux/actions/ShopsAction';
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
+    shopsLoaded: boolean;
+    loadShops: Function;
 }
 
 const PageLayout = (props: PageLayoutProps) => {
+    useEffect(() => {
+        if (props.isLoggedIn) {
+            props.loadShops();
+        }
+    });
+
     if (props.isLoggedIn) {
-        return (
+        return props.shopsLoaded ? (
             <main>
                 <Switch>
                     <Route
@@ -72,6 +85,11 @@ const PageLayout = (props: PageLayoutProps) => {
                     />
                     <Route
                         exact={true}
+                        path={Routes.REFERRALS}
+                        component={Referrals}
+                    />
+                    <Route
+                        exact={true}
                         path={Routes.REVIEW + '/:id'}
                         component={ShopReview}
                     />
@@ -95,11 +113,18 @@ const PageLayout = (props: PageLayoutProps) => {
                     <Route render={() => <Redirect to={Routes.LOGIN} />} />
                 </Switch>
             </main>
+        ) : (
+            <FadeLoader loading={true} color={'#1641ff'} css={spinnerCss} />
         );
     } else {
         return (
             <main>
                 <Switch>
+                    <Route
+                        exact={true}
+                        path={Routes.REFFERRAL_LOGIN + '/:key'}
+                        component={ReferralLogin}
+                    />
                     <Route
                         exact={true}
                         path={Routes.LOGIN}
@@ -127,7 +152,8 @@ const PageLayout = (props: PageLayoutProps) => {
 const mapStateToProps = (state: AppState) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
+        shopsLoaded: state.shops.shopsLoaded,
     };
 };
 
-export default connect(mapStateToProps)(PageLayout);
+export default connect(mapStateToProps, { loadShops })(PageLayout);

@@ -6025,6 +6025,10 @@ h6 {
     color: #1641ff !important;
 }
 
+.pending-color {
+    color: #ffe113 !important;
+}
+
 .react_select__control {
     border: none !important;
 }

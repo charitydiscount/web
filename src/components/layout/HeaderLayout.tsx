@@ -96,9 +96,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
 
     public loadFavoriteShops() {
         const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
-        if (favoriteShops) {
-            this.props.setShops(JSON.parse(favoriteShops));
-        }
+        this.props.setShops(favoriteShops ? JSON.parse(favoriteShops) : []);
         this.props.setCurrentCategory('Favorite Shops');
         this.props.setSelections([]);
         this.setState({
@@ -112,6 +110,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
         const isTos = this.props.view === Stages.TOS;
         const isPrivacy = this.props.view === Stages.PRIVACY;
         const isCauses = this.props.view === Stages.CAUSES;
+        const isFriends = this.props.view === Stages.FRIENDS;
         const isWallet = this.props.view === Stages.WALLET;
         const isLoggedIn = this.props.isLoggedIn;
 
@@ -282,6 +281,24 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                             <FormattedMessage
                                                                 id="navigation.wallet"
                                                                 defaultMessage="Portofel"
+                                                            />
+                                                        </Link>
+                                                    </li>
+                                                    <li
+                                                        className={
+                                                            'nav-item ' +
+                                                            (isFriends
+                                                                ? 'active'
+                                                                : '')
+                                                        }
+                                                    >
+                                                        <Link
+                                                            to={Routes.REFERRALS}
+                                                            className="nav-link"
+                                                        >
+                                                            <FormattedMessage
+                                                                id="navigation.referral"
+                                                                defaultMessage="Invitati"
                                                             />
                                                         </Link>
                                                     </li>
