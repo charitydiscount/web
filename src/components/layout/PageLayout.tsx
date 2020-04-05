@@ -29,7 +29,7 @@ interface PageLayoutProps {
 
 const PageLayout = (props: PageLayoutProps) => {
     useEffect(() => {
-        if (props.isLoggedIn) {
+        if (props.isLoggedIn && !props.shopsLoaded) {
             props.loadShops();
         }
     });
