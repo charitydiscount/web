@@ -89,7 +89,7 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                     <div className={'container'}>
                         <div className={'tab-content'}>
                             <div className="row">
-                                <div className="col-md-3">
+                                <div className="col-md-3 d-flex">
                                     <FadeLoader
                                         loading={this.state.isLoadingPhoto}
                                         color={'#1641ff'}
@@ -97,11 +97,11 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                                     />
                                     {!this.state.isLoadingPhoto && (
                                         <img
-                                            className="author_img rounded-circle"
+                                            className="author_img rounded-circle m-auto"
                                             src={this.state.photoURL}
                                             alt="Missing"
-                                            width={200}
-                                            height={200}
+                                            width={150}
+                                            height={150}
                                         />
                                     )}
                                 </div>
