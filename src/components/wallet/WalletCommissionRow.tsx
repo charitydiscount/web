@@ -17,7 +17,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
     public render() {
         let commissionStatus = CommissionStatus[
             this.props.commission.status
-            ].toString();
+            ];
 
         let source;
         if (this.props.commission.source && this.props.commission.source.localeCompare(CmType.REFERRAL) === 0) {
@@ -37,20 +37,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                 }
             );
 
-            source = isShopActive ? (
-                <div className="country">
-                    <img
-                        className="img-min img"
-                        style={{
-                            maxHeight: 50,
-                            maxWidth: 150
-                        }}
-                        src={this.props.commission.program.logo}
-                        alt={this.props.commission.program.name}
-                        title={this.props.commission.program.name}
-                    />
-                </div>
-            ) : (
+            source = commissionStatus !== CommissionStatus.paid && !isShopActive ? (
                 <div className="country">
                     <a
                         title={this.props.intl.formatMessage({
@@ -65,12 +52,25 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                         {this.props.commission.program.name}
                     </a>
                 </div>
+            ) : (
+                <div className="country">
+                    <img
+                        className="img-min img"
+                        style={{
+                            maxHeight: 30,
+                            maxWidth: 110
+                        }}
+                        src={this.props.commission.program.logo}
+                        alt={this.props.commission.program.name}
+                        title={this.props.commission.program.name}
+                    />
+                </div>
             );
         }
 
         let cmTitle: any;
         switch (commissionStatus) {
-            case CommissionStatus.paid.toString():
+            case CommissionStatus.paid:
                 cmTitle = (
                     <i
                         className="fa fa-money"
@@ -82,7 +82,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                     />
                 );
                 break;
-            case CommissionStatus.rejected.toString():
+            case CommissionStatus.rejected:
                 cmTitle = (
                     <i
                         className="fa fa-ban"
