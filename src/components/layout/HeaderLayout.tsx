@@ -58,8 +58,8 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
         this.loadFavoriteShops = this.loadFavoriteShops.bind(this);
     }
 
-    public componentDidMount() {
-        const user = auth.currentUser;
+    async componentDidMount() {
+        let user = await auth.currentUser;
         if (user) {
             this.setState({
                 username: user.displayName || user.email || '',

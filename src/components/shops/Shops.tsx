@@ -87,7 +87,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         this.props.setShops(this.props.allShops);
 
         try {
-            const favoriteShops = await fetchFavoriteShops();
+            const favoriteShops = await fetchFavoriteShops(this.props.allShops);
             let favShop = this.props.match.params.favShops;
             if (favShop && favShop === 'favShops') {
                 if (favoriteShops) {
@@ -98,7 +98,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             }
         } catch (error) {
             // unexpected error during loading of favorite shops
-            // the app can work without them just fine
         }
 
         try {
