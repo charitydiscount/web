@@ -1,11 +1,7 @@
-import { DB, auth } from '../index';
+import { auth, DB } from '../index';
 import { getLocalStorage, setLocalStorage } from '../helper/StorageHelper';
 import { FirebaseTable, StorageKey } from '../helper/Constants';
-import {
-    computeUrl,
-    roundCommission,
-    interpolateAffiliateUrl,
-} from '../helper/AppHelper';
+import { computeUrl, interpolateAffiliateUrl, roundCommission, } from '../helper/AppHelper';
 import { getPercentage } from './ConfigService';
 import { firestore } from 'firebase/app';
 
@@ -65,7 +61,7 @@ export interface SellingCountriesDto {
     id: number;
 }
 
-export async function fetchFavoriteShops() {
+export async function fetchFavoriteShops(allShops: ShopDto[]) {
     if (!auth.currentUser) {
         return [];
     }
@@ -81,15 +77,10 @@ export async function fetchFavoriteShops() {
         (favoriteShopsDoc.data() as FavoriteShopsDto).programs
     );
 
-    const shops = getLocalStorage(StorageKey.SHOPS);
-    if (shops) {
-        const favShopsId = favoriteShops.map(value => value.id);
-        let shopsFromStorage = JSON.parse(shops) as ShopDto[];
-        shopsFromStorage = shopsFromStorage.filter(value =>
-            favShopsId.includes(value.id)
-        );
-        favoriteShops = shopsFromStorage;
-    }
+    let favShopsId = favoriteShops.map(value => value.id);
+    favoriteShops = allShops.filter(value =>
+        favShopsId.includes(value.id)
+    );
     setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favoriteShops));
 
     return favoriteShops;

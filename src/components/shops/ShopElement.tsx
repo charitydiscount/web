@@ -13,9 +13,12 @@ import { FormattedMessage } from 'react-intl';
 import { getPromotions, PromotionDTO } from '../../rest/DealsService';
 import Promotion from '../promotions/Promotion';
 import { Button } from '@material-ui/core';
+import { AppState } from "../../redux/reducer/RootReducer";
+import { connect } from "react-redux";
 
 interface IShopElementProps {
     shop: ShopDto;
+    allShops: ShopDto[];
     comingFromShopReview?: boolean;
     onCloseModal?: () => void;
     intl: IntlShape;
@@ -61,13 +64,13 @@ class ShopElement extends React.Component<IShopElementProps,
     /**
      * Used to add/remove favorite shops from DB
      */
-    updateFavoriteShops(remove: boolean) {
+    async updateFavoriteShops(remove: boolean) {
         this.setState({
             favShop: !remove,
         });
         try {
-            updateFavoriteShops(this.props.shop, remove).then(() => {
-                fetchFavoriteShops();
+            await updateFavoriteShops(this.props.shop, remove).then(async () => {
+               await fetchFavoriteShops(this.props.allShops);
             });
         } catch (error) {
             alert(
@@ -321,4 +324,10 @@ class ShopElement extends React.Component<IShopElementProps,
     }
 }
 
-export default injectIntl(ShopElement);
+const mapStateToProps = (state: AppState) => {
+    return {
+        allShops: state.shops.allShops
+    };
+};
+
+export default connect(mapStateToProps)(injectIntl(ShopElement));
