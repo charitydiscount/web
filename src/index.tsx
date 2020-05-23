@@ -45,10 +45,10 @@ remoteConfig.fetchAndActivate();
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//verify if client logged in -------------------------------------------------------------------------------------------
+//verify if user is logged in and authenticate him ---------------------------------------------------------------------
 auth.onAuthStateChanged(user => {
     if (user) {
-        store.dispatch(AuthActions.setLoggedUserAction(user.uid));
+        store.dispatch(AuthActions.setLoggedUserAction(user));
     }
 });
 

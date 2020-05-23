@@ -3,41 +3,12 @@ import {connect} from 'react-redux';
 import firebase from 'firebase/app';
 import {auth} from '../../index';
 import FirebaseUIAuth from 'react-firebaseui-localized';
-import {parseAndSaveUser} from "../../helper/AuthHelper";
-
-export interface LoginDto {
-    uid: string;
-    photoURL: string | null;
-    displayName: string;
-    email: string;
-    locale: string;
-    creationTime: string;
-}
-
-export interface LoginRequestDto {
-    uid: string;
-    photoURL: string;
-    displayName: string;
-    email: string;
-}
-
-export const LoginMapper = {
-    uid: 'uid',
-    photoURL: 'photoURL',
-    displayName: 'displayName',
-    email: 'email',
-};
 
 type ILoginProps = {
     currentLocale: string;
 };
 
 class LoginComponent extends React.Component<ILoginProps> {
-
-    static onSignInSuccess(response) {
-        parseAndSaveUser(response.user);
-        return true; // redirects to signInSuccessUrl
-    }
 
     uiConfig = {
         signInFlow: 'popup',
@@ -48,10 +19,7 @@ class LoginComponent extends React.Component<ILoginProps> {
             firebase.auth.EmailAuthProvider.PROVIDER_ID,
             firebase.auth.GoogleAuthProvider.PROVIDER_ID,
             firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        ],
-        callbacks: {
-            signInSuccessWithAuthResult: LoginComponent.onSignInSuccess,
-        },
+        ]
     };
 
     public render() {

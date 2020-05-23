@@ -3,14 +3,24 @@ import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { appVersion } from '../../index';
-import { getLocalStorage, removeLocalStorage } from "../../helper/StorageHelper";
+import { getLocalStorage } from "../../helper/StorageHelper";
+import { doLogoutAction } from "../login/UserActions";
+import { connect } from "react-redux";
 
+type IFooterLayoutProps = {
+    logout: () => void;
+}
 
-class FooterLayout extends React.Component {
+class FooterLayout extends React.Component<IFooterLayoutProps> {
 
-    public redirectToAbout(event) {
+    constructor(props: IFooterLayoutProps) {
+        super(props);
+        this.redirectToAbout = this.redirectToAbout.bind(this);
+    }
+
+    redirectToAbout(event: any) {
         event.preventDefault();
-        removeLocalStorage(StorageKey.USER);
+        this.props.logout();
         window.location.href = window.location.origin + "/landing-" + (getLocalStorage(StorageKey.LANG) ? getLocalStorage(StorageKey.LANG) : 'ro') + ".html";
     }
 
@@ -130,5 +140,11 @@ class FooterLayout extends React.Component {
     }
 }
 
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        logout: () => dispatch(doLogoutAction())
+    }
+};
 
-export default FooterLayout;
+export default connect(null, mapDispatchToProps)(FooterLayout);
+

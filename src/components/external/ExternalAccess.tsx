@@ -4,7 +4,6 @@ import {Redirect} from 'react-router';
 import LoginComponent from "../login/LoginComponent";
 import {getUrlParameter, spinnerCss} from "../../helper/AppHelper";
 import {AuthActions} from "../login/UserActions";
-import {parseAndSaveUser} from "../../helper/AuthHelper";
 import FadeLoader from 'react-spinners/FadeLoader';
 
 interface ExternalAccessState {
@@ -51,8 +50,7 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
             return auth.signInWithCustomToken(token)
                 .then((response) => {
                         if (response.user) {
-                            let parsedUser = parseAndSaveUser(response.user);
-                            store.dispatch(AuthActions.setLoggedUserAction(parsedUser));
+                            store.dispatch(AuthActions.setLoggedUserAction(response.user));
                             this.setState({
                                 isLoading: false
                             });

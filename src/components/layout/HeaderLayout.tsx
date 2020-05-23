@@ -1,24 +1,24 @@
 import * as React from 'react';
-import {Stages} from '../helper/Stages';
-import {connect} from 'react-redux';
-import {doLogoutAction} from '../login/UserActions';
-import {setShops} from '../../redux/actions/ShopsAction';
-import {getLocalStorage} from '../../helper/StorageHelper';
-import {emptyHrefLink, logoPath, StorageKey} from '../../helper/Constants';
-import {ShopDto} from '../../rest/ShopsService';
+import { Stages } from '../helper/Stages';
+import { connect } from 'react-redux';
+import { doLogoutAction } from '../login/UserActions';
+import { setShops } from '../../redux/actions/ShopsAction';
+import { getLocalStorage } from '../../helper/StorageHelper';
+import { emptyHrefLink, logoPath, StorageKey } from '../../helper/Constants';
+import { ShopDto } from '../../rest/ShopsService';
 import {
     setCurrentCategory,
     setSelections,
 } from '../../redux/actions/CategoriesAction';
-import {Routes} from '../helper/Routes';
-import {FormattedMessage} from 'react-intl';
+import { Routes } from '../helper/Routes';
+import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
-import {onLanguageChange} from '../../helper/AppHelper';
-import {Link} from 'react-router-dom';
-import {auth} from '../..';
+import { onLanguageChange } from '../../helper/AppHelper';
+import { Link } from 'react-router-dom';
 
 type IHeaderLayoutProps = {
     isLoggedIn?: boolean;
+    userInfo: firebase.User;
     logout: () => void;
     view?: string;
 
@@ -47,6 +47,7 @@ const optionFromValue = (value: string) => options.find(o => o.value === value);
 
 class HeaderLayout extends React.Component<IHeaderLayoutProps,
     IHeaderLayoutState> {
+
     constructor(props: IHeaderLayoutProps) {
         super(props);
         this.state = {
@@ -59,10 +60,9 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
     }
 
     async componentDidMount() {
-        let user = await auth.currentUser;
-        if (user) {
+        if (this.props.userInfo) {
             this.setState({
-                username: user.displayName || user.email || '',
+                username: this.props.userInfo.displayName || this.props.userInfo.email || '',
             });
         }
         window.addEventListener('scroll', this.handleScroll, true);
@@ -373,6 +373,7 @@ const mapStateToProps = (state: any) => {
         view: state.navigation.stageName,
         favShopsIconFill: state.navigation.favShopsIconFill,
         isLoggedIn: state.user.isLoggedIn,
+        userInfo: state.user.userInfo,
         currentLocale: state.locale.langResources.language,
     };
 };
