@@ -162,5 +162,6 @@
   "referral.title.message": "Invite your friends",
   "wallet.commission.source.friend": "Referral",
   "referral.meta.title": "Shop Smart with CharityDiscount",
-  "referral.meta.description": "Explore the hundreds of shops and millions of products available on CharityDiscount"
+  "referral.meta.description": "Explore the hundreds of shops and millions of products available on CharityDiscount",
+  "products.image.missing": "Missing image"
 }

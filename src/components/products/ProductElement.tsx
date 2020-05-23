@@ -1,11 +1,14 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
 import { ProductDTO } from '../../rest/ProductsService';
 import { Redirect } from 'react-router';
 import { Routes } from '../helper/Routes';
 import { emptyHrefLink } from '../../helper/Constants';
 
+
 interface ProductElementProps {
+    intl: IntlShape;
     product: ProductDTO;
     onCloseModal: () => void;
 }
@@ -14,10 +17,8 @@ interface ProductElementState {
     redirect: boolean;
 }
 
-class ProductElement extends React.Component<
-    ProductElementProps,
-    ProductElementState
-> {
+class ProductElement extends React.Component<ProductElementProps,
+    ProductElementState> {
     constructor(props: Readonly<ProductElementProps>) {
         super(props);
         this.state = {
@@ -50,7 +51,7 @@ class ProductElement extends React.Component<
             <React.Fragment>
                 {this.renderRedirect()}
                 <div className="text-center p-4">
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{textAlign: 'right'}}>
                         <i
                             onClick={this.props.onCloseModal}
                             className="fa fa-times"
@@ -69,7 +70,7 @@ class ProductElement extends React.Component<
                         <a
                             href={emptyHrefLink}
                             onClick={this.setRedirect}
-                            style={{ color: '#1641ff' }}
+                            style={{color: '#1641ff'}}
                         >
                             {this.props.product.shopName}
                         </a>
@@ -81,7 +82,7 @@ class ProductElement extends React.Component<
                         />
                         {this.props.product.commission} lei
                     </h6>
-                    <h6 style={{ maxWidth: 300 }}>
+                    <h6 style={{maxWidth: 300}}>
                         <FormattedMessage
                             id={'shop.category'}
                             defaultMessage="Category: "
@@ -91,10 +92,12 @@ class ProductElement extends React.Component<
                     <img
                         style={{ maxWidth: 300, maxHeight: 300 }}
                         src={this.props.product.imageUrl}
-                        alt=""
+                        alt={this.props.intl.formatMessage(
+                            { id: 'products.image.missing' }
+                        )}
                     />
                     <div className="blog_details">
-                        <h4 style={{ maxWidth: 300 }}>
+                        <h4 style={{maxWidth: 300}}>
                             {' '}
                             {this.props.product.title}
                         </h4>
@@ -126,4 +129,4 @@ class ProductElement extends React.Component<
     }
 }
 
-export default ProductElement;
+export default injectIntl(ProductElement);

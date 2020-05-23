@@ -2,12 +2,14 @@ import * as React from 'react';
 import { ProductDTO } from '../../rest/ProductsService';
 import Modal from 'react-awesome-modal';
 import ProductElement from './ProductElement';
+import { injectIntl, IntlShape } from 'react-intl';
 
 interface ProductListElementState {
     visible: boolean;
 }
 
 interface ProductListElementProps {
+    intl: IntlShape;
     keyElement: string;
     product: ProductDTO;
 }
@@ -82,7 +84,9 @@ class ProductListElement extends React.Component<
                                         maxHeight: 200,
                                     }}
                                     src={this.props.product.imageUrl}
-                                    alt=""
+                                    alt={this.props.intl.formatMessage(
+                                        { id: 'products.image.missing' }
+                                    )}
                                 />
                             </div>
                             <h4>{this.props.product.title}</h4>
@@ -94,4 +98,4 @@ class ProductListElement extends React.Component<
     }
 }
 
-export default ProductListElement;
+export default injectIntl(ProductListElement);
