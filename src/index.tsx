@@ -18,7 +18,7 @@ import { AuthActions } from './components/login/UserActions';
 import I18nApp from './I18nApp';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '2.2.7';
+export const appVersion = '2.2.8';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};
