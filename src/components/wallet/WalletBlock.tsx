@@ -425,7 +425,12 @@ class WalletBlock extends React.Component<
                                                            transaction."
                                                     />
                                                 </h3>
-
+                                                <h5 className="important-left-align">
+                                                    <FormattedMessage
+                                                        id="wallet.block.otp.cashout.duration.mesasge"
+                                                        defaultMessage="Money will be received between 2-4 working days"
+                                                    />
+                                                </h5>
                                                 <TextField
                                                     id="otpCode"
                                                     variant="filled"
