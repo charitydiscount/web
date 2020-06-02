@@ -19,7 +19,7 @@ import I18nApp from './I18nApp';
 import ReactGA from 'react-ga';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '2.3.2';
+export const appVersion = '2.3.3';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};
@@ -53,11 +53,13 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
-ReactGA.initialize('UA-168205247-1');
-history.listen((location) => {
-    ReactGA.set({ page: location.pathname });
-    ReactGA.pageview(location.pathname);
-});
+if (process.env.REACT_APP_GA_ID) {
+    ReactGA.initialize(process.env.REACT_APP_GA_ID);
+    history.listen((location) => {
+        ReactGA.set({ page: location.pathname });
+        ReactGA.pageview(location.pathname);
+    });
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 ReactDOM.render(
