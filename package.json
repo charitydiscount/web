@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.9.9",
+    "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",
     "@react-firebase/auth": "^0.2.9",
     "axios": "^0.19.0",
     "connected-react-router": "^6.8.0",
-    "firebase": "^7.14.5",
+    "firebase": "^7.14.6",
     "handlebars": "^4.7.6",
     "iban": "^0.0.12",
     "node-sass": "^4.14.1",
@@ -20,18 +20,19 @@
     "react-firebase-file-uploader": "^2.4.3",
     "react-firebaseui": "^4.0.0",
     "react-firebaseui-localized": "^1.0.8",
+    "react-ga": "^2.7.0",
     "react-intl": "^3.12.1",
     "react-paginate": "^6.3.0",
     "react-redux": "^7.2.0",
-    "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "react-select": "^3.1.0",
-    "react-spinners": "^0.8.1",
+    "react-spinners": "^0.8.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "serialize-javascript": "^2.1.1",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.3"
   },
   "scripts": {
     "build:css": "postcss src/style/*.css -d src/postcss",
@@ -42,19 +43,19 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "@babel/plugin-transform-runtime": "^7.9.0",
-    "@babel/preset-env": "^7.9.0",
-    "@babel/runtime": "^7.9.2",
+    "@babel/plugin-transform-runtime": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/runtime": "^7.10.2",
     "@types/iban": "0.0.30",
     "@types/jest": "^24.0.25",
-    "@types/node": "^13.11.0",
-    "@types/react": "^16.9.32",
-    "@types/react-dom": "^16.9.6",
+    "@types/node": "^13.13.9",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
     "@types/react-intl": "^3.0.0",
-    "@types/react-redux": "^7.1.5",
-    "@types/react-router": "^5.1.5",
-    "@types/react-router-dom": "^5.1.3",
-    "@types/react-select": "^3.0.11"
+    "@types/react-redux": "^7.1.9",
+    "@types/react-router": "^5.1.7",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/react-select": "^3.0.13"
   },
   "eslintConfig": {
     "extends": "react-app"
