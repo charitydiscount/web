@@ -16,6 +16,7 @@ import 'firebase/remote-config';
 import * as serviceWorker from './registerServiceWorker';
 import { AuthActions } from './components/login/UserActions';
 import I18nApp from './I18nApp';
+import ReactGA from 'react-ga';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
 export const appVersion = '2.3.2';
@@ -46,10 +47,16 @@ remoteConfig.fetchAndActivate();
 //----------------------------------------------------------------------------------------------------------------------
 
 //verify if user is logged in and authenticate him ---------------------------------------------------------------------
-auth.onAuthStateChanged(user => {
+auth.onAuthStateChanged((user) => {
     if (user) {
         store.dispatch(AuthActions.setLoggedUserAction(user));
     }
+});
+
+ReactGA.initialize('UA-168205247-1');
+history.listen((location) => {
+    ReactGA.set({ page: location.pathname });
+    ReactGA.pageview(location.pathname);
 });
 
 //----------------------------------------------------------------------------------------------------------------------
