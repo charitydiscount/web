@@ -16,7 +16,6 @@ import 'firebase/remote-config';
 import * as serviceWorker from './registerServiceWorker';
 import { AuthActions } from './components/login/UserActions';
 import I18nApp from './I18nApp';
-import ReactGA from 'react-ga';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
 export const appVersion = '2.3.3';
@@ -38,6 +37,10 @@ export const DB = firebaseApp.firestore();
 export const auth = firebaseApp.auth();
 export const storage = firebaseApp.storage();
 export const remoteConfig = firebaseApp.remoteConfig();
+
+// Initialize analytics
+firebase.analytics();
+
 remoteConfig.settings = {
     minimumFetchIntervalMillis: 3600000,
     fetchTimeoutMillis: 60000,
@@ -52,14 +55,6 @@ auth.onAuthStateChanged((user) => {
         store.dispatch(AuthActions.setLoggedUserAction(user));
     }
 });
-
-if (process.env.REACT_APP_GA_ID) {
-    ReactGA.initialize(process.env.REACT_APP_GA_ID);
-    history.listen((location) => {
-        ReactGA.set({ page: location.pathname });
-        ReactGA.pageview(location.pathname);
-    });
-}
 
 //----------------------------------------------------------------------------------------------------------------------
 ReactDOM.render(
