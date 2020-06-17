@@ -8,6 +8,7 @@ import { createBrowserHistory } from 'history';
 import createRootReducer from './redux/reducer/RootReducer';
 import config from './config/FirebaseConfig';
 import * as firebase from 'firebase/app';
+import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/performance';
@@ -18,7 +19,7 @@ import { AuthActions } from './components/login/UserActions';
 import I18nApp from './I18nApp';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '2.3.3';
+export const appVersion = '2.3.4';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};
