@@ -12,10 +12,12 @@ import { connect } from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
 import Modal from 'react-awesome-modal';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { smallerSpinnerCss, spinnerCss, } from '../../helper/AppHelper';
+import { smallerSpinnerCss, spinnerCss } from '../../helper/AppHelper';
 import { addContactMessageToDb } from '../../rest/ContactService';
 import FadeLoader from 'react-spinners/FadeLoader';
-import { loadCurrentUserPhoto, UserPhotoState } from "./UserPhotoHelper";
+import { loadCurrentUserPhoto, UserPhotoState } from './UserPhotoHelper';
+import { Routes } from '../helper/Routes';
+import { Link } from 'react-router-dom';
 
 interface IUserInfoProps {
     intl: IntlShape;
@@ -85,10 +87,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                     auth.currentUser.displayName,
                     auth.currentUser.email,
                     auth.currentUser.uid,
-                    'Request to delete account with id:' +
-                    auth.currentUser.uid,
-                    'Delete account with id:' +
-                    auth.currentUser.uid
+                    'Request to delete account with id:' + auth.currentUser.uid,
+                    'Delete account with id:' + auth.currentUser.uid
                 )
                     .then(() => {
                         this.setState({
@@ -123,11 +123,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             isLoading: false,
             modalMessage: success
                 ? this.props.intl.formatMessage({
-                    id: 'userInfo.email.reset.sent',
-                })
+                      id: 'userInfo.email.reset.sent',
+                  })
                 : this.props.intl.formatMessage({
-                    id: 'userInfo.email.reset.error',
-                }),
+                      id: 'userInfo.email.reset.error',
+                  }),
         });
     }
 
@@ -137,9 +137,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         });
         auth.sendPasswordResetEmail(this.state.email || '')
             .then(
-                succes => this.handleEmailResetSent(true) // Password reset email sent.
+                (succes) => this.handleEmailResetSent(true) // Password reset email sent.
             )
-            .catch(error => this.handleEmailResetSent(false));
+            .catch((error) => this.handleEmailResetSent(false));
     }
 
     closeModal() {
@@ -183,13 +183,13 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                     effect="fadeInUp"
                     onClickAway={() => this.closeModal()}
                 >
-                    <h3 style={{padding: 15}}>{this.state.modalMessage}</h3>
+                    <h3 style={{ padding: 15 }}>{this.state.modalMessage}</h3>
                 </Modal>
                 {!this.state.isLoading && (
                     <div className="product_image_area">
                         <div className="container p_90">
                             <div className="row s_product_inner">
-                                <div className="col-lg-4"/>
+                                <div className="col-lg-4" />
                                 <div className="col-lg-4">
                                     <div className="s_product_img">
                                         <div className="blog_right_sidebar">
@@ -217,7 +217,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     {this.state.displayName}
                                                 </h4>
                                                 <p>{this.state.email}</p>
-                                                <div className="br"/>
+                                                <div className="br" />
                                             </aside>
                                             <aside className="single_sidebar_widget popular_post_widget">
                                                 {this.state.normalUser && (
@@ -251,9 +251,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                         }
                                                                         storageRef={storage.ref(
                                                                             StorageRef.PROFILE_PHOTOS +
-                                                                            this
-                                                                                .state
-                                                                                .userId
+                                                                                this
+                                                                                    .state
+                                                                                    .userId
                                                                         )}
                                                                         onUploadError={
                                                                             this
@@ -291,52 +291,52 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                 />
                                                             </a>
                                                         </div>
-                                                        <div className="br"/>
+                                                        <div className="br" />
                                                     </div>
                                                 )}
                                                 <div className="col-md-12 text-center p_05">
-                                                    <a
-                                                        href={'/contact'}
+                                                    <Link
+                                                        to={Routes.CONTACT}
                                                         className="btn submit_btn userInfo_btn genric-btn circle"
                                                     >
                                                         <FormattedMessage
                                                             id="userinfo.contact.us.button"
                                                             defaultMessage="Contact us"
                                                         />
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                                 <div className="col-md-12 text-center p_05">
-                                                    <a
-                                                        href={'/tos'}
+                                                    <Link
+                                                        to={Routes.TOS}
                                                         className="btn submit_btn userInfo_btn genric-btn circle"
                                                     >
                                                         <FormattedMessage
                                                             id="userinfo.terms.button"
                                                             defaultMessage="Terms of agreement"
                                                         />
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                                 <div className="col-md-12 text-center p_05">
-                                                    <a
-                                                        href={'/privacy'}
+                                                    <Link
+                                                        to={Routes.PRIVACY}
                                                         className="btn submit_btn userInfo_btn genric-btn circle"
                                                     >
                                                         <FormattedMessage
                                                             id="userinfo.privacy.button"
                                                             defaultMessage="Privacy"
                                                         />
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                                 <div className="col-md-12 text-center p_05">
-                                                    <a
-                                                        href={'/faq'}
+                                                    <Link
+                                                        to={Routes.FAQ}
                                                         className="btn submit_btn userInfo_btn genric-btn circle"
                                                     >
                                                         <FormattedMessage
                                                             id="userinfo.faq.button"
                                                             defaultMessage="Faq"
                                                         />
-                                                    </a>
+                                                    </Link>
                                                 </div>
                                                 <div className="col-md-12 text-center p_05">
                                                     <a
