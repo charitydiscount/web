@@ -7,6 +7,7 @@ import { injectIntl, IntlShape } from 'react-intl';
 import { dateOptions, roundMoney } from '../../helper/AppHelper';
 import { TransactionDto } from '../../rest/WalletService';
 import { auth } from '../../index';
+import { Link } from 'react-router-dom';
 
 interface IWalletTransactionRowProps {
     transaction: TransactionDto;
@@ -26,7 +27,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     causes = JSON.parse(causesIdSt) as CauseDto[];
                 }
                 let cause = causes.find(
-                    value => value.id === this.props.transaction.target.id
+                    (value) => value.id === this.props.transaction.target.id
                 );
                 if (cause) {
                     target = cause.details.title;
@@ -36,7 +37,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     <i
                         className="fa fa-heart"
                         aria-hidden="true"
-                        style={{color: 'red'}}
+                        style={{ color: 'red' }}
                         title={this.props.intl.formatMessage({
                             id: 'wallet.tx.type.donation',
                         })}
@@ -51,7 +52,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     <i
                         className="fa fa-thumbs-up"
                         aria-hidden="true"
-                        style={{color: 'blue'}}
+                        style={{ color: 'blue' }}
                         title={this.props.intl.formatMessage({
                             id: 'wallet.tx.type.bonus',
                         })}
@@ -59,10 +60,12 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                 );
                 break;
             case TxType.CASHOUT.toString():
-                target = <div>
-                    <p>IBAN: {this.props.transaction.target.id}</p>
-                    <p>{this.props.transaction.target.name}</p>
-                </div>;
+                target = (
+                    <div>
+                        <p>IBAN: {this.props.transaction.target.id}</p>
+                        <p>{this.props.transaction.target.name}</p>
+                    </div>
+                );
                 txTitle = (
                     <i
                         className="fa fa-money"
@@ -82,7 +85,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     <i
                         className="fa fa-money"
                         aria-hidden="true"
-                        style={{color: 'green'}}
+                        style={{ color: 'green' }}
                         title={this.props.intl.formatMessage({
                             id: 'wallet.tx.type.commission',
                         })}
@@ -109,9 +112,9 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                         })}
                     </div>
 
-                    <div className="country" style={{overflow: 'auto'}}>
+                    <div className="country" style={{ overflow: 'auto' }}>
                         {txType === TxType.DONATION.toString() ? (
-                            <a href={Routes.CAUSES}>{target}</a>
+                            <Link to={Routes.CAUSES}>{target}</Link>
                         ) : (
                             target
                         )}
