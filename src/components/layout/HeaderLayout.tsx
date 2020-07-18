@@ -34,7 +34,6 @@ type IHeaderLayoutProps = {
 };
 
 interface IHeaderLayoutState {
-    username: string;
     fixedHeader: boolean;
     favShopsIconFill: boolean
 }
@@ -51,7 +50,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
     constructor(props: IHeaderLayoutProps) {
         super(props);
         this.state = {
-            username: '',
             fixedHeader: false,
             favShopsIconFill: false
         };
@@ -60,11 +58,6 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
     }
 
     async componentDidMount() {
-        if (this.props.userInfo) {
-            this.setState({
-                username: this.props.userInfo.displayName || this.props.userInfo.email || '',
-            });
-        }
         window.addEventListener('scroll', this.handleScroll, true);
     }
 
@@ -123,19 +116,17 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                 <div className="top_menu row m0">
                     <div className="container-fluid">
                         <div className="float-left">
-                            {isLoggedIn && (
-                                <React.Fragment>
-                                    <p>
-                                        <FormattedMessage
-                                            id="navigation.welcome"
-                                            defaultMessage="Welcome: "
-                                        />
-                                        {this.state.username
-                                            ? this.state.username
-                                            : ''}
-                                    </p>
-                                </React.Fragment>
-                            )}
+                            <React.Fragment>
+                                <p style={{
+                                    textTransform: "inherit",
+                                    fontSize: 14
+                                }}>
+                                    <FormattedMessage
+                                        id="navigation.welcome"
+                                        defaultMessage="CharityDiscount"
+                                    />
+                                </p>
+                            </React.Fragment>
                         </div>
                         <div className="float-right">
                             <ul className="right_side">
