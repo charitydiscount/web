@@ -1,22 +1,22 @@
 /*font Variables*/
 
-$rob: 'Roboto',
-sans-serif;
-$pop: 'Poppins',
-sans-serif;
+$rob: 'Roboto', sans-serif;
+$pop: 'Poppins', sans-serif;
 /*Color Variables*/
 
-$baseColor: #1641ff;
+$baseColor: #e31f29;
 $dip: #222222;
 $pfont: #777777;
 /*=================== fonts ====================*/
 
 @import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700|Roboto:300,400,500,700');
 // Mixins
-@mixin transition($property: all,
-$duration: 300ms,
-$animate: linear,
-$delay:0s) {
+@mixin transition(
+    $property: all,
+    $duration: 300ms,
+    $animate: linear,
+    $delay: 0s
+) {
     transition: $property $duration $animate $delay;
 }
 
@@ -47,11 +47,11 @@ $delay:0s) {
 .col {
     -ms-flex: 0 0 20%;
     flex: 0 0 20%;
-    @media(max-width: 480px) {
+    @media (max-width: 480px) {
         -ms-flex: 0 0 100% !important;
         flex: 0 0 100% !important;
     }
-    @media(max-width: 991px) {
+    @media (max-width: 991px) {
         -ms-flex: 0 0 50%;
         flex: 0 0 50%;
     }

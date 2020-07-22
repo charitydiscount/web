@@ -72,7 +72,7 @@ class ProductListElement extends React.Component<
                             style={{ cursor: 'pointer' }}
                         >
                             {this.props.product.price && (
-                                <h6 className="blue-color">
+                                <h6 className="comission">
                                     {this.props.product.price} lei
                                 </h6>
                             )}
@@ -84,9 +84,9 @@ class ProductListElement extends React.Component<
                                         maxHeight: 200,
                                     }}
                                     src={this.props.product.imageUrl}
-                                    alt={this.props.intl.formatMessage(
-                                        { id: 'products.image.missing' }
-                                    )}
+                                    alt={this.props.intl.formatMessage({
+                                        id: 'products.image.missing',
+                                    })}
                                 />
                             </div>
                             <h4>{this.props.product.title}</h4>

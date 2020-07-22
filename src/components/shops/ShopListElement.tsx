@@ -42,21 +42,26 @@ class ShopListElement extends React.Component<ShopListElementProps, ShopListElem
                                   modalVisible={this.state.shopModalVisible}
                                   onCloseModal={this.closeModal}/>
                 <div
-                    className="col-md-3 col-sm-6 f_p_item p-2"
+                    className="col-md-4 col-xl-3 col-sm-6 f_p_item p-2"
                     onClick={this.openModal}
                     style={{cursor: 'pointer'}}
                 >
-                    <h6 className="blue-color">
-                        {this.props.shop.uiCommission}
-                    </h6>
-                    <div className="f_p_img d-flex">
-                        <img
-                            className="img-fluid img-min img align-self-center"
-                            src={this.props.shop.logoPath}
-                            alt=""
-                        />
+                    <div className="f_p_item shop">
+                        <div className="shop-image-container">
+                            <div
+                                className="shop-image"
+                                style={{
+                                    backgroundImage:
+                                        'url(' + this.props.shop.logoPath + ')',
+                                }}
+                            ></div>
+                        </div>
+                        <div className="shop-description-container">
+                            <h6 className="comission">
+                                {this.props.shop.uiCommission}
+                            </h6>
+                        </div>
                     </div>
-                    <h4>{this.props.shop.name}</h4>
                 </div>
             </React.Fragment>
         );

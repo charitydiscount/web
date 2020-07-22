@@ -35,23 +35,25 @@ type IHeaderLayoutProps = {
 
 interface IHeaderLayoutState {
     fixedHeader: boolean;
-    favShopsIconFill: boolean
+    favShopsIconFill: boolean;
 }
 
 const options: any[] = [
-    {value: 'ro', label: 'RO'},
-    {value: 'en', label: 'EN'},
+    { value: 'ro', label: 'RO' },
+    { value: 'en', label: 'EN' },
 ];
-const optionFromValue = (value: string) => options.find(o => o.value === value);
+const optionFromValue = (value: string) =>
+    options.find((o) => o.value === value);
 
-class HeaderLayout extends React.Component<IHeaderLayoutProps,
-    IHeaderLayoutState> {
-
+class HeaderLayout extends React.Component<
+    IHeaderLayoutProps,
+    IHeaderLayoutState
+> {
     constructor(props: IHeaderLayoutProps) {
         super(props);
         this.state = {
             fixedHeader: false,
-            favShopsIconFill: false
+            favShopsIconFill: false,
         };
         this.handleLogOut = this.handleLogOut.bind(this);
         this.loadFavoriteShops = this.loadFavoriteShops.bind(this);
@@ -93,8 +95,8 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
         this.props.setCurrentCategory('Favorite Shops');
         this.props.setSelections([]);
         this.setState({
-            favShopsIconFill: true
-        })
+            favShopsIconFill: true,
+        });
     }
 
     render() {
@@ -111,23 +113,11 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
             <header
                 className={`header_area ${
                     this.state.fixedHeader ? 'navbar_fixed' : ''
-                    }`}
+                }`}
             >
                 <div className="top_menu row m0">
                     <div className="container-fluid">
-                        <div className="float-left">
-                            <React.Fragment>
-                                <p style={{
-                                    textTransform: "inherit",
-                                    fontSize: 14
-                                }}>
-                                    <FormattedMessage
-                                        id="navigation.welcome"
-                                        defaultMessage="CharityDiscount"
-                                    />
-                                </p>
-                            </React.Fragment>
-                        </div>
+                        <div className="float-left"></div>
                         <div className="float-right">
                             <ul className="right_side">
                                 {isLoggedIn && (
@@ -171,7 +161,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                     className="navbar-brand logo_h"
                                     to={'/login'}
                                 >
-                                    <img src={logoPath} alt=""/>
+                                    <div className="logo-container"></div>
                                 </Link>
                             )}
                             {isLoggedIn && (
@@ -184,9 +174,9 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                     aria-expanded="false"
                                     aria-label="Toggle navigation"
                                 >
-                                    <span className="icon-bar"/>
-                                    <span className="icon-bar"/>
-                                    <span className="icon-bar"/>
+                                    <span className="icon-bar" />
+                                    <span className="icon-bar" />
+                                    <span className="icon-bar" />
                                 </button>
                             )}
                             <div
@@ -284,7 +274,9 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                         }
                                                     >
                                                         <Link
-                                                            to={Routes.REFERRALS}
+                                                            to={
+                                                                Routes.REFERRALS
+                                                            }
                                                             className="nav-link"
                                                         >
                                                             <FormattedMessage
@@ -301,7 +293,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                     {isLoggedIn && (
                                         <div className="col-lg-4">
                                             <ul className="nav navbar-nav navbar-right right_nav pull-right">
-                                                <hr/>
+                                                <hr />
 
                                                 <li className="nav-item">
                                                     <Link
@@ -313,9 +305,11 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                             this
                                                                 .loadFavoriteShops
                                                         }
-                                                        onMouseLeave={() => this.setState({
-                                                            favShopsIconFill: false
-                                                        })}
+                                                        onMouseLeave={() =>
+                                                            this.setState({
+                                                                favShopsIconFill: false,
+                                                            })
+                                                        }
                                                         className={'icons'}
                                                     >
                                                         {this.state
@@ -345,7 +339,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                     </Link>
                                                 </li>
 
-                                                <hr/>
+                                                <hr />
                                             </ul>
                                         </div>
                                     )}

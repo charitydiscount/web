@@ -188,6 +188,17 @@
                 font-weight: 600;
             }
         }
+        .navbar-brand {
+            .logo-container {
+                background-image: url('/img/logo.png');
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: inline-block;
+                height: 70px;
+                width: 70px;
+            }
+        }
     }
     &.navbar_fixed {
         .main_menu {

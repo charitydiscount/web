@@ -34,9 +34,7 @@ class Category extends React.Component<ICategoryProps> {
                     <a
                         href={emptyHrefLink}
                         id={this.props.name.toString()}
-                        style={
-                            this.props.selected ? { color: 'blue' } : undefined
-                        }
+                        className={this.props.selected ? 'selected' : undefined}
                         onClick={this.updateShops}
                     >
                         <FormattedMessage
