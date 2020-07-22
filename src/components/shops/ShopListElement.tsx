@@ -3,9 +3,9 @@ import Modal from 'react-awesome-modal';
 import { ShopDto } from '../../rest/ShopsService';
 import { injectIntl, IntlShape } from 'react-intl';
 import ShopElement from './ShopElement';
-import { AppState } from "../../redux/reducer/RootReducer";
-import { connect } from "react-redux";
-import { setCurrentShop } from "../../redux/actions/ShopsAction";
+import { AppState } from '../../redux/reducer/RootReducer';
+import { connect } from 'react-redux';
+import { setCurrentShop } from '../../redux/actions/ShopsAction';
 
 interface ShopListElementState {
     visible: boolean;
@@ -20,8 +20,10 @@ interface ShopListElementProps {
     setCurrentShop: any;
 }
 
-class ShopListElement extends React.Component<ShopListElementProps,
-    ShopListElementState> {
+class ShopListElement extends React.Component<
+    ShopListElementProps,
+    ShopListElementState
+> {
     constructor(props: ShopListElementProps) {
         super(props);
         this.state = {
@@ -75,21 +77,26 @@ class ShopListElement extends React.Component<ShopListElementProps,
                     )}
                 </Modal>
                 <div
-                    className="col-md-3 col-sm-6 f_p_item p-2"
+                    className="col-md-4 col-xl-3 col-sm-6"
                     onClick={() => this.openModal()}
-                    style={{cursor: 'pointer'}}
+                    style={{ cursor: 'pointer' }}
                 >
-                    <h6 className="blue-color">
-                        {this.props.shop.uiCommission}
-                    </h6>
-                    <div className="f_p_img d-flex">
-                        <img
-                            className="img-fluid img-min img align-self-center"
-                            src={this.props.shop.logoPath}
-                            alt=""
-                        />
+                    <div className="f_p_item shop">
+                        <div className="shop-image-container">
+                            <div
+                                className="shop-image"
+                                style={{
+                                    backgroundImage:
+                                        'url(' + this.props.shop.logoPath + ')',
+                                }}
+                            ></div>
+                        </div>
+                        <div className="shop-description-container">
+                            <h6 className="comission">
+                                {this.props.shop.uiCommission}
+                            </h6>
+                        </div>
                     </div>
-                    <h4>{this.props.shop.name}</h4>
                 </div>
             </React.Fragment>
         );
@@ -109,5 +116,7 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ShopListElement));
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(injectIntl(ShopListElement));

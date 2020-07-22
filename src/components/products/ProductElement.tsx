@@ -6,7 +6,6 @@ import { Redirect } from 'react-router';
 import { Routes } from '../helper/Routes';
 import { emptyHrefLink } from '../../helper/Constants';
 
-
 interface ProductElementProps {
     intl: IntlShape;
     product: ProductDTO;
@@ -17,8 +16,10 @@ interface ProductElementState {
     redirect: boolean;
 }
 
-class ProductElement extends React.Component<ProductElementProps,
-    ProductElementState> {
+class ProductElement extends React.Component<
+    ProductElementProps,
+    ProductElementState
+> {
     constructor(props: Readonly<ProductElementProps>) {
         super(props);
         this.state = {
@@ -51,14 +52,14 @@ class ProductElement extends React.Component<ProductElementProps,
             <React.Fragment>
                 {this.renderRedirect()}
                 <div className="text-center p-4">
-                    <div style={{textAlign: 'right'}}>
+                    <div style={{ textAlign: 'right' }}>
                         <i
                             onClick={this.props.onCloseModal}
                             className="fa fa-times"
                         />
                     </div>
                     {this.props.product.price && (
-                        <h6 className="blue-color">
+                        <h6 className="product-price">
                             {this.props.product.price} lei
                         </h6>
                     )}
@@ -70,7 +71,7 @@ class ProductElement extends React.Component<ProductElementProps,
                         <a
                             href={emptyHrefLink}
                             onClick={this.setRedirect}
-                            style={{color: '#1641ff'}}
+                            style={{ color: '#1641ff' }}
                         >
                             {this.props.product.shopName}
                         </a>
@@ -82,7 +83,7 @@ class ProductElement extends React.Component<ProductElementProps,
                         />
                         {this.props.product.commission} lei
                     </h6>
-                    <h6 style={{maxWidth: 300}}>
+                    <h6 style={{ maxWidth: 300 }}>
                         <FormattedMessage
                             id={'shop.category'}
                             defaultMessage="Category: "
@@ -92,12 +93,12 @@ class ProductElement extends React.Component<ProductElementProps,
                     <img
                         style={{ maxWidth: 300, maxHeight: 300 }}
                         src={this.props.product.imageUrl}
-                        alt={this.props.intl.formatMessage(
-                            { id: 'products.image.missing' }
-                        )}
+                        alt={this.props.intl.formatMessage({
+                            id: 'products.image.missing',
+                        })}
                     />
                     <div className="blog_details">
-                        <h4 style={{maxWidth: 300}}>
+                        <h4 style={{ maxWidth: 300 }}>
                             {' '}
                             {this.props.product.title}
                         </h4>

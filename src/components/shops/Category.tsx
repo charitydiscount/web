@@ -44,7 +44,7 @@ class Category extends React.Component<ICategoryProps> {
         } else {
             //load shops from selected category in this case
             const result = this.props.allShops.filter(
-                shop =>
+                (shop) =>
                     shop.category.toLowerCase() ===
                     this.props.name.toLowerCase()
             );
@@ -62,9 +62,7 @@ class Category extends React.Component<ICategoryProps> {
                     <a
                         href={emptyHrefLink}
                         id={this.props.name.toString()}
-                        style={
-                            this.props.selected ? { color: 'blue' } : undefined
-                        }
+                        className={this.props.selected ? 'selected' : undefined}
                         onClick={this.updateShops}
                     >
                         <FormattedMessage

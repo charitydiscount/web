@@ -13,8 +13,8 @@ import { FormattedMessage } from 'react-intl';
 import { getPromotions, PromotionDTO } from '../../rest/DealsService';
 import Promotion from '../promotions/Promotion';
 import { Button } from '@material-ui/core';
-import { AppState } from "../../redux/reducer/RootReducer";
-import { connect } from "react-redux";
+import { AppState } from '../../redux/reducer/RootReducer';
+import { connect } from 'react-redux';
 
 interface IShopElementProps {
     shop: ShopDto;
@@ -30,8 +30,10 @@ interface IShopElementState {
     promotionLoading: boolean;
 }
 
-class ShopElement extends React.Component<IShopElementProps,
-    IShopElementState> {
+class ShopElement extends React.Component<
+    IShopElementProps,
+    IShopElementState
+> {
     constructor(props: IShopElementProps) {
         super(props);
         this.state = {
@@ -69,9 +71,11 @@ class ShopElement extends React.Component<IShopElementProps,
             favShop: !remove,
         });
         try {
-            await updateFavoriteShops(this.props.shop, remove).then(async () => {
-               await fetchFavoriteShops(this.props.allShops);
-            });
+            await updateFavoriteShops(this.props.shop, remove).then(
+                async () => {
+                    await fetchFavoriteShops(this.props.allShops);
+                }
+            );
         } catch (error) {
             alert(
                 this.props.intl.formatMessage({
@@ -86,7 +90,7 @@ class ShopElement extends React.Component<IShopElementProps,
             this.props.shop.sellingCountries &&
             this.props.shop.sellingCountries.length > 0 &&
             this.props.shop.sellingCountries
-                .map(country => {
+                .map((country) => {
                     return country.name;
                 })
                 .join(', ');
@@ -95,12 +99,12 @@ class ShopElement extends React.Component<IShopElementProps,
             this.state.promotions &&
             this.state.promotions.length > 0 &&
             this.state.promotions
-                .filter(promotion => {
+                .filter((promotion) => {
                     let startDate = new Date(promotion.promotionStart);
                     let endDate = new Date(promotion.promotionEnd);
                     return startDate < new Date() && endDate > new Date();
                 })
-                .map(promotion => {
+                .map((promotion) => {
                     return (
                         <Promotion
                             key={promotion.id}
@@ -112,7 +116,7 @@ class ShopElement extends React.Component<IShopElementProps,
                     );
                 });
 
-        const rating = [1, 2, 3, 4, 5].map(star =>
+        const rating = [1, 2, 3, 4, 5].map((star) =>
             star <= this.props.shop.reviewsRating ? (
                 <i
                     key={`star-${star}`}
@@ -130,20 +134,20 @@ class ShopElement extends React.Component<IShopElementProps,
             <React.Fragment>
                 <div className="text-center p-4">
                     {!this.props.comingFromShopReview && (
-                        <div style={{textAlign: 'right'}}>
+                        <div style={{ textAlign: 'right' }}>
                             <i
                                 onClick={this.props.onCloseModal}
                                 className="fa fa-times"
                             />
                         </div>
                     )}
-                    <h4 className="blue-color">
+                    <h4 className="cashback-text">
                         <FormattedMessage
                             id={'shop.cashback'}
                             defaultMessage="Cashback:"
                         />
                         {this.props.shop.uiCommission}
-                        <br/>
+                        <br />
                         <small className="text-muted text-small">
                             <FormattedMessage
                                 id={'shop.cashback.without.vat.and.transport'}
@@ -168,17 +172,21 @@ class ShopElement extends React.Component<IShopElementProps,
                             ''
                         )}
                     </h6>
-                    <img src={this.props.shop.logoPath} alt="" style={{
-                        maxWidth: 300,
-                        maxHeight: 300
-                    }}/>
+                    <img
+                        src={this.props.shop.logoPath}
+                        alt=""
+                        style={{
+                            maxWidth: 300,
+                            maxHeight: 300,
+                        }}
+                    />
                     <div className="blog_details">
                         <h2>{this.props.shop.name}</h2>
                         <h6
                             style={
                                 this.props.comingFromShopReview
                                     ? {}
-                                    : {maxWidth: 300}
+                                    : { maxWidth: 300 }
                             }
                         >
                             <FormattedMessage
@@ -191,7 +199,7 @@ class ShopElement extends React.Component<IShopElementProps,
                             style={
                                 this.props.comingFromShopReview
                                     ? {}
-                                    : {maxWidth: 300}
+                                    : { maxWidth: 300 }
                             }
                         >
                             <FormattedMessage
@@ -242,7 +250,7 @@ class ShopElement extends React.Component<IShopElementProps,
                         </div>
                         <div
                             className="s_product_text"
-                            style={{marginTop: 20, marginBottom: 20}}
+                            style={{ marginTop: 20, marginBottom: 20 }}
                         >
                             <div className="card_area p_20">
                                 <a
@@ -257,7 +265,7 @@ class ShopElement extends React.Component<IShopElementProps,
                                     />
                                 </a>
                                 <div
-                                    style={{padding: 0}}
+                                    style={{ padding: 0 }}
                                     className={'icon_btn p_icon'}
                                 >
                                     <a
@@ -295,9 +303,9 @@ class ShopElement extends React.Component<IShopElementProps,
                                         style={
                                             !this.props.comingFromShopReview
                                                 ? {
-                                                    overflowY: 'auto',
-                                                    maxHeight: 200,
-                                                }
+                                                      overflowY: 'auto',
+                                                      maxHeight: 200,
+                                                  }
                                                 : {}
                                         }
                                     >
@@ -306,8 +314,8 @@ class ShopElement extends React.Component<IShopElementProps,
                                             style={
                                                 !this.props.comingFromShopReview
                                                     ? {
-                                                        maxWidth: 300,
-                                                    }
+                                                          maxWidth: 300,
+                                                      }
                                                     : {}
                                             }
                                         >
@@ -326,7 +334,7 @@ class ShopElement extends React.Component<IShopElementProps,
 
 const mapStateToProps = (state: AppState) => {
     return {
-        allShops: state.shops.allShops
+        allShops: state.shops.allShops,
     };
 };
 

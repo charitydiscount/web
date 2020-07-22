@@ -13,6 +13,7 @@
     "iban": "^0.0.12",
     "node-sass": "^4.14.1",
     "object-mapper": "^6.2.0",
+    "package-lock.json": "^1.0.0",
     "react": "^16.13.1",
     "react-awesome-modal": "^2.0.5",
     "react-cookie-consent": "^3.0.0",

@@ -57,7 +57,9 @@ class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
         return (
             <React.Fragment>
                 <div className="col-md-3 col-sm-6 f_p_item p-2">
-                    <h6 className="blue-color">{this.state.referralPaidSum}</h6>
+                    <h6 className="referal-sum">
+                        {this.state.referralPaidSum}
+                    </h6>
                     <h6 className="pending-color">
                         {this.state.referralNotPaidSum > 0
                             ? this.state.referralNotPaidSum
