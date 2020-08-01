@@ -6,3 +6,8 @@ export const fetchProfilePhoto = (userId: string) =>
         .ref(StorageRef.PROFILE_PHOTOS + userId)
         .child(profilePictureDefaultName)
         .getDownloadURL();
+
+export const fetchCategoryPhoto = (name: string) =>
+    storage
+       .ref(StorageRef.ICONS + name)
+        .getDownloadURL();

@@ -4,7 +4,7 @@ import {
     NavigationsAction,
 } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
-import Categories from './Categories';
+import Categories from './categories/Categories';
 import { connect } from 'react-redux';
 import {
     setCurrentPage,
@@ -30,6 +30,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { InputLabel } from '@material-ui/core';
 import { AppState } from '../../redux/reducer/RootReducer';
+import UpperCategories from "./categories/UpperCategories";
 
 interface IShopsProps {
     shops: Array<ShopDto>;
@@ -44,7 +45,6 @@ interface IShopsProps {
     //used to refresh categories
     setCurrentCategory: any;
     setSelections: any;
-    setFavShopsIconFill?: any;
 
     //parameters favshops redirect
     match: any;
@@ -280,7 +280,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
         return (
             <React.Fragment>
-                <section className="cat_product_area section_gap">
+                <UpperCategories/>
+                <section className="cat_product_area">
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-lg-3">

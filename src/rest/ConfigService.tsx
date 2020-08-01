@@ -1,11 +1,20 @@
-import {getSessionStorage, removeSessionStorage, setSessionStorage} from "../helper/StorageHelper";
-import {FirebaseTable, StorageKey, TableDocument} from "../helper/Constants";
-import {DB} from "../index";
+import { getSessionStorage, removeSessionStorage, setSessionStorage } from "../helper/StorageHelper";
+import { FirebaseTable, StorageKey, TableDocument } from "../helper/Constants";
+import { DB } from "../index";
 
 export interface ConfigDto {
     bonusPercentage: number,
     percentage: number,
     uniqueCode: string
+}
+
+export interface ImportantCategoryWrapper {
+    categories: ImportantCategoryDto[]
+}
+
+export interface ImportantCategoryDto {
+    name: string,
+    photoName: string
 }
 
 export function getAffiliateCode() {
@@ -25,6 +34,24 @@ export function getPercentage() {
         return 0.6;
     }
 }
+
+export const fetchImportantCategories = async (): Promise<ImportantCategoryDto[]> => {
+    return new Promise(((resolve, reject) => {
+        DB.collection(FirebaseTable.META).doc(TableDocument.IMPORTANT_CATEGORIES).get()
+            .then(doc => {
+                if (doc.exists) {
+                    const data = doc.data() as ImportantCategoryWrapper;
+                    resolve(Object.values(data.categories).map(value => value));
+                } else {
+                    reject(); //entry can't be found in DB
+                }
+            })
+            .catch(() => {
+                reject(); //DB not working
+            });
+    }));
+};
+
 
 export function fetchConfigInfo() {
     return new Promise(((resolve, reject) => {

@@ -1,40 +1,24 @@
 import * as React from 'react';
-import { store } from '../../index';
+import { store } from '../../..';
 import {
     NavigationsAction
-} from '../../redux/actions/NavigationsAction';
-import { Stages } from '../helper/Stages';
+} from '../../../redux/actions/NavigationsAction';
+import { Stages } from '../../helper/Stages';
 import Category from './Category';
-import { CategoryDto, fetchCategories } from '../../rest/CategoriesService';
 import { connect } from 'react-redux';
 import {
     setCurrentCategory,
     setSelections,
-} from '../../redux/actions/CategoriesAction';
+} from '../../../redux/actions/CategoriesAction';
 import { FormattedMessage } from 'react-intl';
 import FadeLoader from 'react-spinners/FadeLoader';
-import { spinnerCss } from '../../helper/AppHelper';
-import { AppState } from '../../redux/reducer/RootReducer';
+import { spinnerCss } from '../../../helper/AppHelper';
+import { AppState } from '../../../redux/reducer/RootReducer';
+import { ICategoriesProps, ICategoriesState, loadCategories, onChildToggle } from "./BaseCategories";
 
-interface ICategoryProps {
-    currentCategory?: String;
-    selections?: boolean[];
+class Categories extends React.Component<ICategoriesProps, ICategoriesState> {
 
-    //global state
-    setCurrentCategory?: any;
-    setSelections?: any; // used for showing a blue color when a category is activated
-
-    //fav shops loading
-    setFavShopsIconFill?: any;
-}
-
-interface ICategoryState {
-    categories: CategoryDto[];
-    isLoading: boolean;
-}
-
-class Categories extends React.Component<ICategoryProps, ICategoryState> {
-    constructor(props: ICategoryProps) {
+    constructor(props: ICategoriesProps) {
         super(props);
         this.state = {
             isLoading: true,
@@ -45,17 +29,7 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
 
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
-        try {
-            let response = await fetchCategories();
-            this.setState({
-                categories: response as CategoryDto[],
-                isLoading: false,
-            });
-        } catch (error) {
-            this.setState({
-                isLoading: true,
-            });
-        }
+        await loadCategories(this);
     }
 
     /**
@@ -64,11 +38,7 @@ class Categories extends React.Component<ICategoryProps, ICategoryState> {
      * @param name - the category name to change the global state
      */
     public onChildToggle(id, name) {
-        let selections = [] as boolean[];
-        selections[id] = true;
-
-        this.props.setSelections(selections);
-        this.props.setCurrentCategory(name);
+        onChildToggle(this, id, name);
     }
 
     public componentWillUnmount() {

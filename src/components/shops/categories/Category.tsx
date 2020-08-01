@@ -1,24 +1,15 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { setCurrentPage, setShops } from '../../redux/actions/ShopsAction';
-import { emptyHrefLink } from '../../helper/Constants';
-import { ShopDto } from '../../rest/ShopsService';
+import { setCurrentPage, setShops } from '../../../redux/actions/ShopsAction';
+import { emptyHrefLink } from '../../../helper/Constants';
+import { ShopDto } from '../../../rest/ShopsService';
 import { FormattedMessage } from 'react-intl';
-import { AppState } from '../../redux/reducer/RootReducer';
+import { AppState } from '../../../redux/reducer/RootReducer';
+import { ICategoryProps, updateShops } from "./BaseCategories";
 
-interface ICategoryProps {
-    name: String;
-    selected: boolean;
-    id: string;
-    onToggle: (id: String, categoryName: String) => void;
-
-    // global state refresh shops
-    setShops?: any;
-    setCurrentPage?: any;
-    allShops: ShopDto[];
-}
 
 class Category extends React.Component<ICategoryProps> {
+
     constructor(props: ICategoryProps) {
         super(props);
         this.updateShops = this.updateShops.bind(this);
@@ -32,27 +23,8 @@ class Category extends React.Component<ICategoryProps> {
         this.props.onToggle(this.props.id, this.props.name);
     }
 
-    /**
-     * Used to update shops list after a category is selected
-     */
     public updateShops(event: React.MouseEvent) {
-        event.preventDefault(); // prevent default to not point to href location
-        if (this.props.name === 'All') {
-            // load all shops in this case
-            this.props.setShops(this.props.allShops);
-            this.props.setCurrentPage(0);
-        } else {
-            //load shops from selected category in this case
-            const result = this.props.allShops.filter(
-                shop =>
-                    shop.category.toLowerCase() ===
-                    this.props.name.toLowerCase()
-            );
-            this.props.setShops(result);
-            this.props.setCurrentPage(0);
-        }
-        this.onToggle();
-        window.scrollTo(0, 0);
+        updateShops(this, event);
     }
 
     public render() {

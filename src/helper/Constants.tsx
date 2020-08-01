@@ -25,11 +25,13 @@ export enum FirebaseTable {
 
 export enum TableDocument {
     PERFORMANT2 = '2performant',
+    IMPORTANT_CATEGORIES = 'importantCategories',
     PROGRAMS = 'programs',
 }
 
 export enum StorageRef {
     PROFILE_PHOTOS = 'profilePhotos/',
+    ICONS = 'icons/'
 }
 
 export enum TxType {
