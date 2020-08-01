@@ -42,7 +42,9 @@ class Review extends React.Component<IReviewProps, IReviewState> {
                     photoURL: response as string,
                 });
             } catch (error) {
-                //error -> no image content will be shown
+                this.setState({
+                    photoURL: noImagePath
+                });
             }
         }
     }
@@ -73,6 +75,11 @@ class Review extends React.Component<IReviewProps, IReviewState> {
                                 width={80}
                                 height={80}
                                 style={{ borderRadius: 70 }}
+                                onError={() =>
+                                    this.setState({
+                                        photoURL: noImagePath
+                                    })
+                                }
                             />
                         </div>
                         <div className="media-body">

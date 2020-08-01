@@ -6,6 +6,7 @@ import {
     getNotPaidSumForReferralId,
     getPaidSumForReferralId,
 } from '../../rest/WalletService';
+import { noImagePath } from "../../helper/Constants";
 
 interface ReferralRowState extends UserPhotoState {
     referralPaidSum: number;
@@ -71,6 +72,11 @@ class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
                                 alt=""
                                 height={95}
                                 width={95}
+                                onError={() =>
+                                    this.setState({
+                                        photoURL: noImagePath
+                                    })
+                                }
                             />
                         )}
                     </div>

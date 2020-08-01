@@ -12,6 +12,7 @@ import {
     ReferralDto,
     buildDynamicLink,
 } from '../../rest/ReferralService';
+import { noImagePath } from "../../helper/Constants";
 
 interface ReferralsState extends UserPhotoState {
     referrals: ReferralDto[];
@@ -102,6 +103,11 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                                             alt="Missing"
                                             width={150}
                                             height={150}
+                                            onError={() =>
+                                                this.setState({
+                                                    photoURL: noImagePath
+                                                })
+                                            }
                                         />
                                     )}
                                 </div>

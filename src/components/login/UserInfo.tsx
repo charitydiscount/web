@@ -3,7 +3,7 @@ import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import * as React from 'react';
 import {
-    emptyHrefLink,
+    emptyHrefLink, noImagePath,
     profilePictureDefaultName,
     StorageRef,
 } from '../../helper/Constants';
@@ -211,6 +211,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                         alt="Missing"
                                                         width={200}
                                                         height={200}
+                                                        onError={() =>
+                                                            this.setState({
+                                                                photoURL: noImagePath
+                                                            })
+                                                        }
                                                     />
                                                 )}
                                                 <h4>
