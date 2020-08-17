@@ -496,7 +496,7 @@ class WalletBlock extends React.Component<
                                             <div className="shipping_box">
                                                 <React.Fragment>
                                                     <TextField
-                                                        id="name"
+                                                        id={"name" + this.props.title}
                                                         label={this.props.intl.formatMessage(
                                                             {
                                                                 id:
@@ -517,7 +517,7 @@ class WalletBlock extends React.Component<
                                                         value={this.state.name}
                                                     />
                                                     <TextField
-                                                        id="iban"
+                                                        id={"iban" + this.props.title}
                                                         variant="filled"
                                                         style={{
                                                             width: '100%',

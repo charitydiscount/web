@@ -6,7 +6,7 @@ class TosTextEN extends React.Component {
 
     render() {
         return (
-            <p className="sample-text">
+            <div className="sample-text">
                 <p className="text-muted">
                     Următorii termeni si condiții intră în
                     vigoare de la data de 11.11.2019.
@@ -319,7 +319,7 @@ class TosTextEN extends React.Component {
                         </li>
                     </ul>
                 </ol>
-            </p>
+            </div>
         )
     }
 }
