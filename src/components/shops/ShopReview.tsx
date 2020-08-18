@@ -9,13 +9,12 @@ import Review from './Review';
 import { fetchReviews, ReviewDto, saveReview } from '../../rest/ReviewService';
 import { FormattedMessage } from 'react-intl';
 import { injectIntl, IntlShape } from 'react-intl';
-import { removeLocalStorage } from '../../helper/StorageHelper';
+import { removeLocalStorage, setLocalStorage } from '../../helper/StorageHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import ShopElement from './ShopElement';
 import Modal from 'react-awesome-modal';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducer/RootReducer';
-import { setCurrentShop } from "../../redux/actions/ShopsAction";
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -73,7 +72,7 @@ class ShopReview extends React.Component<IProductReviewProps,
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
         document.addEventListener('keydown', this.escFunction, false);
-        this.props.setCurrentShop(this.state.shop.uniqueCode);
+        setLocalStorage(StorageKey.SELECTED_SHOP, this.state.shop.name);
         try {
             let reviews = await fetchReviews(this.state.shop.uniqueCode);
             // const ownReview = reviews.find(
@@ -333,11 +332,5 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        setCurrentShop: (uniqueCode: string) =>
-            dispatch(setCurrentShop(uniqueCode)),
-    };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ShopReview));
+export default connect(mapStateToProps, null)(injectIntl(ShopReview));

@@ -7,7 +7,7 @@ import { Stages } from '../helper/Stages';
 import Categories from './categories/Categories';
 import { connect } from 'react-redux';
 import {
-    setCurrentPage, setCurrentShop,
+    setCurrentPage,
     setRatings,
     setShops,
 } from '../../redux/actions/ShopsAction';
@@ -33,6 +33,7 @@ import { AppState } from '../../redux/reducer/RootReducer';
 import UpperCategories from "./categories/UpperCategories";
 import { getLocalStorage, removeLocalStorage } from "../../helper/StorageHelper";
 import { StorageKey } from "../../helper/Constants";
+import ShopModalElement from "./ShopModalElement";
 
 interface IShopsProps {
     shops: Array<ShopDto>;
@@ -48,9 +49,6 @@ interface IShopsProps {
     setCurrentCategory: any;
     setSelections: any;
 
-    //used to activate shop modal
-    setCurrentShop: any;
-
     //parameters favshops redirect
     match: any;
     favShops: string;
@@ -64,6 +62,9 @@ interface IShopsState {
 
     //sort after review
     reviewsSort: string;
+
+    currentShopModal?: ShopDto,
+    currentShopModalVisible:boolean
 }
 
 const pageLimit = 20; // shops per page
@@ -74,12 +75,14 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         this.state = {
             isLoading: true,
             reviewsSort: '',
+            currentShopModalVisible: false,
         };
         this.onSearchUpdate = this.onSearchUpdate.bind(this);
         this.onSearchUpdateEvent = this.onSearchUpdateEvent.bind(this);
         this.updatePageNumber = this.updatePageNumber.bind(this);
         this.sortAfterReviewsNumber = this.sortAfterReviewsNumber.bind(this);
         this.findShopAndOpen = this.findShopAndOpen.bind(this);
+        this.closeCurrentShopModal = this.closeCurrentShopModal.bind(this);
     }
 
     async componentDidMount() {
@@ -121,15 +124,15 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             //ratings not loaded
         }
 
-        //open shop modal based on seraching criterias------------------------------------------------------------------
-        let searchShop = this.props.match.params.shopName;
-        let shopFromStorage = getLocalStorage(StorageKey.EXTERNAL_SHOP);
+        //open shop modal ----------------------------------------------------------------------------------------------
+        let shopToShow = this.props.match.params.shopName;
+        let shopFromStorage = getLocalStorage(StorageKey.SELECTED_SHOP);
         if (shopFromStorage) {
-            searchShop = shopFromStorage;
-            removeLocalStorage(StorageKey.EXTERNAL_SHOP);
+            shopToShow = shopFromStorage;
+            removeLocalStorage(StorageKey.SELECTED_SHOP);
         }
-        if (searchShop) {
-            this.findShopAndOpen(searchShop);
+        if (shopToShow) {
+            this.findShopAndOpen(shopToShow);
         }
         //--------------------------------------------------------------------------------------------------------------
 
@@ -173,9 +176,17 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             shop.name.toLowerCase().includes(shopName.toLowerCase())
         );
         if (shopFound) {
-            //used to open modal for current shop
-            this.props.setCurrentShop(shopFound.uniqueCode);
+            this.setState({
+                currentShopModal: shopFound,
+                currentShopModalVisible: true
+            });
         }
+    }
+
+    closeCurrentShopModal() {
+        this.setState({
+            currentShopModalVisible: false
+        })
     }
 
     sortAfterReviewsNumber(event) {
@@ -304,6 +315,10 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
         return (
             <React.Fragment>
+                {this.state.currentShopModal &&
+                    <ShopModalElement shop={this.state.currentShopModal}
+                                  modalVisible={this.state.currentShopModalVisible}
+                                  onCloseModal={this.closeCurrentShopModal}/>}
                 <UpperCategories/>
                 <section className="cat_product_area">
                     <div className="container-fluid">
@@ -521,9 +536,7 @@ const mapDispatchToProps = (dispatch: any) => {
         setCurrentCategory: (currentCategory: String) =>
             dispatch(setCurrentCategory(currentCategory)),
         setSelections: (selections: boolean[]) =>
-            dispatch(setSelections(selections)),
-        setCurrentShop: (uniqueCode: string) =>
-            dispatch(setCurrentShop(uniqueCode)),
+            dispatch(setSelections(selections))
     };
 };
 
