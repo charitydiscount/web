@@ -20,6 +20,7 @@ import ReferralLogin from '../referrals/ReferralLogin';
 import { FadeLoader } from 'react-spinners';
 import { spinnerCss } from '../../helper/AppHelper';
 import { loadShops } from '../../redux/actions/ShopsAction';
+import ExternalShop from "../shops/ExternalShop";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -55,7 +56,7 @@ const PageLayout = (props: PageLayoutProps) => {
                     />
                     <Route
                         exact={true}
-                        path={Routes.CATEGORIES + '/shop/:shopName'}
+                        path={Routes.SHOP + '/:shopName'}
                         component={Shops}
                     />
                     <Route
@@ -124,6 +125,11 @@ const PageLayout = (props: PageLayoutProps) => {
                         exact={true}
                         path={Routes.REFFERRAL_LOGIN + '/:key'}
                         component={ReferralLogin}
+                    />
+                    <Route
+                        exact={true}
+                        path={Routes.SHOP + '/:shopName'}
+                        component={ExternalShop}
                     />
                     <Route
                         exact={true}

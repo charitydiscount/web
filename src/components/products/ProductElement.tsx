@@ -37,8 +37,8 @@ class ProductElement extends React.Component<ProductElementProps,
             return (
                 <Redirect
                     to={
-                        Routes.CATEGORIES +
-                        '/shop/' +
+                        Routes.SHOP +
+                        '/' +
                         this.props.product.shopName
                     }
                 />

@@ -7,7 +7,7 @@ import { Stages } from '../helper/Stages';
 import Categories from './categories/Categories';
 import { connect } from 'react-redux';
 import {
-    setCurrentPage,
+    setCurrentPage, setCurrentShop,
     setRatings,
     setShops,
 } from '../../redux/actions/ShopsAction';
@@ -31,6 +31,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { InputLabel } from '@material-ui/core';
 import { AppState } from '../../redux/reducer/RootReducer';
 import UpperCategories from "./categories/UpperCategories";
+import { getLocalStorage, removeLocalStorage } from "../../helper/StorageHelper";
+import { StorageKey } from "../../helper/Constants";
 
 interface IShopsProps {
     shops: Array<ShopDto>;
@@ -45,6 +47,9 @@ interface IShopsProps {
     //used to refresh categories
     setCurrentCategory: any;
     setSelections: any;
+
+    //used to activate shop modal
+    setCurrentShop: any;
 
     //parameters favshops redirect
     match: any;
@@ -74,9 +79,12 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         this.onSearchUpdateEvent = this.onSearchUpdateEvent.bind(this);
         this.updatePageNumber = this.updatePageNumber.bind(this);
         this.sortAfterReviewsNumber = this.sortAfterReviewsNumber.bind(this);
+        this.findShopAndOpen = this.findShopAndOpen.bind(this);
     }
 
     async componentDidMount() {
+        store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
+
         try {
             await fetchConfigInfo();
         } catch (error) {
@@ -113,12 +121,18 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             //ratings not loaded
         }
 
+        //open shop modal based on seraching criterias------------------------------------------------------------------
         let searchShop = this.props.match.params.shopName;
-        if (searchShop) {
-            this.onSearchUpdate(searchShop);
+        let shopFromStorage = getLocalStorage(StorageKey.EXTERNAL_SHOP);
+        if (shopFromStorage) {
+            searchShop = shopFromStorage;
+            removeLocalStorage(StorageKey.EXTERNAL_SHOP);
         }
+        if (searchShop) {
+            this.findShopAndOpen(searchShop);
+        }
+        //--------------------------------------------------------------------------------------------------------------
 
-        store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
 
         this.setState({
             isLoading: false,
@@ -151,6 +165,16 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                     isLoading: false,
                 });
             }
+        }
+    }
+
+    findShopAndOpen(shopName: string) {
+        const shopFound = this.props.allShops.find(shop =>
+            shop.name.toLowerCase().includes(shopName.toLowerCase())
+        );
+        if (shopFound) {
+            //used to open modal for current shop
+            this.props.setCurrentShop(shopFound.uniqueCode);
         }
     }
 
@@ -498,6 +522,8 @@ const mapDispatchToProps = (dispatch: any) => {
             dispatch(setCurrentCategory(currentCategory)),
         setSelections: (selections: boolean[]) =>
             dispatch(setSelections(selections)),
+        setCurrentShop: (uniqueCode: string) =>
+            dispatch(setCurrentShop(uniqueCode)),
     };
 };
 

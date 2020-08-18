@@ -59,6 +59,7 @@ export enum StorageKey {
     CATEGORIES = '/categoriesCD',
     SHOPS = '/shopsCD',
     REFERRAL_KEY = '/referralCD',
+    EXTERNAL_SHOP = '/externalShopCD',
     FAVORITE_SHOPS = '/favoriteShopsCD',
     CAUSES = '/causesCD',
     USER = '/userCD',
