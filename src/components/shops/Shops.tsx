@@ -129,7 +129,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         let shopFromStorage = getLocalStorage(StorageKey.SELECTED_SHOP);
         if (shopFromStorage) {
             shopToShow = shopFromStorage;
-            removeLocalStorage(StorageKey.SELECTED_SHOP);
         }
         if (shopToShow) {
             this.findShopAndOpen(shopToShow);
@@ -184,6 +183,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     }
 
     closeCurrentShopModal() {
+        removeLocalStorage(StorageKey.SELECTED_SHOP);
         this.setState({
             currentShopModalVisible: false
         })
