@@ -2,12 +2,16 @@ import * as React from 'react';
 import Modal from 'react-awesome-modal';
 import { ShopDto } from "../../rest/ShopsService";
 import ShopElement from "./ShopElement";
+import { AppState } from "../../redux/reducer/RootReducer";
+import { connect } from "react-redux";
 
 interface ShopModalElementProps {
     shop: ShopDto,
     modalVisible: boolean,
-
     onCloseModal: () => void;
+
+    //global state
+    adBlockActive?: boolean
 }
 
 interface ShopModalElementState {
@@ -35,7 +39,7 @@ class ShopModalElement extends React.Component<ShopModalElementProps, ShopModalE
         return (
             <React.Fragment>
                 <Modal
-                    visible={this.props.modalVisible}
+                    visible={!this.props.adBlockActive && this.props.modalVisible}
                     effect="fadeInUp"
                     onClickAway={this.props.onCloseModal}
                 >
@@ -52,6 +56,12 @@ class ShopModalElement extends React.Component<ShopModalElementProps, ShopModalE
     }
 }
 
+const mapStateToProps = (state: AppState) => {
+    return {
+        adBlockActive: state.adBlock.isActive,
+    };
+};
 
-export default ShopModalElement;
+export default connect(mapStateToProps, null)(ShopModalElement);
+
 

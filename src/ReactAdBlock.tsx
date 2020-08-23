@@ -2,22 +2,36 @@ import React, { CSSProperties } from 'react';
 import Modal from 'react-awesome-modal';
 import { FormattedMessage } from 'react-intl';
 import { emptyHrefLink } from './helper/Constants';
+import { connect } from "react-redux";
+import { setAdBlockActive } from "./redux/actions/AdBlockActions";
 
-class ReactAdBlock extends React.Component {
+
+interface ReactAdBlockProps {
+    setAdBlock: any
+}
+
+class ReactAdBlock extends React.Component<ReactAdBlockProps> {
+
     state = {
         usingAdblock: false,
     };
     fakeAdBanner: HTMLDivElement | null = null;
 
     componentDidMount() {
-        this.setState({ usingAdblock: this.fakeAdBanner?.offsetHeight === 0 });
+        let adBlockActive = this.fakeAdBanner?.offsetHeight === 0;
+        this.setState({
+            usingAdblock: adBlockActive
+        });
+        if (adBlockActive) {
+            this.props.setAdBlock(true);
+        }
     }
 
     render() {
         if (this.state.usingAdblock === true) {
             return (
                 <Modal visible={true} effect="fadeInUp">
-                    <div style={{ padding: 15, maxWidth: 600 }}>
+                    <div style={{padding: 15, maxWidth: 600}}>
                         <h4>
                             <FormattedMessage
                                 id={'adblock.message'}
@@ -56,4 +70,11 @@ class ReactAdBlock extends React.Component {
     }
 }
 
-export default ReactAdBlock;
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        setAdBlock: (isActive: boolean) =>
+            dispatch(setAdBlockActive(isActive)),
+    };
+};
+
+export default connect(null, mapDispatchToProps)(ReactAdBlock);

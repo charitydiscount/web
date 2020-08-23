@@ -25,6 +25,10 @@ export enum CategoryActionTypes {
     SET_SELECTIONS_ACTION = 'SET_SELECTIONS_ACTION',
 }
 
+export enum AdBlockActionTypes {
+    SET_AD_BLOCK_ACTIVE = 'SET_AD_BLOCK_ACTIVE'
+}
+
 export enum UserActionTypes {
     SET_USER = 'SET_USER',
 }
