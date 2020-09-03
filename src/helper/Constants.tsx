@@ -65,6 +65,7 @@ export enum StorageKey {
     USER = '/userCD',
     LANG = '/langCD',
     REVIEWS = '/reviewsCD',
+    REDIRECT_MESSAGE = "/redirectMessageDisableCD",
 
     //SESSION STORAGE
     PERFORMANET_2_CODE = '/performant2CodeCD',

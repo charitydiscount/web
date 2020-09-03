@@ -1,4 +1,4 @@
-import { emptyHrefLink } from '../../helper/Constants';
+import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import { Link } from 'react-router-dom';
 import { Routes } from '../helper/Routes';
 import * as React from 'react';
@@ -15,6 +15,8 @@ import Promotion from '../promotions/Promotion';
 import { Button } from '@material-ui/core';
 import { AppState } from "../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
+import RedirectModal from "./RedirectModal";
+import { getLocalStorage } from "../../helper/StorageHelper";
 
 interface IShopElementProps {
     shop: ShopDto;
@@ -28,16 +30,18 @@ interface IShopElementState {
     favShop: boolean;
     promotions: PromotionDTO[];
     promotionLoading: boolean;
+    redirectModalVisible: boolean
 }
 
-class ShopElement extends React.Component<IShopElementProps,
-    IShopElementState> {
+class ShopElement extends React.Component<IShopElementProps, IShopElementState> {
+
     constructor(props: IShopElementProps) {
         super(props);
         this.state = {
             favShop: false,
             promotions: [],
             promotionLoading: true,
+            redirectModalVisible: false
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
@@ -70,7 +74,7 @@ class ShopElement extends React.Component<IShopElementProps,
         });
         try {
             await updateFavoriteShops(this.props.shop, remove).then(async () => {
-               await fetchFavoriteShops(this.props.allShops);
+                await fetchFavoriteShops(this.props.allShops);
             });
         } catch (error) {
             alert(
@@ -80,6 +84,18 @@ class ShopElement extends React.Component<IShopElementProps,
             );
         }
     }
+
+    openRedirectModal = () => {
+        this.setState({
+            redirectModalVisible: true,
+        });
+    };
+
+    closeRedirectModal = () => {
+        this.setState({
+            redirectModalVisible: false,
+        });
+    };
 
     public render() {
         let sellingCountries =
@@ -126,8 +142,39 @@ class ShopElement extends React.Component<IShopElementProps,
             )
         );
 
+        let accessButton;
+        let redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
+        if (redirectStorageKey && redirectStorageKey === "true") {
+            accessButton =  <a
+                href={this.props.shop.computeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="main_btn"
+            >
+                <FormattedMessage
+                    id={'shop.access.button'}
+                    defaultMessage="Access"
+                />
+            </a>
+        } else {
+            accessButton = <a
+                href={emptyHrefLink}
+                rel="noopener noreferrer"
+                className="main_btn"
+                onClick={this.openRedirectModal}
+            >
+                <FormattedMessage
+                    id={'shop.access.button'}
+                    defaultMessage="Access"
+                />
+            </a>
+        }
+
         return (
             <React.Fragment>
+                <RedirectModal visible={this.state.redirectModalVisible}
+                               onCloseModal={this.closeRedirectModal}
+                               cashbackUrl={this.props.shop.computeUrl}/>
                 <div className="text-center p-4">
                     {!this.props.comingFromShopReview && (
                         <div style={{textAlign: 'right'}}>
@@ -245,17 +292,7 @@ class ShopElement extends React.Component<IShopElementProps,
                             style={{marginTop: 20, marginBottom: 20}}
                         >
                             <div className="card_area p_20">
-                                <a
-                                    href={this.props.shop.computeUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="main_btn"
-                                >
-                                    <FormattedMessage
-                                        id={'shop.access.button'}
-                                        defaultMessage="Access"
-                                    />
-                                </a>
+                                {accessButton}
                                 <div
                                     style={{padding: 0}}
                                     className={'icon_btn p_icon'}

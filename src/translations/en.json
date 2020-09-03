@@ -164,5 +164,11 @@
   "wallet.commission.source.friend": "Referral",
   "referral.meta.title": "Shop Smart with CharityDiscount",
   "referral.meta.description": "Explore the hundreds of shops and millions of products available on CharityDiscount",
-  "products.image.missing": "Missing image"
+  "products.image.missing": "Missing image",
+  "user.redirect.title": "A Short Explanation",
+  "user.redirect.message": "You are about to open the shop's website. You can freely browse and purchase the products you want",
+  "user.redirect.message1": "The website will remember that you arrived from CharityDiscount for a few days",
+  "user.redirect.message2": "Shortly after your purchase, your cashback will show up in CharityDiscount",
+  "user.redirect.message3": "Initially, the cashback will be in a pending state for a few days (usually between 14 and 60) and after that, if you haven't returned the products, it will become available",
+  "user.redirect.checkbox": "I don't need to see this again"
 }

@@ -4,8 +4,9 @@ import { injectIntl, IntlShape } from 'react-intl';
 import { ProductDTO } from '../../rest/ProductsService';
 import { Redirect } from 'react-router';
 import { Routes } from '../helper/Routes';
-import { emptyHrefLink } from '../../helper/Constants';
-
+import { emptyHrefLink, StorageKey } from '../../helper/Constants';
+import RedirectModal from "../shops/RedirectModal";
+import { getLocalStorage } from "../../helper/StorageHelper";
 
 interface ProductElementProps {
     intl: IntlShape;
@@ -15,14 +16,18 @@ interface ProductElementProps {
 
 interface ProductElementState {
     redirect: boolean;
+    redirectModalVisible: boolean
 }
 
 class ProductElement extends React.Component<ProductElementProps,
     ProductElementState> {
+
     constructor(props: Readonly<ProductElementProps>) {
         super(props);
+
         this.state = {
             redirect: false,
+            redirectModalVisible: false,
         };
     }
 
@@ -46,10 +51,53 @@ class ProductElement extends React.Component<ProductElementProps,
         }
     };
 
+    openRedirectModal = () => {
+        this.setState({
+            redirectModalVisible: true,
+        });
+    };
+
+    closeRedirectModal = () => {
+        this.setState({
+            redirectModalVisible: false,
+        });
+    };
+
     public render() {
+        let accessButton;
+        let redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
+        if (redirectStorageKey && redirectStorageKey === "true") {
+            accessButton =  <a
+                href={this.props.product.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="main_btn"
+            >
+                <FormattedMessage
+                    id={'shop.access.button'}
+                    defaultMessage="Access"
+                />
+            </a>
+        } else {
+            accessButton = <a
+                href={emptyHrefLink}
+                rel="noopener noreferrer"
+                className="main_btn"
+                onClick={this.openRedirectModal}
+            >
+                <FormattedMessage
+                    id={'shop.access.button'}
+                    defaultMessage="Access"
+                />
+            </a>
+        }
+
         return (
             <React.Fragment>
                 {this.renderRedirect()}
+                <RedirectModal visible={this.state.redirectModalVisible}
+                               onCloseModal={this.closeRedirectModal}
+                               cashbackUrl={this.props.product.url}/>
                 <div className="text-center p-4">
                     <div style={{textAlign: 'right'}}>
                         <i
@@ -109,17 +157,7 @@ class ProductElement extends React.Component<ProductElementProps,
                             }}
                         >
                             <div className="card_area">
-                                <a
-                                    href={this.props.product.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="main_btn"
-                                >
-                                    <FormattedMessage
-                                        id={'shop.access.button'}
-                                        defaultMessage="Access"
-                                    />
-                                </a>
+                                {accessButton}
                             </div>
                         </div>
                     </div>
