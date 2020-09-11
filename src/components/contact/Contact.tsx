@@ -7,8 +7,8 @@ import GenericInput from '../input/GenericInput';
 import {FormattedMessage} from 'react-intl';
 import {injectIntl, IntlShape} from 'react-intl';
 import {isEmptyString} from '../../helper/AppHelper';
-import Modal from 'react-awesome-modal';
 import {addContactMessageToDb} from '../../rest/ContactService';
+import InfoModal from "../modals/InfoModal";
 
 interface IContactProps {
     intl: IntlShape;
@@ -108,19 +108,9 @@ class Contact extends React.Component<IContactProps, IContactState> {
     public render() {
         return (
             <React.Fragment>
-                <Modal
-                    visible={this.state.modalVisible}
-                    effect="fadeInUp"
-                    onClickAway={() => this.closeModal()}
-                >
-                    {this.state.modalMessage ? (
-                        <h3 style={{padding: 15}}>
-                            {this.state.modalMessage}
-                        </h3>
-                    ) : (
-                        ''
-                    )}
-                </Modal>
+                <InfoModal visible={this.state.modalVisible}
+                           message={this.state.modalMessage}
+                           onClose={() => this.closeModal()}/>
                 <section className="contact_area p_120">
                     <div className="container">
                         <div className="row">
@@ -215,7 +205,7 @@ class Contact extends React.Component<IContactProps, IContactState> {
                                             <button
                                                 type="submit"
                                                 value="submit"
-                                                className="btn submit_btn"
+                                                className="btn submit_btn genric-btn circle"
                                                 onClick={this.handleSendMessage}
                                             >
                                                 <FormattedMessage
