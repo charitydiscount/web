@@ -1,13 +1,12 @@
 import React, { CSSProperties } from 'react';
-import Modal from 'react-awesome-modal';
-import { FormattedMessage } from 'react-intl';
-import { emptyHrefLink } from './helper/Constants';
+import { injectIntl, IntlShape } from 'react-intl';
 import { connect } from "react-redux";
 import { setAdBlockActive } from "./redux/actions/AdBlockActions";
-
+import InfoModal from "./components/modals/InfoModal";
 
 interface ReactAdBlockProps {
-    setAdBlock: any
+    setAdBlock: any,
+    intl: IntlShape;
 }
 
 class ReactAdBlock extends React.Component<ReactAdBlockProps> {
@@ -30,26 +29,12 @@ class ReactAdBlock extends React.Component<ReactAdBlockProps> {
     render() {
         if (this.state.usingAdblock === true) {
             return (
-                <Modal visible={true} effect="fadeInUp">
-                    <div style={{padding: 15, maxWidth: 600}}>
-                        <h4>
-                            <FormattedMessage
-                                id={'adblock.message'}
-                                defaultMessage="Disable AdBlock or similar programs to continue"
-                            />
-                        </h4>
-                        <a
-                            href={emptyHrefLink}
-                            onClick={() => window.location.reload()}
-                            className="btn submit_btn genric-btn circle"
-                        >
-                            <FormattedMessage
-                                id={'adblock.button'}
-                                defaultMessage="Reload"
-                            />
-                        </a>
-                    </div>
-                </Modal>
+                <InfoModal visible={true}
+                           message={this.props.intl.formatMessage({
+                               id: 'adblock.message',
+                           })}
+                           onClose={() => window.location.reload()}
+                           maxWidth={600}/>
             );
         }
 
@@ -77,4 +62,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(ReactAdBlock);
+export default connect(null, mapDispatchToProps)(injectIntl(ReactAdBlock));

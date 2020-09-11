@@ -26,6 +26,7 @@ import { connect } from 'react-redux';
 import { auth } from '../..';
 import iban from 'iban';
 import { removeLocalStorage } from '../../helper/StorageHelper';
+import InfoModal from "../modals/InfoModal";
 
 interface IWalletBlockState {
     donateVisible: boolean;
@@ -34,6 +35,9 @@ interface IWalletBlockState {
     otpRequestValidateVisible: boolean;
     txType: string;
     otpCode?: number;
+
+    infoModalVisible: boolean,
+    infoModalMessage: string,
 
     //cashout/donate selection
     selections: boolean[];
@@ -69,6 +73,8 @@ class WalletBlock extends React.Component<
             donateVisible: false,
             otpRequestVisible: false,
             otpRequestValidateVisible: false,
+            infoModalMessage: '',
+            infoModalVisible: false,
             txType: '',
             otpCode: undefined,
             amount: '',
@@ -79,6 +85,7 @@ class WalletBlock extends React.Component<
             faderVisible: false,
         };
         this.onChildUpdate = this.onChildUpdate.bind(this);
+        this.closeInfoModal = this.closeInfoModal.bind(this);
         this.donate = this.donate.bind(this);
         this.cashout = this.cashout.bind(this);
         this.creatRequest = this.creatRequest.bind(this);
@@ -111,6 +118,12 @@ class WalletBlock extends React.Component<
             cashoutVisible: false,
             donateVisible: true,
         });
+    }
+
+    closeInfoModal() {
+        this.setState({
+            infoModalVisible: false
+        })
     }
 
     async openCashoutModal() {
@@ -153,11 +166,12 @@ class WalletBlock extends React.Component<
 
     async creatRequest() {
         if (!this.state.otpCode) {
-            alert(
-                this.props.intl.formatMessage({
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({
                     id: 'wallet.block.otp.code.error',
                 })
-            );
+            });
             return;
         }
 
@@ -192,18 +206,20 @@ class WalletBlock extends React.Component<
                     });
                 }
             } else {
-                alert(
-                    this.props.intl.formatMessage({
+                this.setState({
+                    infoModalVisible: true,
+                    infoModalMessage: this.props.intl.formatMessage({
                         id: 'wallet.block.otp.code.worng.error',
                     })
-                );
+                });
             }
         } catch (error) {
-            alert(
-                this.props.intl.formatMessage({
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({
                     id: 'wallet.block.otp.code.worng.error',
                 })
-            );
+            });
         }
     }
 
@@ -244,38 +260,42 @@ class WalletBlock extends React.Component<
             this.state.amount.length < 1 ||
             parseFloat(this.state.amount) < 50
         ) {
-            alert(
-                this.props.intl.formatMessage({
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({
                     id: 'wallet.cashout.amount.error',
                 })
-            );
+            });
             return;
         }
 
         if (parseFloat(this.state.amount) >= this.props.approved) {
-            alert(
-                this.props.intl.formatMessage({
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({
                     id: 'wallet.cashout.no.amount.error',
                 })
-            );
+            });
             return;
         }
 
         if (!this.state.name) {
-            alert(
-                this.props.intl.formatMessage({
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({
                     id: 'wallet.cashout.name.error',
                 })
-            );
+            });
             return;
         }
 
         if (!this.state.iban || !iban.isValid(this.state.iban)) {
-            alert(
-                this.props.intl.formatMessage({
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({
                     id: 'wallet.cashout.iban.error',
                 })
-            );
+            });
             return;
         }
 
@@ -311,29 +331,32 @@ class WalletBlock extends React.Component<
             this.state.amount.length < 1 ||
             parseFloat(this.state.amount) < 1
         ) {
-            alert(
-                this.props.intl.formatMessage({
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({
                     id: 'wallet.donate.amount.error',
                 })
-            );
+            });
             return;
         }
 
         if (parseFloat(this.state.amount) >= this.props.approved) {
-            alert(
-                this.props.intl.formatMessage({
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({
                     id: 'wallet.cashout.no.amount.error',
                 })
-            );
+            });
             return;
         }
 
         if (!this.state.targetId) {
-            alert(
-                this.props.intl.formatMessage({
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({
                     id: 'wallet.donate.cause.error',
                 })
-            );
+            });
             return;
         }
         try {
@@ -715,6 +738,9 @@ class WalletBlock extends React.Component<
                         css={emptyBackgroundCss}
                     />
                 </Modal>
+                <InfoModal visible={this.state.infoModalVisible}
+                           message={this.state.infoModalMessage}
+                           onClose={() => this.closeInfoModal()}/>
                 <div className="col-lg-6 total_rate">
                     <div className="box_total">
                         <h5>{this.props.title}</h5>

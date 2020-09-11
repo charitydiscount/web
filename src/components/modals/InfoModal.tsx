@@ -6,6 +6,7 @@ export interface ModalProps {
     visible: boolean;
     message: string;
     onClose: () => void;
+    maxWidth?: number
 }
 
 export const InfoModal: React.FunctionComponent<ModalProps> = props => {
@@ -15,7 +16,7 @@ export const InfoModal: React.FunctionComponent<ModalProps> = props => {
             effect="fadeInUp"
             onClickAway={() => props.onClose}
         >
-            <div style={{padding: 15, maxWidth: 350}}>
+            <div style={{padding: 15, maxWidth: props.maxWidth ? props.maxWidth : 350}}>
                 <div style={{textAlign: "center"}}>
                     <img src={logoPath} alt=""/>
                 </div>
