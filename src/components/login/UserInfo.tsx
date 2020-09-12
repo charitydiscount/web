@@ -4,7 +4,7 @@ import { Stages } from '../helper/Stages';
 import * as React from 'react';
 import {
     emptyHrefLink, noImagePath,
-    profilePictureDefaultName,
+    profilePictureDefaultName, StorageKey,
     StorageRef,
 } from '../../helper/Constants';
 import { doLogoutAction } from './UserActions';
@@ -19,6 +19,10 @@ import { Routes } from '../helper/Routes';
 import { Link } from 'react-router-dom';
 import InfoModal from "../modals/InfoModal";
 import ConfirmModal from "../modals/ConfimModal";
+import { getDisableMailNotification, updateDisableMailNotification } from "../../rest/UserService";
+import { FormControlLabel } from "@material-ui/core";
+import Checkbox from "@material-ui/core/Checkbox";
+import { getLocalStorage, removeLocalStorage } from "../../helper/StorageHelper";
 
 interface IUserInfoProps {
     intl: IntlShape;
@@ -32,6 +36,7 @@ interface IUserInfoState extends UserPhotoState {
     confirmModalMessage: string;
     deleteAccount: boolean;
     isLoading: boolean;
+    disableMailNotification: Boolean
 }
 
 class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
@@ -51,6 +56,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             isLoading: false,
             deleteAccount: false,
             isLoadingPhoto: false,
+            disableMailNotification: false,
         };
         this.handleLogOut = this.handleLogOut.bind(this);
         this.closeInfoModal = this.closeInfoModal.bind(this);
@@ -60,6 +66,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         this.openPasswordReset = this.openPasswordReset.bind(this);
         this.openDeleteAccount = this.openDeleteAccount.bind(this);
         this.showPasswordResetResult = this.showPasswordResetResult.bind(this);
+        this.updateMailNotification = this.updateMailNotification.bind(this);
 
         this.handleUploadError = this.handleUploadError.bind(this);
         this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
@@ -77,6 +84,43 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         document.addEventListener('keydown', this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
         await loadCurrentUserPhoto(this);
+
+        if (auth.currentUser) {
+            let response = await getDisableMailNotification(auth.currentUser.uid);
+            console.log(response);
+            if (response) {
+                this.setState({
+                    disableMailNotification: response
+                });
+            }
+        }
+
+        let redirectKey = getLocalStorage(StorageKey.REDIRECT_KEY);
+        if (redirectKey === Routes.USER) {
+            removeLocalStorage(StorageKey.REDIRECT_KEY)
+        }
+    }
+
+    async updateMailNotification(event) {
+        let checked = event.target.checked;
+        await updateDisableMailNotification(!checked).then(() => {
+                this.setState({
+                    disableMailNotification: !checked,
+                    infoModalVisible: true,
+                    infoModalMessage: this.props.intl.formatMessage({
+                        id: !checked ? 'user.disable.mail.notification.success.true' : 'user.disable.mail.notification.success.false',
+                    })
+                })
+            }
+        ).catch((error) => {
+            console.log(error);
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({
+                    id: 'user.disable.mail.notification.error',
+                })
+            })
+        })
     }
 
     componentWillUnmount() {
@@ -208,6 +252,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     }
 
     public render() {
+        let disableChecked = true;
+        if (this.state.disableMailNotification) {
+            disableChecked = false;
+        }
+
         return (
             <React.Fragment>
                 <FadeLoader
@@ -264,7 +313,26 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     {this.state.displayName}
                                                 </h4>
                                                 <p>{this.state.email}</p>
-
+                                                <div className="br"/>
+                                                <h4>
+                                                    <FormattedMessage
+                                                        id="user.marketing.title"
+                                                        defaultMessage="Acord de marketing"
+                                                    />
+                                                </h4>
+                                                <div style={{marginLeft: 15}}>
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Checkbox
+                                                                checked={disableChecked}
+                                                                onChange={this.updateMailNotification}
+                                                                name="redirectChecked"
+                                                                color="default"
+                                                            />
+                                                        }
+                                                        label={this.props.intl.formatMessage({id: 'user.disable.mail.notification'})}
+                                                    />
+                                                </div>
                                             </aside>
                                         </div>
                                     </div>

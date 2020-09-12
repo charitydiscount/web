@@ -171,5 +171,10 @@
   "user.redirect.message1": "Site-ul va reține pentru câteva zile că ai ajuns prin intermediul CharityDiscount",
   "user.redirect.message2": "La scurt timp după ce ai plasat comanda dorită, cashback-ul va fi vizibil în CharityDiscount",
   "user.redirect.message3": "În prima fază, cashback-ul va fi în așteptare, iar după un anumit număr de zile(între 14 și 60 cel mai des), dacă nu ai returnat produsele, va fi disponibil",
-  "user.redirect.checkbox": "Nu mai afișa acest mesaj"
+  "user.redirect.checkbox": "Nu mai afișa acest mesaj",
+  "user.disable.mail.notification": "Notificări pe mail",
+  "user.disable.mail.notification.success.true": "Notificările pe mail au fost oprite",
+  "user.disable.mail.notification.success.false": "Notificările pe mail au fost pornite",
+  "user.disable.mail.notification.error": "Eroare, te rugăm să încerci din nou",
+  "user.marketing.title": "Acord de marketing"
 }

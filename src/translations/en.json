@@ -171,5 +171,10 @@
   "user.redirect.message1": "The website will remember that you arrived from CharityDiscount for a few days",
   "user.redirect.message2": "Shortly after your purchase, your cashback will show up in CharityDiscount",
   "user.redirect.message3": "Initially, the cashback will be in a pending state for a few days (usually between 14 and 60) and after that, if you haven't returned the products, it will become available",
-  "user.redirect.checkbox": "I don't need to see this again"
+  "user.redirect.checkbox": "I don't need to see this again",
+  "user.disable.mail.notification": "Email notification",
+  "user.disable.mail.notification.success.true": "Email notifications are disabled",
+  "user.disable.mail.notification.success.false": "Email notifications are enabled",
+  "user.disable.mail.notification.error": "Something went wrong, please try again",
+  "user.marketing.title": "Marketing agreement"
 }

@@ -6,12 +6,36 @@ export interface UserDto {
     name: string;
     photoUrl: string;
     userId: string;
+    disableMailNotification: boolean;
 }
 
 export interface AccountDto {
     iban: string;
     name: string;
     nickname: string;
+}
+
+export const getDisableMailNotification = (userId: string): Promise<Boolean> =>
+    DB.collection(FirebaseTable.USERS)
+        .doc(userId)
+        .get()
+        .then(
+            response =>
+                (response.data() as UserDto).disableMailNotification
+        );
+
+
+export function updateDisableMailNotification(disableMailNotification: boolean) {
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
+    }
+
+    return DB.collection(FirebaseTable.USERS)
+        .doc(auth.currentUser.uid)
+        .set(
+            {disableMailNotification: disableMailNotification},
+            {merge: true}
+        );
 }
 
 export function updateUserAccount(accountName: string, accountIban: string) {
@@ -28,7 +52,7 @@ export function updateUserAccount(accountName: string, accountIban: string) {
                 name: accountName,
                 iban: accountIban,
             },
-            { merge: true }
+            {merge: true}
         );
 }
 

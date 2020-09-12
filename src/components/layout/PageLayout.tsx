@@ -21,6 +21,7 @@ import { FadeLoader } from 'react-spinners';
 import { spinnerCss } from '../../helper/AppHelper';
 import { loadShops } from '../../redux/actions/ShopsAction';
 import ExternalShop from "../shops/ExternalShop";
+import UnsubscribeMailRedirect from "../login/UnsubscribeMailRedirect";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -91,6 +92,11 @@ const PageLayout = (props: PageLayoutProps) => {
                     />
                     <Route
                         exact={true}
+                        path={Routes.USER + '/unsubscribe'}
+                        component={UserInfo}
+                    />
+                    <Route
+                        exact={true}
                         path={Routes.REVIEW + '/:id'}
                         component={ShopReview}
                     />
@@ -130,6 +136,11 @@ const PageLayout = (props: PageLayoutProps) => {
                         exact={true}
                         path={Routes.SHOP + '/:shopName'}
                         component={ExternalShop}
+                    />
+                    <Route
+                        exact={true}
+                        path={Routes.USER + '/unsubscribe'}
+                        component={UnsubscribeMailRedirect}
                     />
                     <Route
                         exact={true}
