@@ -117,6 +117,9 @@ const PageLayout = (props: PageLayoutProps) => {
                         path={Routes.AUTH}
                         component={ExternalAccess}
                     />
+                    <Route exact={true} path={Routes.INVITE} component={() => {
+                        return null;
+                    }}/>
                     <Route render={() => <Redirect to={Routes.LOGIN} />} />
                 </Switch>
             </main>
@@ -154,6 +157,9 @@ const PageLayout = (props: PageLayoutProps) => {
                         component={Privacy}
                     />
                     <Route exact={true} path={Routes.FAQ} component={Faq} />
+                    <Route exact={true} path={Routes.INVITE} component={() => {
+                        return null;
+                    }}/>
                     <Route
                         exact={true}
                         path={Routes.AUTH}
