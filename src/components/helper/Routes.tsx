@@ -13,6 +13,5 @@ export enum Routes {
     FAQ = "/faq", //frequently asked questions
     PRIVACY = "/privacy",
     PRODUCTS = "/products",
-    AUTH = "/auth",
-    INVITE = "/invite"
+    AUTH = "/auth"
 }
