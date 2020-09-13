@@ -5,6 +5,7 @@ import LoginComponent from "../login/LoginComponent";
 import {getUrlParameter, spinnerCss} from "../../helper/AppHelper";
 import {AuthActions} from "../login/UserActions";
 import FadeLoader from 'react-spinners/FadeLoader';
+import { parseAndSaveUser } from "../login/AuthHelper";
 
 interface ExternalAccessState {
     page: string,
@@ -32,7 +33,7 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
         let caseIdFromUrl = getUrlParameter('case');
         if (token) {
             try {
-                let response = await this.verifyUserLoggedInFirebase(token);
+                let response = await this.authenticateExternally(token);
                 if (response) {
                     this.setState({
                         page: pageFromUrl,
@@ -45,12 +46,13 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
         }
     }
 
-    public verifyUserLoggedInFirebase(token) {
+    public authenticateExternally(token) {
         return new Promise((resolve, reject) => {
             return auth.signInWithCustomToken(token)
                 .then((response) => {
                         if (response.user) {
-                            store.dispatch(AuthActions.setLoggedUserAction(response.user));
+                            let parsedUser = parseAndSaveUser(response.user);
+                            store.dispatch(AuthActions.setLoggedUserAction(parsedUser));
                             this.setState({
                                 isLoading: false
                             });

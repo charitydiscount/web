@@ -1,4 +1,4 @@
-import { auth, DB } from '../index';
+import { DB } from '../index';
 import { FirebaseTable } from '../helper/Constants';
 
 export interface PromotionDTO {
@@ -17,10 +17,6 @@ export interface PromotionProgramDto {
 }
 
 export const getPromotions = async (programId: number) => {
-    if (!auth.currentUser) {
-        return;
-    }
-
     return DB.collection(FirebaseTable.PROMOTIONS)
         .doc(`${programId}`)
         .get()

@@ -23,6 +23,7 @@ import { getDisableMailNotification, updateDisableMailNotification } from "../..
 import { FormControlLabel } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { getLocalStorage, removeLocalStorage } from "../../helper/StorageHelper";
+import { getUserId, getUserInfo } from "./AuthHelper";
 
 interface IUserInfoProps {
     intl: IntlShape;
@@ -85,14 +86,12 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
         await loadCurrentUserPhoto(this);
 
-        if (auth.currentUser) {
-            let response = await getDisableMailNotification(auth.currentUser.uid);
-            console.log(response);
-            if (response) {
-                this.setState({
-                    disableMailNotification: response
-                });
-            }
+
+        let response = await getDisableMailNotification(getUserId());
+        if (response) {
+            this.setState({
+                disableMailNotification: response
+            });
         }
 
         let redirectKey = getLocalStorage(StorageKey.REDIRECT_KEY);
@@ -128,41 +127,36 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     }
 
     async requestDeleteAccount() {
-        if (auth.currentUser) {
-            this.setState({
-                isLoading: true,
-                confirmModalVisible: false
-            });
-            await addContactMessageToDb(
-                auth.currentUser.displayName,
-                auth.currentUser.email,
-                auth.currentUser.uid,
-                'Request to delete account with id:' + auth.currentUser.uid,
-                'Delete account with id:' + auth.currentUser.uid
-            )
-                .then(() => {
-                    this.setState({
-                        infoModalVisible: true,
-                        isLoading: false,
-                        infoModalMessage: this.props.intl.formatMessage({
-                            id: 'userInfo.delete.account.ok',
-                        }),
-                    });
-                })
-                .catch(() => {
-                    this.setState({
-                        infoModalVisible: true,
-                        isLoading: false,
-                        infoModalMessage: this.props.intl.formatMessage({
-                            id: 'userInfo.delete.account.not.ok',
-                        }),
-                    });
+        this.setState({
+            isLoading: true,
+            confirmModalVisible: false
+        });
+        let userInfo = getUserInfo();
+        await addContactMessageToDb(
+            userInfo.displayName,
+            userInfo.email,
+            userInfo.uid,
+            'Request to delete account with id:' + userInfo.uid,
+            'Delete account with id:' + userInfo.uid
+        )
+            .then(() => {
+                this.setState({
+                    infoModalVisible: true,
+                    isLoading: false,
+                    infoModalMessage: this.props.intl.formatMessage({
+                        id: 'userInfo.delete.account.ok',
+                    }),
                 });
-        } else {
-            this.setState({
-                confirmModalVisible: false
+            })
+            .catch(() => {
+                this.setState({
+                    infoModalVisible: true,
+                    isLoading: false,
+                    infoModalMessage: this.props.intl.formatMessage({
+                        id: 'userInfo.delete.account.not.ok',
+                    }),
+                });
             });
-        }
     }
 
     openDeleteAccount() {

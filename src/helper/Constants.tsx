@@ -59,20 +59,18 @@ export enum StorageKey {
     CATEGORIES = '/categoriesCD',
     SHOPS = '/shopsCD',
     REFERRAL_KEY = '/referralCD',
-    SELECTED_SHOP = '/selectedShopCD',
-    REDIRECT_KEY = '/redirectCD',
+    SELECTED_SHOP = '/selectedShopCD', //if you want to load the selected shop directly
+    REDIRECT_KEY = '/redirectCD', //if coming from external
     FAVORITE_SHOPS = '/favoriteShopsCD',
     CAUSES = '/causesCD',
     USER = '/userCD',
-    LANG = '/langCD',
+    LANG = '/langCD', //used to remember the language it was selected
     REVIEWS = '/reviewsCD',
-    REDIRECT_MESSAGE = "/redirectMessageDisableCD",
+    REDIRECT_MESSAGE = "/redirectMessageDisableCD", //this should never be cleared by us
 
     //SESSION STORAGE
     PERFORMANET_2_CODE = '/performant2CodeCD',
 }
-
-export const ProviderType = ['google', 'facebook', 'normal'];
 
 export const emptyHrefLink = '#';
 export const logoPath = '/img/logo.png';

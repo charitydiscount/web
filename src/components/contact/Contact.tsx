@@ -1,14 +1,15 @@
 import * as React from 'react';
-import {auth, store} from '../../index';
-import {NavigationsAction} from '../../redux/actions/NavigationsAction';
-import {Stages} from '../helper/Stages';
-import {InputType} from '../../helper/Constants';
+import { store } from '../../index';
+import { NavigationsAction } from '../../redux/actions/NavigationsAction';
+import { Stages } from '../helper/Stages';
+import { InputType } from '../../helper/Constants';
 import GenericInput from '../input/GenericInput';
-import {FormattedMessage} from 'react-intl';
-import {injectIntl, IntlShape} from 'react-intl';
-import {isEmptyString} from '../../helper/AppHelper';
-import {addContactMessageToDb} from '../../rest/ContactService';
+import { FormattedMessage } from 'react-intl';
+import { injectIntl, IntlShape } from 'react-intl';
+import { isEmptyString } from '../../helper/AppHelper';
+import { addContactMessageToDb } from '../../rest/ContactService';
 import InfoModal from "../modals/InfoModal";
+import { getUserInfo } from "../login/AuthHelper";
 
 interface IContactProps {
     intl: IntlShape;
@@ -70,33 +71,33 @@ class Contact extends React.Component<IContactProps, IContactState> {
             return;
         }
 
-        if (auth.currentUser) {
-            await addContactMessageToDb(
-                auth.currentUser.displayName,
-                auth.currentUser.email,
-                auth.currentUser.uid,
-                this.state.message,
-                this.state.subject
-            )
-                .then(() => {
-                    this.setState({
-                        modalVisible: true,
-                        modalMessage: this.props.intl.formatMessage({
-                            id: 'contact.sendMessage.ok',
-                        }),
-                        subject: '',
-                        message: '',
-                    });
-                })
-                .catch(() => {
-                    this.setState({
-                        modalVisible: true,
-                        modalMessage: this.props.intl.formatMessage({
-                            id: 'contact.sendMessage.not.ok',
-                        }),
-                    });
+        let currentUser = getUserInfo();
+        await addContactMessageToDb(
+            currentUser.displayName,
+            currentUser.email,
+            currentUser.uid,
+            this.state.message,
+            this.state.subject
+        )
+            .then(() => {
+                this.setState({
+                    modalVisible: true,
+                    modalMessage: this.props.intl.formatMessage({
+                        id: 'contact.sendMessage.ok',
+                    }),
+                    subject: '',
+                    message: '',
                 });
-        }
+            })
+            .catch(() => {
+                this.setState({
+                    modalVisible: true,
+                    modalMessage: this.props.intl.formatMessage({
+                        id: 'contact.sendMessage.not.ok',
+                    }),
+                });
+            });
+
     }
 
     public closeModal() {

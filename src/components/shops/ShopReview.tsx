@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { auth, store } from '../../index';
+import { store } from '../../index';
 import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import { spinnerCss } from '../../helper/AppHelper';
@@ -15,6 +15,7 @@ import ShopElement from './ShopElement';
 import Modal from 'react-awesome-modal';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducer/RootReducer';
+import { getUserInfo } from "../login/AuthHelper";
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -75,9 +76,6 @@ class ShopReview extends React.Component<IProductReviewProps,
         setLocalStorage(StorageKey.SELECTED_SHOP, this.state.shop.name);
         try {
             let reviews = await fetchReviews(this.state.shop.uniqueCode);
-            // const ownReview = reviews.find(
-            //     review => (review.reviewer.userId = auth.currentUser.uid)
-            // );
             this.setState({
                 reviews: reviews,
                 reviewsLoading: false,
@@ -109,35 +107,34 @@ class ShopReview extends React.Component<IProductReviewProps,
 
     async updateCurrentReview() {
         if (this.state.rating > 0) {
-            if (auth.currentUser) {
-                try {
-                    await saveReview(
-                        this.state.shop.uniqueCode,
-                        this.state.rating,
-                        this.state.description,
-                        {
-                            userId: auth.currentUser.uid,
-                            name: auth.currentUser.displayName || '-',
-                            photoUrl: auth.currentUser.photoURL || '',
-                        }
-                    );
-                    removeLocalStorage(StorageKey.REVIEWS);
-                    removeLocalStorage(StorageKey.SHOPS);
-                    this.handleShowModalMessage(
-                        this.props.intl.formatMessage({
-                            id: 'review.update.message',
-                        }),
-                        null
-                    );
-                } catch (error) {
-                    this.handleShowModalMessage(
-                        this.props.intl.formatMessage({
-                            id: 'review.failed.to.update.error.message',
-                        }),
-                        null
-                    );
+            let currentUser = getUserInfo();
+            try {
+                await saveReview(
+                    this.state.shop.uniqueCode,
+                    this.state.rating,
+                    this.state.description,
+                    {
+                        userId: currentUser.uid,
+                        name: currentUser.displayName || currentUser.email || '-',
+                        photoUrl: currentUser.photoURL || '',
+                    }
+                );
+                removeLocalStorage(StorageKey.REVIEWS);
+                removeLocalStorage(StorageKey.SHOPS);
+                this.handleShowModalMessage(
+                    this.props.intl.formatMessage({
+                        id: 'review.update.message',
+                    }),
+                    null
+                );
+            } catch (error) {
+                this.handleShowModalMessage(
+                    this.props.intl.formatMessage({
+                        id: 'review.failed.to.update.error.message',
+                    }),
+                    null
+                );
 
-                }
             }
         } else {
             this.handleShowModalMessage(

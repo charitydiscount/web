@@ -23,10 +23,10 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import { connect } from 'react-redux';
-import { auth } from '../..';
 import iban from 'iban';
 import { removeLocalStorage } from '../../helper/StorageHelper';
 import InfoModal from "../modals/InfoModal";
+import { getUserId } from "../login/AuthHelper";
 
 interface IWalletBlockState {
     donateVisible: boolean;
@@ -127,11 +127,8 @@ class WalletBlock extends React.Component<
     }
 
     async openCashoutModal() {
-        if (!auth.currentUser) {
-            return;
-        }
         try {
-            let accounts = await getUserBankAccounts(auth.currentUser.uid);
+            let accounts = await getUserBankAccounts(getUserId());
             if (accounts && accounts.length > 0) {
                 this.setState({
                     name: (accounts[0] as AccountDto).name,
