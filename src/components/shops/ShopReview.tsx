@@ -12,10 +12,10 @@ import { injectIntl, IntlShape } from 'react-intl';
 import { removeLocalStorage, setLocalStorage } from '../../helper/StorageHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import ShopElement from './ShopElement';
-import Modal from 'react-awesome-modal';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducer/RootReducer';
 import { getUserInfo } from "../login/AuthHelper";
+import InfoModal from "../modals/InfoModal";
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -74,14 +74,13 @@ class ShopReview extends React.Component<IProductReviewProps,
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
         document.addEventListener('keydown', this.escFunction, false);
         setLocalStorage(StorageKey.SELECTED_SHOP, this.state.shop.name);
-        try {
-            let reviews = await fetchReviews(this.state.shop.uniqueCode);
+        let reviews = await fetchReviews(this.state.shop.uniqueCode);
+        if (reviews) {
             this.setState({
                 reviews: reviews,
                 reviewsLoading: false,
             });
-        } catch (error) {
-            //reviews won't be loaded
+        } else {
             this.setState({
                 reviewsLoading: false,
             });
@@ -96,7 +95,6 @@ class ShopReview extends React.Component<IProductReviewProps,
         this.setState({
             modalVisible: false,
         });
-        window.location.reload();
     }
 
     openModal() {
@@ -119,7 +117,7 @@ class ShopReview extends React.Component<IProductReviewProps,
                         photoUrl: currentUser.photoURL || '',
                     }
                 );
-                removeLocalStorage(StorageKey.REVIEWS);
+                removeLocalStorage(StorageKey.REVIEWS_RATINGS);
                 removeLocalStorage(StorageKey.SHOPS);
                 this.handleShowModalMessage(
                     this.props.intl.formatMessage({
@@ -127,6 +125,12 @@ class ShopReview extends React.Component<IProductReviewProps,
                     }),
                     null
                 );
+                let reviews = await fetchReviews(this.state.shop.uniqueCode);
+                if (reviews) {
+                    this.setState({
+                        reviews: reviews,
+                    });
+                }
             } catch (error) {
                 this.handleShowModalMessage(
                     this.props.intl.formatMessage({
@@ -239,13 +243,9 @@ class ShopReview extends React.Component<IProductReviewProps,
 
         return (
             <React.Fragment>
-                <Modal
-                    visible={this.state.modalVisible}
-                    effect="fadeInUp"
-                    onClickAway={() => this.closeModal()}
-                >
-                    <h3 style={{padding: 15}}>{this.state.modalMessage}</h3>
-                </Modal>
+                <InfoModal visible={this.state.modalVisible}
+                           message={this.state.modalMessage}
+                           onClose={() => this.closeModal()}/>
                 <section className={'product_description_area'}>
                     <div className={'container'}>
                         <div className="row" style={{marginTop: 70}}>

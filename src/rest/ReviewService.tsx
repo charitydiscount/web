@@ -59,19 +59,19 @@ export interface ReviewRating {
 
 export function fetchReviewRatings() {
     return new Promise((resolve, reject) => {
-        const reviews = getLocalStorage(StorageKey.REVIEWS);
+        const reviews = getLocalStorage(StorageKey.REVIEWS_RATINGS);
         if (reviews) {
             try {
                 let stEntry = JSON.parse(reviews);
                 //verify localStorage valid
                 if (stEntry.length <= 0) {
-                    removeLocalStorage(StorageKey.REVIEWS);
+                    removeLocalStorage(StorageKey.REVIEWS_RATINGS);
                 } else {
                     resolve(JSON.parse(reviews) as Map<String, ReviewRating>);
                     return;
                 }
             } catch (error) {
-                removeLocalStorage(StorageKey.REVIEWS);
+                removeLocalStorage(StorageKey.REVIEWS_RATINGS);
             }
         }
 
@@ -82,7 +82,7 @@ export function fetchReviewRatings() {
                 if (doc.exists) {
                     let dbReviews = doc.data() as MetaReviewsDBWrapper;
                     setLocalStorage(
-                        StorageKey.REVIEWS,
+                        StorageKey.REVIEWS_RATINGS,
                         JSON.stringify(dbReviews.ratings)
                     );
                     resolve(dbReviews.ratings);

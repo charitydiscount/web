@@ -261,13 +261,13 @@ class ShopElement extends React.Component<IShopElementProps, IShopElementState> 
                                         Routes.REVIEW + '/' + this.props.shop.id
                                     }
                                 >
-                                    <p className="mt-4">
+                                    <span className="mt-4">
                                         {rating}
                                         <span>
                                             {' '}
                                             ({this.props.shop.totalReviews})
                                         </span>
-                                    </p>
+                                    </span>
                                 </Link>
                             ) : this.props.comingFromShopReview ? (
                                 ''
@@ -289,7 +289,7 @@ class ShopElement extends React.Component<IShopElementProps, IShopElementState> 
                         </div>
                         <div
                             className="s_product_text"
-                            style={{marginTop: 20, marginBottom: 20}}
+                            style={{marginTop: 0, marginBottom: 0}}
                         >
                             <div className="card_area p_20">
                                 {accessButton}
@@ -333,7 +333,7 @@ class ShopElement extends React.Component<IShopElementProps, IShopElementState> 
                                             !this.props.comingFromShopReview
                                                 ? {
                                                     overflowY: 'auto',
-                                                    maxHeight: 200,
+                                                    maxHeight: 150,
                                                 }
                                                 : {}
                                         }

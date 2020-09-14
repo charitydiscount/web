@@ -29,6 +29,6 @@ export function clearStorage() {
     removeLocalStorage(StorageKey.SHOPS);
     removeLocalStorage(StorageKey.FAVORITE_SHOPS);
     removeLocalStorage(StorageKey.CATEGORIES);
-    removeLocalStorage(StorageKey.REVIEWS);
+    removeLocalStorage(StorageKey.REVIEWS_RATINGS);
     removeSessionStorage(StorageKey.PERFORMANET_2_CODE);
 }

@@ -65,7 +65,7 @@ export enum StorageKey {
     CAUSES = '/causesCD',
     USER = '/userCD',
     LANG = '/langCD', //used to remember the language it was selected
-    REVIEWS = '/reviewsCD',
+    REVIEWS_RATINGS = '/reviewsCD',
     REDIRECT_MESSAGE = "/redirectMessageDisableCD", //this should never be cleared by us
 
     //SESSION STORAGE
