@@ -12,7 +12,7 @@ export interface ReviewsDBWrapper {
 }
 
 export interface ReviewDto {
-    createdAt: Date;
+    createdAt:  firestore.Timestamp;
     description: string;
     rating: number;
     reviewer: ReviewerDto;
@@ -31,7 +31,14 @@ export const fetchReviews = (shopUniqueCode: string) =>
         .then(doc => {
             if (doc.exists) {
                 const data = doc.data() as ReviewsDBWrapper;
-                return Object.values(data.reviews).map(value => value);
+                return Object.values(data.reviews)
+                    .sort((p1, p2) => {
+                        if (p1.createdAt > p2.createdAt) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    });
             } else {
                 return [];
             }

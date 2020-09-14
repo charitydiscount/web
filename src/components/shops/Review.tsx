@@ -5,23 +5,22 @@ import {
     noImagePath,
     profilePictureSuffix,
 } from '../../helper/Constants';
+import { ReviewDto } from "../../rest/ReviewService";
+import { dateOptions } from "../../helper/AppHelper";
 
 interface IReviewState {
     photoURL: string;
 }
 
 interface IReviewProps {
-    photoUrl: string;
-    name: string;
-    description: string;
-    rating: number;
-    userID: string;
+    review: ReviewDto,
 }
 
 class Review extends React.Component<IReviewProps, IReviewState> {
     constructor(props: IReviewProps) {
+
         super(props);
-        let photoUrl = this.props.photoUrl;
+        let photoUrl = this.props.review.reviewer.photoUrl;
         if (!photoUrl) {
             photoUrl = noImagePath;
         } else {
@@ -35,9 +34,9 @@ class Review extends React.Component<IReviewProps, IReviewState> {
     }
 
     async componentDidMount() {
-        if (!this.props.photoUrl) {
+        if (!this.props.review.reviewer.photoUrl) {
             try {
-                const response = await fetchProfilePhoto(this.props.userID);
+                const response = await fetchProfilePhoto(this.props.review.reviewer.userId);
                 this.setState({
                     photoURL: response as string,
                 });
@@ -51,7 +50,7 @@ class Review extends React.Component<IReviewProps, IReviewState> {
 
     public render() {
         const rating = [1, 2, 3, 4, 5].map(star =>
-            star <= this.props.rating ? (
+            star <= this.props.review.rating ? (
                 <i
                     key={`star-${star}`}
                     className="fa fa-star star-focus fa-lg"
@@ -83,11 +82,14 @@ class Review extends React.Component<IReviewProps, IReviewState> {
                             />
                         </div>
                         <div className="media-body">
-                            <h4>{this.props.name}</h4>
+                            <h4>{this.props.review.reviewer.name}</h4>
+                            <h5>{this.props.review.createdAt
+                                .toDate()
+                                .toLocaleDateString('ro-RO', dateOptions)}</h5>
                             {rating}
                         </div>
                     </div>
-                    <p>{this.props.description}</p>
+                    <p>{this.props.review.description}</p>
                 </div>
             </React.Fragment>
         );

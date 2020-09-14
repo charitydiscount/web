@@ -192,11 +192,7 @@ class ShopReview extends React.Component<IProductReviewProps,
                     return (
                         <Review
                             key={review.reviewer.name}
-                            photoUrl={review.reviewer.photoUrl}
-                            name={review.reviewer.name}
-                            description={review.description}
-                            rating={review.rating}
-                            userID={review.reviewer.userId}
+                            review={review}
                         />
                     );
                 })
