@@ -17,6 +17,7 @@ import { AppState } from "../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import RedirectModal from "./RedirectModal";
 import { getLocalStorage } from "../../helper/StorageHelper";
+import { computeUrl } from "../../helper/AppHelper";
 
 interface IShopElementProps {
     shop: ShopDto;
@@ -143,10 +144,11 @@ class ShopElement extends React.Component<IShopElementProps, IShopElementState> 
         );
 
         let accessButton;
+        let cashbackUrl = computeUrl(this.props.shop.affiliateUrl, this.props.shop.uniqueCode, this.props.shop.mainUrl);
         let redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
         if (redirectStorageKey && redirectStorageKey === "true") {
             accessButton =  <a
-                href={this.props.shop.computeUrl}
+                href={cashbackUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="main_btn"
@@ -174,7 +176,7 @@ class ShopElement extends React.Component<IShopElementProps, IShopElementState> 
             <React.Fragment>
                 <RedirectModal visible={this.state.redirectModalVisible}
                                onCloseModal={this.closeRedirectModal}
-                               cashbackUrl={this.props.shop.computeUrl}/>
+                               cashbackUrl={cashbackUrl}/>
                 <div className="text-center p-4">
                     {!this.props.comingFromShopReview && (
                         <div style={{textAlign: 'right'}}>

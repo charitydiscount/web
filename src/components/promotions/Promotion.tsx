@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { PromotionDTO } from '../../rest/DealsService';
 import { ShopDto } from '../../rest/ShopsService';
-import { computeUrl, interpolateAffiliateUrl } from '../../helper/AppHelper';
+import { computeUrl } from '../../helper/AppHelper';
 
 interface PromotionProps {
     promotion: PromotionDTO;
@@ -22,17 +22,8 @@ class Promotion extends React.Component<Props> {
         );
         let computedPromotionUrl: string | undefined;
         if (shop) {
-            if (this.props.promotion.affiliateUrl) {
-                computedPromotionUrl = interpolateAffiliateUrl(
-                    this.props.promotion.affiliateUrl,
-                    shop.uniqueCode
-                );
-            } else {
-                computedPromotionUrl = computeUrl(
-                    shop.uniqueCode,
-                    this.props.promotion.landingPageLink
-                );
-            }
+            computedPromotionUrl = computeUrl(this.props.promotion.affiliateUrl, shop.uniqueCode,
+                this.props.promotion.landingPageLink);
         }
 
         return (

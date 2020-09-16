@@ -32,13 +32,6 @@ export interface ProductResponse {
     url: string;
 }
 
-export interface ProductSearchInfo {
-    productName: string;
-    minPrice: string;
-    maxPrice: string;
-    sort: string;
-}
-
 export interface ProductDTO {
     price: number;
     title: string;
