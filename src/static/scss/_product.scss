@@ -1,3 +1,15 @@
+/* Generics
+============================================================================================ */
+
+.shade-container {
+    background: #fcfcfc;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px 5px rgba(153, 153, 153, 0.1);
+}
+
+/* ========================================================================================== 
+Generics */
+
 /* Hot Deals Product Area css
 ============================================================================================ */
 
@@ -144,38 +156,45 @@
     }
 }
 
-.latest_product_inner {
+.latest_product_inner.shops-container {
     display: flex;
     justify-content: space-between;
     flex-flow: row wrap;
-    padding-right: 10px;
-    .shop {
-        background: white url('/img/categories/electro_it_short.png') repeat-x
-            bottom;
-        margin: 20px 10px !important;
-        border: 1px solid white;
-        border-radius: 5px;
-        height: 200px;
-        .shop-image-container {
-            display: inline-block;
-            width: 100%;
-            height: 100px;
-            padding: 10px;
-            margin-bottom: 10px;
-            .shop-image {
+    margin: 20px 0;
+    padding: 0 10px;
+    .shop-container {
+        padding: 0 5px;
+        .shop {
+            background: white url('/img/categories/electro_it_short.png')
+                repeat-x bottom;
+            margin: 20px 0 !important;
+            border-radius: 5px;
+            box-shadow: 0px 0px 3px 2px rgba(153, 153, 153, 0.1);
+            height: 200px;
+            &:hover {
+                box-shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.1);
+            }
+            .shop-image-container {
                 display: inline-block;
                 width: 100%;
-                height: 100%;
-                background: transparent no-repeat center;
-                background-size: contain;
+                height: 100px;
+                padding: 10px;
+                margin-bottom: 10px;
+                .shop-image {
+                    display: inline-block;
+                    width: 100%;
+                    height: 100%;
+                    background: transparent no-repeat center;
+                    background-size: contain;
+                }
             }
-        }
-        .shop-description-container {
-            padding: 20px;
-            .comission {
-                font-size: 1.2rem;
-                font-family: Arial, Helvetica, sans-serif;
-                font-weight: 00;
+            .shop-description-container {
+                padding: 20px;
+                .comission {
+                    font-size: 1.2rem;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-weight: 700;
+                }
             }
         }
     }
@@ -233,16 +252,6 @@
 
 /* Product Sidebar Area css
 ============================================================================================ */
-
-.cat_product_area {
-    .latest_product_inner {
-        padding-top: 30px;
-        margin-bottom: -50px;
-        .f_p_item {
-            margin-bottom: 50px;
-        }
-    }
-}
 
 .left_widgets {
     margin-bottom: 30px;
@@ -406,15 +415,15 @@
 }
 
 .product_top_bar {
-    background: #f9f9ff;
     clear: both;
     display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     padding: 10px 20px;
     .left_dorp {
         .sorting {
             display: inline-block;
             clear: none;
-            border: 1px solid #eeeeee;
             border-radius: 0px;
             height: 40px;
             width: 210px;

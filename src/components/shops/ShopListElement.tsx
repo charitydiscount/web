@@ -77,7 +77,7 @@ class ShopListElement extends React.Component<
                     )}
                 </Modal>
                 <div
-                    className="col-md-4 col-xl-3 col-sm-6"
+                    className="col-md-4 col-xl-3 col-sm-6 shop-container"
                     onClick={() => this.openModal()}
                     style={{ cursor: 'pointer' }}
                 >

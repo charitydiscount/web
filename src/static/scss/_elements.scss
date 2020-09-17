@@ -785,12 +785,14 @@ h6 {
 
 .single-input {
     display: block;
-    width: 100%;
+    width: 80%;
     line-height: 40px;
     border: none;
+    height: 30px;
     outline: none;
-    background: #f9f9ff;
+    background: transparent;
     padding: 0 20px;
+    border-bottom: 1px solid #777;
 }
 
 .single-input:focus {

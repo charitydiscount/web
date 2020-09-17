@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { store } from '../../index';
-import {
-    NavigationsAction,
-} from '../../redux/actions/NavigationsAction';
+import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import Categories from './Categories';
 import { connect } from 'react-redux';
@@ -139,7 +137,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 isLoading: false,
             });
         } else {
-            const data = this.props.allShops.filter(shop =>
+            const data = this.props.allShops.filter((shop) =>
                 shop.name.toLowerCase().includes(shopName.toLowerCase())
             );
             if (data) {
@@ -160,7 +158,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         });
         if (event.target.value) {
             let sortType = event.target.value;
-            let shopsFilled = this.props.shops.map(shop => {
+            let shopsFilled = this.props.shops.map((shop) => {
                 let ratingObj = this.props.ratings.get(shop.uniqueCode);
                 shop.reviewsRating = !!ratingObj ? ratingObj.rating : 0;
                 shop.totalReviews = !!ratingObj ? ratingObj.count : 0;
@@ -169,7 +167,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             });
 
             if (sortType === 'ascReview' || sortType === 'descReview') {
-                shopsFilled.sort(function(x, y) {
+                shopsFilled.sort(function (x, y) {
                     let a = x.totalReviews,
                         b = y.totalReviews;
                     if (sortType === 'ascReview') {
@@ -185,7 +183,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 sortType === 'ascCommission' ||
                 sortType === 'descCommission'
             ) {
-                shopsFilled.sort(function(x, y) {
+                shopsFilled.sort(function (x, y) {
                     let a = parseFloat(x.commission),
                         b = parseFloat(y.commission);
                     if (sortType === 'ascCommission') {
@@ -198,7 +196,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                     return 0;
                 });
             } else if (sortType === 'ascAtoZ' || sortType === 'descAtoZ') {
-                shopsFilled.sort(function(x, y) {
+                shopsFilled.sort(function (x, y) {
                     let a = x.name.toLowerCase(),
                         b = y.name.toLowerCase();
                     if (sortType === 'ascAtoZ') {
@@ -235,7 +233,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             this.props.ratings &&
             this.props.shops.length > 0 &&
             this.props.ratings.size > 0
-                ? this.props.shops.map(shop => {
+                ? this.props.shops.map((shop) => {
                       let ratingObj = this.props.ratings.get(shop.uniqueCode);
                       shop.reviewsRating = !!ratingObj ? ratingObj.rating : 0;
                       shop.totalReviews = !!ratingObj ? ratingObj.count : 0;
@@ -261,7 +259,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 let offset = this.props.currentPage;
                 shopsList = this.props.shops
                     .slice(offset * pageLimit, (offset + 1) * pageLimit)
-                    .map(shop => {
+                    .map((shop) => {
                         let ratingObj = this.props.ratings.get(shop.uniqueCode);
                         shop.reviewsRating = !!ratingObj ? ratingObj.rating : 0;
                         shop.totalReviews = !!ratingObj ? ratingObj.count : 0;
@@ -280,7 +278,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
         return (
             <React.Fragment>
-                <section className="cat_product_area section_gap">
+                <section className="cat_product_area section_gap shops">
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-lg-3">
@@ -289,8 +287,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                 </div>
                             </div>
 
-                            <div className="col-lg-9">
-                                <div className="product_top_bar">
+                            <div className="col-lg-9 query_container">
+                                <div className="product_top_bar shade-container">
                                     <GenericInput
                                         type={'textfield'}
                                         id={'search'}
@@ -300,8 +298,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                         )}
                                         onKeyUp={this.onSearchUpdateEvent}
                                     />
-                                </div>
-                                <div className="product_top_bar">
                                     <div className="col-lg-3">
                                         <FormControl fullWidth>
                                             <InputLabel>
@@ -387,46 +383,13 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                             </Select>
                                         </FormControl>
                                     </div>
-                                    <div className="right_page ml-auto d-none d-md-block">
-                                        <nav
-                                            className="cat_page"
-                                            aria-label="Page navigation example"
-                                        >
-                                            <ReactPaginate
-                                                previousLabel={'<'}
-                                                previousLinkClassName={
-                                                    'page-link'
-                                                }
-                                                nextLabel={'>'}
-                                                nextLinkClassName={'page-link'}
-                                                breakLabel={'...'}
-                                                breakClassName={'blank'}
-                                                breakLinkClassName={'page-link'}
-                                                pageCount={pageCount}
-                                                marginPagesDisplayed={1}
-                                                pageRangeDisplayed={2}
-                                                forcePage={
-                                                    this.props.currentPage
-                                                }
-                                                onPageChange={
-                                                    this.updatePageNumber
-                                                }
-                                                containerClassName={
-                                                    'pagination'
-                                                }
-                                                pageClassName={'page-item'}
-                                                pageLinkClassName={'page-link'}
-                                                activeClassName={'active'}
-                                            />
-                                        </nav>
-                                    </div>
                                 </div>
                                 <FadeLoader
                                     loading={this.state.isLoading}
                                     color={'#1641ff'}
                                     css={spinnerCss}
                                 />
-                                <div className="latest_product_inner row d-flex align-items-stretch">
+                                <div className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
                                     {!this.state.isLoading && (
                                         <React.Fragment>
                                             {shopsList}
