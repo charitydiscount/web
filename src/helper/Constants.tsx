@@ -6,6 +6,7 @@ export enum InputType {
 
 export enum FirebaseTable {
     CONTACT = 'contact',
+    CLICKS = 'clicks',
     META = 'meta',
     FAVORITE_SHOPS = 'favoriteShops',
     REFERRAL_REQUESTS = 'referral-requests',

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { PromotionDTO } from '../../rest/DealsService';
 import { ShopDto } from '../../rest/ShopsService';
 import { computeUrl } from '../../helper/AppHelper';
+import { clickSaveAndRedirect } from "../../rest/ClickService";
 
 interface PromotionProps {
     promotion: PromotionDTO;
@@ -33,7 +34,7 @@ class Promotion extends React.Component<Props> {
                         {computedPromotionUrl && (
                             <a
                                 href={computedPromotionUrl}
-                                target="_blank"
+                                onClick={(event) => {clickSaveAndRedirect(event, this.props.promotion.program.id, computedPromotionUrl)}}
                                 rel="noopener noreferrer"
                                 style={
                                     !this.props.comingFromShopReview

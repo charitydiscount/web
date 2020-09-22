@@ -4,10 +4,12 @@ import { FormattedMessage, injectIntl, IntlShape } from "react-intl";
 import { FormControlLabel } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { setLocalStorage } from "../../helper/StorageHelper";
-import { StorageKey } from "../../helper/Constants";
+import { emptyHrefLink, StorageKey } from "../../helper/Constants";
+import { clickSaveAndRedirect } from "../../rest/ClickService";
 
 interface RedirectModalProps {
     cashbackUrl: string,
+    programId: number,
     intl: IntlShape;
     visible: boolean,
     onCloseModal: any
@@ -97,8 +99,8 @@ class RedirectModal extends React.Component<RedirectModalProps, RedirectModalSta
                                     label={this.props.intl.formatMessage({id: 'user.redirect.checkbox'})}
                                 />
                                 <a
-                                    href={this.props.cashbackUrl}
-                                    target="_blank"
+                                    href={emptyHrefLink}
+                                    onClick={(event) => {clickSaveAndRedirect(event, this.props.programId, this.props.cashbackUrl)}}
                                     rel="noopener noreferrer"
                                     className="main_btn"
                                 >

@@ -7,6 +7,7 @@ import { Routes } from '../helper/Routes';
 import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import RedirectModal from "../shops/RedirectModal";
 import { getLocalStorage } from "../../helper/StorageHelper";
+import { clickSaveAndRedirect } from "../../rest/ClickService";
 
 interface ProductElementProps {
     intl: IntlShape;
@@ -68,8 +69,8 @@ class ProductElement extends React.Component<ProductElementProps,
         let redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
         if (redirectStorageKey && redirectStorageKey === "true") {
             accessButton =  <a
-                href={this.props.product.url}
-                target="_blank"
+                href={emptyHrefLink}
+                onClick={(event) => {clickSaveAndRedirect(event, this.props.product.shopId, this.props.product.url)}}
                 rel="noopener noreferrer"
                 className="main_btn"
             >
@@ -96,6 +97,7 @@ class ProductElement extends React.Component<ProductElementProps,
             <React.Fragment>
                 {this.renderRedirect()}
                 <RedirectModal visible={this.state.redirectModalVisible}
+                               programId={this.props.product.shopId}
                                onCloseModal={this.closeRedirectModal}
                                cashbackUrl={this.props.product.url}/>
                 <div className="text-center p-4">
