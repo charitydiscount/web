@@ -29,7 +29,7 @@ export async function clickSaveAndRedirect(event, programId, cashbackUrl) {
             ipAddress: ipv4 || "",
             ipv6Address: ipv6 || "",
             programId: programId,
-            deviceType: "web"
+            deviceType: "desktop"
         };
 
         DB.collection(FirebaseTable.CLICKS).add(data);
