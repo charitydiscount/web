@@ -2,7 +2,7 @@ import * as React from 'react';
 import { store } from '../../index';
 import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
-import Categories from './Categories';
+import Categories from './categories/Categories';
 import { connect } from 'react-redux';
 import {
     setCurrentPage,
@@ -28,6 +28,13 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { InputLabel } from '@material-ui/core';
 import { AppState } from '../../redux/reducer/RootReducer';
+import UpperCategories from './categories/UpperCategories';
+import {
+    getLocalStorage,
+    removeLocalStorage,
+} from '../../helper/StorageHelper';
+import { StorageKey } from '../../helper/Constants';
+import ShopModalElement from './ShopModalElement';
 
 interface IShopsProps {
     shops: Array<ShopDto>;
@@ -42,7 +49,6 @@ interface IShopsProps {
     //used to refresh categories
     setCurrentCategory: any;
     setSelections: any;
-    setFavShopsIconFill?: any;
 
     //parameters favshops redirect
     match: any;
@@ -57,6 +63,9 @@ interface IShopsState {
 
     //sort after review
     reviewsSort: string;
+
+    currentShopModal?: ShopDto;
+    currentShopModalVisible: boolean;
 }
 
 const pageLimit = 20; // shops per page
@@ -67,14 +76,19 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         this.state = {
             isLoading: true,
             reviewsSort: '',
+            currentShopModalVisible: false,
         };
         this.onSearchUpdate = this.onSearchUpdate.bind(this);
         this.onSearchUpdateEvent = this.onSearchUpdateEvent.bind(this);
         this.updatePageNumber = this.updatePageNumber.bind(this);
         this.sortAfterReviewsNumber = this.sortAfterReviewsNumber.bind(this);
+        this.findShopAndOpen = this.findShopAndOpen.bind(this);
+        this.closeCurrentShopModal = this.closeCurrentShopModal.bind(this);
     }
 
     async componentDidMount() {
+        store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
+
         try {
             await fetchConfigInfo();
         } catch (error) {
@@ -111,12 +125,16 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             //ratings not loaded
         }
 
-        let searchShop = this.props.match.params.shopName;
-        if (searchShop) {
-            this.onSearchUpdate(searchShop);
+        //open shop modal ----------------------------------------------------------------------------------------------
+        let shopToShow = this.props.match.params.shopName;
+        let shopFromStorage = getLocalStorage(StorageKey.SELECTED_SHOP);
+        if (shopFromStorage) {
+            shopToShow = shopFromStorage;
         }
-
-        store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
+        if (shopToShow) {
+            this.findShopAndOpen(shopToShow);
+        }
+        //--------------------------------------------------------------------------------------------------------------
 
         this.setState({
             isLoading: false,
@@ -150,6 +168,25 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                 });
             }
         }
+    }
+
+    findShopAndOpen(shopName: string) {
+        const shopFound = this.props.allShops.find((shop) =>
+            shop.name.toLowerCase().includes(shopName.toLowerCase())
+        );
+        if (shopFound) {
+            this.setState({
+                currentShopModal: shopFound,
+                currentShopModalVisible: true,
+            });
+        }
+    }
+
+    closeCurrentShopModal() {
+        removeLocalStorage(StorageKey.SELECTED_SHOP);
+        this.setState({
+            currentShopModalVisible: false,
+        });
     }
 
     sortAfterReviewsNumber(event) {
@@ -278,16 +315,24 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
         return (
             <React.Fragment>
-                <section className="cat_product_area section_gap shops">
+                {this.state.currentShopModal && (
+                    <ShopModalElement
+                        shop={this.state.currentShopModal}
+                        modalVisible={this.state.currentShopModalVisible}
+                        onCloseModal={this.closeCurrentShopModal}
+                    />
+                )}
+                <UpperCategories />
+                <section className="cat_product_area shops">
                     <div className="container-fluid">
                         <div className="row">
-                            <div className="col-lg-3">
+                            <div className="col-lg-3 d-none d-md-block">
                                 <div className="left_sidebar_area">
                                     <Categories />
                                 </div>
                             </div>
 
-                            <div className="col-lg-9 query_container">
+                            <div className="col-12 col-lg-9 query_container">
                                 <div className="product_top_bar shade-container">
                                     <GenericInput
                                         type={'textfield'}
@@ -386,7 +431,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                 </div>
                                 <FadeLoader
                                     loading={this.state.isLoading}
-                                    color={'#1641ff'}
+                                    color={'#e31f29'}
                                     css={spinnerCss}
                                 />
                                 <div className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">

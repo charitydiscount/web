@@ -5,7 +5,7 @@ class PrivacyTextEN extends React.Component {
 
     render() {
         return (
-            <p className="sample-text">
+            <div className="sample-text">
                 <p className="text-muted">
                     Politica de confidențialitate prezentata
                     mai jos intră în vigoare de la data de
@@ -126,7 +126,7 @@ class PrivacyTextEN extends React.Component {
                         pe care s-a efectuat achiziția.
                     </p>
                 </ol>
-            </p>
+            </div>
         )
     }
 }

@@ -1,7 +1,7 @@
 import { auth, DB } from '../index';
 import { getLocalStorage, setLocalStorage } from '../helper/StorageHelper';
 import { FirebaseTable, StorageKey } from '../helper/Constants';
-import { computeUrl, interpolateAffiliateUrl, roundCommission, } from '../helper/AppHelper';
+import { roundCommission, } from '../helper/AppHelper';
 import { getPercentage } from './ConfigService';
 import { firestore } from 'firebase/app';
 
@@ -45,9 +45,6 @@ export interface ShopDto {
     commission: string;
     uiCommission: string;
     commissionInterval: string;
-
-    //linkUrl
-    computeUrl: string;
 
     //
     order: number;
@@ -144,17 +141,6 @@ export const fetchPrograms = async (): Promise<ShopDto[]> => {
         .map(([uniqueCode, program]) => {
             program.uiCommission = getProgramCommission(program, false);
             program.commission = getProgramCommission(program, true);
-            if (program.affiliateUrl) {
-                program.computeUrl = interpolateAffiliateUrl(
-                    program.affiliateUrl,
-                    program.uniqueCode
-                );
-            } else {
-                program.computeUrl = computeUrl(
-                    program.uniqueCode,
-                    program.mainUrl
-                );
-            }
             return program;
         })
         .sort((p1, p2) => {

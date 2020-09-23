@@ -1,41 +1,40 @@
 import React, { CSSProperties } from 'react';
-import Modal from 'react-awesome-modal';
-import { FormattedMessage } from 'react-intl';
-import { emptyHrefLink } from './helper/Constants';
+import { injectIntl, IntlShape } from 'react-intl';
+import { connect } from "react-redux";
+import { setAdBlockActive } from "./redux/actions/AdBlockActions";
+import InfoModal from "./components/modals/InfoModal";
 
-class ReactAdBlock extends React.Component {
+interface ReactAdBlockProps {
+    setAdBlock: any,
+    intl: IntlShape;
+}
+
+class ReactAdBlock extends React.Component<ReactAdBlockProps> {
+
     state = {
         usingAdblock: false,
     };
     fakeAdBanner: HTMLDivElement | null = null;
 
     componentDidMount() {
-        this.setState({ usingAdblock: this.fakeAdBanner?.offsetHeight === 0 });
+        let adBlockActive = this.fakeAdBanner?.offsetHeight === 0;
+        this.setState({
+            usingAdblock: adBlockActive
+        });
+        if (adBlockActive) {
+            this.props.setAdBlock(true);
+        }
     }
 
     render() {
         if (this.state.usingAdblock === true) {
             return (
-                <Modal visible={true} effect="fadeInUp">
-                    <div style={{ padding: 15, maxWidth: 600 }}>
-                        <h4>
-                            <FormattedMessage
-                                id={'adblock.message'}
-                                defaultMessage="Disable AdBlock or similar programs to continue"
-                            />
-                        </h4>
-                        <a
-                            href={emptyHrefLink}
-                            onClick={() => window.location.reload()}
-                            className="btn submit_btn genric-btn circle"
-                        >
-                            <FormattedMessage
-                                id={'adblock.button'}
-                                defaultMessage="Reload"
-                            />
-                        </a>
-                    </div>
-                </Modal>
+                <InfoModal visible={true}
+                           message={this.props.intl.formatMessage({
+                               id: 'adblock.message',
+                           })}
+                           onClose={() => window.location.reload()}
+                           maxWidth={600}/>
             );
         }
 
@@ -56,4 +55,11 @@ class ReactAdBlock extends React.Component {
     }
 }
 
-export default ReactAdBlock;
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        setAdBlock: (isActive: boolean) =>
+            dispatch(setAdBlockActive(isActive)),
+    };
+};
+
+export default connect(null, mapDispatchToProps)(injectIntl(ReactAdBlock));

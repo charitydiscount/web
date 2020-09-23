@@ -71,10 +71,6 @@ export const fetchCommissions = async (): Promise<CommissionDto[]> => {
 };
 
 export async function getNotPaidSumForReferralId(referralId) {
-    if (!auth.currentUser) {
-        return 0;
-    }
-
     let commissions = await fetchCommissions();
     let sum = 0;
     commissions
@@ -89,10 +85,6 @@ export async function getNotPaidSumForReferralId(referralId) {
 }
 
 export async function getPaidSumForReferralId(referralId) {
-    if (!auth.currentUser) {
-        return 0;
-    }
-
     let commissions = await fetchCommissions();
     let sum = 0;
     commissions

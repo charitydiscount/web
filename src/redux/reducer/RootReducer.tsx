@@ -5,6 +5,7 @@ import UserReducer, { IUserState } from './UserReducer';
 import ShopsReducer, { IShopsState } from './ShopsReducer';
 import CategoryReducer, { ICategoryState } from './CategoryReducer';
 import LocaleReducer, { ILocaleState } from './LocaleReducer';
+import AdBlockReducer, { IAdBlockState } from "./AdBlockReducer";
 
 export interface AppState {
     router: any;
@@ -12,6 +13,7 @@ export interface AppState {
     user: IUserState;
     shops: IShopsState;
     category: ICategoryState;
+    adBlock: IAdBlockState
     locale: ILocaleState;
 }
 
@@ -24,4 +26,5 @@ export default (history: any) =>
         shops: ShopsReducer,
         category: CategoryReducer,
         locale: LocaleReducer,
+        adBlock: AdBlockReducer
     });

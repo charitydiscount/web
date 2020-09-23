@@ -11,39 +11,33 @@ import { setLangResources } from '../redux/actions/LocaleAction';
 
 /**
  * Used to compute 2performant rest call and redirect
+ * @param affiliateUrl - for case when it's another url than 2performant
  * @param uniqueCode - shop unique code
  * @param redirectUrl - the program url where the user should be redirected
  */
-export function computeUrl(uniqueCode: string, redirectUrl: string) {
-    if (!auth.currentUser) {
-        throw Error('User not logged in');
+export function computeUrl(affiliateUrl:string, uniqueCode: string, redirectUrl: string) {
+    if (!auth.currentUser || !auth.currentUser.uid) {
+        throw Error('User not logged in'); //TODO: this error should be nice treated
     }
-    const baseUrl =
-        'https://event.2performant.com/events/click?ad_type=quicklink';
-    const affCode = '&aff_code=' + getAffiliateCode();
-    const unique = '&unique=' + uniqueCode;
-    const redirect = '&redirect_to=' + redirectUrl;
-    const tag = '&st=' + auth.currentUser.uid;
-    return baseUrl + affCode + unique + redirect + tag;
-}
-
-/**
- * Replace the shop unique code and the user ID into the given url
- * @param url
- * @param shopUniqueCode
- */
-export function interpolateAffiliateUrl(url: string, shopUniqueCode: string) {
-    if (!auth.currentUser) {
-        throw Error('User not logged in');
+    if (affiliateUrl) {
+        // Replace the shop unique code and the user ID into the given url
+        return affiliateUrl
+            .replace(PROGRAM_LINK_PLACEHOLDER, uniqueCode)
+            .replace(USER_LINK_PLACEHOLDER, auth.currentUser.uid);
+    } else {
+        const baseUrl =
+            'https://event.2performant.com/events/click?ad_type=quicklink';
+        const affCode = '&aff_code=' + getAffiliateCode();
+        const unique = '&unique=' + uniqueCode;
+        const redirect = '&redirect_to=' + redirectUrl;
+        const tag = '&st=' + auth.currentUser.uid;
+        return baseUrl + affCode + unique + redirect + tag;
     }
-    return url
-        .replace(PROGRAM_LINK_PLACEHOLDER, shopUniqueCode)
-        .replace(USER_LINK_PLACEHOLDER, auth.currentUser.uid);
 }
 
 export function computeProductUrl(affUrl: string) {
-    if (!auth.currentUser) {
-        throw Error('User not logged in');
+    if (!auth.currentUser || !auth.currentUser.uid) {
+        throw Error('User not logged in'); //TODO: this error should be nice treated
     }
 
     const baseUrl = affUrl;

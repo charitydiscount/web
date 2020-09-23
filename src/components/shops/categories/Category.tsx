@@ -1,22 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { setCurrentPage, setShops } from '../../redux/actions/ShopsAction';
-import { emptyHrefLink } from '../../helper/Constants';
-import { ShopDto } from '../../rest/ShopsService';
+import { setCurrentPage, setShops } from '../../../redux/actions/ShopsAction';
+import { emptyHrefLink } from '../../../helper/Constants';
+import { ShopDto } from '../../../rest/ShopsService';
 import { FormattedMessage } from 'react-intl';
-import { AppState } from '../../redux/reducer/RootReducer';
-
-interface ICategoryProps {
-    name: String;
-    selected: boolean;
-    id: string;
-    onToggle: (id: String, categoryName: String) => void;
-
-    // global state refresh shops
-    setShops?: any;
-    setCurrentPage?: any;
-    allShops: ShopDto[];
-}
+import { AppState } from '../../../redux/reducer/RootReducer';
+import { ICategoryProps, updateShops } from './BaseCategories';
 
 class Category extends React.Component<ICategoryProps> {
     constructor(props: ICategoryProps) {
@@ -32,9 +21,6 @@ class Category extends React.Component<ICategoryProps> {
         this.props.onToggle(this.props.id, this.props.name);
     }
 
-    /**
-     * Used to update shops list after a category is selected
-     */
     public updateShops(event: React.MouseEvent) {
         event.preventDefault(); // prevent default to not point to href location
         if (this.props.name === 'All') {

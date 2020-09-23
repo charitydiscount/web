@@ -6,7 +6,7 @@ class PrivacyTextRO extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <p className="sample-text">
+                <div className="sample-text">
                     <p className="text-muted">
                         Politica de confidențialitate prezentata
                         mai jos intră în vigoare de la data de
@@ -127,7 +127,7 @@ class PrivacyTextRO extends React.Component {
                             pe care s-a efectuat achiziția.
                         </p>
                     </ol>
-                </p>
+                </div>
             </React.Fragment>
         )
     }

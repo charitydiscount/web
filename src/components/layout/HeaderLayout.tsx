@@ -184,7 +184,7 @@ class HeaderLayout extends React.Component<
                                 id="navbarSupportedContent"
                             >
                                 <div className="row w-100">
-                                    <div className="col-lg-7 pr-0">
+                                    <div className="col-lg-8 pr-0">
                                         <ul className="nav navbar-nav center_nav pull-right">
                                             {isLoggedIn && (
                                                 <React.Fragment>
@@ -291,7 +291,7 @@ class HeaderLayout extends React.Component<
                                     </div>
 
                                     {isLoggedIn && (
-                                        <div className="col-lg-5">
+                                        <div className="col-lg-4">
                                             <ul className="nav navbar-nav navbar-right right_nav pull-right">
                                                 <hr />
 

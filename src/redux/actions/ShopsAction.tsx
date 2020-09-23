@@ -16,9 +16,7 @@ export const ShopsActions = {
     setCurrentPage: (currentPage: number) =>
         createAction(ShopsActionTypes.SET_CURRENT_PAGE_ACTION, currentPage),
     shopsLoaded: (shops: ShopDto[]) =>
-        createAction(ShopsActionTypes.SHOPS_LOADED, shops),
-    setCurrentShopUniqueCode: (uniqueCode: string) =>
-        createAction(ShopsActionTypes.SET_CURRENT_SHOP, uniqueCode)
+        createAction(ShopsActionTypes.SHOPS_LOADED, shops)
 };
 
 export function setShops(shops: Array<ShopDto>): any {
@@ -45,14 +43,6 @@ export function setCurrentPage(currentPage: number): any {
     }
 }
 
-export function setCurrentShop(uniqueCode: string): any {
-    if (uniqueCode !== undefined) {
-        return (dispatch: any) => {
-            dispatch(ShopsActions.setCurrentShopUniqueCode(uniqueCode));
-        };
-    }
-}
-
 export const loadShops = () => async (
     dispatch: ThunkDispatch<{}, {}, AnyAction>
 ) => {
@@ -61,7 +51,6 @@ export const loadShops = () => async (
         shops = await fetchPrograms();
         setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
     } catch (error) {
-        console.log(error);
         const shopsJson = getLocalStorage(StorageKey.SHOPS);
         if (shopsJson) {
             shops = JSON.parse(shopsJson);

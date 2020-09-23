@@ -17,9 +17,12 @@ import 'firebase/remote-config';
 import * as serviceWorker from './registerServiceWorker';
 import { AuthActions } from './components/login/UserActions';
 import I18nApp from './I18nApp';
+import { getLocalStorage } from "./helper/StorageHelper";
+import { StorageKey } from "./helper/Constants";
+import { LoginDto } from "./components/login/AuthHelper";
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '2.3.5';
+export const appVersion = '2.4.8';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};
@@ -50,12 +53,21 @@ remoteConfig.fetchAndActivate();
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//verify if user is logged in and authenticate him ---------------------------------------------------------------------
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        store.dispatch(AuthActions.setLoggedUserAction(user));
+//verify if client logged in -------------------------------------------------------------------------------------------
+const user = getLocalStorage(StorageKey.USER);
+if (user && user.length > 0) {
+    //validate json present in storage
+    if (user.includes('uid')) {
+        let parsedUser;
+        try {
+            parsedUser = JSON.parse(user) as LoginDto;
+            store.dispatch(AuthActions.setLoggedUserAction(parsedUser));
+        }catch (e) {
+            store.dispatch(AuthActions.resetLoggedUserAction());
+        }
     }
-});
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 ReactDOM.render(

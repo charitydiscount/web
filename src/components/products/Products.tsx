@@ -207,14 +207,14 @@ class Products extends React.Component<ProductsProps, ProductsState> {
         if (this.state.products && this.state.products.length > 0) {
             productsState = this.state.products
                 .filter(
-                    product =>
+                    (product) =>
                         this.props.shops.find(
-                            shop => shop.id === product.shopId
+                            (shop) => shop.id === product.shopId
                         ) !== undefined
                 )
-                .map(product => {
+                .map((product) => {
                     let shop = this.props.shops.find(
-                        shop => shop.id === product.shopId
+                        (shop) => shop.id === product.shopId
                     );
                     if (shop) {
                         product.commission = roundCommission(
@@ -287,7 +287,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                                             lei
                                                         </InputAdornment>
                                                     }
-                                                    onChange={event => {
+                                                    onChange={(event) => {
                                                         this.minPrice =
                                                             event.target.value;
                                                     }}
@@ -318,7 +318,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                                             lei
                                                         </InputAdornment>
                                                     }
-                                                    onChange={event => {
+                                                    onChange={(event) => {
                                                         this.maxPrice =
                                                             event.target.value;
                                                     }}
@@ -355,7 +355,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
                                                     value={this.sort}
-                                                    onChange={event => {
+                                                    onChange={(event) => {
                                                         this.sort = event.target
                                                             .value as string;
                                                         this.startSearch();
@@ -398,7 +398,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                         placeholder={this.props.intl.formatMessage(
                                             { id: 'products.search' }
                                         )}
-                                        onKeyUp={event => {
+                                        onKeyUp={(event) => {
                                             if (event.target.value) {
                                                 this.searchTerm =
                                                     event.target.value;
@@ -466,7 +466,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                 </div>
                                 <FadeLoader
                                     loading={this.state.isLoading}
-                                    color={'#1641ff'}
+                                    color={'#e31f29'}
                                     css={spinnerCss}
                                 />
                                 <div className="latest_product_inner row">

@@ -89,7 +89,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                 cashbackPending: data.cashback.pending,
                 pointsApproved: data.points.approved,
                 pointsPending: data.points.pending,
-                transactions: data.transactions.map(t => {
+                transactions: data.transactions.map((t) => {
                     if (typeof t.target === 'string') {
                         return { ...t, target: { id: t.target, name: '' } };
                     } else {
@@ -210,7 +210,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                 this.state.isLoading ||
                                 this.state.isLoadingCommissions
                             }
-                            color={'#1641ff'}
+                            color={'#e31f29'}
                             css={spinnerCss}
                         />
 
@@ -272,7 +272,9 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                                                     href={
                                                                         emptyHrefLink
                                                                     }
-                                                                    onClick={event => {
+                                                                    onClick={(
+                                                                        event
+                                                                    ) => {
                                                                         event.preventDefault();
                                                                         this
                                                                             .state
@@ -326,7 +328,9 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                                                     href={
                                                                         emptyHrefLink
                                                                     }
-                                                                    onClick={event => {
+                                                                    onClick={(
+                                                                        event
+                                                                    ) => {
                                                                         event.preventDefault();
                                                                         this
                                                                             .state
@@ -411,7 +415,9 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                                                     href={
                                                                         emptyHrefLink
                                                                     }
-                                                                    onClick={event => {
+                                                                    onClick={(
+                                                                        event
+                                                                    ) => {
                                                                         event.preventDefault();
                                                                         this
                                                                             .state
@@ -465,7 +471,9 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                                                     href={
                                                                         emptyHrefLink
                                                                     }
-                                                                    onClick={event => {
+                                                                    onClick={(
+                                                                        event
+                                                                    ) => {
                                                                         event.preventDefault();
                                                                         this
                                                                             .state

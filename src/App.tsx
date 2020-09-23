@@ -10,6 +10,7 @@ import ReactAdBlock from './ReactAdBlock';
 import ReferralUpdate from './components/referrals/ReferralUpdate';
 import { FadeLoader } from 'react-spinners';
 import { spinnerCss } from './helper/AppHelper';
+import RedirectComponent from './components/layout/RedirectComponent';
 
 const App = () => {
     const [loading, setLoading] = useState(true);
@@ -19,9 +20,10 @@ const App = () => {
     }, []);
 
     return loading ? (
-        <FadeLoader loading={true} color={'#1641ff'} css={spinnerCss} />
+        <FadeLoader loading={true} color={'#e31f29'} css={spinnerCss} />
     ) : (
         <React.Fragment>
+            <RedirectComponent />
             <ReactAdBlock />
             <ReferralUpdate />
             <ScrollToTop />
@@ -39,7 +41,7 @@ const App = () => {
                 buttonStyle={{
                     color: '#fff',
                     fontSize: '14px',
-                    background: '#1641ff',
+                    background: '#e31f29',
                     borderRadius: '20px',
                 }}
             >

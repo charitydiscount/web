@@ -1,4 +1,4 @@
-import { emptyHrefLink } from '../../helper/Constants';
+import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import { Link } from 'react-router-dom';
 import { Routes } from '../helper/Routes';
 import * as React from 'react';
@@ -15,6 +15,9 @@ import Promotion from '../promotions/Promotion';
 import { Button } from '@material-ui/core';
 import { AppState } from '../../redux/reducer/RootReducer';
 import { connect } from 'react-redux';
+import RedirectModal from './RedirectModal';
+import { getLocalStorage } from '../../helper/StorageHelper';
+import { computeUrl } from '../../helper/AppHelper';
 
 interface IShopElementProps {
     shop: ShopDto;
@@ -28,6 +31,7 @@ interface IShopElementState {
     favShop: boolean;
     promotions: PromotionDTO[];
     promotionLoading: boolean;
+    redirectModalVisible: boolean;
 }
 
 class ShopElement extends React.Component<
@@ -40,6 +44,7 @@ class ShopElement extends React.Component<
             favShop: false,
             promotions: [],
             promotionLoading: true,
+            redirectModalVisible: false,
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
@@ -84,6 +89,18 @@ class ShopElement extends React.Component<
             );
         }
     }
+
+    openRedirectModal = () => {
+        this.setState({
+            redirectModalVisible: true,
+        });
+    };
+
+    closeRedirectModal = () => {
+        this.setState({
+            redirectModalVisible: false,
+        });
+    };
 
     public render() {
         let sellingCountries =
@@ -130,8 +147,50 @@ class ShopElement extends React.Component<
             )
         );
 
+        let accessButton;
+        let cashbackUrl = computeUrl(
+            this.props.shop.affiliateUrl,
+            this.props.shop.uniqueCode,
+            this.props.shop.mainUrl
+        );
+        let redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
+        if (redirectStorageKey && redirectStorageKey === 'true') {
+            accessButton = (
+                <a
+                    href={cashbackUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="main_btn"
+                >
+                    <FormattedMessage
+                        id={'shop.access.button'}
+                        defaultMessage="Access"
+                    />
+                </a>
+            );
+        } else {
+            accessButton = (
+                <a
+                    href={emptyHrefLink}
+                    rel="noopener noreferrer"
+                    className="main_btn"
+                    onClick={this.openRedirectModal}
+                >
+                    <FormattedMessage
+                        id={'shop.access.button'}
+                        defaultMessage="Access"
+                    />
+                </a>
+            );
+        }
+
         return (
             <React.Fragment>
+                <RedirectModal
+                    visible={this.state.redirectModalVisible}
+                    onCloseModal={this.closeRedirectModal}
+                    cashbackUrl={cashbackUrl}
+                />
                 <div className="text-center p-4">
                     {!this.props.comingFromShopReview && (
                         <div style={{ textAlign: 'right' }}>
@@ -222,13 +281,13 @@ class ShopElement extends React.Component<
                                         Routes.REVIEW + '/' + this.props.shop.id
                                     }
                                 >
-                                    <p className="mt-4">
+                                    <span className="mt-4">
                                         {rating}
                                         <span>
                                             {' '}
                                             ({this.props.shop.totalReviews})
                                         </span>
-                                    </p>
+                                    </span>
                                 </Link>
                             ) : this.props.comingFromShopReview ? (
                                 ''
@@ -253,17 +312,7 @@ class ShopElement extends React.Component<
                             style={{ marginTop: 20, marginBottom: 20 }}
                         >
                             <div className="card_area p_20">
-                                <a
-                                    href={this.props.shop.computeUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="main_btn"
-                                >
-                                    <FormattedMessage
-                                        id={'shop.access.button'}
-                                        defaultMessage="Access"
-                                    />
-                                </a>
+                                {accessButton}
                                 <div
                                     style={{ padding: 0 }}
                                     className={'icon_btn p_icon'}
@@ -304,7 +353,7 @@ class ShopElement extends React.Component<
                                             !this.props.comingFromShopReview
                                                 ? {
                                                       overflowY: 'auto',
-                                                      maxHeight: 200,
+                                                      maxHeight: 150,
                                                   }
                                                 : {}
                                         }

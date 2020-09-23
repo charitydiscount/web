@@ -6,8 +6,8 @@ import { Routes } from '../helper/Routes';
 import { injectIntl, IntlShape } from 'react-intl';
 import { dateOptions, roundMoney } from '../../helper/AppHelper';
 import { TransactionDto } from '../../rest/WalletService';
-import { auth } from '../../index';
 import { Link } from 'react-router-dom';
+import { getUserInfo } from "../login/AuthHelper";
 
 interface IWalletTransactionRowProps {
     transaction: TransactionDto;
@@ -78,9 +78,8 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                 break;
             case TxType.COMMISSION.toString():
             case TxType.REFERRAL.toString():
-                if (auth.currentUser) {
-                    target = auth.currentUser.displayName;
-                }
+                let currentUser = getUserInfo();
+                target = currentUser.displayName || currentUser.email || '';
                 txTitle = (
                     <i
                         className="fa fa-money"

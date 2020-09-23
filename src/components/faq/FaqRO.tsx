@@ -4,7 +4,7 @@ class FaqRO extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <p className="sample-text">
+                <div className="sample-text">
                     <ol>
                         <p className="p-2">
                             <h5>Cum folosesc CharityDiscount?</h5>
@@ -118,7 +118,7 @@ class FaqRO extends React.Component {
                             </ul>
                         </p>
                     </ol>
-                </p>
+                </div>
             </React.Fragment>
         );
     }

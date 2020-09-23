@@ -12,7 +12,7 @@ export interface ReviewsDBWrapper {
 }
 
 export interface ReviewDto {
-    createdAt: Date;
+    createdAt:  firestore.Timestamp;
     description: string;
     rating: number;
     reviewer: ReviewerDto;
@@ -31,7 +31,14 @@ export const fetchReviews = (shopUniqueCode: string) =>
         .then(doc => {
             if (doc.exists) {
                 const data = doc.data() as ReviewsDBWrapper;
-                return Object.values(data.reviews).map(value => value);
+                return Object.values(data.reviews)
+                    .sort((p1, p2) => {
+                        if (p1.createdAt > p2.createdAt) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    });
             } else {
                 return [];
             }
@@ -52,19 +59,19 @@ export interface ReviewRating {
 
 export function fetchReviewRatings() {
     return new Promise((resolve, reject) => {
-        const reviews = getLocalStorage(StorageKey.REVIEWS);
+        const reviews = getLocalStorage(StorageKey.REVIEWS_RATINGS);
         if (reviews) {
             try {
                 let stEntry = JSON.parse(reviews);
                 //verify localStorage valid
                 if (stEntry.length <= 0) {
-                    removeLocalStorage(StorageKey.REVIEWS);
+                    removeLocalStorage(StorageKey.REVIEWS_RATINGS);
                 } else {
                     resolve(JSON.parse(reviews) as Map<String, ReviewRating>);
                     return;
                 }
             } catch (error) {
-                removeLocalStorage(StorageKey.REVIEWS);
+                removeLocalStorage(StorageKey.REVIEWS_RATINGS);
             }
         }
 
@@ -75,7 +82,7 @@ export function fetchReviewRatings() {
                 if (doc.exists) {
                     let dbReviews = doc.data() as MetaReviewsDBWrapper;
                     setLocalStorage(
-                        StorageKey.REVIEWS,
+                        StorageKey.REVIEWS_RATINGS,
                         JSON.stringify(dbReviews.ratings)
                     );
                     resolve(dbReviews.ratings);

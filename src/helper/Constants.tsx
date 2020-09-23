@@ -25,11 +25,13 @@ export enum FirebaseTable {
 
 export enum TableDocument {
     PERFORMANT2 = '2performant',
+    IMPORTANT_CATEGORIES = 'importantCategories',
     PROGRAMS = 'programs',
 }
 
 export enum StorageRef {
     PROFILE_PHOTOS = 'profilePhotos/',
+    ICONS = 'icons/'
 }
 
 export enum TxType {
@@ -57,17 +59,18 @@ export enum StorageKey {
     CATEGORIES = '/categoriesCD',
     SHOPS = '/shopsCD',
     REFERRAL_KEY = '/referralCD',
+    SELECTED_SHOP = '/selectedShopCD', //if you want to load the selected shop directly
+    REDIRECT_KEY = '/redirectCD', //if coming from external
     FAVORITE_SHOPS = '/favoriteShopsCD',
     CAUSES = '/causesCD',
     USER = '/userCD',
-    LANG = '/langCD',
-    REVIEWS = '/reviewsCD',
+    LANG = '/langCD', //used to remember the language it was selected
+    REVIEWS_RATINGS = '/reviewsCD',
+    REDIRECT_MESSAGE = "/redirectMessageDisableCD", //this should never be cleared by us
 
     //SESSION STORAGE
     PERFORMANET_2_CODE = '/performant2CodeCD',
 }
-
-export const ProviderType = ['google', 'facebook', 'normal'];
 
 export const emptyHrefLink = '#';
 export const logoPath = '/img/logo.png';

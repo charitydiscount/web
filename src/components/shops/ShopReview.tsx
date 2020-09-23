@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { auth, store } from '../../index';
+import { store } from '../../index';
 import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import { spinnerCss } from '../../helper/AppHelper';
@@ -9,13 +9,16 @@ import Review from './Review';
 import { fetchReviews, ReviewDto, saveReview } from '../../rest/ReviewService';
 import { FormattedMessage } from 'react-intl';
 import { injectIntl, IntlShape } from 'react-intl';
-import { removeLocalStorage } from '../../helper/StorageHelper';
+import {
+    removeLocalStorage,
+    setLocalStorage,
+} from '../../helper/StorageHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import ShopElement from './ShopElement';
-import Modal from 'react-awesome-modal';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducer/RootReducer';
-import { setCurrentShop } from "../../redux/actions/ShopsAction";
+import { getUserInfo } from '../login/AuthHelper';
+import InfoModal from '../modals/InfoModal';
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -39,16 +42,17 @@ interface IProductReviewProps {
     setCurrentShop: any;
 }
 
-class ShopReview extends React.Component<IProductReviewProps,
-    IProductReviewState> {
-
+class ShopReview extends React.Component<
+    IProductReviewProps,
+    IProductReviewState
+> {
     constructor(props: IProductReviewProps) {
         super(props);
         this.state = {
             shop:
                 props.shops.find(
                     // eslint-disable-next-line
-                    shop => shop.id == this.props.match.params.id
+                    (shop) => shop.id == this.props.match.params.id
                 ) || ({} as ShopDto),
             description: '',
             modalMessage: '',
@@ -73,18 +77,14 @@ class ShopReview extends React.Component<IProductReviewProps,
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
         document.addEventListener('keydown', this.escFunction, false);
-        this.props.setCurrentShop(this.state.shop.uniqueCode);
-        try {
-            let reviews = await fetchReviews(this.state.shop.uniqueCode);
-            // const ownReview = reviews.find(
-            //     review => (review.reviewer.userId = auth.currentUser.uid)
-            // );
+        setLocalStorage(StorageKey.SELECTED_SHOP, this.state.shop.name);
+        let reviews = await fetchReviews(this.state.shop.uniqueCode);
+        if (reviews) {
             this.setState({
                 reviews: reviews,
                 reviewsLoading: false,
             });
-        } catch (error) {
-            //reviews won't be loaded
+        } else {
             this.setState({
                 reviewsLoading: false,
             });
@@ -99,7 +99,6 @@ class ShopReview extends React.Component<IProductReviewProps,
         this.setState({
             modalVisible: false,
         });
-        window.location.reload();
     }
 
     openModal() {
@@ -110,39 +109,44 @@ class ShopReview extends React.Component<IProductReviewProps,
 
     async updateCurrentReview() {
         if (this.state.rating > 0) {
-            if (auth.currentUser) {
-                try {
-                    await saveReview(
-                        this.state.shop.uniqueCode,
-                        this.state.rating,
-                        this.state.description,
-                        {
-                            userId: auth.currentUser.uid,
-                            name: auth.currentUser.displayName || '-',
-                            photoUrl: auth.currentUser.photoURL || '',
-                        }
-                    );
-                    removeLocalStorage(StorageKey.REVIEWS);
-                    removeLocalStorage(StorageKey.SHOPS);
-                    this.handleShowModalMessage(
-                        this.props.intl.formatMessage({
-                            id: 'review.update.message',
-                        }),
-                        null
-                    );
-                } catch (error) {
-                    this.handleShowModalMessage(
-                        this.props.intl.formatMessage({
-                            id: 'review.failed.to.update.error.message',
-                        }),
-                        null
-                    );
-
+            let currentUser = getUserInfo();
+            try {
+                await saveReview(
+                    this.state.shop.uniqueCode,
+                    this.state.rating,
+                    this.state.description,
+                    {
+                        userId: currentUser.uid,
+                        name:
+                            currentUser.displayName || currentUser.email || '-',
+                        photoUrl: currentUser.photoURL || '',
+                    }
+                );
+                removeLocalStorage(StorageKey.REVIEWS_RATINGS);
+                removeLocalStorage(StorageKey.SHOPS);
+                this.handleShowModalMessage(
+                    this.props.intl.formatMessage({
+                        id: 'review.update.message',
+                    }),
+                    null
+                );
+                let reviews = await fetchReviews(this.state.shop.uniqueCode);
+                if (reviews) {
+                    this.setState({
+                        reviews: reviews,
+                    });
                 }
+            } catch (error) {
+                this.handleShowModalMessage(
+                    this.props.intl.formatMessage({
+                        id: 'review.failed.to.update.error.message',
+                    }),
+                    null
+                );
             }
         } else {
             this.handleShowModalMessage(
-                this.props.intl.formatMessage({id: 'review.error.message'}),
+                this.props.intl.formatMessage({ id: 'review.error.message' }),
                 null
             );
         }
@@ -192,16 +196,9 @@ class ShopReview extends React.Component<IProductReviewProps,
     public render() {
         const reviewsList =
             this.state.reviews && this.state.reviews.length > 0 ? (
-                this.state.reviews.map(review => {
+                this.state.reviews.map((review) => {
                     return (
-                        <Review
-                            key={review.reviewer.name}
-                            photoUrl={review.reviewer.photoUrl}
-                            name={review.reviewer.name}
-                            description={review.description}
-                            rating={review.rating}
-                            userID={review.reviewer.userId}
-                        />
+                        <Review key={review.reviewer.name} review={review} />
                     );
                 })
             ) : (
@@ -213,7 +210,7 @@ class ShopReview extends React.Component<IProductReviewProps,
                 </div>
             );
 
-        const rating = [1, 2, 3, 4, 5].map(star => (
+        const rating = [1, 2, 3, 4, 5].map((star) => (
             <li key={`star-${star}`}>
                 <a href={emptyHrefLink}>
                     {star < this.state.rating ? (
@@ -247,16 +244,14 @@ class ShopReview extends React.Component<IProductReviewProps,
 
         return (
             <React.Fragment>
-                <Modal
+                <InfoModal
                     visible={this.state.modalVisible}
-                    effect="fadeInUp"
-                    onClickAway={() => this.closeModal()}
-                >
-                    <h3 style={{padding: 15}}>{this.state.modalMessage}</h3>
-                </Modal>
+                    message={this.state.modalMessage}
+                    onClose={() => this.closeModal()}
+                />
                 <section className={'product_description_area'}>
                     <div className={'container'}>
-                        <div className="row" style={{marginTop: 70}}>
+                        <div className="row" style={{ marginTop: 70 }}>
                             <div className="col-lg-6">
                                 <ShopElement
                                     key={this.state.shop.name}
@@ -281,14 +276,14 @@ class ShopReview extends React.Component<IProductReviewProps,
                                             <textarea
                                                 className="form-control"
                                                 value={this.state.description}
-                                                onChange={event =>
+                                                onChange={(event) =>
                                                     this.setState({
                                                         description:
-                                                        event.target.value,
+                                                            event.target.value,
                                                     })
                                                 }
                                                 placeholder={this.props.intl.formatMessage(
-                                                    {id: 'review.placeholder'}
+                                                    { id: 'review.placeholder' }
                                                 )}
                                             ></textarea>
                                         </div>
@@ -311,11 +306,11 @@ class ShopReview extends React.Component<IProductReviewProps,
                                     <div className="review_list p_20">
                                         <FadeLoader
                                             loading={this.state.reviewsLoading}
-                                            color={'#1641ff'}
+                                            color={'#e31f29'}
                                             css={spinnerCss}
                                         />
                                         {!this.state.reviewsLoading &&
-                                        reviewsList}
+                                            reviewsList}
                                     </div>
                                 </div>
                             </div>
@@ -333,11 +328,4 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        setCurrentShop: (uniqueCode: string) =>
-            dispatch(setCurrentShop(uniqueCode)),
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ShopReview));
+export default connect(mapStateToProps, null)(injectIntl(ShopReview));
