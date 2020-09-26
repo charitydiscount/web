@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { doLogoutAction } from '../login/UserActions';
 import { setShops } from '../../redux/actions/ShopsAction';
 import { getLocalStorage } from '../../helper/StorageHelper';
-import { emptyHrefLink, logoPath, StorageKey } from '../../helper/Constants';
+import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import { ShopDto } from '../../rest/ShopsService';
 import {
     setCurrentCategory,

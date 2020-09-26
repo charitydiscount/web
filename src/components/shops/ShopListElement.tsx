@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { ShopDto } from '../../rest/ShopsService';
 import { injectIntl, IntlShape } from 'react-intl';
-import ShopElement from './ShopElement';
-import { AppState } from '../../redux/reducer/RootReducer';
-import { connect } from 'react-redux';
 import ShopModalElement from './ShopModalElement';
 
 interface ShopListElementState {

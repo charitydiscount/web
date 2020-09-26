@@ -188,6 +188,7 @@ class ShopElement extends React.Component<
             <React.Fragment>
                 <RedirectModal
                     visible={this.state.redirectModalVisible}
+                    programId={this.props.shop.id}
                     onCloseModal={this.closeRedirectModal}
                     cashbackUrl={cashbackUrl}
                 />

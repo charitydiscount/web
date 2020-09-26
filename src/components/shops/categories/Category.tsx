@@ -5,7 +5,7 @@ import { emptyHrefLink } from '../../../helper/Constants';
 import { ShopDto } from '../../../rest/ShopsService';
 import { FormattedMessage } from 'react-intl';
 import { AppState } from '../../../redux/reducer/RootReducer';
-import { ICategoryProps, updateShops } from './BaseCategories';
+import { ICategoryProps } from './BaseCategories';
 
 class Category extends React.Component<ICategoryProps> {
     constructor(props: ICategoryProps) {

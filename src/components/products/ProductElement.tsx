@@ -98,6 +98,7 @@ class ProductElement extends React.Component<
                 {this.renderRedirect()}
                 <RedirectModal
                     visible={this.state.redirectModalVisible}
+                    programId={this.props.product.shopId}
                     onCloseModal={this.closeRedirectModal}
                     cashbackUrl={this.props.product.url}
                 />
