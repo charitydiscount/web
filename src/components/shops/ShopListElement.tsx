@@ -46,7 +46,7 @@ class ShopListElement extends React.Component<
                     onCloseModal={this.closeModal}
                 />
                 <div
-                    className="col-md-4 col-xl-3 col-sm-6 shop-container f_p_item p-2"
+                    className="col-md-4 col-xl-3 col-sm-6 shop-container"
                     onClick={this.openModal}
                     style={{ cursor: 'pointer' }}
                 >
@@ -58,7 +58,7 @@ class ShopListElement extends React.Component<
                                     backgroundImage:
                                         'url(' + this.props.shop.logoPath + ')',
                                 }}
-                            ></div>
+                            />
                         </div>
                         <div className="shop-description-container">
                             <h6 className="comission">
