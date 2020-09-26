@@ -18,7 +18,7 @@ export const ConfirmModal: React.FunctionComponent<ModalProps> = props => {
         >
             <div style={{padding: 15, maxWidth: 350}}>
                 <div style={{textAlign: "center"}}>
-                    <img src={logoPath} alt=""/>
+                    <img src={logoPath} alt="" height={68} width={80}/>
                 </div>
                 <div style={{textAlign: "center", marginTop: 10}}>
                     <h4 style={{
