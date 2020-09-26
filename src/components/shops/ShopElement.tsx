@@ -236,8 +236,8 @@ class ShopElement extends React.Component<
                         src={this.props.shop.logoPath}
                         alt=""
                         style={{
-                            maxWidth: 300,
-                            maxHeight: 300,
+                            maxWidth: 200,
+                            maxHeight: 200,
                         }}
                     />
                     <div className="blog_details">
