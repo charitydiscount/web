@@ -161,7 +161,7 @@ class HeaderLayout extends React.Component<
                                     className="navbar-brand logo_h"
                                     to={'/login'}
                                 >
-                                    <div className="logo-container"></div>
+                                    <div className="logo-container"/>
                                 </Link>
                             )}
                             {isLoggedIn && (
