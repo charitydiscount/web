@@ -14,7 +14,6 @@ import 'firebase/firestore';
 import 'firebase/performance';
 import 'firebase/storage';
 import 'firebase/remote-config';
-import * as serviceWorker from './registerServiceWorker';
 import { AuthActions } from './components/login/UserActions';
 import I18nApp from './I18nApp';
 import { getLocalStorage } from "./helper/StorageHelper";
@@ -22,7 +21,7 @@ import { StorageKey } from "./helper/Constants";
 import { LoginDto } from "./components/login/AuthHelper";
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '2.5.0';
+export const appVersion = '2.5.1';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};
@@ -79,11 +78,3 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-serviceWorker.register({
-    onUpdate: (reg: ServiceWorkerRegistration) => {
-        // Update the service worker content as soon as its available
-        reg.unregister().then(() => {
-            window.location.reload();
-        });
-    },
-});
