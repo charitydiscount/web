@@ -3,8 +3,10 @@ import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import * as React from 'react';
 import {
-    emptyHrefLink, noImagePath,
-    profilePictureDefaultName, StorageKey,
+    emptyHrefLink,
+    noImagePath,
+    profilePictureDefaultName,
+    StorageKey,
     StorageRef,
 } from '../../helper/Constants';
 import { doLogoutAction } from './UserActions';
@@ -17,13 +19,19 @@ import FadeLoader from 'react-spinners/FadeLoader';
 import { loadCurrentUserPhoto, UserPhotoState } from './UserPhotoHelper';
 import { Routes } from '../helper/Routes';
 import { Link } from 'react-router-dom';
-import InfoModal from "../modals/InfoModal";
-import ConfirmModal from "../modals/ConfimModal";
-import { getDisableMailNotification, updateDisableMailNotification } from "../../rest/UserService";
-import { FormControlLabel } from "@material-ui/core";
-import Checkbox from "@material-ui/core/Checkbox";
-import { getLocalStorage, removeLocalStorage } from "../../helper/StorageHelper";
-import { getUserId, getUserInfo } from "./AuthHelper";
+import InfoModal from '../modals/InfoModal';
+import ConfirmModal from '../modals/ConfimModal';
+import {
+    getDisableMailNotification,
+    updateDisableMailNotification,
+} from '../../rest/UserService';
+import { FormControlLabel } from '@material-ui/core';
+import Checkbox from '@material-ui/core/Checkbox';
+import {
+    getLocalStorage,
+    removeLocalStorage,
+} from '../../helper/StorageHelper';
+import { getUserId, getUserInfo } from './AuthHelper';
 
 interface IUserInfoProps {
     intl: IntlShape;
@@ -37,11 +45,10 @@ interface IUserInfoState extends UserPhotoState {
     confirmModalMessage: string;
     deleteAccount: boolean;
     isLoading: boolean;
-    disableMailNotification: Boolean
+    disableMailNotification: Boolean;
 }
 
 class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
-
     constructor(props: IUserInfoProps) {
         super(props);
         this.state = {
@@ -86,40 +93,42 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
         await loadCurrentUserPhoto(this);
 
-
         let response = await getDisableMailNotification(getUserId());
         if (response) {
             this.setState({
-                disableMailNotification: response
+                disableMailNotification: response,
             });
         }
 
         let redirectKey = getLocalStorage(StorageKey.REDIRECT_KEY);
         if (redirectKey === Routes.USER) {
-            removeLocalStorage(StorageKey.REDIRECT_KEY)
+            removeLocalStorage(StorageKey.REDIRECT_KEY);
         }
     }
 
     async updateMailNotification(event) {
         let checked = event.target.checked;
-        await updateDisableMailNotification(!checked).then(() => {
+        await updateDisableMailNotification(!checked)
+            .then(() => {
                 this.setState({
                     disableMailNotification: !checked,
                     infoModalVisible: true,
                     infoModalMessage: this.props.intl.formatMessage({
-                        id: !checked ? 'user.disable.mail.notification.success.true' : 'user.disable.mail.notification.success.false',
-                    })
-                })
-            }
-        ).catch((error) => {
-            console.log(error);
-            this.setState({
-                infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({
-                    id: 'user.disable.mail.notification.error',
-                })
+                        id: !checked
+                            ? 'user.disable.mail.notification.success.true'
+                            : 'user.disable.mail.notification.success.false',
+                    }),
+                });
             })
-        })
+            .catch((error) => {
+                console.log(error);
+                this.setState({
+                    infoModalVisible: true,
+                    infoModalMessage: this.props.intl.formatMessage({
+                        id: 'user.disable.mail.notification.error',
+                    }),
+                });
+            });
     }
 
     componentWillUnmount() {
@@ -129,7 +138,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     async requestDeleteAccount() {
         this.setState({
             isLoading: true,
-            confirmModalVisible: false
+            confirmModalVisible: false,
         });
         let userInfo = getUserInfo();
         await addContactMessageToDb(
@@ -165,7 +174,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             confirmModalMessage: this.props.intl.formatMessage({
                 id: 'userInfo.delete.account.question',
             }),
-            deleteAccount: true
+            deleteAccount: true,
         });
     }
 
@@ -180,11 +189,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             infoModalVisible: true,
             infoModalMessage: success
                 ? this.props.intl.formatMessage({
-                    id: 'userInfo.email.reset.sent',
-                })
+                      id: 'userInfo.email.reset.sent',
+                  })
                 : this.props.intl.formatMessage({
-                    id: 'userInfo.email.reset.error',
-                }),
+                      id: 'userInfo.email.reset.error',
+                  }),
         });
     }
 
@@ -194,7 +203,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             deleteAccount: false,
             confirmModalMessage: this.props.intl.formatMessage({
                 id: 'userInfo.email.reset.confirm',
-            })
+            }),
         });
     }
 
@@ -255,26 +264,30 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             <React.Fragment>
                 <FadeLoader
                     loading={this.state.isLoading}
-                    color={'#1641ff'}
+                    color={'#e31f29'}
                     css={spinnerCss}
                 />
-                <InfoModal visible={this.state.infoModalVisible}
-                           message={this.state.infoModalMessage}
-                           onClose={() => this.closeInfoModal()}/>
-                <ConfirmModal visible={this.state.confirmModalVisible}
-                              message={this.state.confirmModalMessage}
-                              onSave={() => {
-                                  if (this.state.deleteAccount) {
-                                      return this.requestDeleteAccount();
-                                  }
-                                  return this.passwordResetEmail()
-                              }}
-                              onClose={() => this.closeConfirmModal()}/>
+                <InfoModal
+                    visible={this.state.infoModalVisible}
+                    message={this.state.infoModalMessage}
+                    onClose={() => this.closeInfoModal()}
+                />
+                <ConfirmModal
+                    visible={this.state.confirmModalVisible}
+                    message={this.state.confirmModalMessage}
+                    onSave={() => {
+                        if (this.state.deleteAccount) {
+                            return this.requestDeleteAccount();
+                        }
+                        return this.passwordResetEmail();
+                    }}
+                    onClose={() => this.closeConfirmModal()}
+                />
                 {!this.state.isLoading && (
                     <div className="product_image_area">
                         <div className="container p_90">
                             <div className="row s_product_inner">
-                                <div className="col-lg-3"/>
+                                <div className="col-lg-3" />
                                 <div className="col-lg-4">
                                     <div className="s_product_img">
                                         <div className="blog_right_sidebar">
@@ -284,7 +297,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                         this.state
                                                             .isLoadingPhoto
                                                     }
-                                                    color={'#1641ff'}
+                                                    color={'#e31f29'}
                                                     css={smallerSpinnerCss}
                                                 />
                                                 {!this.state.isLoadingPhoto && (
@@ -298,7 +311,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                         height={200}
                                                         onError={() =>
                                                             this.setState({
-                                                                photoURL: noImagePath
+                                                                photoURL: noImagePath,
                                                             })
                                                         }
                                                     />
@@ -307,40 +320,51 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     {this.state.displayName}
                                                 </h4>
                                                 <p>{this.state.email}</p>
-                                                <div className="br"/>
+                                                <div className="br" />
                                                 <h4>
                                                     <FormattedMessage
                                                         id="user.marketing.title"
                                                         defaultMessage="Acord de marketing"
                                                     />
                                                 </h4>
-                                                <div style={{marginLeft: 15}}>
+                                                <div style={{ marginLeft: 15 }}>
                                                     <FormControlLabel
                                                         control={
                                                             <Checkbox
-                                                                checked={disableChecked}
-                                                                onChange={this.updateMailNotification}
+                                                                checked={
+                                                                    disableChecked
+                                                                }
+                                                                onChange={
+                                                                    this
+                                                                        .updateMailNotification
+                                                                }
                                                                 name="redirectChecked"
                                                                 color="default"
                                                             />
                                                         }
-                                                        label={this.props.intl.formatMessage({id: 'user.disable.mail.notification'})}
+                                                        label={this.props.intl.formatMessage(
+                                                            {
+                                                                id:
+                                                                    'user.disable.mail.notification',
+                                                            }
+                                                        )}
                                                     />
                                                 </div>
                                             </aside>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-lg-3" style={{minWidth: "fit-content"}}>
+                                <div
+                                    className="col-lg-3"
+                                    style={{ minWidth: 'fit-content' }}
+                                >
                                     <div className="blog_right_sidebar">
                                         <aside className="single_sidebar_widget popular_post_widget">
                                             {this.state.normalUser && (
                                                 <div>
                                                     <div className="col-md-12 text-center p_05">
                                                         <a
-                                                            href={
-                                                                emptyHrefLink
-                                                            }
+                                                            href={emptyHrefLink}
                                                             className="btn submit_btn userInfo_btn genric-btn circle"
                                                         >
                                                             <label
@@ -365,9 +389,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                     }
                                                                     storageRef={storage.ref(
                                                                         StorageRef.PROFILE_PHOTOS +
-                                                                        this
-                                                                            .state
-                                                                            .userId
+                                                                            this
+                                                                                .state
+                                                                                .userId
                                                                     )}
                                                                     onUploadError={
                                                                         this
@@ -390,9 +414,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     </div>
                                                     <div className="col-md-12 text-center p_05">
                                                         <a
-                                                            href={
-                                                                emptyHrefLink
-                                                            }
+                                                            href={emptyHrefLink}
                                                             onClick={
                                                                 this
                                                                     .openPasswordReset
@@ -405,7 +427,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                             />
                                                         </a>
                                                     </div>
-                                                    <div className="br"/>
+                                                    <div className="br" />
                                                 </div>
                                             )}
                                             <div className="col-md-12 text-center p_05">
@@ -457,8 +479,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     href={emptyHrefLink}
                                                     className="btn submit_btn userInfo_btn genric-btn circle"
                                                     onClick={
-                                                        this
-                                                            .openDeleteAccount
+                                                        this.openDeleteAccount
                                                     }
                                                 >
                                                     <FormattedMessage
@@ -471,9 +492,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                 <a
                                                     href={emptyHrefLink}
                                                     className="btn submit_btn userInfo_btn genric-btn circle"
-                                                    onClick={
-                                                        this.handleLogOut
-                                                    }
+                                                    onClick={this.handleLogOut}
                                                 >
                                                     <FormattedMessage
                                                         id="userinfo.logout.button"

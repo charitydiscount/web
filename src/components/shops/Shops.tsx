@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { store } from '../../index';
-import {
-    NavigationsAction,
-} from '../../redux/actions/NavigationsAction';
+import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import Categories from './categories/Categories';
 import { connect } from 'react-redux';
@@ -30,10 +28,13 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { InputLabel } from '@material-ui/core';
 import { AppState } from '../../redux/reducer/RootReducer';
-import UpperCategories from "./categories/UpperCategories";
-import { getLocalStorage, removeLocalStorage } from "../../helper/StorageHelper";
-import { StorageKey } from "../../helper/Constants";
-import ShopModalElement from "./ShopModalElement";
+import UpperCategories from './categories/UpperCategories';
+import {
+    getLocalStorage,
+    removeLocalStorage,
+} from '../../helper/StorageHelper';
+import { StorageKey } from '../../helper/Constants';
+import ShopModalElement from './ShopModalElement';
 
 interface IShopsProps {
     shops: Array<ShopDto>;
@@ -63,8 +64,8 @@ interface IShopsState {
     //sort after review
     reviewsSort: string;
 
-    currentShopModal?: ShopDto,
-    currentShopModalVisible:boolean
+    currentShopModal?: ShopDto;
+    currentShopModalVisible: boolean;
 }
 
 const pageLimit = 20; // shops per page
@@ -135,7 +136,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         }
         //--------------------------------------------------------------------------------------------------------------
 
-
         this.setState({
             isLoading: false,
         });
@@ -171,13 +171,13 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     }
 
     findShopAndOpen(shopName: string) {
-        const shopFound = this.props.allShops.find(shop =>
+        const shopFound = this.props.allShops.find((shop) =>
             shop.name.toLowerCase().includes(shopName.toLowerCase())
         );
         if (shopFound) {
             this.setState({
                 currentShopModal: shopFound,
-                currentShopModalVisible: true
+                currentShopModalVisible: true,
             });
         }
     }
@@ -185,8 +185,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     closeCurrentShopModal() {
         removeLocalStorage(StorageKey.SELECTED_SHOP);
         this.setState({
-            currentShopModalVisible: false
-        })
+            currentShopModalVisible: false,
+        });
     }
 
     sortAfterReviewsNumber(event) {
@@ -315,21 +315,24 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
         return (
             <React.Fragment>
-                {this.state.currentShopModal &&
-                <ShopModalElement shop={this.state.currentShopModal}
-                                  modalVisible={this.state.currentShopModalVisible}
-                                  onCloseModal={this.closeCurrentShopModal}/>}
-                <UpperCategories/>
-                <section className="cat_product_area section_gap shops">
+                {this.state.currentShopModal && (
+                    <ShopModalElement
+                        shop={this.state.currentShopModal}
+                        modalVisible={this.state.currentShopModalVisible}
+                        onCloseModal={this.closeCurrentShopModal}
+                    />
+                )}
+                <UpperCategories />
+                <section className="cat_product_area shops">
                     <div className="container-fluid">
                         <div className="row">
-                            <div className="col-lg-3">
+                            <div className="col-lg-3 d-none d-md-block">
                                 <div className="left_sidebar_area">
                                     <Categories />
                                 </div>
                             </div>
 
-                            <div className="col-lg-9 query_container">
+                            <div className="col-12 col-lg-9 query_container">
                                 <div className="product_top_bar shade-container">
                                     <GenericInput
                                         type={'textfield'}
@@ -425,43 +428,10 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                             </Select>
                                         </FormControl>
                                     </div>
-                                    <div className="right_page ml-auto d-none d-md-block">
-                                        <nav
-                                            className="cat_page"
-                                            aria-label="Page navigation example"
-                                        >
-                                            <ReactPaginate
-                                                previousLabel={'<'}
-                                                previousLinkClassName={
-                                                    'page-link'
-                                                }
-                                                nextLabel={'>'}
-                                                nextLinkClassName={'page-link'}
-                                                breakLabel={'...'}
-                                                breakClassName={'blank'}
-                                                breakLinkClassName={'page-link'}
-                                                pageCount={pageCount}
-                                                marginPagesDisplayed={1}
-                                                pageRangeDisplayed={2}
-                                                forcePage={
-                                                    this.props.currentPage
-                                                }
-                                                onPageChange={
-                                                    this.updatePageNumber
-                                                }
-                                                containerClassName={
-                                                    'pagination'
-                                                }
-                                                pageClassName={'page-item'}
-                                                pageLinkClassName={'page-link'}
-                                                activeClassName={'active'}
-                                            />
-                                        </nav>
-                                    </div>
                                 </div>
                                 <FadeLoader
                                     loading={this.state.isLoading}
-                                    color={'#1641ff'}
+                                    color={'#e31f29'}
                                     css={spinnerCss}
                                 />
                                 <div className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
@@ -534,7 +504,7 @@ const mapDispatchToProps = (dispatch: any) => {
         setCurrentCategory: (currentCategory: String) =>
             dispatch(setCurrentCategory(currentCategory)),
         setSelections: (selections: boolean[]) =>
-            dispatch(setSelections(selections))
+            dispatch(setSelections(selections)),
     };
 };
 

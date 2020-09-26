@@ -5,11 +5,9 @@ import { emptyHrefLink } from '../../../helper/Constants';
 import { ShopDto } from '../../../rest/ShopsService';
 import { FormattedMessage } from 'react-intl';
 import { AppState } from '../../../redux/reducer/RootReducer';
-import { ICategoryProps, updateShops } from "./BaseCategories";
-
+import { ICategoryProps, updateShops } from './BaseCategories';
 
 class Category extends React.Component<ICategoryProps> {
-
     constructor(props: ICategoryProps) {
         super(props);
         this.updateShops = this.updateShops.bind(this);
@@ -24,7 +22,23 @@ class Category extends React.Component<ICategoryProps> {
     }
 
     public updateShops(event: React.MouseEvent) {
-        updateShops(this, event);
+        event.preventDefault(); // prevent default to not point to href location
+        if (this.props.name === 'All') {
+            // load all shops in this case
+            this.props.setShops(this.props.allShops);
+            this.props.setCurrentPage(0);
+        } else {
+            //load shops from selected category in this case
+            const result = this.props.allShops.filter(
+                (shop) =>
+                    shop.category.toLowerCase() ===
+                    this.props.name.toLowerCase()
+            );
+            this.props.setShops(result);
+            this.props.setCurrentPage(0);
+        }
+        this.onToggle();
+        window.scrollTo(0, 0);
     }
 
     public render() {

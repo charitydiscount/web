@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { ShopDto } from '../../rest/ShopsService';
 import { injectIntl, IntlShape } from 'react-intl';
-import ShopModalElement from "./ShopModalElement";
+import ShopElement from './ShopElement';
+import { AppState } from '../../redux/reducer/RootReducer';
+import { connect } from 'react-redux';
+import ShopModalElement from './ShopModalElement';
 
 interface ShopListElementState {
     shopModalVisible: boolean;
@@ -12,8 +15,10 @@ interface ShopListElementProps {
     intl: IntlShape;
 }
 
-class ShopListElement extends React.Component<ShopListElementProps, ShopListElementState> {
-
+class ShopListElement extends React.Component<
+    ShopListElementProps,
+    ShopListElementState
+> {
     constructor(props: ShopListElementProps) {
         super(props);
         this.state = {
@@ -38,13 +43,15 @@ class ShopListElement extends React.Component<ShopListElementProps, ShopListElem
     public render() {
         return (
             <React.Fragment>
-                <ShopModalElement shop={this.props.shop}
-                                  modalVisible={this.state.shopModalVisible}
-                                  onCloseModal={this.closeModal}/>
+                <ShopModalElement
+                    shop={this.props.shop}
+                    modalVisible={this.state.shopModalVisible}
+                    onCloseModal={this.closeModal}
+                />
                 <div
-                    className="col-md-4 col-xl-3 col-sm-6 f_p_item p-2"
+                    className="col-md-4 col-xl-3 col-sm-6 shop-container f_p_item p-2"
                     onClick={this.openModal}
-                    style={{cursor: 'pointer'}}
+                    style={{ cursor: 'pointer' }}
                 >
                     <div className="f_p_item shop">
                         <div className="shop-image-container">

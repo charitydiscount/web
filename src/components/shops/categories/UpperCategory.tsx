@@ -1,19 +1,18 @@
-import React from "react";
-import { ShopDto } from "../../../rest/ShopsService";
-import { AppState } from "../../../redux/reducer/RootReducer";
-import { setCurrentPage, setShops } from "../../../redux/actions/ShopsAction";
-import { connect } from "react-redux";
-import { emptyHrefLink, noImagePath } from "../../../helper/Constants";
-import { FormattedMessage } from "react-intl";
-import { ICategoryProps, ICategoryState, updateShops } from "./BaseCategories";
-import { fetchCategoryPhoto } from "../../../rest/StorageService";
+import React from 'react';
+import { ShopDto } from '../../../rest/ShopsService';
+import { AppState } from '../../../redux/reducer/RootReducer';
+import { setCurrentPage, setShops } from '../../../redux/actions/ShopsAction';
+import { connect } from 'react-redux';
+import { emptyHrefLink, noImagePath } from '../../../helper/Constants';
+import { FormattedMessage } from 'react-intl';
+import { ICategoryProps, ICategoryState, updateShops } from './BaseCategories';
+import { fetchCategoryPhoto } from '../../../rest/StorageService';
 
 class UpperCategory extends React.Component<ICategoryProps, ICategoryState> {
-
     constructor(props: ICategoryProps) {
         super(props);
         this.state = {
-            photoURL: noImagePath
+            photoURL: noImagePath,
         };
         this.updateShops = this.updateShops.bind(this);
         this.onToggle = this.onToggle.bind(this);
@@ -33,7 +32,6 @@ class UpperCategory extends React.Component<ICategoryProps, ICategoryState> {
         this.props.onToggle(this.props.id, this.props.name);
     }
 
-
     async componentDidMount() {
         if (this.props.photoName) {
             try {
@@ -43,28 +41,32 @@ class UpperCategory extends React.Component<ICategoryProps, ICategoryState> {
                 });
             } catch (error) {
                 this.setState({
-                    photoURL: noImagePath
+                    photoURL: noImagePath,
                 });
             }
         }
     }
 
     public render() {
-
         return (
             <React.Fragment>
                 <div
-                    className="col-lg-2 f_p_item p-2"
-                    style={{cursor: 'pointer'}}
+                    className="col-6 col-lg-2 f_p_item p-2 category"
+                    style={{ cursor: 'pointer' }}
                     onClick={this.updateShops}
                 >
-                    {this.state.photoURL && <img src={this.state.photoURL} alt="post" height={64} width={64}/>}
+                    {this.state.photoURL && (
+                        <img
+                            src={this.state.photoURL}
+                            alt="post"
+                            height={64}
+                            width={64}
+                        />
+                    )}
 
                     <a
                         href={emptyHrefLink}
-                        style={
-                            this.props.selected ? {color: 'blue'} : {color: 'black'}
-                        }
+                        className={this.props.selected ? 'selected' : ''}
                     >
                         <FormattedMessage
                             id={this.props.name.replace(/\s/g, '')}
@@ -72,7 +74,7 @@ class UpperCategory extends React.Component<ICategoryProps, ICategoryState> {
                     </a>
                 </div>
             </React.Fragment>
-        )
+        );
     }
 }
 

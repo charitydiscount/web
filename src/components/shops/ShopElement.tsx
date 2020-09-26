@@ -13,12 +13,11 @@ import { FormattedMessage } from 'react-intl';
 import { getPromotions, PromotionDTO } from '../../rest/DealsService';
 import Promotion from '../promotions/Promotion';
 import { Button } from '@material-ui/core';
-import { AppState } from "../../redux/reducer/RootReducer";
-import { connect } from "react-redux";
-import RedirectModal from "./RedirectModal";
-import { getLocalStorage } from "../../helper/StorageHelper";
-import { computeUrl } from "../../helper/AppHelper";
-import { clickSaveAndRedirect } from "../../rest/ClickService";
+import { AppState } from '../../redux/reducer/RootReducer';
+import { connect } from 'react-redux';
+import RedirectModal from './RedirectModal';
+import { getLocalStorage } from '../../helper/StorageHelper';
+import { computeUrl } from '../../helper/AppHelper';
 
 interface IShopElementProps {
     shop: ShopDto;
@@ -32,18 +31,20 @@ interface IShopElementState {
     favShop: boolean;
     promotions: PromotionDTO[];
     promotionLoading: boolean;
-    redirectModalVisible: boolean
+    redirectModalVisible: boolean;
 }
 
-class ShopElement extends React.Component<IShopElementProps, IShopElementState> {
-
+class ShopElement extends React.Component<
+    IShopElementProps,
+    IShopElementState
+> {
     constructor(props: IShopElementProps) {
         super(props);
         this.state = {
             favShop: false,
             promotions: [],
             promotionLoading: true,
-            redirectModalVisible: false
+            redirectModalVisible: false,
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
@@ -75,9 +76,11 @@ class ShopElement extends React.Component<IShopElementProps, IShopElementState> 
             favShop: !remove,
         });
         try {
-            await updateFavoriteShops(this.props.shop, remove).then(async () => {
-                await fetchFavoriteShops(this.props.allShops);
-            });
+            await updateFavoriteShops(this.props.shop, remove).then(
+                async () => {
+                    await fetchFavoriteShops(this.props.allShops);
+                }
+            );
         } catch (error) {
             alert(
                 this.props.intl.formatMessage({
@@ -145,41 +148,49 @@ class ShopElement extends React.Component<IShopElementProps, IShopElementState> 
         );
 
         let accessButton;
-        let cashbackUrl = computeUrl(this.props.shop.affiliateUrl, this.props.shop.uniqueCode, this.props.shop.mainUrl);
+        let cashbackUrl = computeUrl(
+            this.props.shop.affiliateUrl,
+            this.props.shop.uniqueCode,
+            this.props.shop.mainUrl
+        );
         let redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
-        if (redirectStorageKey && redirectStorageKey === "true") {
-            accessButton =  <a
-                href={emptyHrefLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(event) => {clickSaveAndRedirect(event, this.props.shop.id, cashbackUrl)}}
-                className="main_btn"
-            >
-                <FormattedMessage
-                    id={'shop.access.button'}
-                    defaultMessage="Access"
-                />
-            </a>
+        if (redirectStorageKey && redirectStorageKey === 'true') {
+            accessButton = (
+                <a
+                    href={cashbackUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="main_btn"
+                >
+                    <FormattedMessage
+                        id={'shop.access.button'}
+                        defaultMessage="Access"
+                    />
+                </a>
+            );
         } else {
-            accessButton = <a
-                href={emptyHrefLink}
-                rel="noopener noreferrer"
-                className="main_btn"
-                onClick={this.openRedirectModal}
-            >
-                <FormattedMessage
-                    id={'shop.access.button'}
-                    defaultMessage="Access"
-                />
-            </a>
+            accessButton = (
+                <a
+                    href={emptyHrefLink}
+                    rel="noopener noreferrer"
+                    className="main_btn"
+                    onClick={this.openRedirectModal}
+                >
+                    <FormattedMessage
+                        id={'shop.access.button'}
+                        defaultMessage="Access"
+                    />
+                </a>
+            );
         }
 
         return (
             <React.Fragment>
-                <RedirectModal visible={this.state.redirectModalVisible}
-                               programId={this.props.shop.id}
-                               onCloseModal={this.closeRedirectModal}
-                               cashbackUrl={cashbackUrl}/>
+                <RedirectModal
+                    visible={this.state.redirectModalVisible}
+                    onCloseModal={this.closeRedirectModal}
+                    cashbackUrl={cashbackUrl}
+                />
                 <div className="text-center p-4">
                     {!this.props.comingFromShopReview && (
                         <div style={{ textAlign: 'right' }}>
@@ -298,7 +309,7 @@ class ShopElement extends React.Component<IShopElementProps, IShopElementState> 
                         </div>
                         <div
                             className="s_product_text"
-                            style={{marginTop: 0, marginBottom: 0}}
+                            style={{ marginTop: 20, marginBottom: 20 }}
                         >
                             <div className="card_area p_20">
                                 {accessButton}
@@ -341,9 +352,9 @@ class ShopElement extends React.Component<IShopElementProps, IShopElementState> 
                                         style={
                                             !this.props.comingFromShopReview
                                                 ? {
-                                                    overflowY: 'auto',
-                                                    maxHeight: 150,
-                                                }
+                                                      overflowY: 'auto',
+                                                      maxHeight: 150,
+                                                  }
                                                 : {}
                                         }
                                     >

@@ -1,29 +1,30 @@
 import * as React from 'react';
-import {auth, store} from '../../index';
-import {Redirect} from 'react-router';
-import LoginComponent from "../login/LoginComponent";
-import {getUrlParameter, spinnerCss} from "../../helper/AppHelper";
-import {AuthActions} from "../login/UserActions";
+import { auth, store } from '../../index';
+import { Redirect } from 'react-router';
+import LoginComponent from '../login/LoginComponent';
+import { getUrlParameter, spinnerCss } from '../../helper/AppHelper';
+import { AuthActions } from '../login/UserActions';
 import FadeLoader from 'react-spinners/FadeLoader';
-import { parseAndSaveUser } from "../login/AuthHelper";
+import { parseAndSaveUser } from '../login/AuthHelper';
 
 interface ExternalAccessState {
-    page: string,
-    caseId: string,
-    isLoading: boolean
+    page: string;
+    caseId: string;
+    isLoading: boolean;
 }
 
-interface ExternalAccessProps {
-}
+interface ExternalAccessProps {}
 
-class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccessState> {
-
+class ExternalAccess extends React.Component<
+    ExternalAccessProps,
+    ExternalAccessState
+> {
     constructor(props: ExternalAccessProps) {
         super(props);
         this.state = {
             page: '',
             caseId: '',
-            isLoading: true
+            isLoading: true,
         };
     }
 
@@ -37,8 +38,8 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
                 if (response) {
                     this.setState({
                         page: pageFromUrl,
-                        caseId: caseIdFromUrl
-                    })
+                        caseId: caseIdFromUrl,
+                    });
                 }
             } catch (e) {
                 //nothing will happen, user will not login
@@ -48,23 +49,26 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
 
     public authenticateExternally(token) {
         return new Promise((resolve, reject) => {
-            return auth.signInWithCustomToken(token)
+            return auth
+                .signInWithCustomToken(token)
                 .then((response) => {
-                        if (response.user) {
-                            let parsedUser = parseAndSaveUser(response.user);
-                            store.dispatch(AuthActions.setLoggedUserAction(parsedUser));
-                            this.setState({
-                                isLoading: false
-                            });
-                            resolve(true);
-                        }
+                    if (response.user) {
+                        let parsedUser = parseAndSaveUser(response.user);
+                        store.dispatch(
+                            AuthActions.setLoggedUserAction(parsedUser)
+                        );
                         this.setState({
-                            isLoading: false
+                            isLoading: false,
                         });
+                        resolve(true);
                     }
-                ).catch(() => {
                     this.setState({
-                        isLoading: false
+                        isLoading: false,
+                    });
+                })
+                .catch(() => {
+                    this.setState({
+                        isLoading: false,
                     });
                     //token is not valid
                     reject();
@@ -77,21 +81,27 @@ class ExternalAccess extends React.Component<ExternalAccessProps, ExternalAccess
             <React.Fragment>
                 <FadeLoader
                     loading={this.state.isLoading}
-                    color={'#1641ff'}
+                    color={'#e31f29'}
                     css={spinnerCss}
                 />
-                {!this.state.isLoading &&
-                <React.Fragment>
-                    {this.state.page && this.state.caseId &&
-                        <Redirect to={"/" + this.state.page + "/donate/" + this.state.caseId}/>
-                    }
-                    <LoginComponent/>
-                </React.Fragment>
-                }
+                {!this.state.isLoading && (
+                    <React.Fragment>
+                        {this.state.page && this.state.caseId && (
+                            <Redirect
+                                to={
+                                    '/' +
+                                    this.state.page +
+                                    '/donate/' +
+                                    this.state.caseId
+                                }
+                            />
+                        )}
+                        <LoginComponent />
+                    </React.Fragment>
+                )}
             </React.Fragment>
         );
     }
 }
-
 
 export default ExternalAccess;

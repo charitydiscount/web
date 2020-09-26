@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { store } from '../../..';
-import {
-    NavigationsAction
-} from '../../../redux/actions/NavigationsAction';
+import { NavigationsAction } from '../../../redux/actions/NavigationsAction';
 import { Stages } from '../../helper/Stages';
 import Category from './Category';
 import { connect } from 'react-redux';
@@ -14,10 +12,14 @@ import { FormattedMessage } from 'react-intl';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { spinnerCss } from '../../../helper/AppHelper';
 import { AppState } from '../../../redux/reducer/RootReducer';
-import { ICategoriesProps, ICategoriesState, loadCategories, onChildToggle } from "./BaseCategories";
+import {
+    ICategoriesProps,
+    ICategoriesState,
+    loadCategories,
+    onChildToggle,
+} from './BaseCategories';
 
 class Categories extends React.Component<ICategoriesProps, ICategoriesState> {
-
     constructor(props: ICategoriesProps) {
         super(props);
         this.state = {
@@ -74,7 +76,7 @@ class Categories extends React.Component<ICategoriesProps, ICategoriesState> {
                         <ul className="list">
                             {!this.state.isLoading && (
                                 <React.Fragment>
-                                    {this.state.categories.map(data => {
+                                    {this.state.categories.map((data) => {
                                         return (
                                             <Category
                                                 key={data.category}
@@ -94,7 +96,7 @@ class Categories extends React.Component<ICategoriesProps, ICategoriesState> {
                             )}
                             <FadeLoader
                                 loading={this.state.isLoading}
-                                color={'#1641ff'}
+                                color={'#e31f29'}
                                 css={spinnerCss}
                             />
                         </ul>

@@ -9,13 +9,16 @@ import Review from './Review';
 import { fetchReviews, ReviewDto, saveReview } from '../../rest/ReviewService';
 import { FormattedMessage } from 'react-intl';
 import { injectIntl, IntlShape } from 'react-intl';
-import { removeLocalStorage, setLocalStorage } from '../../helper/StorageHelper';
+import {
+    removeLocalStorage,
+    setLocalStorage,
+} from '../../helper/StorageHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import ShopElement from './ShopElement';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducer/RootReducer';
-import { getUserInfo } from "../login/AuthHelper";
-import InfoModal from "../modals/InfoModal";
+import { getUserInfo } from '../login/AuthHelper';
+import InfoModal from '../modals/InfoModal';
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -39,16 +42,17 @@ interface IProductReviewProps {
     setCurrentShop: any;
 }
 
-class ShopReview extends React.Component<IProductReviewProps,
-    IProductReviewState> {
-
+class ShopReview extends React.Component<
+    IProductReviewProps,
+    IProductReviewState
+> {
     constructor(props: IProductReviewProps) {
         super(props);
         this.state = {
             shop:
                 props.shops.find(
                     // eslint-disable-next-line
-                    shop => shop.id == this.props.match.params.id
+                    (shop) => shop.id == this.props.match.params.id
                 ) || ({} as ShopDto),
             description: '',
             modalMessage: '',
@@ -113,7 +117,8 @@ class ShopReview extends React.Component<IProductReviewProps,
                     this.state.description,
                     {
                         userId: currentUser.uid,
-                        name: currentUser.displayName || currentUser.email || '-',
+                        name:
+                            currentUser.displayName || currentUser.email || '-',
                         photoUrl: currentUser.photoURL || '',
                     }
                 );
@@ -138,11 +143,10 @@ class ShopReview extends React.Component<IProductReviewProps,
                     }),
                     null
                 );
-
             }
         } else {
             this.handleShowModalMessage(
-                this.props.intl.formatMessage({id: 'review.error.message'}),
+                this.props.intl.formatMessage({ id: 'review.error.message' }),
                 null
             );
         }
@@ -192,12 +196,9 @@ class ShopReview extends React.Component<IProductReviewProps,
     public render() {
         const reviewsList =
             this.state.reviews && this.state.reviews.length > 0 ? (
-                this.state.reviews.map(review => {
+                this.state.reviews.map((review) => {
                     return (
-                        <Review
-                            key={review.reviewer.name}
-                            review={review}
-                        />
+                        <Review key={review.reviewer.name} review={review} />
                     );
                 })
             ) : (
@@ -209,7 +210,7 @@ class ShopReview extends React.Component<IProductReviewProps,
                 </div>
             );
 
-        const rating = [1, 2, 3, 4, 5].map(star => (
+        const rating = [1, 2, 3, 4, 5].map((star) => (
             <li key={`star-${star}`}>
                 <a href={emptyHrefLink}>
                     {star < this.state.rating ? (
@@ -243,12 +244,14 @@ class ShopReview extends React.Component<IProductReviewProps,
 
         return (
             <React.Fragment>
-                <InfoModal visible={this.state.modalVisible}
-                           message={this.state.modalMessage}
-                           onClose={() => this.closeModal()}/>
+                <InfoModal
+                    visible={this.state.modalVisible}
+                    message={this.state.modalMessage}
+                    onClose={() => this.closeModal()}
+                />
                 <section className={'product_description_area'}>
                     <div className={'container'}>
-                        <div className="row" style={{marginTop: 70}}>
+                        <div className="row" style={{ marginTop: 70 }}>
                             <div className="col-lg-6">
                                 <ShopElement
                                     key={this.state.shop.name}
@@ -273,14 +276,14 @@ class ShopReview extends React.Component<IProductReviewProps,
                                             <textarea
                                                 className="form-control"
                                                 value={this.state.description}
-                                                onChange={event =>
+                                                onChange={(event) =>
                                                     this.setState({
                                                         description:
-                                                        event.target.value,
+                                                            event.target.value,
                                                     })
                                                 }
                                                 placeholder={this.props.intl.formatMessage(
-                                                    {id: 'review.placeholder'}
+                                                    { id: 'review.placeholder' }
                                                 )}
                                             ></textarea>
                                         </div>
@@ -303,11 +306,11 @@ class ShopReview extends React.Component<IProductReviewProps,
                                     <div className="review_list p_20">
                                         <FadeLoader
                                             loading={this.state.reviewsLoading}
-                                            color={'#1641ff'}
+                                            color={'#e31f29'}
                                             css={spinnerCss}
                                         />
                                         {!this.state.reviewsLoading &&
-                                        reviewsList}
+                                            reviewsList}
                                     </div>
                                 </div>
                             </div>
@@ -324,6 +327,5 @@ const mapStateToProps = (state: AppState) => {
         shops: state.shops.allShops,
     };
 };
-
 
 export default connect(mapStateToProps, null)(injectIntl(ShopReview));

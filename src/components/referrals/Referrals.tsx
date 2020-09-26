@@ -12,7 +12,7 @@ import {
     ReferralDto,
     buildDynamicLink,
 } from '../../rest/ReferralService';
-import { noImagePath } from "../../helper/Constants";
+import { noImagePath } from '../../helper/Constants';
 
 interface ReferralsState extends UserPhotoState {
     referrals: ReferralDto[];
@@ -93,7 +93,7 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                                 <div className="col-md-3 d-flex">
                                     <FadeLoader
                                         loading={this.state.isLoadingPhoto}
-                                        color={'#1641ff'}
+                                        color={'#e31f29'}
                                         css={smallerSpinnerCss}
                                     />
                                     {!this.state.isLoadingPhoto && (
@@ -105,7 +105,7 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                                             height={150}
                                             onError={() =>
                                                 this.setState({
-                                                    photoURL: noImagePath
+                                                    photoURL: noImagePath,
                                                 })
                                             }
                                         />
@@ -141,7 +141,7 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                         </div>
                         <FadeLoader
                             loading={this.state.isLoadingReferrals}
-                            color={'#1641ff'}
+                            color={'#e31f29'}
                             css={smallerSpinnerCss}
                         />
                         {!this.state.isLoadingReferrals &&

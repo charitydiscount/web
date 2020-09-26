@@ -20,8 +20,8 @@ import ReferralLogin from '../referrals/ReferralLogin';
 import { FadeLoader } from 'react-spinners';
 import { spinnerCss } from '../../helper/AppHelper';
 import { loadShops } from '../../redux/actions/ShopsAction';
-import ExternalShop from "../shops/ExternalShop";
-import UnsubscribeMailRedirect from "../login/UnsubscribeMailRedirect";
+import ExternalShop from '../shops/ExternalShop';
+import UnsubscribeMailRedirect from '../login/UnsubscribeMailRedirect';
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -121,7 +121,7 @@ const PageLayout = (props: PageLayoutProps) => {
                 </Switch>
             </main>
         ) : (
-            <FadeLoader loading={true} color={'#1641ff'} css={spinnerCss} />
+            <FadeLoader loading={true} color={'#e31f29'} css={spinnerCss} />
         );
     } else {
         return (
