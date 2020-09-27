@@ -34,11 +34,7 @@ class RedirectComponent extends React.Component<RedirectComponentProps, Redirect
         if (this.state.redirectKey) {
             return <Redirect to={this.state.redirectKey}/>
         }
-        return (
-            <React.Fragment>
-
-            </React.Fragment>
-        );
+        return null;
     }
 }
 

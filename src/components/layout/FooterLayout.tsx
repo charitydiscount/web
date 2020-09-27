@@ -1,16 +1,11 @@
 import * as React from 'react';
-import { emptyHrefLink, StorageKey } from '../../helper/Constants';
+import { emptyHrefLink } from '../../helper/Constants';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { appVersion } from '../../index';
-import { getLocalStorage } from "../../helper/StorageHelper";
+import { redirectToAbout } from "../../helper/AppHelper";
 
 class FooterLayout extends React.Component {
-
-    redirectToAbout(event: any) {
-        event.preventDefault();
-        window.location.href = window.location.origin + "/landing-" + (getLocalStorage(StorageKey.LANG) ? getLocalStorage(StorageKey.LANG) : 'ro') + ".html";
-    }
 
     render() {
         return (
@@ -27,7 +22,7 @@ class FooterLayout extends React.Component {
                             </h6>
                             <ul className="flex-column footer-text">
                                 <li className="d-flex">
-                                    <a href={emptyHrefLink} onClick={this.redirectToAbout}>
+                                    <a href={emptyHrefLink} onClick={(event) => redirectToAbout(event)}>
                                         <FormattedMessage
                                             id="userinfo.about.label"
                                             defaultMessage="About"

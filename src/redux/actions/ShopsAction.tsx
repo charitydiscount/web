@@ -1,12 +1,12 @@
 import { createAction } from '../helper/ActionHelper';
 import { ShopsActionTypes } from './Actions';
-import { ActionTypesUnion } from '../helper/TypesHelper';
 import { ShopDto, fetchPrograms } from '../../rest/ShopsService';
 import { ReviewRating } from '../../rest/ReviewService';
 import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import { getLocalStorage, setLocalStorage } from '../../helper/StorageHelper';
 import { StorageKey } from '../../helper/Constants';
+import { fetchConfigInfo } from "../../rest/ConfigService";
 
 export const ShopsActions = {
     setShops: (shops: Array<ShopDto>) =>
@@ -43,11 +43,10 @@ export function setCurrentPage(currentPage: number): any {
     }
 }
 
-export const loadShops = () => async (
-    dispatch: ThunkDispatch<{}, {}, AnyAction>
-) => {
+export const loadShops = () => async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
     let shops: ShopDto[];
     try {
+        await fetchConfigInfo();
         shops = await fetchPrograms();
         setLocalStorage(StorageKey.SHOPS, JSON.stringify(shops));
     } catch (error) {
@@ -61,5 +60,3 @@ export const loadShops = () => async (
 
     return dispatch(ShopsActions.shopsLoaded(shops));
 };
-
-export type ShopsActionsTypes = ActionTypesUnion<typeof ShopsActions>;

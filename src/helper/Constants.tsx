@@ -26,6 +26,7 @@ export enum FirebaseTable {
 
 export enum TableDocument {
     PERFORMANT2 = '2performant',
+    GENERAL = 'general',
     IMPORTANT_CATEGORIES = 'importantCategories',
     PROGRAMS = 'programs',
 }
@@ -57,20 +58,21 @@ export enum CommissionStatus {
 
 export enum StorageKey {
     //LOCAL STORAGE
-    CATEGORIES = '/categoriesCD',
-    SHOPS = '/shopsCD',
-    REFERRAL_KEY = '/referralCD',
-    SELECTED_SHOP = '/selectedShopCD', //if you want to load the selected shop directly
-    REDIRECT_KEY = '/redirectCD', //if coming from external
-    FAVORITE_SHOPS = '/favoriteShopsCD',
-    CAUSES = '/causesCD',
-    USER = '/userCD',
-    LANG = '/langCD', //used to remember the language it was selected
-    REVIEWS_RATINGS = '/reviewsCD',
+    CATEGORIES = '/oneCD',
+    SHOPS = '/twoCD',
+    REFERRAL_KEY = '/threeCD', //referral key to update on user
+    SELECTED_SHOP = '/fourCD', //if you want to load the selected shop directly
+    REDIRECT_KEY = '/fiveCD', //if coming from external
+    FAVORITE_SHOPS = '/sixCD',
+    CAUSES = '/sevenCD',
+    USER = '/eightCD',
+    LANG = '/nineCD', //used to remember the language it was selected
+    REVIEWS_RATINGS = '/tenCD',
     REDIRECT_MESSAGE = "/redirectMessageDisableCD", //this should never be cleared by us
 
     //SESSION STORAGE
-    PERFORMANET_2_CODE = '/performant2CodeCD',
+    GENERAL_CONFIG = '/elevenCD',
+    UNIQUE_CODE = '/twelveCD'
 }
 
 export const emptyHrefLink = '#';

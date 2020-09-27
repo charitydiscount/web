@@ -3,7 +3,6 @@ import { injectIntl, IntlShape } from 'react-intl';
 import { store } from '../../index';
 import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
-import { fetchConfigInfo } from '../../rest/ConfigService';
 import ReactPaginate from 'react-paginate';
 import { roundCommission, spinnerCss } from '../../helper/AppHelper';
 import GenericInput from '../input/GenericInput';
@@ -86,16 +85,11 @@ class Products extends React.Component<ProductsProps, ProductsState> {
     }
 
     async componentDidMount() {
+        store.dispatch(NavigationsAction.setStageAction(Stages.PRODUCTS));
         document.addEventListener('keydown', this.searchFunction, false);
         this.setState({
             isLoading: true,
         });
-        try {
-            await fetchConfigInfo();
-        } catch (error) {
-            //configs not loaded, important part, refresh app
-            window.location.reload();
-        }
 
         try {
             let response = await getFeaturedProducts();
@@ -115,8 +109,6 @@ class Products extends React.Component<ProductsProps, ProductsState> {
             });
             //feature product not loaded, site will keep working
         }
-
-        store.dispatch(NavigationsAction.setStageAction(Stages.PRODUCTS));
     }
 
     componentWillUnmount() {

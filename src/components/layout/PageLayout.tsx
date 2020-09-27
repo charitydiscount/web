@@ -17,11 +17,11 @@ import { AppState } from '../../redux/reducer/RootReducer';
 import { connect } from 'react-redux';
 import Referrals from '../referrals/Referrals';
 import ReferralLogin from '../referrals/ReferralLogin';
-import { FadeLoader } from 'react-spinners';
-import { spinnerCss } from '../../helper/AppHelper';
 import { loadShops } from '../../redux/actions/ShopsAction';
-import ExternalShop from '../shops/ExternalShop';
 import UnsubscribeMailRedirect from '../login/UnsubscribeMailRedirect';
+import ExternalShop from "../shops/ExternalShop";
+import { FadeLoader } from "react-spinners";
+import { spinnerCss } from "../../helper/AppHelper";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -30,147 +30,176 @@ interface PageLayoutProps {
 }
 
 const PageLayout = (props: PageLayoutProps) => {
+
     useEffect(() => {
-        if (props.isLoggedIn && !props.shopsLoaded) {
+        if (!props.shopsLoaded) {
             props.loadShops();
         }
     });
 
-    if (props.isLoggedIn) {
-        return props.shopsLoaded ? (
-            <main>
-                <Switch>
-                    <Route
-                        exact={true}
-                        path={Routes.CONTACT}
-                        component={Contact}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.CATEGORIES + '/:favShops'}
-                        component={Shops}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.CATEGORIES}
-                        component={Shops}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.SHOP + '/:shopName'}
-                        component={Shops}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.USER}
-                        component={UserInfo}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.CAUSES}
-                        component={Causes}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.LOGIN}
-                        component={LoginActor}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.WALLET}
-                        component={Wallet}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.WALLET + '/donate/:caseId'}
-                        component={Wallet}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.REFERRALS}
-                        component={Referrals}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.USER + '/unsubscribe'}
-                        component={UserInfo}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.REVIEW + '/:id'}
-                        component={ShopReview}
-                    />
-                    <Route exact={true} path={Routes.TOS} component={Tos} />
-                    <Route
-                        exact={true}
-                        path={Routes.PRIVACY}
-                        component={Privacy}
-                    />
-                    <Route exact={true} path={Routes.FAQ} component={Faq} />
-                    <Route
-                        exact={true}
-                        path={Routes.PRODUCTS}
-                        component={Products}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.AUTH}
-                        component={ExternalAccess}
-                    />
-                    <Route render={() => <Redirect to={Routes.LOGIN} />} />
-                </Switch>
-            </main>
-        ) : (
-            <FadeLoader loading={true} color={'#e31f29'} css={spinnerCss} />
-        );
+    if (props.shopsLoaded) {
+        if (props.isLoggedIn) {
+            return (
+                <main>
+                    <Switch>
+                        <Route
+                            exact={true}
+                            path={Routes.CONTACT}
+                            component={Contact}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.SHOPS + '/:favShops'}
+                            component={Shops}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.SHOPS}
+                            component={Shops}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.SHOP + '/:shopName'}
+                            component={Shops}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.USER}
+                            component={UserInfo}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.CAUSES}
+                            component={Causes}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.LOGIN}
+                            component={LoginActor}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.WALLET}
+                            component={Wallet}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.WALLET + '/donate/:caseId'}
+                            component={Wallet}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.REFERRALS}
+                            component={Referrals}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.USER + '/unsubscribe'}
+                            component={UserInfo}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.REVIEW + '/:id'}
+                            component={ShopReview}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.TOS}
+                            component={Tos}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.PRIVACY}
+                            component={Privacy}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.FAQ}
+                            component={Faq}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.PRODUCTS}
+                            component={Products}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.AUTH}
+                            component={ExternalAccess}
+                        />
+                        <Route render={() => <Redirect to={Routes.SHOPS}/>}/>
+                    </Switch>
+                </main>
+            )
+        } else {
+            return (
+                <main>
+                    <Switch>
+                        <Route
+                            exact={true}
+                            path={Routes.SHOPS}
+                            component={Shops}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.SHOP + '/:shopName'}
+                            component={ExternalShop}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.REFFERRAL_LOGIN + '/:key'}
+                            component={ReferralLogin}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.CAUSES}
+                            component={Causes}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.USER + '/unsubscribe'}
+                            component={UnsubscribeMailRedirect}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.LOGIN}
+                            component={LoginActor}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.TOS}
+                            component={Tos}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.PRIVACY}
+                            component={Privacy}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.FAQ}
+                            component={Faq}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.AUTH}
+                            component={ExternalAccess}
+                        />
+                        <Route render={() => <Redirect to={Routes.SHOPS}/>}/>
+                    </Switch>
+                </main>
+            );
+        }
     } else {
-        return (
-            <main>
-                <Switch>
-                    <Route
-                        exact={true}
-                        path={Routes.REFFERRAL_LOGIN + '/:key'}
-                        component={ReferralLogin}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.SHOP + '/:shopName'}
-                        component={ExternalShop}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.USER + '/unsubscribe'}
-                        component={UnsubscribeMailRedirect}
-                    />
-                    <Route
-                        exact={true}
-                        path={Routes.LOGIN}
-                        component={LoginActor}
-                    />
-                    <Route exact={true} path={Routes.TOS} component={Tos} />
-                    <Route
-                        exact={true}
-                        path={Routes.PRIVACY}
-                        component={Privacy}
-                    />
-                    <Route exact={true} path={Routes.FAQ} component={Faq} />
-                    <Route
-                        exact={true}
-                        path={Routes.AUTH}
-                        component={ExternalAccess}
-                    />
-                    <Route render={() => <Redirect to={Routes.LOGIN} />} />
-                </Switch>
-            </main>
-        );
+        return <FadeLoader loading={true} color={'#e31f29'} css={spinnerCss}/>
     }
 };
 
 const mapStateToProps = (state: AppState) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
-        shopsLoaded: state.shops.shopsLoaded,
+        shopsLoaded: state.shops.shopsLoaded
     };
 };
 
-export default connect(mapStateToProps, { loadShops })(PageLayout);
+export default connect(mapStateToProps, {loadShops})(PageLayout);

@@ -5,6 +5,8 @@ import { Redirect } from 'react-router';
 import { emptyHrefLink } from '../../helper/Constants';
 import { FormattedMessage } from 'react-intl';
 import { roundMoney } from "../../helper/AppHelper";
+import { AppState } from "../../redux/reducer/RootReducer";
+import { connect } from "react-redux";
 
 interface ICauseState {
     redirect: boolean;
@@ -12,6 +14,9 @@ interface ICauseState {
 
 interface ICauseProps {
     cause: CauseDto;
+
+    //general state
+    isLoggedIn: boolean
 }
 
 class Cause extends React.Component<ICauseProps, ICauseState> {
@@ -30,11 +35,19 @@ class Cause extends React.Component<ICauseProps, ICauseState> {
 
     renderRedirect = () => {
         if (this.state.redirect) {
-            return (
-                <Redirect
-                    to={Routes.WALLET + '/donate/' + this.props.cause.id}
-                />
-            );
+            if (this.props.isLoggedIn) {
+                return (
+                    <Redirect
+                        to={Routes.WALLET + '/donate/' + this.props.cause.id}
+                    />
+                );
+            } else {
+                return (
+                    <Redirect
+                        to={Routes.LOGIN}
+                    />
+                );
+            }
         }
     };
 
@@ -87,4 +100,10 @@ class Cause extends React.Component<ICauseProps, ICauseState> {
     }
 }
 
-export default Cause;
+const mapStateToProps = (state: AppState) => {
+    return {
+        isLoggedIn: state.user.isLoggedIn
+    };
+};
+
+export default connect(mapStateToProps)(Cause);

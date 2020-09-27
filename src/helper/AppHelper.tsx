@@ -1,5 +1,5 @@
 import { getAffiliateCode } from '../rest/ConfigService';
-import { setLocalStorage } from './StorageHelper';
+import { getLocalStorage, setLocalStorage } from './StorageHelper';
 import {
     StorageKey,
     PROGRAM_LINK_PLACEHOLDER,
@@ -76,6 +76,13 @@ export function getUrlParameter(param: string) {
     return results === null
         ? ''
         : decodeURIComponent(results[1].replace(/\+/g, ' '));
+}
+
+export function redirectToAbout(event: any) {
+    event.preventDefault();
+    window.location.href = window.location.origin + "/landing-" +
+        (getLocalStorage(StorageKey.LANG) ? getLocalStorage(StorageKey.LANG) : 'ro') +
+        ".html";
 }
 
 export function roundCommission(comission) {

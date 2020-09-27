@@ -4,10 +4,12 @@ import { PromotionDTO } from '../../rest/DealsService';
 import { ShopDto } from '../../rest/ShopsService';
 import { computeUrl } from '../../helper/AppHelper';
 import { clickSaveAndRedirect } from "../../rest/ClickService";
+import { emptyHrefLink } from "../../helper/Constants";
 
 interface PromotionProps {
     promotion: PromotionDTO;
     comingFromShopReview?: boolean;
+    isLoggedIn: boolean
 }
 
 interface StateProps {
@@ -17,12 +19,13 @@ interface StateProps {
 type Props = PromotionProps & StateProps;
 
 class Promotion extends React.Component<Props> {
+
     public render() {
         const shop = this.props.shops.find(
             shop => shop.id === this.props.promotion.program.id
         );
-        let computedPromotionUrl: string | undefined;
-        if (shop) {
+        let computedPromotionUrl;
+        if (shop && this.props.isLoggedIn) {
             computedPromotionUrl = computeUrl(this.props.promotion.affiliateUrl, shop.uniqueCode,
                 this.props.promotion.landingPageLink);
         }
@@ -33,12 +36,14 @@ class Promotion extends React.Component<Props> {
                     <td>
                         {computedPromotionUrl && (
                             <a
-                                href={computedPromotionUrl}
-                                onClick={(event) => {clickSaveAndRedirect(event, this.props.promotion.program.id, computedPromotionUrl)}}
+                                href={emptyHrefLink}
+                                onClick={(event) => {
+                                    clickSaveAndRedirect(event, this.props.promotion.program.id, computedPromotionUrl)
+                                }}
                                 rel="noopener noreferrer"
                                 style={
                                     !this.props.comingFromShopReview
-                                        ? { maxWidth: 300 }
+                                        ? {maxWidth: 300}
                                         : {}
                                 }
                             >
@@ -49,7 +54,7 @@ class Promotion extends React.Component<Props> {
                             <p
                                 style={
                                     !this.props.comingFromShopReview
-                                        ? { maxWidth: 300 }
+                                        ? {maxWidth: 300}
                                         : {}
                                 }
                             >
@@ -66,6 +71,7 @@ class Promotion extends React.Component<Props> {
 const mapStateToProps = (state: any) => {
     return {
         shops: state.shops.allShops,
+        isLoggedIn: state.user.isLoggedIn
     };
 };
 

@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { store } from '../../..';
-import { NavigationsAction } from '../../../redux/actions/NavigationsAction';
-import { Stages } from '../../helper/Stages';
 import Category from './Category';
 import { connect } from 'react-redux';
 import {
@@ -30,7 +27,6 @@ class Categories extends React.Component<ICategoriesProps, ICategoriesState> {
     }
 
     async componentDidMount() {
-        store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
         await loadCategories(this);
     }
 
@@ -41,10 +37,6 @@ class Categories extends React.Component<ICategoriesProps, ICategoriesState> {
      */
     public onChildToggle(id, name) {
         onChildToggle(this, id, name);
-    }
-
-    public componentWillUnmount() {
-        store.dispatch(NavigationsAction.resetStageAction(Stages.CATEGORIES));
     }
 
     public render() {

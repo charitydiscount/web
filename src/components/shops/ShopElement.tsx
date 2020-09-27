@@ -18,10 +18,12 @@ import { connect } from 'react-redux';
 import RedirectModal from './RedirectModal';
 import { getLocalStorage } from '../../helper/StorageHelper';
 import { computeUrl } from '../../helper/AppHelper';
+import { clickSaveAndRedirect } from "../../rest/ClickService";
 
 interface IShopElementProps {
     shop: ShopDto;
     allShops: ShopDto[];
+    isLoggedIn: boolean;
     comingFromShopReview?: boolean;
     onCloseModal?: () => void;
     intl: IntlShape;
@@ -34,10 +36,8 @@ interface IShopElementState {
     redirectModalVisible: boolean;
 }
 
-class ShopElement extends React.Component<
-    IShopElementProps,
-    IShopElementState
-> {
+class ShopElement extends React.Component<IShopElementProps,
+    IShopElementState> {
     constructor(props: IShopElementProps) {
         super(props);
         this.state = {
@@ -50,10 +50,12 @@ class ShopElement extends React.Component<
     }
 
     async componentDidMount() {
-        if (verifyInFavoriteShops(this.props.shop.id)) {
-            this.setState({
-                favShop: true,
-            });
+        if (this.props.isLoggedIn) {
+            if (verifyInFavoriteShops(this.props.shop.id)) {
+                this.setState({
+                    favShop: true,
+                });
+            }
         }
         let response = await getPromotions(this.props.shop.id);
         if (response) {
@@ -148,40 +150,59 @@ class ShopElement extends React.Component<
         );
 
         let accessButton;
-        let cashbackUrl = computeUrl(
-            this.props.shop.affiliateUrl,
-            this.props.shop.uniqueCode,
-            this.props.shop.mainUrl
-        );
-        let redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
-        if (redirectStorageKey && redirectStorageKey === 'true') {
-            accessButton = (
-                <a
-                    href={cashbackUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="main_btn"
-                >
-                    <FormattedMessage
-                        id={'shop.access.button'}
-                        defaultMessage="Access"
-                    />
-                </a>
+        let cashbackUrl;
+        if (this.props.isLoggedIn) {
+            cashbackUrl = computeUrl(
+                this.props.shop.affiliateUrl,
+                this.props.shop.uniqueCode,
+                this.props.shop.mainUrl
             );
+
+            let redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
+            if (redirectStorageKey && redirectStorageKey === 'true') {
+                accessButton = (
+                    <a
+                        href={emptyHrefLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="main_btn"
+                        onClick={(event) => {
+                            clickSaveAndRedirect(event, this.props.shop.id, cashbackUrl)
+                        }}
+                    >
+                        <FormattedMessage
+                            id={'shop.access.button'}
+                            defaultMessage="Access"
+                        />
+                    </a>
+                );
+            } else {
+                accessButton = (
+                    <a
+                        href={emptyHrefLink}
+                        rel="noopener noreferrer"
+                        className="main_btn"
+                        onClick={this.openRedirectModal}
+                    >
+                        <FormattedMessage
+                            id={'shop.access.button'}
+                            defaultMessage="Access"
+                        />
+                    </a>
+                );
+            }
         } else {
-            accessButton = (
-                <a
-                    href={emptyHrefLink}
-                    rel="noopener noreferrer"
-                    className="main_btn"
-                    onClick={this.openRedirectModal}
-                >
-                    <FormattedMessage
-                        id={'shop.access.button'}
-                        defaultMessage="Access"
-                    />
-                </a>
-            );
+            accessButton = <Link
+                className="main_btn"
+                to={
+                    Routes.LOGIN
+                }
+            >
+                <FormattedMessage
+                    id={'shop.access.button'}
+                    defaultMessage="Access"
+                />
+            </Link>
         }
 
         return (
@@ -194,7 +215,7 @@ class ShopElement extends React.Component<
                 />
                 <div className="text-center p-4">
                     {!this.props.comingFromShopReview && (
-                        <div style={{ textAlign: 'right' }}>
+                        <div style={{textAlign: 'right'}}>
                             <i
                                 onClick={this.props.onCloseModal}
                                 className="fa fa-times"
@@ -207,7 +228,7 @@ class ShopElement extends React.Component<
                             defaultMessage="Cashback:"
                         />
                         {this.props.shop.uiCommission}
-                        <br />
+                        <br/>
                         <small className="text-muted text-small">
                             <FormattedMessage
                                 id={'shop.cashback.without.vat.and.transport'}
@@ -246,7 +267,7 @@ class ShopElement extends React.Component<
                             style={
                                 this.props.comingFromShopReview
                                     ? {}
-                                    : { maxWidth: 300 }
+                                    : {maxWidth: 300}
                             }
                         >
                             <FormattedMessage
@@ -259,7 +280,7 @@ class ShopElement extends React.Component<
                             style={
                                 this.props.comingFromShopReview
                                     ? {}
-                                    : { maxWidth: 300 }
+                                    : {maxWidth: 300}
                             }
                         >
                             <FormattedMessage
@@ -279,7 +300,10 @@ class ShopElement extends React.Component<
                             {this.props.shop.reviewsRating ? (
                                 <Link
                                     to={
-                                        Routes.REVIEW + '/' + this.props.shop.id
+                                        this.props.isLoggedIn ?
+                                            Routes.REVIEW + '/' + this.props.shop.id
+                                            :
+                                            Routes.LOGIN
                                     }
                                 >
                                     <span className="mt-4">
@@ -295,7 +319,10 @@ class ShopElement extends React.Component<
                             ) : (
                                 <Link
                                     to={
-                                        Routes.REVIEW + '/' + this.props.shop.id
+                                        this.props.isLoggedIn ?
+                                            Routes.REVIEW + '/' + this.props.shop.id
+                                            :
+                                            Routes.LOGIN
                                     }
                                 >
                                     <Button color="secondary">
@@ -310,12 +337,13 @@ class ShopElement extends React.Component<
                         </div>
                         <div
                             className="s_product_text"
-                            style={{ marginTop: 20, marginBottom: 20 }}
+                            style={{marginTop: 20, marginBottom: 20, marginLeft: !this.props.isLoggedIn ? 0 : -15}}
                         >
                             <div className="card_area p_20">
                                 {accessButton}
+                                {this.props.isLoggedIn &&
                                 <div
-                                    style={{ padding: 0 }}
+                                    style={{padding: 0}}
                                     className={'icon_btn p_icon'}
                                 >
                                     <a
@@ -335,6 +363,7 @@ class ShopElement extends React.Component<
                                         />
                                     </a>
                                 </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -353,9 +382,9 @@ class ShopElement extends React.Component<
                                         style={
                                             !this.props.comingFromShopReview
                                                 ? {
-                                                      overflowY: 'auto',
-                                                      maxHeight: 150,
-                                                  }
+                                                    overflowY: 'auto',
+                                                    maxHeight: 150,
+                                                }
                                                 : {}
                                         }
                                     >
@@ -364,8 +393,8 @@ class ShopElement extends React.Component<
                                             style={
                                                 !this.props.comingFromShopReview
                                                     ? {
-                                                          maxWidth: 300,
-                                                      }
+                                                        maxWidth: 300,
+                                                    }
                                                     : {}
                                             }
                                         >
@@ -385,6 +414,7 @@ class ShopElement extends React.Component<
 const mapStateToProps = (state: AppState) => {
     return {
         allShops: state.shops.allShops,
+        isLoggedIn: state.user.isLoggedIn
     };
 };
 

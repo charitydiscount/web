@@ -4,10 +4,11 @@ export enum Stages {
     CONTACT = "stage-contact",
     CAUSES = "stage-causes",
     FRIENDS = "stage-friends",
-    CATEGORIES = "stage-categories",
+    SHOPS = "stage-shops",
     PRODUCTS = "stage-products",
     TOS = "stage-tos",
     REVIEW = "stage-review",
     PRIVACY = "stage-privacy",
-    WALLET = "stage-wallet"
+    WALLET = "stage-wallet",
+    LOGIN = "stage-login"
 }

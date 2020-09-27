@@ -1,13 +1,12 @@
 import * as React from 'react';
-import {auth, store} from '../../index';
-import {Stages} from '../helper/Stages';
-import {NavigationsAction} from '../../redux/actions/NavigationsAction';
+import { store } from '../../index';
+import { Stages } from '../helper/Stages';
+import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import Login from './LoginComponent';
-import {connect} from 'react-redux';
-import {Redirect} from 'react-router';
-import {Routes} from '../helper/Routes';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
+import { Routes } from '../helper/Routes';
 import { clearStorage } from "../../helper/StorageHelper";
-import {AuthActions} from "./UserActions";
 
 interface ILoginRendererProps {
     isUserLogged: boolean;
@@ -15,28 +14,18 @@ interface ILoginRendererProps {
 
 class LoginActor extends React.Component<ILoginRendererProps> {
 
-    async componentDidMount() {
-        store.dispatch(NavigationsAction.setStageAction(Stages.EMPTY));
-
-        this.verifyUserLoggedInFirebase();
+    componentDidMount() {
+        store.dispatch(NavigationsAction.setStageAction(Stages.LOGIN));
     }
 
     public componentWillUnmount() {
-        store.dispatch(NavigationsAction.resetStageAction(Stages.EMPTY));
-    }
-
-    public verifyUserLoggedInFirebase() {
-        auth.onAuthStateChanged(function (user) {
-            if (!user) {
-                store.dispatch(AuthActions.resetLoggedUserAction());
-            }
-        });
+        store.dispatch(NavigationsAction.resetStageAction(Stages.LOGIN));
     }
 
     public render() {
         clearStorage();
         return this.props.isUserLogged ? (
-            <Redirect to={Routes.CATEGORIES}/>
+            <Redirect to={Routes.SHOPS}/>
         ) : (
             <Login/>
         );

@@ -13,7 +13,7 @@ import {
 import { Routes } from '../helper/Routes';
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
-import { onLanguageChange } from '../../helper/AppHelper';
+import { onLanguageChange, redirectToAbout } from '../../helper/AppHelper';
 import { Link } from 'react-router-dom';
 
 type IHeaderLayoutProps = {
@@ -39,16 +39,14 @@ interface IHeaderLayoutState {
 }
 
 const options: any[] = [
-    { value: 'ro', label: 'RO' },
-    { value: 'en', label: 'EN' },
+    {value: 'ro', label: 'RO'},
+    {value: 'en', label: 'EN'},
 ];
 const optionFromValue = (value: string) =>
     options.find((o) => o.value === value);
 
-class HeaderLayout extends React.Component<
-    IHeaderLayoutProps,
-    IHeaderLayoutState
-> {
+class HeaderLayout extends React.Component<IHeaderLayoutProps,
+    IHeaderLayoutState> {
     constructor(props: IHeaderLayoutProps) {
         super(props);
         this.state = {
@@ -100,12 +98,11 @@ class HeaderLayout extends React.Component<
     }
 
     render() {
-        const isCategories = this.props.view === Stages.CATEGORIES;
+        const isShops = this.props.view === Stages.SHOPS;
         const isProducts = this.props.view === Stages.PRODUCTS;
-        const isTos = this.props.view === Stages.TOS;
-        const isPrivacy = this.props.view === Stages.PRIVACY;
         const isCauses = this.props.view === Stages.CAUSES;
         const isFriends = this.props.view === Stages.FRIENDS;
+        const isLoginPage = this.props.view === Stages.LOGIN;
         const isWallet = this.props.view === Stages.WALLET;
         const isLoggedIn = this.props.isLoggedIn;
 
@@ -113,7 +110,7 @@ class HeaderLayout extends React.Component<
             <header
                 className={`header_area ${
                     this.state.fixedHeader ? 'navbar_fixed' : ''
-                }`}
+                    }`}
             >
                 <div className="top_menu row m0">
                     <div className="container-fluid">
@@ -155,194 +152,246 @@ class HeaderLayout extends React.Component<
                 <div className="main_menu">
                     <nav className="navbar navbar-expand-lg navbar-light">
                         <div className="container-fluid">
-                            {(isLoggedIn ||
-                                (!isLoggedIn && (isTos || isPrivacy))) && (
-                                <Link
-                                    className="navbar-brand logo_h"
-                                    to={'/login'}
-                                >
-                                    <div className="logo-container"/>
-                                </Link>
-                            )}
-                            {isLoggedIn && (
-                                <button
-                                    className="navbar-toggler"
-                                    type="button"
-                                    data-toggle="collapse"
-                                    data-target="#navbarSupportedContent"
-                                    aria-controls="navbarSupportedContent"
-                                    aria-expanded="false"
-                                    aria-label="Toggle navigation"
-                                >
-                                    <span className="icon-bar" />
-                                    <span className="icon-bar" />
-                                    <span className="icon-bar" />
-                                </button>
-                            )}
+                            <Link
+                                className="navbar-brand logo_h"
+                                to={'/login'}
+                            >
+                                <div className="logo-container"/>
+                            </Link>
+
+
+                            <button
+                                className="navbar-toggler"
+                                type="button"
+                                data-toggle="collapse"
+                                data-target="#navbarSupportedContent"
+                                aria-controls="navbarSupportedContent"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation"
+                            >
+                                <span className="icon-bar"/>
+                                <span className="icon-bar"/>
+                                <span className="icon-bar"/>
+                            </button>
+
                             <div
                                 className="collapse navbar-collapse offset"
                                 id="navbarSupportedContent"
                             >
                                 <div className="row w-100">
-                                    <div className="col-lg-8 pr-0">
+                                    <div className="col-lg-7 pr-0">
                                         <ul className="nav navbar-nav center_nav pull-right">
+                                            {!isLoggedIn && (
+                                                <li
+                                                    className={'nav-item '}
+                                                    onClick={(event) => redirectToAbout(event)}
+                                                >
+                                                    <a href={emptyHrefLink}
+                                                       className={"nav-link"}
+                                                       onClick={(event) => redirectToAbout(event)}
+                                                    >
+                                                        <FormattedMessage
+                                                            id="userinfo.about.label"
+                                                            defaultMessage="About"
+                                                        />
+                                                    </a>
+                                                </li>
+                                            )}
+                                            <li
+                                                className={
+                                                    'nav-item ' +
+                                                    (isShops
+                                                        ? 'active'
+                                                        : '')
+                                                }
+                                            >
+                                                <Link
+                                                    className="nav-link"
+                                                    to={
+                                                        Routes.SHOPS
+                                                    }
+                                                >
+                                                    <FormattedMessage
+                                                        id="navigation.shops"
+                                                        defaultMessage="Magazine"
+                                                    />
+                                                </Link>
+                                            </li>
+
+                                            {isLoggedIn && (
+                                                <li
+                                                    className={
+                                                        'nav-item ' +
+                                                        (isProducts
+                                                            ? 'active'
+                                                            : '')
+                                                    }
+                                                >
+                                                    <Link
+                                                        to={Routes.PRODUCTS}
+                                                        className="nav-link"
+                                                    >
+                                                        <FormattedMessage
+                                                            id="navigation.products"
+                                                            defaultMessage="Products"
+                                                        />
+                                                    </Link>
+                                                </li>
+                                            )}
+                                            <li
+                                                className={
+                                                    'nav-item ' +
+                                                    (isCauses
+                                                        ? 'active'
+                                                        : '')
+                                                }
+                                            >
+                                                <Link
+                                                    to={Routes.CAUSES}
+                                                    className="nav-link"
+                                                >
+                                                    <FormattedMessage
+                                                        id="navigation.causes"
+                                                        defaultMessage="Cauze"
+                                                    />
+                                                </Link>
+                                            </li>
+
+                                            {!isLoggedIn && (
+                                                <li
+                                                    className={
+                                                        'nav-item ' +
+                                                        (isLoginPage
+                                                            ? 'active'
+                                                            : '')
+                                                    }
+                                                >
+                                                    <Link
+                                                        className="nav-link"
+                                                        to={
+                                                            Routes.LOGIN
+                                                        }
+                                                    >
+                                                        <FormattedMessage
+                                                            id="navigation.login"
+                                                            defaultMessage="Login"
+                                                        />
+                                                    </Link>
+                                                </li>
+                                            )}
+
+                                            {isLoggedIn &&
+                                            <React.Fragment>
+                                                <li
+                                                    className={
+                                                        'nav-item ' +
+                                                        (isWallet
+                                                            ? 'active'
+                                                            : '')
+                                                    }
+                                                >
+                                                    <Link
+                                                        className="nav-link"
+                                                        to={Routes.WALLET}
+                                                    >
+                                                        <FormattedMessage
+                                                            id="navigation.wallet"
+                                                            defaultMessage="Portofel"
+                                                        />
+                                                    </Link>
+                                                </li>
+                                                <li
+                                                    className={
+                                                        'nav-item ' +
+                                                        (isFriends
+                                                            ? 'active'
+                                                            : '')
+                                                    }
+                                                >
+                                                    <Link
+                                                        to={
+                                                            Routes.REFERRALS
+                                                        }
+                                                        className="nav-link"
+                                                    >
+                                                        <FormattedMessage
+                                                            id="navigation.referral"
+                                                            defaultMessage="Invitati"
+                                                        />
+                                                    </Link>
+                                                </li>
+                                            </React.Fragment>
+                                            }
+                                        </ul>
+                                    </div>
+
+
+                                    <div className="col-lg-5">
+                                        <ul className="nav navbar-nav navbar-right right_nav pull-right">
+                                            <hr/>
                                             {isLoggedIn && (
                                                 <React.Fragment>
-                                                    <li
-                                                        className={
-                                                            'nav-item ' +
-                                                            (isCategories
-                                                                ? 'active'
-                                                                : '')
-                                                        }
-                                                    >
-                                                        <Link
-                                                            className="nav-link"
-                                                            to={
-                                                                Routes.CATEGORIES
-                                                            }
-                                                        >
-                                                            <FormattedMessage
-                                                                id="navigation.shops"
-                                                                defaultMessage="Magazine"
-                                                            />
-                                                        </Link>
-                                                    </li>
-
-                                                    <li
-                                                        className={
-                                                            'nav-item ' +
-                                                            (isProducts
-                                                                ? 'active'
-                                                                : '')
-                                                        }
-                                                    >
-                                                        <Link
-                                                            to={Routes.PRODUCTS}
-                                                            className="nav-link"
-                                                        >
-                                                            <FormattedMessage
-                                                                id="navigation.products"
-                                                                defaultMessage="Products"
-                                                            />
-                                                        </Link>
-                                                    </li>
-
-                                                    <li
-                                                        className={
-                                                            'nav-item ' +
-                                                            (isCauses
-                                                                ? 'active'
-                                                                : '')
-                                                        }
-                                                    >
-                                                        <Link
-                                                            to={Routes.CAUSES}
-                                                            className="nav-link"
-                                                        >
-                                                            <FormattedMessage
-                                                                id="navigation.causes"
-                                                                defaultMessage="Cauze"
-                                                            />
-                                                        </Link>
-                                                    </li>
-
-                                                    <li
-                                                        className={
-                                                            'nav-item ' +
-                                                            (isWallet
-                                                                ? 'active'
-                                                                : '')
-                                                        }
-                                                    >
-                                                        <Link
-                                                            className="nav-link"
-                                                            to={Routes.WALLET}
-                                                        >
-                                                            <FormattedMessage
-                                                                id="navigation.wallet"
-                                                                defaultMessage="Portofel"
-                                                            />
-                                                        </Link>
-                                                    </li>
-                                                    <li
-                                                        className={
-                                                            'nav-item ' +
-                                                            (isFriends
-                                                                ? 'active'
-                                                                : '')
-                                                        }
-                                                    >
+                                                    <li className="nav-item">
                                                         <Link
                                                             to={
-                                                                Routes.REFERRALS
+                                                                Routes.SHOPS +
+                                                                '/favShops'
                                                             }
-                                                            className="nav-link"
+                                                            onClick={
+                                                                this
+                                                                    .loadFavoriteShops
+                                                            }
+                                                            onMouseLeave={() =>
+                                                                this.setState({
+                                                                    favShopsIconFill: false,
+                                                                })
+                                                            }
+                                                            className={'icons'}
                                                         >
-                                                            <FormattedMessage
-                                                                id="navigation.referral"
-                                                                defaultMessage="Invitati"
+                                                            {this.state
+                                                                .favShopsIconFill ? (
+                                                                <i
+                                                                    className="fa fa-heart"
+                                                                    aria-hidden="true"
+                                                                />
+                                                            ) : (
+                                                                <i
+                                                                    className="fa fa-heart-o"
+                                                                    aria-hidden="true"
+                                                                />
+                                                            )}
+                                                        </Link>
+                                                    </li>
+
+                                                    <li className="nav-item">
+                                                        <Link
+                                                            to={Routes.USER}
+                                                            className="icons"
+                                                        >
+                                                            <i
+                                                                className="fa fa-user"
+                                                                aria-hidden="true"
                                                             />
                                                         </Link>
                                                     </li>
                                                 </React.Fragment>
                                             )}
+                                            {!isLoggedIn &&
+                                            <li className="nav-item">
+                                                <Link
+                                                    to={Routes.LOGIN}
+                                                    className="icons"
+                                                >
+                                                    <i
+                                                        className="fa fa-user"
+                                                        aria-hidden="true"
+                                                    />
+                                                </Link>
+                                            </li>
+                                            }
+                                            <hr/>
                                         </ul>
                                     </div>
-
-                                    {isLoggedIn && (
-                                        <div className="col-lg-4">
-                                            <ul className="nav navbar-nav navbar-right right_nav pull-right">
-                                                <hr />
-
-                                                <li className="nav-item">
-                                                    <Link
-                                                        to={
-                                                            Routes.CATEGORIES +
-                                                            '/favShops'
-                                                        }
-                                                        onClick={
-                                                            this
-                                                                .loadFavoriteShops
-                                                        }
-                                                        onMouseLeave={() =>
-                                                            this.setState({
-                                                                favShopsIconFill: false,
-                                                            })
-                                                        }
-                                                        className={'icons'}
-                                                    >
-                                                        {this.state
-                                                            .favShopsIconFill ? (
-                                                            <i
-                                                                className="fa fa-heart"
-                                                                aria-hidden="true"
-                                                            />
-                                                        ) : (
-                                                            <i
-                                                                className="fa fa-heart-o"
-                                                                aria-hidden="true"
-                                                            />
-                                                        )}
-                                                    </Link>
-                                                </li>
-
-                                                <li className="nav-item">
-                                                    <Link
-                                                        to={Routes.USER}
-                                                        className="icons"
-                                                    >
-                                                        <i
-                                                            className="fa fa-user"
-                                                            aria-hidden="true"
-                                                        />
-                                                    </Link>
-                                                </li>
-
-                                                <hr />
-                                            </ul>
-                                        </div>
-                                    )}
                                 </div>
                             </div>
                         </div>

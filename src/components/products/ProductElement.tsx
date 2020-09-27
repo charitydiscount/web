@@ -7,6 +7,7 @@ import { Routes } from '../helper/Routes';
 import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import RedirectModal from '../shops/RedirectModal';
 import { getLocalStorage } from '../../helper/StorageHelper';
+import { clickSaveAndRedirect } from "../../rest/ClickService";
 
 interface ProductElementProps {
     intl: IntlShape;
@@ -66,9 +67,10 @@ class ProductElement extends React.Component<
         if (redirectStorageKey && redirectStorageKey === 'true') {
             accessButton = (
                 <a
-                    href={this.props.product.url}
+                    href={emptyHrefLink}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(event) => {clickSaveAndRedirect(event, this.props.product.shopId, this.props.product.url)}}
                     className="main_btn"
                 >
                     <FormattedMessage

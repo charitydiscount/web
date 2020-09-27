@@ -20,16 +20,11 @@ interface ShopModalElementState {
 
 class ShopModalElement extends React.Component<ShopModalElementProps, ShopModalElementState> {
 
-    constructor(props: ShopModalElementProps) {
-        super(props);
-        this.escFunction = this.escFunction.bind(this);
-    }
-
-    escFunction(event) {
+    escFunction = (event) => {
         if (event.keyCode === 27) {
             this.props.onCloseModal();
         }
-    }
+    };
 
     componentDidMount() {
         document.addEventListener('keydown', this.escFunction, false);

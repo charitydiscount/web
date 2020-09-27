@@ -63,6 +63,15 @@ class Review extends React.Component<IReviewProps, IReviewState> {
             )
         );
 
+        let creationDate;
+        try {
+            creationDate = <h5>{this.props.review.createdAt
+                .toDate()
+                .toLocaleDateString('ro-RO', dateOptions)}</h5>
+        } catch (e) {
+            //creation date not parsed
+        }
+
         return (
             <React.Fragment>
                 <div className="review_item">
@@ -83,9 +92,7 @@ class Review extends React.Component<IReviewProps, IReviewState> {
                         </div>
                         <div className="media-body">
                             <h4>{this.props.review.reviewer.name}</h4>
-                            <h5>{this.props.review.createdAt
-                                .toDate()
-                                .toLocaleDateString('ro-RO', dateOptions)}</h5>
+                            {creationDate}
                             {rating}
                         </div>
                     </div>

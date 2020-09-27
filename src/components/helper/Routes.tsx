@@ -1,9 +1,9 @@
 export enum Routes {
-    LOGIN = "/",
+    LOGIN = "/login",
     REFFERRAL_LOGIN = "/referral",
     CONTACT = "/contact",
     USER = "/user",
-    CATEGORIES = "/categories",
+    SHOPS = "/shops",
     SHOP = "/shop",
     CAUSES = "/causes",
     WALLET = "/wallet",

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { store } from '../../index';
+import { auth, store } from '../../index';
 import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import Categories from './categories/Categories';
@@ -21,7 +21,6 @@ import FadeLoader from 'react-spinners/FadeLoader';
 import { spinnerCss } from '../../helper/AppHelper';
 import { injectIntl, IntlShape } from 'react-intl';
 import ShopListElement from './ShopListElement';
-import { fetchConfigInfo } from '../../rest/ConfigService';
 import FormControl from '@material-ui/core/FormControl';
 import { FormattedMessage } from 'react-intl';
 import Select from '@material-ui/core/Select';
@@ -35,6 +34,8 @@ import {
 } from '../../helper/StorageHelper';
 import { StorageKey } from '../../helper/Constants';
 import ShopModalElement from './ShopModalElement';
+import { AuthActions } from "../login/UserActions";
+import { parseAndSaveUser } from "../login/AuthHelper";
 
 interface IShopsProps {
     shops: Array<ShopDto>;
@@ -45,6 +46,7 @@ interface IShopsProps {
     setShops: any;
     setCurrentPage: any;
     setRatings: any;
+    isLoggedIn: boolean,
 
     //used to refresh categories
     setCurrentCategory: any;
@@ -87,29 +89,25 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     }
 
     async componentDidMount() {
-        store.dispatch(NavigationsAction.setStageAction(Stages.CATEGORIES));
-
-        try {
-            await fetchConfigInfo();
-        } catch (error) {
-            //configs not loaded, important part, refresh app
-            window.location.reload();
-        }
+        store.dispatch(NavigationsAction.setStageAction(Stages.SHOPS));
+        this.verifyUserLoggedInFirebase();
 
         this.props.setShops(this.props.allShops);
 
-        try {
-            const favoriteShops = await fetchFavoriteShops(this.props.allShops);
-            let favShop = this.props.match.params.favShops;
-            if (favShop && favShop === 'favShops') {
-                if (favoriteShops) {
-                    this.props.setShops(favoriteShops);
+        if (this.props.isLoggedIn) {
+            try {
+                const favoriteShops = await fetchFavoriteShops(this.props.allShops);
+                let favShop = this.props.match.params.favShops;
+                if (favShop && favShop === 'favShops') {
+                    if (favoriteShops) {
+                        this.props.setShops(favoriteShops);
+                    }
+                    this.props.setCurrentCategory('Favorite Shops');
+                    this.props.setSelections([]);
                 }
-                this.props.setCurrentCategory('Favorite Shops');
-                this.props.setSelections([]);
+            } catch (error) {
+                // unexpected error during loading of favorite shops
             }
-        } catch (error) {
-            // unexpected error during loading of favorite shops
         }
 
         try {
@@ -140,6 +138,17 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             isLoading: false,
         });
     }
+
+    verifyUserLoggedInFirebase = () => {
+        auth.onAuthStateChanged(function (user) {
+            if (!user) {
+                store.dispatch(AuthActions.resetLoggedUserAction());
+            } else {
+                let parsedUser = parseAndSaveUser(user);
+                store.dispatch(AuthActions.setLoggedUserAction(parsedUser));
+            }
+        });
+    };
 
     public onSearchUpdateEvent(event) {
         this.onSearchUpdate(event.target.value);
@@ -252,7 +261,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
     }
 
     public componentWillUnmount() {
-        store.dispatch(NavigationsAction.resetStageAction(Stages.CATEGORIES));
+        store.dispatch(NavigationsAction.resetStageAction(Stages.SHOPS));
     }
 
     public updatePageNumber(data) {
@@ -271,17 +280,17 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             this.props.shops.length > 0 &&
             this.props.ratings.size > 0
                 ? this.props.shops.map((shop) => {
-                      let ratingObj = this.props.ratings.get(shop.uniqueCode);
-                      shop.reviewsRating = !!ratingObj ? ratingObj.rating : 0;
-                      shop.totalReviews = !!ratingObj ? ratingObj.count : 0;
+                    let ratingObj = this.props.ratings.get(shop.uniqueCode);
+                    shop.reviewsRating = !!ratingObj ? ratingObj.rating : 0;
+                    shop.totalReviews = !!ratingObj ? ratingObj.count : 0;
 
-                      return (
-                          <ShopListElement
-                              key={'list' + shop.name}
-                              shop={shop}
-                          />
-                      );
-                  })
+                    return (
+                        <ShopListElement
+                            key={'list' + shop.name}
+                            shop={shop}
+                        />
+                    );
+                })
                 : null;
 
         let pageCount = 0;
@@ -322,13 +331,13 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                         onCloseModal={this.closeCurrentShopModal}
                     />
                 )}
-                <UpperCategories />
+                <UpperCategories/>
                 <section className="cat_product_area shops">
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-lg-3 d-none d-md-block">
                                 <div className="left_sidebar_area">
-                                    <Categories />
+                                    <Categories/>
                                 </div>
                             </div>
 
@@ -339,7 +348,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                         id={'search'}
                                         className={'single-input'}
                                         placeholder={this.props.intl.formatMessage(
-                                            { id: 'shops.search' }
+                                            {id: 'shops.search'}
                                         )}
                                         onKeyUp={this.onSearchUpdateEvent}
                                     />
@@ -434,7 +443,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                     color={'#e31f29'}
                                     css={spinnerCss}
                                 />
-                                <div className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
+                                <div
+                                    className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
                                     {!this.state.isLoading && (
                                         <React.Fragment>
                                             {shopsList}
@@ -446,7 +456,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
                         <div className="row">
                             <nav
-                                style={{ marginTop: 30 }}
+                                style={{marginTop: 30}}
                                 className="cat_page mx-auto"
                                 aria-label="Page navigation example"
                             >
@@ -490,6 +500,7 @@ const mapStateToProps = (state: AppState) => {
         allShops: state.shops.allShops,
         ratings: state.shops.ratings,
         currentPage: state.shops.currentPage,
+        isLoggedIn: state.user.isLoggedIn,
     };
 };
 

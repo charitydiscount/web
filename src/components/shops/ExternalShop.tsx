@@ -21,7 +21,7 @@ class ExternalShop extends React.Component<ExternalShopProps> {
 
     public render() {
         return (
-            <Redirect to={Routes.LOGIN}/>
+            <Redirect to={Routes.SHOPS}/>
         )
     }
 }
