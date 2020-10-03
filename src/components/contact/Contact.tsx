@@ -112,7 +112,7 @@ class Contact extends React.Component<IContactProps, IContactState> {
                 <InfoModal visible={this.state.modalVisible}
                            message={this.state.modalMessage}
                            onClose={() => this.closeModal()}/>
-                <section className="contact_area p_120">
+                <section className="contact_area p_90">
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-2"/>

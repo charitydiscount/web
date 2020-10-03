@@ -55,7 +55,7 @@ class UnsubscribeFromMailNewsletter extends React.Component<UnsubscribeFromMailN
                 />
                 {!this.state.loadUnsubscribe &&
                     <React.Fragment>
-                        <div className="container p_120">
+                        <div className="container p_90">
                             <div className="p-2 p-md-4" style={{textAlign:'center'}}>
                                 {this.state.unsubscribeSuccess &&
                                 <div>

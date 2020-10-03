@@ -98,6 +98,11 @@ button:focus {
     padding-bottom: 90px;
 }
 
+.p_60 {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
 .p_100 {
     padding-top: 100px;
     padding-bottom: 100px;
@@ -965,7 +970,7 @@ a:focus {
 
 /*========= blog_categorie_area css ===========*/
 .blog_categorie_area {
-    padding-top: 100px;
+    padding-top: 60px;
 }
 
 .categories_post {
@@ -4357,7 +4362,7 @@ h6 {
 /* Single Product Area css
 ============================================================================================ */
 .product_image_area {
-    padding-top: 30px;
+    padding-top: 0px;
 }
 
 .s_product_img .carousel {
@@ -4528,7 +4533,6 @@ h6 {
 
 .product_description_area {
     padding-bottom: 120px;
-    margin-top: 60px;
 }
 
 .product_description_area .nav.nav-tabs {
