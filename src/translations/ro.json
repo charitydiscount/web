@@ -185,5 +185,5 @@
   "user.mail.update.button": "Setează",
   "user.mail.invalid": "Mail-ul nu este valid",
   "user.mail.update.success": "Mail-ul a fost setat",
-  "user.mail.update.error": "Mail-ul nu a fost setat, te rugăm să încerci din nou după login"
+  "user.mail.update.error": "Mail-ul nu a fost setat, te rugăm să încerci din nou după login. Eroarea: "
 }

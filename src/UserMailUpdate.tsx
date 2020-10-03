@@ -30,11 +30,13 @@ class UserMailUpdate extends React.Component<UserMailUpdateProps> {
     };
 
     async componentDidMount() {
-        let userEmail = await getUserEmail(getUserId());
-        if (!userEmail) {
-            this.setState({
-                userMailUpdate: true
-            })
+        if (getUserId() && auth.currentUser) {
+            let userEmail = await getUserEmail(getUserId());
+            if (!userEmail) {
+                this.setState({
+                    userMailUpdate: true
+                })
+            }
         }
     }
 
@@ -60,12 +62,12 @@ class UserMailUpdate extends React.Component<UserMailUpdateProps> {
                         });
 
                     })
-                    .catch(() => {
+                    .catch((error) => {
                         this.setState({
                             errorMail: false,
                             errorMailMessage: "",
                             infoModalVisible: true,
-                            infoModalMessage: this.props.intl.formatMessage({id: 'user.mail.update.error'})
+                            infoModalMessage: this.props.intl.formatMessage({id: 'user.mail.update.error'}) + error.message
                         })
                     });
             }

@@ -185,5 +185,5 @@
   "user.mail.update.button": "Update",
   "user.mail.invalid": "The email is invalid",
   "user.mail.update.success": "Email was updated",
-  "user.mail.update.error": "Email was not updated, please try again after login"
+  "user.mail.update.error": "Email was not updated, please try again after login. Error message: "
 }
