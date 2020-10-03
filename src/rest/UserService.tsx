@@ -25,6 +25,16 @@ export const getDisableMailNotification = (userId: string): Promise<Boolean> =>
         );
 
 
+export const getUserEmail = (userId: string): Promise<String> =>
+    DB.collection(FirebaseTable.USERS)
+        .doc(userId)
+        .get()
+        .then(
+            response =>
+                (response.data() as UserDto).email
+        );
+
+
 export function updateDisableMailNotification(disableMailNotification: boolean) {
     if (!auth.currentUser) {
         throw Error('User not logged in');

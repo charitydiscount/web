@@ -9,7 +9,8 @@ import InfoModal from "./components/modals/InfoModal";
 import { FormattedMessage } from "react-intl/dist/react-intl";
 import { doLogoutAction } from "./components/login/UserActions";
 import { connect } from "react-redux";
-import { updateUserEmail } from "./rest/UserService";
+import { getUserEmail, updateUserEmail } from "./rest/UserService";
+import { getUserId } from "./components/login/AuthHelper";
 
 interface UserMailUpdateProps {
     intl: IntlShape;
@@ -28,8 +29,9 @@ class UserMailUpdate extends React.Component<UserMailUpdateProps> {
         errorMailMessage: ""
     };
 
-    componentDidMount() {
-        if (auth.currentUser && !auth.currentUser.email) {
+    async componentDidMount() {
+        let userEmail = await getUserEmail(getUserId());
+        if (!userEmail) {
             this.setState({
                 userMailUpdate: true
             })
