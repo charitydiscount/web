@@ -177,5 +177,7 @@
   "user.disable.mail.notification.success.true": "Email notifications are disabled",
   "user.disable.mail.notification.success.false": "Email notifications are enabled",
   "user.disable.mail.notification.error": "Something went wrong, please try again",
-  "user.marketing.title": "Marketing agreement"
+  "user.marketing.title": "Marketing agreement",
+  "unsubscribe.mail.deactivate": "You are unsubscribed from mail newsletter",
+  "unsubscribe.mail.error": "Unsubscribe failed, please try again or login to unsubscribe"
 }

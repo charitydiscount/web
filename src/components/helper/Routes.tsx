@@ -3,6 +3,7 @@ export enum Routes {
     REFFERRAL_LOGIN = "/referral",
     CONTACT = "/contact",
     USER = "/user",
+    UNSUBSCRIBE_MAIL_NEWSLETTER = "/unsubscribe",
     SHOPS = "/shops",
     SHOP = "/shop",
     CAUSES = "/causes",

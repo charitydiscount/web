@@ -177,5 +177,7 @@
   "user.disable.mail.notification.success.true": "Notificările pe mail au fost oprite",
   "user.disable.mail.notification.success.false": "Notificările pe mail au fost pornite",
   "user.disable.mail.notification.error": "Eroare, te rugăm să încerci din nou",
-  "user.marketing.title": "Acord de marketing"
+  "user.marketing.title": "Acord de marketing",
+  "unsubscribe.mail.deactivate": "Ai fost dezabonat",
+  "unsubscribe.mail.error": "Dezabonarea a eșuat, te rugăm să încerci din nou sau încearcă să te dezabonezi din cont"
 }

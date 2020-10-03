@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import Referrals from '../referrals/Referrals';
 import ReferralLogin from '../referrals/ReferralLogin';
 import { loadShops } from '../../redux/actions/ShopsAction';
-import UnsubscribeMailRedirect from '../login/UnsubscribeMailRedirect';
+import UnsubscribeFromMailNewsletter from '../login/UnsubscribeFromMailNewsletter';
 import ExternalShop from "../shops/ExternalShop";
 import { FadeLoader } from "react-spinners";
 import { spinnerCss } from "../../helper/AppHelper";
@@ -94,8 +94,8 @@ const PageLayout = (props: PageLayoutProps) => {
                         />
                         <Route
                             exact={true}
-                            path={Routes.USER + '/unsubscribe'}
-                            component={UserInfo}
+                            path={Routes.UNSUBSCRIBE_MAIL_NEWSLETTER + '/:userId'}
+                            component={UnsubscribeFromMailNewsletter}
                         />
                         <Route
                             exact={true}
@@ -157,8 +157,8 @@ const PageLayout = (props: PageLayoutProps) => {
                         />
                         <Route
                             exact={true}
-                            path={Routes.USER + '/unsubscribe'}
-                            component={UnsubscribeMailRedirect}
+                            path={Routes.UNSUBSCRIBE_MAIL_NEWSLETTER + '/:userId'}
+                            component={UnsubscribeFromMailNewsletter}
                         />
                         <Route
                             exact={true}

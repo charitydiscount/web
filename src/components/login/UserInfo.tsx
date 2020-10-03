@@ -6,7 +6,6 @@ import {
     emptyHrefLink,
     noImagePath,
     profilePictureDefaultName,
-    StorageKey,
     StorageRef,
 } from '../../helper/Constants';
 import { doLogoutAction } from './UserActions';
@@ -27,10 +26,6 @@ import {
 } from '../../rest/UserService';
 import { FormControlLabel } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
-import {
-    getLocalStorage,
-    removeLocalStorage,
-} from '../../helper/StorageHelper';
 import { getUserId, getUserInfo } from './AuthHelper';
 
 interface IUserInfoProps {
@@ -98,11 +93,6 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             this.setState({
                 disableMailNotification: response,
             });
-        }
-
-        let redirectKey = getLocalStorage(StorageKey.REDIRECT_KEY);
-        if (redirectKey === Routes.USER) {
-            removeLocalStorage(StorageKey.REDIRECT_KEY);
         }
     }
 

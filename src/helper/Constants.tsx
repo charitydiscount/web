@@ -62,7 +62,6 @@ export enum StorageKey {
     SHOPS = '/twoCD',
     REFERRAL_KEY = '/threeCD', //referral key to update on user
     SELECTED_SHOP = '/fourCD', //if you want to load the selected shop directly
-    REDIRECT_KEY = '/fiveCD', //if coming from external
     FAVORITE_SHOPS = '/sixCD',
     CAUSES = '/sevenCD',
     USER = '/eightCD',
