@@ -8,6 +8,7 @@
     "@react-firebase/auth": "^0.2.9",
     "axios": "^0.19.0",
     "connected-react-router": "^6.8.0",
+    "detect-browser": "^5.1.1",
     "firebase": "^7.22.0",
     "handlebars": "^4.7.6",
     "iban": "^0.0.12",
@@ -32,7 +33,7 @@
     "react-spinners": "^0.8.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "serialize-javascript": "^2.1.1",
+    "serialize-javascript": "^5.0.1",
     "typescript": "^3.9.5"
   },
   "scripts": {

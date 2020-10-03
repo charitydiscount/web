@@ -11,6 +11,8 @@ export async function clickSaveAndRedirect(event, programId, cashbackUrl) {
 
     const userId = auth.currentUser.uid;
     const publicIp = require('public-ip');
+    const { detect } = require('detect-browser');
+    const browser = detect();
 
     (async () => {
         let ipv4;
@@ -29,7 +31,7 @@ export async function clickSaveAndRedirect(event, programId, cashbackUrl) {
             ipAddress: ipv4 || "",
             ipv6Address: ipv6 || "",
             programId: programId,
-            deviceType: "desktop"
+            deviceType: browser.name
         };
 
         DB.collection(FirebaseTable.CLICKS).add(data);
