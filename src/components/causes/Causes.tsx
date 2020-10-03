@@ -7,7 +7,8 @@ import { CauseDto, fetchCauses } from '../../rest/CauseService';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { spinnerCss } from '../../helper/AppHelper';
 
-interface ICausesProps {}
+interface ICausesProps {
+}
 
 interface ICausesState {
     causes: CauseDto[];
@@ -46,8 +47,8 @@ class Causes extends React.Component<ICausesProps, ICausesState> {
     public render() {
         const causesList = this.state.causes
             ? this.state.causes.map((cause) => {
-                  return <Cause key={cause.id} cause={cause} />;
-              })
+                return <Cause key={cause.id} cause={cause}/>;
+            })
             : null;
 
         return (
@@ -58,13 +59,15 @@ class Causes extends React.Component<ICausesProps, ICausesState> {
                     css={spinnerCss}
                 />
                 {!this.state.isLoading && (
-                    <div className="container">
-                        <section className="hot_deals_area section_gap">
-                            <div className="container-fluid">
-                                <div className="row">{causesList}</div>
-                            </div>
-                        </section>
-                    </div>
+                    <section className="product_description_area">
+                        <div className="container">
+                            <section className="hot_deals_area section_gap">
+                                <div className="container-fluid">
+                                    <div className="row">{causesList}</div>
+                                </div>
+                            </section>
+                        </div>
+                    </section>
                 )}
             </React.Fragment>
         );

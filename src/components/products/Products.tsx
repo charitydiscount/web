@@ -233,7 +233,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
 
         return (
             <React.Fragment>
-                <section className="cat_product_area section_gap">
+                <section className="product_description_area section_gap">
                     <div className="container-fluid">
                         <div className="row">
                             <div className="col-lg-3">
