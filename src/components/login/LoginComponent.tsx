@@ -19,7 +19,7 @@ class LoginComponent extends React.Component<ILoginProps> {
     uiConfig = {
         signInFlow: 'popup',
         tosUrl: '/tos',
-        signInSuccessUrl: '/categories',
+        signInSuccessUrl: '/shops',
         privacyPolicyUrl: '/privacy',
         signInOptions: [
             firebase.auth.EmailAuthProvider.PROVIDER_ID,
