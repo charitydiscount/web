@@ -101,3 +101,5 @@ export const dateOptions = {
     minute: 'numeric',
     second: 'numeric',
 };
+
+export const emailRegexp = new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");

@@ -179,11 +179,11 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             infoModalVisible: true,
             infoModalMessage: success
                 ? this.props.intl.formatMessage({
-                      id: 'userInfo.email.reset.sent',
-                  })
+                    id: 'userInfo.email.reset.sent',
+                })
                 : this.props.intl.formatMessage({
-                      id: 'userInfo.email.reset.error',
-                  }),
+                    id: 'userInfo.email.reset.error',
+                }),
         });
     }
 
@@ -277,7 +277,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                     <div className="product_image_area">
                         <div className="container p_90">
                             <div className="row s_product_inner">
-                                <div className="col-lg-3" />
+                                <div className="col-lg-3"/>
                                 <div className="col-lg-4">
                                     <div className="s_product_img">
                                         <div className="blog_right_sidebar">
@@ -310,14 +310,14 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     {this.state.displayName}
                                                 </h4>
                                                 <p>{this.state.email}</p>
-                                                <div className="br" />
+                                                <div className="br"/>
                                                 <h4>
                                                     <FormattedMessage
                                                         id="user.marketing.title"
                                                         defaultMessage="Acord de marketing"
                                                     />
                                                 </h4>
-                                                <div style={{ marginLeft: 15 }}>
+                                                <div style={{marginLeft: 15}}>
                                                     <FormControlLabel
                                                         control={
                                                             <Checkbox
@@ -346,7 +346,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                 </div>
                                 <div
                                     className="col-lg-3"
-                                    style={{ minWidth: 'fit-content' }}
+                                    style={{minWidth: 'fit-content'}}
                                 >
                                     <div className="blog_right_sidebar">
                                         <aside className="single_sidebar_widget popular_post_widget">
@@ -379,9 +379,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                     }
                                                                     storageRef={storage.ref(
                                                                         StorageRef.PROFILE_PHOTOS +
-                                                                            this
-                                                                                .state
-                                                                                .userId
+                                                                        this
+                                                                            .state
+                                                                            .userId
                                                                     )}
                                                                     onUploadError={
                                                                         this
@@ -417,7 +417,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                             />
                                                         </a>
                                                     </div>
-                                                    <div className="br" />
+                                                    <div className="br"/>
                                                 </div>
                                             )}
                                             <div className="col-md-12 text-center p_05">

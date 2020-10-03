@@ -179,5 +179,11 @@
   "user.disable.mail.notification.error": "Something went wrong, please try again",
   "user.marketing.title": "Marketing agreement",
   "unsubscribe.mail.deactivate": "You are unsubscribed from mail newsletter",
-  "unsubscribe.mail.error": "Unsubscribe failed, please try again or login to unsubscribe"
+  "unsubscribe.mail.error": "Unsubscribe failed, please try again or login to unsubscribe",
+  "user.mail.label": "Mail",
+  "user.mail.message": "You must enter an email which will be used at transaction's authorization",
+  "user.mail.update.button": "Update",
+  "user.mail.invalid": "The email is invalid",
+  "user.mail.update.success": "Email was updated",
+  "user.mail.update.error": "Email was not updated, please try again after login"
 }

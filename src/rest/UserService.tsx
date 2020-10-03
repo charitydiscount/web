@@ -38,6 +38,19 @@ export function updateDisableMailNotification(disableMailNotification: boolean) 
         );
 }
 
+export function updateUserEmail(email: string) {
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
+    }
+
+    return DB.collection(FirebaseTable.USERS)
+        .doc(auth.currentUser.uid)
+        .set(
+            {email: email},
+            {merge: true}
+        );
+}
+
 export function unsubscribeMailNotification(userId) {
     return DB.collection(FirebaseTable.USERS)
         .doc(userId)

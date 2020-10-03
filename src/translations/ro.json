@@ -153,8 +153,8 @@
   "shops.filters.sorting.commission.descending": "Comision ↓",
   "cookie.key": "Acest site foloseste cookies. Continuarea navigării presupune ca esți de acord cu utilizarea cookie-urilor",
   "cookie.button": "Am înțeles",
-  "shops.filters.sorting.atoz.asc" : "Nume ↑",
-  "shops.filters.sorting.atoz.desc" : "Nume ↓",
+  "shops.filters.sorting.atoz.asc": "Nume ↑",
+  "shops.filters.sorting.atoz.desc": "Nume ↓",
   "cause.contribute.button": "Contribuie",
   "cause.donated": "Donat: ",
   "RON": "RON",
@@ -179,5 +179,11 @@
   "user.disable.mail.notification.error": "Eroare, te rugăm să încerci din nou",
   "user.marketing.title": "Acord de marketing",
   "unsubscribe.mail.deactivate": "Ai fost dezabonat",
-  "unsubscribe.mail.error": "Dezabonarea a eșuat, te rugăm să încerci din nou sau încearcă să te dezabonezi din cont"
+  "unsubscribe.mail.error": "Dezabonarea a eșuat, te rugăm să încerci din nou sau încearcă să te dezabonezi din cont",
+  "user.mail.label": "Mail",
+  "user.mail.message": "Pentru a putea folosi aplicația în continuare trebuie să introduci un mail care va fi folosit la autorizarea tranzacțiilor",
+  "user.mail.update.button": "Setează",
+  "user.mail.invalid": "Mail-ul nu este valid",
+  "user.mail.update.success": "Mail-ul a fost setat",
+  "user.mail.update.error": "Mail-ul nu a fost setat, te rugăm să încerci din nou după login"
 }
