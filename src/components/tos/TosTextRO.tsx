@@ -8,7 +8,7 @@ class TosTextRO extends React.Component {
         return (
             <div className="sample-text">
                 <p className="text-muted">
-                    Următorii termeni si condiții intră în
+                    Următorii termeni și condiții intră în
                     vigoare de la data de 11.11.2019.
                 </p>
                 <ol>

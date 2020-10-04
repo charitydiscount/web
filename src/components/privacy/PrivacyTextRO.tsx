@@ -8,7 +8,7 @@ class PrivacyTextRO extends React.Component {
             <React.Fragment>
                 <div className="sample-text">
                     <p className="text-muted">
-                        Politica de confidențialitate prezentata
+                        Politica de confidențialitate prezentată
                         mai jos intră în vigoare de la data de
                         11.11.2019.
                     </p>
@@ -18,7 +18,7 @@ class PrivacyTextRO extends React.Component {
                         </li>
                         <ul>
                             <li className="">
-                                <b>Nume si prenume</b>
+                                <b>Nume și prenume</b>
                             </li>
                             <li className="">
                                 <b>Adresa de email</b>

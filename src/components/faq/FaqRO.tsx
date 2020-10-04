@@ -32,26 +32,26 @@ class FaqRO extends React.Component {
                             </h5>
                             <ul>
                                 <li>
-                                    Link-urile catre magazinele partenere de pe
-                                    CharityDiscount sunt catre platforme
+                                    Link-urile către magazinele partenere de pe
+                                    CharityDiscount sunt către platforme
                                     intermediare.
                                 </li>
                                 <li>
-                                    Aceste platforme contorizeaza click-ul si
-                                    mai apoi te redirectioneaza catre magazinul
+                                    Aceste platforme contorizează click-ul și
+                                    mai apoi te redirecționează către magazinul
                                     dorit.
                                 </li>
                                 <li>
                                     De asemenea, un (third-party) cookie este
-                                    setat pe site-ul magazinului astfel ca
-                                    acesta este constient ca ai venit de pe
+                                    setat pe site-ul magazinului astfel că
+                                    acesta este conștient că ai venit de pe
                                     CharityDiscount.
                                 </li>
                                 <li>
                                     Acest cookie este valid pentru un anumit
-                                    numar de zile (e.g. 30) astfel ca poti
-                                    beneficia de cashback chiar daca nu accesezi
-                                    de fiecare data magazinul prin intermediul
+                                    număr de zile (e.g. 30) astfel că poți
+                                    beneficia de cashback chiar dacă nu accesezi
+                                    de fiecare dată magazinul prin intermediul
                                     CharityDiscount.
                                 </li>
                             </ul>
@@ -64,19 +64,19 @@ class FaqRO extends React.Component {
                             <ul>
                                 <li>
                                     Cashback-ul este acordat pe baza cookie-ului
-                                    prezentat la intrebarea anterioara.
+                                    prezentat la întrebarea anterioară.
                                 </li>
                                 <li>
                                     Acest cookie este tot timpul valid doar
-                                    pentru ultima platforma de pe cashback prin
+                                    pentru ultima platformă de pe cashback prin
                                     care ai accesat magazinul.
                                 </li>
                                 <li>
-                                    Exemplu: daca deschizi site-ului unui
-                                    magazin prin CharityDiscount si mai apoi
-                                    deschizi acelasi site de pe o alta platforma
+                                    Exemplu: dacă deschizi site-ul unui
+                                    magazin prin CharityDiscount și mai apoi
+                                    deschizi același site de pe o altă platformă
                                     de cashback, vei primi cashback-ul doar pe
-                                    acea platforma.
+                                    acea platformă.
                                 </li>
                             </ul>
                         </p>
@@ -84,23 +84,23 @@ class FaqRO extends React.Component {
                             <h5>Pentru ce produse primesc cashback?</h5>
                             <ul>
                                 <li>
-                                    Pentru inceput, cashback-ul oferit face
-                                    parte din politica fiecarui magazin. Astfel
-                                    ca, fiecare magazin stabileste cashback-ul
+                                    Pentru început, cashback-ul oferit face
+                                    parte din politica fiecărui magazin. Astfel
+                                    că, fiecare magazin stabilește cashback-ul
                                     acordat care poate varia de la produs la
                                     produs sau de la categorie la categorie
                                     (e.g. 3% pentru telefoane, 10% pentru
-                                    carti).
+                                    cărti).
                                 </li>
                                 <li>
-                                    Totusi, magazinele ofera cashback pentru
-                                    orice cumparatura efectuata (orice produs,
-                                    fie ca este la promotie sau nu) ca urmare a
-                                    accesari magazinului prin intermediul
+                                    Totuși, magazinele oferă cashback pentru
+                                    orice cumpărătură efectuată (orice produs,
+                                    fie că este la promoție sau nu) ca urmare a
+                                    accesări magazinului prin intermediul
                                     CharityDiscount.
                                 </li>
                                 <li>
-                                    Acest proces se numeste marketing afiliat.
+                                    Acest proces se numește marketing afiliat.
                                 </li>
                             </ul>
                         </p>
@@ -109,10 +109,10 @@ class FaqRO extends React.Component {
                             <ul>
                                 <li>Da, CharityDiscount este gratis.</li>
                                 <li>
-                                    Venitul platformei se bazeaza in intregime
-                                    pe conceptul promovat in sine. Cu alte
+                                    Venitul platformei se bazează în întregime
+                                    pe conceptul promovat în sine. Cu alte
                                     cuvinte, comisionul oferit de magazinele
-                                    partenere este impartit intre tine si
+                                    partenere este împărțit între tine și
                                     CharityDiscount.
                                 </li>
                             </ul>
