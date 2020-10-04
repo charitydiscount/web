@@ -9,13 +9,14 @@ export interface LoginDto {
     photoURL: string | null;
     displayName: string;
     email: string;
+    creationTime: string
 }
 
 export const LoginMapper = {
     uid: 'uid',
     photoURL: 'photoURL',
     displayName: 'displayName',
-    email: 'email',
+    email: 'email'
 };
 
 export function parseAndSaveUser(user: firebase.User) {
@@ -24,6 +25,9 @@ export function parseAndSaveUser(user: firebase.User) {
         user,
         LoginMapper
     ) as LoginDto;
+    if (user.metadata.creationTime) {
+        parsedUser.creationTime = user.metadata.creationTime;
+    }
     setLocalStorage(StorageKey.USER, JSON.stringify(parsedUser));
     return parsedUser;
 }

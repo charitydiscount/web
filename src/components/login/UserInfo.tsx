@@ -329,7 +329,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                         .updateMailNotification
                                                                 }
                                                                 name="redirectChecked"
-                                                                color="default"
+                                                                color="secondary"
                                                             />
                                                         }
                                                         label={this.props.intl.formatMessage(

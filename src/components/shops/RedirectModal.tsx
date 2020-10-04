@@ -93,7 +93,7 @@ class RedirectModal extends React.Component<RedirectModalProps, RedirectModalSta
                                             checked={this.state.disableMessageCheckbox}
                                             onChange={this.disableRedirectMessage}
                                             name="redirectChecked"
-                                            color="default"
+                                            color="secondary"
                                         />
                                     }
                                     label={this.props.intl.formatMessage({id: 'user.redirect.checkbox'})}

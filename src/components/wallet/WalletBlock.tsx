@@ -475,7 +475,7 @@ class WalletBlock extends React.Component<
                                                 <div className="p_05">
                                                     <Button
                                                         variant="contained"
-                                                        color="primary"
+                                                        color="secondary"
                                                         onClick={
                                                             this.creatRequest
                                                         }
@@ -612,7 +612,7 @@ class WalletBlock extends React.Component<
                                                     <div className="p_05">
                                                         <Button
                                                             variant="contained"
-                                                            color="primary"
+                                                            color="secondary"
                                                             onClick={
                                                                 this.cashout
                                                             }
@@ -701,7 +701,7 @@ class WalletBlock extends React.Component<
                                                     <div className="p_05">
                                                         <Button
                                                             variant="contained"
-                                                            color="primary"
+                                                            color="secondary"
                                                             onClick={
                                                                 this.donate
                                                             }

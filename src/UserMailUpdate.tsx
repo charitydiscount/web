@@ -1,12 +1,12 @@
 import React from 'react';
-import { injectIntl, IntlShape } from 'react-intl';
+import { FormattedMessage, IntlShape, injectIntl } from 'react-intl';
 import { emptyHrefLink, logoPath } from "./helper/Constants";
 import Modal from 'react-awesome-modal';
 import { auth } from "./index";
 import { TextField } from "@material-ui/core";
 import { emailRegexp } from "./helper/AppHelper";
 import InfoModal from "./components/modals/InfoModal";
-import { FormattedMessage } from "react-intl/dist/react-intl";
+
 import { doLogoutAction } from "./components/login/UserActions";
 import { connect } from "react-redux";
 import { getUserEmail, updateUserEmail } from "./rest/UserService";
@@ -32,7 +32,7 @@ class UserMailUpdate extends React.Component<UserMailUpdateProps> {
     async componentDidMount() {
         if (getUserId() && auth.currentUser) {
             let userEmail = await getUserEmail(getUserId());
-            if (!userEmail) {
+            if (userEmail !== undefined && !userEmail) {
                 this.setState({
                     userMailUpdate: true
                 })

@@ -11,6 +11,7 @@ import ReferralUpdate from './components/referrals/ReferralUpdate';
 import { FadeLoader } from 'react-spinners';
 import { spinnerCss } from './helper/AppHelper';
 import UserMailUpdate from "./UserMailUpdate";
+import FirstUserInteraction from "./FirstUserInteraction";
 
 const App = () => {
     const [loading, setLoading] = useState(true);
@@ -23,8 +24,9 @@ const App = () => {
         <FadeLoader loading={true} color={'#e31f29'} css={spinnerCss} />
     ) : (
         <React.Fragment>
-            <UserMailUpdate/>  /* force use to enter mail if he doesn't have it*/
-            <ReactAdBlock />  /* force use to deactivate ad block*/
+            <ReactAdBlock />  /* force use to deactivate ad block - this is the last*/
+            <FirstUserInteraction/> /* first user interaction - this will appear secondary*/
+            <UserMailUpdate/>  /* force use to enter mail if he doesn't have it - This will appear first, the most important*/
             <ReferralUpdate />
             <ScrollToTop />
             <HeaderLayout />

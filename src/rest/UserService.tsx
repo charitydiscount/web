@@ -15,24 +15,24 @@ export interface AccountDto {
     nickname: string;
 }
 
-export const getDisableMailNotification = (userId: string): Promise<Boolean> =>
+export const getDisableMailNotification = (userId: string): Promise<any> =>
     DB.collection(FirebaseTable.USERS)
         .doc(userId)
         .get()
         .then(
             response =>
                 (response.data() as UserDto).disableMailNotification
-        );
+        ).catch(() => undefined);
 
 
-export const getUserEmail = (userId: string): Promise<String> =>
+export const getUserEmail = (userId: string): Promise<any> =>
     DB.collection(FirebaseTable.USERS)
         .doc(userId)
         .get()
         .then(
             response =>
                 (response.data() as UserDto).email
-        );
+        ).catch(() => undefined);
 
 
 export function updateDisableMailNotification(disableMailNotification: boolean) {
