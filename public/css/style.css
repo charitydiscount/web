@@ -970,7 +970,7 @@ a:focus {
 
 /*========= blog_categorie_area css ===========*/
 .blog_categorie_area {
-    padding-top: 60px;
+    padding-top: 100px;
 }
 
 .categories_post {
@@ -4532,6 +4532,7 @@ h6 {
 }
 
 .product_description_area {
+    margin-top: 50px;
     padding-bottom: 120px;
 }
 

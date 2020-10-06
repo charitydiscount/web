@@ -25,7 +25,7 @@ class Tos extends React.Component<TosProps> {
     public render() {
         return (
             <React.Fragment>
-                <div className="container p_60">
+                <div className="container p_90">
                     <div className="p-2 p-md-4">
                         <h3 className="mb-30">
                             <FormattedMessage

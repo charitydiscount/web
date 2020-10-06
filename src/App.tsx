@@ -24,9 +24,9 @@ const App = () => {
         <FadeLoader loading={true} color={'#e31f29'} css={spinnerCss} />
     ) : (
         <React.Fragment>
-            <ReactAdBlock />  /* force use to deactivate ad block - this is the last*/
-            <FirstUserInteraction/> /* first user interaction - this will appear secondary*/
-            <UserMailUpdate/>  /* force use to enter mail if he doesn't have it - This will appear first, the most important*/
+            <ReactAdBlock />
+            <FirstUserInteraction/>
+            <UserMailUpdate/>
             <ReferralUpdate />
             <ScrollToTop />
             <HeaderLayout />

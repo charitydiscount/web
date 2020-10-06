@@ -24,7 +24,7 @@ class Privacy extends React.Component<IPrivacyProps> {
     public render() {
         return (
             <React.Fragment>
-                <div className="container p_60">
+                <div className="container p_90">
                     <div className="p-2 p-md-4">
                         <h3 className="mb-30 title_color">
                             <FormattedMessage
