@@ -6,7 +6,8 @@ export interface UserDto {
     name: string;
     photoUrl: string;
     userId: string;
-    disableMailNotification: boolean;
+    disableMailNotification: boolean,
+    needsMailConfirmation: boolean
 }
 
 export interface AccountDto {
@@ -24,16 +25,14 @@ export const getDisableMailNotification = (userId: string): Promise<any> =>
                 (response.data() as UserDto).disableMailNotification
         ).catch(() => undefined);
 
-
-export const getUserEmail = (userId: string): Promise<any> =>
+export const getUserDbInfo = (userId: string): Promise<any> =>
     DB.collection(FirebaseTable.USERS)
         .doc(userId)
         .get()
         .then(
             response =>
-                (response.data() as UserDto).email
+                (response.data() as UserDto)
         ).catch(() => undefined);
-
 
 export function updateDisableMailNotification(disableMailNotification: boolean) {
     if (!auth.currentUser) {
@@ -56,7 +55,10 @@ export function updateUserEmail(email: string) {
     return DB.collection(FirebaseTable.USERS)
         .doc(auth.currentUser.uid)
         .set(
-            {email: email},
+            {
+                email: email,
+                needsMailConfirmation: true
+            },
             {merge: true}
         );
 }

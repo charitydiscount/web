@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import firebase from 'firebase/app';
-import {auth} from '../../index';
+import { auth } from '../../index';
 import FirebaseUIAuth from 'react-firebaseui-localized';
 import { parseAndSaveUser } from "./AuthHelper";
 
@@ -13,6 +13,12 @@ class LoginComponent extends React.Component<ILoginProps> {
 
     static onSignInSuccess(response) {
         parseAndSaveUser(response.user);
+        if (response.user.providerData[0] &&
+            response.user.providerData[0].providerId === "password" &&
+            !response.user.emailVerified) {
+            //verify used created with mail and password
+            response.user.sendEmailVerification();
+        }
         return true; // redirects to signInSuccessUrl
     }
 

@@ -35,7 +35,7 @@ class FirstUserInteraction extends React.Component<FirstUserInteractionProps, Fi
     async componentDidMount() {
         if (getUserInfo() && auth.currentUser) {
             let creationDate = new Date(getUserInfo().creationTime);
-            creationDate.setMinutes(creationDate.getMinutes() + 2);
+            creationDate.setMinutes(creationDate.getMinutes() + 30);
             //created in the last minute, show first user interaction
             if (creationDate > new Date()) {
                 let agreementSet = await getDisableMailNotification(getUserId());

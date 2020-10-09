@@ -182,10 +182,15 @@
   "unsubscribe.mail.error": "Unsubscribe failed, please try again or login to unsubscribe",
   "user.mail.label": "Mail",
   "user.mail.message": "You must enter an email which will be used at transaction's authorization",
+  "user.mail.confirmation": "Click on the link received on mail for using the system",
   "user.mail.update.button": "Update",
   "user.mail.invalid": "The email is invalid",
-  "user.mail.update.success": "Email was updated",
+  "user.mail.confirmation.send.success": "A confirmation mail was sent. After confirmation enjoy your cashback!",
+  "user.mail.confirmation.send.error": "Failed to send confirmation mail. Please try again. Error: ",
   "user.mail.update.error": "Email was not updated, please try again after login. Error message: ",
+  "user.mail.confirmation.another.mail.button" : "Set another mail",
+  "user.mail.confirmation.try.again.button" : "Send the mail again",
+  "user.mail.confirmation.already.confirmed.button" : "Already confirmed",
   "user.first.interaction.message": "Welcome! There is one more little step to do...!",
   "user.first.interaction.success": "Happy cashback!"
 }

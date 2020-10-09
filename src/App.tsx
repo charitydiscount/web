@@ -10,8 +10,8 @@ import ReactAdBlock from './ReactAdBlock';
 import ReferralUpdate from './components/referrals/ReferralUpdate';
 import { FadeLoader } from 'react-spinners';
 import { spinnerCss } from './helper/AppHelper';
-import UserMailUpdate from "./UserMailUpdate";
 import FirstUserInteraction from "./FirstUserInteraction";
+import UserMailUpdateAndConfirmation from "./UserMailUpdateAndConfirmation";
 
 const App = () => {
     const [loading, setLoading] = useState(true);
@@ -26,7 +26,7 @@ const App = () => {
         <React.Fragment>
             <ReactAdBlock />
             <FirstUserInteraction/>
-            <UserMailUpdate/>
+            <UserMailUpdateAndConfirmation/>
             <ReferralUpdate />
             <ScrollToTop />
             <HeaderLayout />
