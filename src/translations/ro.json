@@ -125,7 +125,7 @@
   "adblock.message": "Se pare că folosești adblock; e de înțeles. Totuși, CharityDiscount nu poate funcționa împreună cu acesta (adică nu se pot înregistra comisioanele). Te rugăm să îl dezactivezi și te asigurăm că nu vei avea parte de nicio reclamă. Spor la cumpărături!",
   "userinfo.delete.account.button": "Cerere ștergere cont",
   "userInfo.delete.account.question": "Sigur doriți ștergerea contului?",
-  "userInfo.delete.account.ok": "Cererea de ștergere a contului a fost trimisă. Contul va fi șters în curând",
+  "userInfo.delete.account.ok": "Cererea de ștergere a contului a fost trimisă. Contul va fi șters în curând. Vei primi un mail când cererea a fost soluționată",
   "userInfo.delete.account.not.ok": "Cererea nu a putut fi trimisă, încearcă din nou",
   "adblock.button": "Reîncarcă pagina",
   "wallet.block.minimum.amount": "Suma minimă:",

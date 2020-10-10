@@ -125,7 +125,7 @@
   "adblock.message": "It seems that you are using adblock; we totally get it. However, CharityDiscount cannot function with it (i.e. the commissions will not register). Please disable it and we assure you that you will not get any ads. Happy shopping!",
   "userinfo.delete.account.button": "Request delete account",
   "userInfo.delete.account.question": "Are you sure you want to delete account?",
-  "userInfo.delete.account.ok": "Delete account request was sent. The account will be deleted soon",
+  "userInfo.delete.account.ok": "Delete account request was sent. The account will be deleted soon. You will receive an email when the account is deleted",
   "userInfo.delete.account.not.ok": "Something went wrong, please try again",
   "adblock.button": "Reload page",
   "wallet.block.minimum.amount": "Minimum amount:",
