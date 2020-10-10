@@ -161,6 +161,7 @@ class UserMailUpdateAndConfirmation extends React.Component<UserMailUpdateProps>
                                     href={emptyHrefLink}
                                     onClick={() => this.tryAnotherMail()}
                                     className="genric-btn info-border circle"
+                                    style={{width: 250}}
                                 >
                                     <FormattedMessage
                                         id="user.mail.confirmation.another.mail.button"
@@ -168,13 +169,14 @@ class UserMailUpdateAndConfirmation extends React.Component<UserMailUpdateProps>
                                     />
                                 </a>
                             </div>
-                            <div style={{textAlign: 'center', marginTop: 15}}>
+                            <div style={{textAlign: 'center', marginTop: 5}}>
                                 <a
                                     href={emptyHrefLink}
                                     onClick={() => {
                                         this.sendConfirmationMailForUser();
                                     }}
                                     className="genric-btn info-border circle"
+                                    style={{width: 250}}
                                 >
                                     <FormattedMessage
                                         id="user.mail.confirmation.try.again.button"
@@ -182,17 +184,34 @@ class UserMailUpdateAndConfirmation extends React.Component<UserMailUpdateProps>
                                     />
                                 </a>
                             </div>
-                            <div style={{textAlign: 'center', marginTop: 15}}>
+                            <div style={{textAlign: 'center', marginTop: 5}}>
                                 <a
                                     href={emptyHrefLink}
                                     onClick={() => {
                                         window.location.reload();
                                     }}
                                     className="genric-btn info-border circle"
+                                    style={{width: 250}}
                                 >
                                     <FormattedMessage
                                         id="user.mail.confirmation.already.confirmed.button"
                                         defaultMessage="Am confirmat deja"
+                                    />
+                                </a>
+                            </div>
+                            <div style={{textAlign: 'center', marginTop: 5}}>
+                                <a
+                                    href={emptyHrefLink}
+                                    onClick={async () => {
+                                        await this.props.logout();
+                                        window.location.reload();
+                                    }}
+                                    className="genric-btn info-border circle"
+                                    style={{width: 250}}
+                                >
+                                    <FormattedMessage
+                                        id="navigation.logout"
+                                        defaultMessage="Logout"
                                     />
                                 </a>
                             </div>
