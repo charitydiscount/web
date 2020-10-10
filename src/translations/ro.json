@@ -185,7 +185,7 @@
   "user.mail.confirmation": "Apasă pe link-ul de confirmare primit pe mail pentru a putea folosi sistemul",
   "user.mail.update.button": "Setează",
   "user.mail.invalid": "Mail-ul nu este valid",
-  "user.mail.confirmation.send.success": "A fost trimis un mail de confirmare. După confirmare spor la cashback !!!",
+  "user.mail.confirmation.send.success": "A fost trimis un mail de confirmare. După confirmare spor la cashback !",
   "user.mail.confirmation.send.error": "Mail-ul de confirmare nu a putut fi trimis, te rugăm să încerci din nou. Eroarea: ",
   "user.mail.update.error": "Mail-ul nu a fost setat, te rugăm să încerci din nou după login. Eroarea: ",
   "user.mail.confirmation.another.mail.button" : "Setează alt mail",

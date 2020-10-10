@@ -185,7 +185,7 @@
   "user.mail.confirmation": "Click on the link received on mail for using the system",
   "user.mail.update.button": "Update",
   "user.mail.invalid": "The email is invalid",
-  "user.mail.confirmation.send.success": "A confirmation mail was sent. After confirmation enjoy your cashback!",
+  "user.mail.confirmation.send.success": "A confirmation mail was sent. After confirmation enjoy your cashback !",
   "user.mail.confirmation.send.error": "Failed to send confirmation mail. Please try again. Error: ",
   "user.mail.update.error": "Email was not updated, please try again after login. Error message: ",
   "user.mail.confirmation.another.mail.button" : "Set another mail",
