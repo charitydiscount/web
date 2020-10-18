@@ -287,7 +287,7 @@ a:focus {
 }
 
 .header_area .navbar .nav .nav-item {
-    margin-right: 45px;
+    margin-right: 30px;
 }
 
 .header_area .navbar .nav .nav-item .nav-link {
@@ -362,7 +362,7 @@ a:focus {
 }
 
 .header_area .navbar .nav .nav-item.submenu ul .nav-item .nav-link {
-    line-height: 45px;
+    line-height: 30px;
     color: #222222;
     padding: 0px 30px;
     transition: all 150ms linear;
