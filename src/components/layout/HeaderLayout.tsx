@@ -241,7 +241,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                     </li>
                                                     <li
                                                         className={
-                                                            'nav-item' +
+                                                            'nav-item ' +
                                                             (isPromotions
                                                                 ? 'active'
                                                                 : '')
