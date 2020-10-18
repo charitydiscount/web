@@ -10,8 +10,8 @@ import {
 } from '../../rest/ShopsService';
 import { injectIntl, IntlShape } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
-import { getPromotions, PromotionDTO } from '../../rest/DealsService';
-import Promotion from '../promotions/Promotion';
+import { getPromotions, PromotionDto } from '../../rest/DealsService';
+import Promotion from '../promotions/ShopPromotion';
 import { Button } from '@material-ui/core';
 import { AppState } from '../../redux/reducer/RootReducer';
 import { connect } from 'react-redux';
@@ -31,7 +31,7 @@ interface IShopElementProps {
 
 interface IShopElementState {
     favShop: boolean;
-    promotions: PromotionDTO[];
+    promotions: PromotionDto[];
     promotionLoading: boolean;
     redirectModalVisible: boolean;
 }
@@ -60,7 +60,7 @@ class ShopElement extends React.Component<IShopElementProps,
         let response = await getPromotions(this.props.shop.id);
         if (response) {
             this.setState({
-                promotions: response as PromotionDTO[],
+                promotions: response as PromotionDto[],
                 promotionLoading: false,
             });
         } else {
@@ -262,7 +262,6 @@ class ShopElement extends React.Component<IShopElementProps,
                         }}
                     />
                     <div className="blog_details">
-                        <h2>{this.props.shop.name}</h2>
                         <h6
                             style={
                                 this.props.comingFromShopReview

@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { PromotionDTO } from '../../rest/DealsService';
+import { PromotionDto } from '../../rest/DealsService';
 import { ShopDto } from '../../rest/ShopsService';
 import { computeUrl } from '../../helper/AppHelper';
 import { clickSaveAndRedirect } from "../../rest/ClickService";
 import { emptyHrefLink } from "../../helper/Constants";
 
 interface PromotionProps {
-    promotion: PromotionDTO;
+    promotion: PromotionDto;
     comingFromShopReview?: boolean;
     isLoggedIn: boolean
 }
@@ -18,7 +18,7 @@ interface StateProps {
 
 type Props = PromotionProps & StateProps;
 
-class Promotion extends React.Component<Props> {
+class ShopPromotion extends React.Component<Props> {
 
     public render() {
         const shop = this.props.shops.find(
@@ -75,4 +75,4 @@ const mapStateToProps = (state: any) => {
     };
 };
 
-export default connect(mapStateToProps)(Promotion);
+export default connect(mapStateToProps)(ShopPromotion);

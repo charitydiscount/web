@@ -22,6 +22,7 @@ import UnsubscribeFromMailNewsletter from '../login/UnsubscribeFromMailNewslette
 import ExternalShop from "../shops/ExternalShop";
 import { FadeLoader } from "react-spinners";
 import { spinnerCss } from "../../helper/AppHelper";
+import Promotions from "../promotions/Promotions";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -81,6 +82,11 @@ const PageLayout = (props: PageLayoutProps) => {
                             exact={true}
                             path={Routes.WALLET}
                             component={Wallet}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.PROMOTIONS}
+                            component={Promotions}
                         />
                         <Route
                             exact={true}

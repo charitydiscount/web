@@ -5,6 +5,7 @@ export enum Stages {
     CAUSES = "stage-causes",
     FRIENDS = "stage-friends",
     SHOPS = "stage-shops",
+    PROMOTIONS = "stage-promotions",
     PRODUCTS = "stage-products",
     TOS = "stage-tos",
     REVIEW = "stage-review",

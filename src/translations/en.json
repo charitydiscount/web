@@ -135,6 +135,7 @@
   "footer.info": "Info",
   "products.search": "Type product name here...",
   "navigation.products": "Products",
+  "navigation.promotions": "Promotions",
   "product.shop": "Shop: ",
   "products.filters": "Filters",
   "products.filters.price": "Price",
@@ -192,5 +193,11 @@
   "user.mail.confirmation.try.again.button" : "Send the mail again",
   "user.mail.confirmation.already.confirmed.button" : "Already confirmed",
   "user.first.interaction.message": "Welcome! There is one more little step to do...!",
-  "user.first.interaction.success": "Happy cashback!"
+  "user.first.interaction.success": "Happy cashback!",
+  "promotions.filter.favorite.shops": "Favorite shops",
+  "promotions.filter.no.filter": "-- Options --",
+  "promotions.expires.in": "Expires in ",
+  "promotions.expires.in.days": " days",
+  "promotions.filter.sort.by.expiry.date.ascending": "Expiry date ↑",
+  "promotions.filter.sort.by.expiry.date.descending": "Expiry date ↓"
 }

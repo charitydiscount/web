@@ -81,7 +81,6 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
             currentShopModalVisible: false,
         };
         this.onSearchUpdate = this.onSearchUpdate.bind(this);
-        this.onSearchUpdateEvent = this.onSearchUpdateEvent.bind(this);
         this.updatePageNumber = this.updatePageNumber.bind(this);
         this.sortAfterReviewsNumber = this.sortAfterReviewsNumber.bind(this);
         this.findShopAndOpen = this.findShopAndOpen.bind(this);
@@ -150,9 +149,9 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         });
     };
 
-    public onSearchUpdateEvent(event) {
+    onSearchUpdateEvent = (event) => {
         this.onSearchUpdate(event.target.value);
-    }
+    };
 
     public onSearchUpdate(shopName: string) {
         if (!shopName) {

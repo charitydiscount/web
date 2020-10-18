@@ -100,6 +100,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
     render() {
         const isShops = this.props.view === Stages.SHOPS;
         const isProducts = this.props.view === Stages.PRODUCTS;
+        const isPromotions = this.props.view === Stages.PROMOTIONS;
         const isCauses = this.props.view === Stages.CAUSES;
         const isFriends = this.props.view === Stages.FRIENDS;
         const isLoginPage = this.props.view === Stages.LOGIN;
@@ -192,7 +193,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                     >
                                                         <FormattedMessage
                                                             id="userinfo.about.label"
-                                                            defaultMessage="About"
+                                                            defaultMessage="Despre"
                                                         />
                                                     </a>
                                                 </li>
@@ -219,24 +220,44 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                             </li>
 
                                             {isLoggedIn && (
-                                                <li
-                                                    className={
-                                                        'nav-item ' +
-                                                        (isProducts
-                                                            ? 'active'
-                                                            : '')
-                                                    }
-                                                >
-                                                    <Link
-                                                        to={Routes.PRODUCTS}
-                                                        className="nav-link"
+                                                <React.Fragment>
+                                                    <li
+                                                        className={
+                                                            'nav-item ' +
+                                                            (isProducts
+                                                                ? 'active'
+                                                                : '')
+                                                        }
                                                     >
-                                                        <FormattedMessage
-                                                            id="navigation.products"
-                                                            defaultMessage="Products"
-                                                        />
-                                                    </Link>
-                                                </li>
+                                                        <Link
+                                                            to={Routes.PRODUCTS}
+                                                            className="nav-link"
+                                                        >
+                                                            <FormattedMessage
+                                                                id="navigation.products"
+                                                                defaultMessage="Produse"
+                                                            />
+                                                        </Link>
+                                                    </li>
+                                                    <li
+                                                        className={
+                                                            'nav-item ' +
+                                                            (isPromotions
+                                                                ? 'active'
+                                                                : '')
+                                                        }
+                                                    >
+                                                        <Link
+                                                            to={Routes.PROMOTIONS}
+                                                            className="nav-link"
+                                                        >
+                                                            <FormattedMessage
+                                                                id="navigation.promotions"
+                                                                defaultMessage="Promotii"
+                                                            />
+                                                        </Link>
+                                                    </li>
+                                                </React.Fragment>
                                             )}
                                             <li
                                                 className={
@@ -316,7 +337,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                     >
                                                         <FormattedMessage
                                                             id="navigation.referral"
-                                                            defaultMessage="Invitati"
+                                                            defaultMessage="Invitatii"
                                                         />
                                                     </Link>
                                                 </li>

@@ -135,6 +135,7 @@
   "footer.info": "Info",
   "products.search": "Scrie numele produsului aici...",
   "navigation.products": "Produse",
+  "navigation.promotions": "Promoții",
   "product.shop": "Magazin: ",
   "products.filters": "Filtre",
   "products.filters.price": "Preț",
@@ -192,5 +193,11 @@
   "user.mail.confirmation.try.again.button" : "Trimite mail-ul din nou",
   "user.mail.confirmation.already.confirmed.button" : "Am confirmat deja",
   "user.first.interaction.message": "Bine ai venit! Înainte de a continua mai este nevoie doar de un mic pas!",
-  "user.first.interaction.success": "Spor la cashback!"
+  "user.first.interaction.success": "Spor la cashback!",
+  "promotions.filter.favorite.shops": "Magazine favorite",
+  "promotions.filter.no.filter": "-- Opțiuni --",
+  "promotions.expires.in": "Expiră în ",
+  "promotions.expires.in.days": " zile",
+  "promotions.filter.sort.by.expiry.date.ascending": "Data de expirare ↑",
+  "promotions.filter.sort.by.expiry.date.descending": "Data de expirare ↓"
 }

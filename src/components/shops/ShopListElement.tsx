@@ -16,26 +16,25 @@ class ShopListElement extends React.Component<
     ShopListElementProps,
     ShopListElementState
 > {
+
     constructor(props: ShopListElementProps) {
         super(props);
         this.state = {
             shopModalVisible: false,
         };
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
     }
 
-    closeModal() {
+    closeModal = () => {
         this.setState({
             shopModalVisible: false,
         });
-    }
+    };
 
-    openModal() {
+    openModal = () => {
         this.setState({
             shopModalVisible: true,
         });
-    }
+    };
 
     public render() {
         return (
