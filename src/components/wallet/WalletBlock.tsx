@@ -166,7 +166,7 @@ class WalletBlock extends React.Component<
             this.setState({
                 infoModalVisible: true,
                 infoModalMessage: this.props.intl.formatMessage({
-                    id: 'wallet.block.otp.code.error',
+                    id: 'otp.code.empty',
                 })
             });
             return;
@@ -206,7 +206,7 @@ class WalletBlock extends React.Component<
                 this.setState({
                     infoModalVisible: true,
                     infoModalMessage: this.props.intl.formatMessage({
-                        id: 'wallet.block.otp.code.worng.error',
+                        id: 'otp.code.wrong',
                     })
                 });
             }
@@ -214,7 +214,7 @@ class WalletBlock extends React.Component<
             this.setState({
                 infoModalVisible: true,
                 infoModalMessage: this.props.intl.formatMessage({
-                    id: 'wallet.block.otp.code.worng.error',
+                    id: 'otp.code.wrong',
                 })
             });
         }

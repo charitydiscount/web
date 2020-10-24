@@ -113,8 +113,8 @@
   "wallet.block.otp.proceed": "Validează",
   "wallet.block.otp.mail.mesasge": "A fost trimis pe mail-ul tău codul de validare a tranzacției curente.",
   "wallet.block.otp.cashout.duration.mesasge": "Banii vor fi transferați între 2-4 zile lucrătoare.",
-  "wallet.block.otp.code.error": "Introdu codul primit pe mail",
-  "wallet.block.otp.code.worng.error": "Codul nu este valid",
+  "otp.code.empty": "Introdu codul primit pe mail",
+  "otp.code.wrong": "Codul nu este valid",
   "footer.translation": "Traducere",
   "login.question.label": "Nu știi ce înseamnă CharityDiscount?",
   "login.question.ready.label": "Pregătit să ni te alături?",
@@ -123,10 +123,11 @@
   "shop.cashback.without.vat.and.transport": "din valoarea fără TVA și transport",
   "shop.available.in": "Valabil în : ",
   "adblock.message": "Se pare că folosești adblock; e de înțeles. Totuși, CharityDiscount nu poate funcționa împreună cu acesta (adică nu se pot înregistra comisioanele). Te rugăm să îl dezactivezi și te asigurăm că nu vei avea parte de nicio reclamă. Spor la cumpărături!",
-  "userinfo.delete.account.button": "Cerere ștergere cont",
+  "userinfo.delete.account.button": "Ștergere cont",
   "userInfo.delete.account.question": "Sigur doriți ștergerea contului?",
-  "userInfo.delete.account.ok": "Cererea de ștergere a contului a fost trimisă. Contul va fi șters în curând. Vei primi un mail când cererea a fost soluționată",
-  "userInfo.delete.account.not.ok": "Cererea nu a putut fi trimisă, încearcă din nou",
+  "userInfo.delete.account.ok": "Îți mulțumim pentru timpul care ai fost alături de noi. Contul tău a fost șters dar te așteptăm oricând să revi. Spor în continuare !!!",
+  "userInfo.delete.account.not.ok": "Ștergerea nu a reușit, încearcă din nou",
+  "userInfo.delete.account.not.ok.reason": "Ștergerea nu a reușit. Motivul: ",
   "adblock.button": "Reîncarcă pagina",
   "wallet.block.minimum.amount": "Suma minimă:",
   "average.waiting.time": "Timpul mediu de plată: ",
@@ -199,5 +200,6 @@
   "promotions.expires.in": "Expiră în ",
   "promotions.expires.in.days": " zile",
   "promotions.filter.sort.by.expiry.date.ascending": "Data de expirare ↑",
-  "promotions.filter.sort.by.expiry.date.descending": "Data de expirare ↓"
+  "promotions.filter.sort.by.expiry.date.descending": "Data de expirare ↓",
+  "user.info.delete.otp.mail.mesasge": "A fost trimis pe mail-ul tău codul de validare pentru ștergerea contului."
 }

@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import { smallerSpinnerCss, spinnerCss } from '../../helper/AppHelper';
-import { addContactMessageToDb } from '../../rest/ContactService';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { loadCurrentUserPhoto, UserPhotoState } from './UserPhotoHelper';
 import { Routes } from '../helper/Routes';
@@ -26,7 +25,9 @@ import {
 } from '../../rest/UserService';
 import { FormControlLabel } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
-import { getUserId, getUserInfo } from './AuthHelper';
+import { getUserId } from './AuthHelper';
+import OtpModal from "../modals/OtpModal";
+import { createOtpRequest, validateOtpCode } from "../../rest/WalletService";
 
 interface IUserInfoProps {
     intl: IntlShape;
@@ -38,12 +39,15 @@ interface IUserInfoState extends UserPhotoState {
     infoModalMessage: string;
     confirmModalVisible: boolean;
     confirmModalMessage: string;
+    otpModalVisible: boolean,
     deleteAccount: boolean;
+    accountDeleted: boolean;
     isLoading: boolean;
     disableMailNotification: Boolean;
 }
 
 class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
+
     constructor(props: IUserInfoProps) {
         super(props);
         this.state = {
@@ -55,33 +59,23 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             infoModalMessage: '',
             confirmModalVisible: false,
             confirmModalMessage: '',
+            otpModalVisible: false,
             normalUser: false,
             isLoading: false,
             deleteAccount: false,
+            accountDeleted: false,
             isLoadingPhoto: false,
-            disableMailNotification: false,
+            disableMailNotification: false
         };
-        this.handleLogOut = this.handleLogOut.bind(this);
-        this.closeInfoModal = this.closeInfoModal.bind(this);
-        this.closeConfirmModal = this.closeConfirmModal.bind(this);
-        this.passwordResetEmail = this.passwordResetEmail.bind(this);
-        this.requestDeleteAccount = this.requestDeleteAccount.bind(this);
-        this.openPasswordReset = this.openPasswordReset.bind(this);
-        this.openDeleteAccount = this.openDeleteAccount.bind(this);
-        this.showPasswordResetResult = this.showPasswordResetResult.bind(this);
-        this.updateMailNotification = this.updateMailNotification.bind(this);
-
-        this.handleUploadError = this.handleUploadError.bind(this);
-        this.handleUploadSuccess = this.handleUploadSuccess.bind(this);
-        this.escFunction = this.escFunction.bind(this);
     }
 
-    escFunction(event) {
+    escFunction = (event) => {
         if (event.keyCode === 27) {
             this.closeInfoModal();
             this.closeConfirmModal();
+            this.closeOtpModal();
         }
-    }
+    };
 
     async componentDidMount() {
         document.addEventListener('keydown', this.escFunction, false);
@@ -91,12 +85,12 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         let response = await getDisableMailNotification(getUserId());
         if (response) {
             this.setState({
-                disableMailNotification: response,
+                disableMailNotification: response
             });
         }
     }
 
-    async updateMailNotification(event) {
+    updateMailNotification = async (event) => {
         let checked = event.target.checked;
         await updateDisableMailNotification(!checked)
             .then(() => {
@@ -111,69 +105,74 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                 });
             })
             .catch((error) => {
-                console.log(error);
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({
-                        id: 'user.disable.mail.notification.error',
-                    }),
+                    infoModalMessage: this.props.intl.formatMessage({id: 'user.disable.mail.notification.error'})
                 });
             });
-    }
+    };
 
     componentWillUnmount() {
         store.dispatch(NavigationsAction.resetStageAction(Stages.USER));
     }
 
-    async requestDeleteAccount() {
+    sendOtpRequest = async () => {
         this.setState({
-            isLoading: true,
-            confirmModalVisible: false,
+            confirmModalVisible: false
         });
-        let userInfo = getUserInfo();
-        await addContactMessageToDb(
-            userInfo.displayName,
-            userInfo.email,
-            userInfo.uid,
-            'Request to delete account with id:' + userInfo.uid,
-            'Delete account with id:' + userInfo.uid
-        )
-            .then(() => {
-                this.setState({
-                    infoModalVisible: true,
-                    isLoading: false,
-                    infoModalMessage: this.props.intl.formatMessage({
-                        id: 'userInfo.delete.account.ok',
-                    }),
-                });
-            })
-            .catch(() => {
-                this.setState({
-                    infoModalVisible: true,
-                    isLoading: false,
-                    infoModalMessage: this.props.intl.formatMessage({
-                        id: 'userInfo.delete.account.not.ok',
-                    }),
-                });
+
+        await createOtpRequest();
+        this.setState({
+            otpModalVisible: true
+        });
+    };
+
+    onOtpValidate = async (otpCode) => {
+        if (!otpCode) {
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({id: 'otp.code.empty'})
             });
-    }
+            return;
+        }
+        try {
+            let response = await validateOtpCode(parseInt(otpCode));
+            if (response) {
+                if (auth.currentUser) {
+                    try {
+                        this.setState({
+                            isLoading: true,
+                            otpModalVisible: false
+                        });
+                        await auth.currentUser.delete();
+                    } catch (e) {
+                        this.setState({
+                            isLoading: false,
+                            infoModalVisible: true,
+                            infoModalMessage: this.props.intl.formatMessage({id: 'userInfo.delete.account.not.ok.reason'}) + e.message
+                        });
+                    }
+                }
+            } else {
+                this.setState({
+                    infoModalVisible: true,
+                    infoModalMessage: this.props.intl.formatMessage({id: 'otp.code.wrong'})
+                });
+            }
+        } catch (error) {
+            this.setState({
+                infoModalVisible: true,
+                infoModalMessage: this.props.intl.formatMessage({id: 'otp.code.wrong'})
+            });
+        }
+    };
 
-    openDeleteAccount() {
-        this.setState({
-            confirmModalVisible: true,
-            confirmModalMessage: this.props.intl.formatMessage({
-                id: 'userInfo.delete.account.question',
-            }),
-            deleteAccount: true,
-        });
-    }
-
-    handleLogOut(event: any) {
+    handleLogOut = (event: any) => {
         event.preventDefault();
         this.props.logout();
-    }
+    };
 
-    showPasswordResetResult(success) {
+    showPasswordResetResult = (success) => {
         this.setState({
             isLoading: false,
             infoModalVisible: true,
@@ -185,19 +184,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                     id: 'userInfo.email.reset.error',
                 }),
         });
-    }
+    };
 
-    openPasswordReset() {
-        this.setState({
-            confirmModalVisible: true,
-            deleteAccount: false,
-            confirmModalMessage: this.props.intl.formatMessage({
-                id: 'userInfo.email.reset.confirm',
-            }),
-        });
-    }
-
-    passwordResetEmail() {
+    passwordResetEmail = () => {
         this.setState({
             confirmModalVisible: false,
             isLoading: true,
@@ -209,21 +198,27 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                 )
                 .catch(() => this.showPasswordResetResult(false));
         }
-    }
+    };
 
-    closeConfirmModal() {
+    closeConfirmModal = () => {
         this.setState({
-            confirmModalVisible: false,
+            confirmModalVisible: false
         });
-    }
+    };
 
-    closeInfoModal() {
+    closeInfoModal = () => {
         this.setState({
-            infoModalVisible: false,
+            infoModalVisible: false
         });
-    }
+    };
 
-    async handleUploadSuccess() {
+    closeOtpModal = () => {
+        this.setState({
+            otpModalVisible: false
+        });
+    };
+
+    handleUploadSuccess = async () => {
         this.setState({
             infoModalVisible: true,
             isLoadingPhoto: false,
@@ -232,9 +227,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             }),
         });
         await loadCurrentUserPhoto(this);
-    }
+    };
 
-    handleUploadError(event) {
+    handleUploadError = () => {
         this.setState({
             infoModalVisible: true,
             isLoadingPhoto: false,
@@ -242,7 +237,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                 id: 'userInfo.profile.picture.error',
             }),
         });
-    }
+    };
 
     public render() {
         let disableChecked = true;
@@ -257,21 +252,25 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                     color={'#e31f29'}
                     css={spinnerCss}
                 />
+                <OtpModal visible={this.state.otpModalVisible}
+                          onValidate={this.onOtpValidate}
+                          onClose={this.closeOtpModal}
+                />
                 <InfoModal
                     visible={this.state.infoModalVisible}
                     message={this.state.infoModalMessage}
-                    onClose={() => this.closeInfoModal()}
+                    onClose={this.closeInfoModal}
                 />
                 <ConfirmModal
                     visible={this.state.confirmModalVisible}
                     message={this.state.confirmModalMessage}
                     onSave={() => {
                         if (this.state.deleteAccount) {
-                            return this.requestDeleteAccount();
+                            return this.sendOtpRequest();
                         }
                         return this.passwordResetEmail();
                     }}
-                    onClose={() => this.closeConfirmModal()}
+                    onClose={this.closeConfirmModal}
                 />
                 {!this.state.isLoading && (
                     <div className="product_image_area">
@@ -324,10 +323,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                 checked={
                                                                     disableChecked
                                                                 }
-                                                                onChange={
-                                                                    this
-                                                                        .updateMailNotification
-                                                                }
+                                                                onChange={this.updateMailNotification}
                                                                 name="redirectChecked"
                                                                 color="secondary"
                                                             />
@@ -383,14 +379,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                             .state
                                                                             .userId
                                                                     )}
-                                                                    onUploadError={
-                                                                        this
-                                                                            .handleUploadError
-                                                                    }
-                                                                    onUploadSuccess={
-                                                                        this
-                                                                            .handleUploadSuccess
-                                                                    }
+                                                                    onUploadError={this.handleUploadError}
+                                                                    onUploadSuccess={this.handleUploadSuccess}
                                                                     onUploadStart={() =>
                                                                         this.setState(
                                                                             {
@@ -406,8 +396,13 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                         <a
                                                             href={emptyHrefLink}
                                                             onClick={
-                                                                this
-                                                                    .openPasswordReset
+                                                                () => {
+                                                                    this.setState({
+                                                                        deleteAccount: false,
+                                                                        confirmModalVisible: true,
+                                                                        confirmModalMessage: this.props.intl.formatMessage({id: 'userInfo.email.reset.confirm'})
+                                                                    });
+                                                                }
                                                             }
                                                             className="btn submit_btn userInfo_btn genric-btn circle"
                                                         >
@@ -468,8 +463,13 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                 <a
                                                     href={emptyHrefLink}
                                                     className="btn submit_btn userInfo_btn genric-btn circle"
-                                                    onClick={
-                                                        this.openDeleteAccount
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            confirmModalVisible: true,
+                                                            confirmModalMessage: this.props.intl.formatMessage({id: 'userInfo.delete.account.question'}),
+                                                            deleteAccount: true
+                                                        });
+                                                    }
                                                     }
                                                 >
                                                     <FormattedMessage

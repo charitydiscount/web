@@ -14,7 +14,7 @@ export const InfoModal: React.FunctionComponent<ModalProps> = props => {
         <Modal
             visible={props.visible}
             effect="fadeInUp"
-            onClickAway={() => props.onClose}
+            onClickAway={props.onClose}
         >
             <div style={{padding: 15, maxWidth: props.maxWidth ? props.maxWidth : 350}}>
                 <div style={{textAlign: "center"}}>

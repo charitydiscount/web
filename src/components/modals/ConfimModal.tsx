@@ -14,7 +14,7 @@ export const ConfirmModal: React.FunctionComponent<ModalProps> = props => {
         <Modal
             visible={props.visible}
             effect="fadeInUp"
-            onClickAway={() => props.onClose}
+            onClickAway={props.onClose}
         >
             <div style={{padding: 15, maxWidth: 350}}>
                 <div style={{textAlign: "center"}}>
