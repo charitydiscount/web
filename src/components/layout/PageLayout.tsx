@@ -23,6 +23,7 @@ import ExternalShop from "../shops/ExternalShop";
 import { FadeLoader } from "react-spinners";
 import { spinnerCss } from "../../helper/AppHelper";
 import Promotions from "../promotions/Promotions";
+import { clearStorage } from "../../helper/StorageHelper";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -34,6 +35,7 @@ const PageLayout = (props: PageLayoutProps) => {
 
     useEffect(() => {
         if (!props.shopsLoaded) {
+            clearStorage();
             props.loadShops();
         }
     });
