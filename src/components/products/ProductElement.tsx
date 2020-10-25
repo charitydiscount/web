@@ -112,7 +112,7 @@ class ProductElement extends React.Component<
                         />
                     </div>
                     {this.props.product.price && (
-                        <h6 className="product-price">
+                        <h6 className="product-price blue-color">
                             {this.props.product.price} lei
                         </h6>
                     )}

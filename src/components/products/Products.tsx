@@ -32,7 +32,6 @@ interface ProductsProps {
 
 interface ProductsState {
     isLoading: boolean;
-    searchActive: boolean;
     products: Array<ProductDTO>;
     currentPage: number;
     total: number;
@@ -55,18 +54,14 @@ class Products extends React.Component<ProductsProps, ProductsState> {
         super(props);
         this.state = {
             isLoading: false,
-            searchActive: false,
             products: {} as Array<ProductDTO>,
             currentPage: 0,
             total: 50,
         };
-        this.startSearch = this.startSearch.bind(this);
-        this.searchProducts = this.searchProducts.bind(this);
-        this.updatePageNumber = this.updatePageNumber.bind(this);
-        this.searchFunction = this.searchFunction.bind(this);
+        document.addEventListener('keydown', this.searchFunction, false);
     }
 
-    updatePageNumber(data) {
+    updatePageNumber = (data) => {
         if (window.innerWidth > 800) {
             window.scrollTo(0, 0);
         } else {
@@ -82,11 +77,10 @@ class Products extends React.Component<ProductsProps, ProductsState> {
             this.maxPrice,
             this.sort
         );
-    }
+    };
 
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.PRODUCTS));
-        document.addEventListener('keydown', this.searchFunction, false);
         this.setState({
             isLoading: true,
         });
@@ -107,7 +101,6 @@ class Products extends React.Component<ProductsProps, ProductsState> {
             this.setState({
                 isLoading: false,
             });
-            //feature product not loaded, site will keep working
         }
     }
 
@@ -115,7 +108,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
         store.dispatch(NavigationsAction.resetStageAction(Stages.PRODUCTS));
     }
 
-    async searchProducts(pageNumber, title, minPrice, maxPrice, sort) {
+    searchProducts = async (pageNumber, title, minPrice, maxPrice, sort) => {
         this.oldMaxPrice = maxPrice;
         this.oldMinPrice = minPrice;
         this.oldSort = sort;
@@ -166,13 +159,13 @@ class Products extends React.Component<ProductsProps, ProductsState> {
         }
     }
 
-    searchFunction(event) {
+    searchFunction = (event) => {
         if (event.keyCode === 13) {
             this.startSearch();
         }
-    }
+    };
 
-    async startSearch() {
+    startSearch = async () => {
         if (
             this.oldSearchTerm !== this.searchTerm ||
             this.oldSort !== this.sort ||
@@ -260,9 +253,6 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                             <FormControl
                                                 fullWidth
                                                 variant="outlined"
-                                                disabled={
-                                                    !this.state.searchActive
-                                                }
                                             >
                                                 <InputLabel htmlFor="outlined-adornment-amount">
                                                     Min
@@ -291,9 +281,6 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                             <FormControl
                                                 fullWidth
                                                 variant="outlined"
-                                                disabled={
-                                                    !this.state.searchActive
-                                                }
                                             >
                                                 <InputLabel htmlFor="outlined-adornment-amount">
                                                     Max
@@ -331,9 +318,6 @@ class Products extends React.Component<ProductsProps, ProductsState> {
 
                                             <FormControl
                                                 fullWidth
-                                                disabled={
-                                                    !this.state.searchActive
-                                                }
                                             >
                                                 <Select
                                                     MenuProps={{
@@ -390,21 +374,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                         placeholder={this.props.intl.formatMessage(
                                             { id: 'products.search' }
                                         )}
-                                        onKeyUp={(event) => {
-                                            if (event.target.value) {
-                                                this.searchTerm =
-                                                    event.target.value;
-                                                if (!this.state.searchActive) {
-                                                    this.setState({
-                                                        searchActive: true,
-                                                    });
-                                                }
-                                            } else {
-                                                this.setState({
-                                                    searchActive: false,
-                                                });
-                                            }
-                                        }}
+                                        onKeyUp={(event) => {this.searchTerm = event.target.value;}}
                                     />
                                 </div>
                                 <div className="product_top_bar">
@@ -461,7 +431,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                     color={'#e31f29'}
                                     css={spinnerCss}
                                 />
-                                <div className="latest_product_inner row">
+                                <div className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
                                     {!this.state.isLoading && (
                                         <React.Fragment>
                                             {productsList}
