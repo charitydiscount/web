@@ -19,6 +19,7 @@ import RedirectModal from './RedirectModal';
 import { getLocalStorage } from '../../helper/StorageHelper';
 import { computeUrl } from '../../helper/AppHelper';
 import { clickSaveAndRedirect } from "../../rest/ClickService";
+import InfoModal from "../modals/InfoModal";
 
 interface IShopElementProps {
     shop: ShopDto;
@@ -34,6 +35,8 @@ interface IShopElementState {
     promotions: PromotionDto[];
     promotionLoading: boolean;
     redirectModalVisible: boolean;
+    infoModalVisible: boolean,
+    infoModalMessage: string
 }
 
 class ShopElement extends React.Component<IShopElementProps,
@@ -45,6 +48,8 @@ class ShopElement extends React.Component<IShopElementProps,
             promotions: [],
             promotionLoading: true,
             redirectModalVisible: false,
+            infoModalMessage: '',
+            infoModalVisible: false
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
     }
@@ -101,6 +106,12 @@ class ShopElement extends React.Component<IShopElementProps,
     closeRedirectModal = () => {
         this.setState({
             redirectModalVisible: false,
+        });
+    };
+
+    closeInfoModal = () => {
+        this.setState({
+            infoModalVisible: false
         });
     };
 
@@ -207,6 +218,11 @@ class ShopElement extends React.Component<IShopElementProps,
 
         return (
             <React.Fragment>
+                <InfoModal
+                    visible={this.state.infoModalVisible}
+                    categoriesCashback={true}
+                    message={this.props.shop.categoriesCashback}
+                    onClose={this.closeInfoModal}/>
                 <RedirectModal
                     visible={this.state.redirectModalVisible}
                     programId={this.props.shop.id}
@@ -227,7 +243,19 @@ class ShopElement extends React.Component<IShopElementProps,
                             id={'shop.cashback'}
                             defaultMessage="Cashback:"
                         />
-                        {this.props.shop.uiCommission}
+                        {this.props.shop.categoriesCashback ?
+                            <a href={emptyHrefLink} className="blue-color" style={{cursor: 'pointer'}}
+                               onClick={() => {
+                                   this.setState({infoModalVisible: true})
+                               }}>
+                                {this.props.shop.uiCommission}
+                                <i className="fa fa-info-circle" aria-hidden="true" style={{marginLeft: 5}}/>
+                            </a>
+                            :
+                            <React.Fragment>
+                                {this.props.shop.uiCommission}
+                            </React.Fragment>
+                        }
                         <br/>
                         <small className="text-muted text-small">
                             <FormattedMessage

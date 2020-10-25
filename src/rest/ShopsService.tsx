@@ -25,6 +25,7 @@ export interface ShopDto {
     defaultLeadCommissionType: string;
     defaultSaleCommissionRate: string;
     defaultSaleCommissionType: string;
+    categoriesCashback: string;
     logoPath: string;
     mainUrl: string;
     affiliateUrl: string;
@@ -46,7 +47,6 @@ export interface ShopDto {
     uiCommission: string;
     commissionInterval: string;
 
-    //
     order: number;
     mainOrder: number;
 }

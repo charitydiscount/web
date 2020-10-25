@@ -5,6 +5,7 @@ import { emptyHrefLink, logoPath } from "../../helper/Constants";
 export interface ModalProps {
     visible: boolean;
     message: string;
+    categoriesCashback ?: boolean;
     onClose: () => void;
     maxWidth?: number
 }
@@ -24,7 +25,14 @@ export const InfoModal: React.FunctionComponent<ModalProps> = props => {
                     <h4 style={{
                         overflowWrap: "break-word"
                     }}>
-                        {props.message}
+                        {props.categoriesCashback ?
+                            <p style={{whiteSpace: 'pre-wrap'}}>
+                                {props.message}
+                            </p> :
+                            <React.Fragment>
+                                {props.message}
+                            </React.Fragment>
+                        }
                     </h4>
                 </div>
                 <div style={{textAlign: 'center', marginTop: 15}}>
