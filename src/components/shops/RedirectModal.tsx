@@ -9,7 +9,7 @@ import { clickSaveAndRedirect } from "../../rest/ClickService";
 
 interface RedirectModalProps {
     cashbackUrl: string,
-    programId: number,
+    programId: string,
     intl: IntlShape;
     visible: boolean,
     onCloseModal: any

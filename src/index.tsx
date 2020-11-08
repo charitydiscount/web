@@ -16,12 +16,12 @@ import 'firebase/storage';
 import 'firebase/remote-config';
 import { AuthActions } from './components/login/UserActions';
 import I18nApp from './I18nApp';
-import { getLocalStorage } from "./helper/StorageHelper";
-import { StorageKey } from "./helper/Constants";
-import { LoginDto } from "./components/login/AuthHelper";
+import { getLocalStorage } from './helper/StorageHelper';
+import { StorageKey } from './helper/Constants';
+import { LoginDto } from './components/login/AuthHelper';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '2.6.0';
+export const appVersion = '2.6.1';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};
@@ -61,12 +61,11 @@ if (user && user.length > 0) {
         try {
             parsedUser = JSON.parse(user) as LoginDto;
             store.dispatch(AuthActions.setLoggedUserAction(parsedUser));
-        }catch (e) {
+        } catch (e) {
             store.dispatch(AuthActions.resetLoggedUserAction());
         }
     }
 }
-
 
 //----------------------------------------------------------------------------------------------------------------------
 ReactDOM.render(
@@ -77,4 +76,3 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('root')
 );
-

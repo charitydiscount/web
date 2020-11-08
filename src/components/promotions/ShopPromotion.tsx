@@ -22,7 +22,7 @@ class ShopPromotion extends React.Component<Props> {
 
     public render() {
         const shop = this.props.shops.find(
-            shop => shop.id === this.props.promotion.program.id
+            shop => shop.id.toString() === this.props.promotion.program.id.toString()
         );
         let computedPromotionUrl;
         if (shop && this.props.isLoggedIn) {

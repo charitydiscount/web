@@ -17,7 +17,8 @@ export enum ShopsActionTypes {
     SET_SHOPS_ACTION = 'SET_SHOPS_ACTION',
     SET_RATINGS_ACTION = 'SET_RATINGS_ACTION',
     SET_CURRENT_PAGE_ACTION = 'SET_CURRENT_PAGE_ACTION',
-    SHOPS_LOADED = 'SHOPS_LOADED'
+    SHOPS_LOADED = 'SHOPS_LOADED',
+    SET_SELECTED_SHOP = 'SET_SELECTED_SHOP',
 }
 
 export enum CategoryActionTypes {
@@ -26,7 +27,7 @@ export enum CategoryActionTypes {
 }
 
 export enum AdBlockActionTypes {
-    SET_AD_BLOCK_ACTIVE = 'SET_AD_BLOCK_ACTIVE'
+    SET_AD_BLOCK_ACTIVE = 'SET_AD_BLOCK_ACTIVE',
 }
 
 export enum UserActionTypes {

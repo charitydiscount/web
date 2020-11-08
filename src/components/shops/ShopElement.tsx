@@ -20,6 +20,8 @@ import { getLocalStorage } from '../../helper/StorageHelper';
 import { computeUrl } from '../../helper/AppHelper';
 import { clickSaveAndRedirect } from "../../rest/ClickService";
 import InfoModal from "../modals/InfoModal";
+import { store } from '../..';
+import { ShopsActions } from '../../redux/actions/ShopsAction';
 
 interface IShopElementProps {
     shop: ShopDto;
@@ -52,6 +54,7 @@ class ShopElement extends React.Component<IShopElementProps,
             infoModalVisible: false
         };
         this.updateFavoriteShops = this.updateFavoriteShops.bind(this);
+        store.dispatch(ShopsActions.setSelectedShop(props.shop));
     }
 
     async componentDidMount() {
@@ -225,7 +228,7 @@ class ShopElement extends React.Component<IShopElementProps,
                     onClose={this.closeInfoModal}/>
                 <RedirectModal
                     visible={this.state.redirectModalVisible}
-                    programId={this.props.shop.id}
+                    programId={this.props.shop.id.toString()}
                     onCloseModal={this.closeRedirectModal}
                     cashbackUrl={cashbackUrl}
                 />

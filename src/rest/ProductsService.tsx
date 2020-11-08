@@ -20,7 +20,7 @@ export interface ProductTotal {
 export interface ProductResponse {
     aff_code: string;
     brand: string;
-    campaign_id: number;
+    campaign_id: string;
     campaign_name: string;
     category: string;
     image_urls: any;
@@ -41,7 +41,7 @@ export interface ProductDTO {
     category: string;
     url: string;
     shopName: string;
-    shopId: number;
+    shopId: string;
     commission?: string;
 }
 
