@@ -157,7 +157,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                 //feature product not loaded, site will keep working
             }
         }
-    }
+    };
 
     searchFunction = (event) => {
         if (event.keyCode === 13) {
@@ -184,7 +184,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                 this.sort
             );
         }
-    }
+    };
 
     public render() {
         let productsState;
@@ -194,12 +194,12 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                 .filter(
                     (product) =>
                         this.props.shops.find(
-                            (shop) => shop.id === product.shopId
+                            (shop) => shop.id.toString() === product.shopId
                         ) !== undefined
                 )
                 .map((product) => {
                     let shop = this.props.shops.find(
-                        (shop) => shop.id === product.shopId
+                        (shop) => shop.id.toString() === product.shopId
                     );
                     if (shop) {
                         product.commission = roundCommission(
@@ -316,9 +316,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                                 />
                                             </h3>
 
-                                            <FormControl
-                                                fullWidth
-                                            >
+                                            <FormControl fullWidth>
                                                 <Select
                                                     MenuProps={{
                                                         disableScrollLock: true,
@@ -374,7 +372,10 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                         placeholder={this.props.intl.formatMessage(
                                             { id: 'products.search' }
                                         )}
-                                        onKeyUp={(event) => {this.searchTerm = event.target.value;}}
+                                        onKeyUp={(event) => {
+                                            this.searchTerm =
+                                                event.target.value;
+                                        }}
                                     />
                                 </div>
                                 <div className="product_top_bar">

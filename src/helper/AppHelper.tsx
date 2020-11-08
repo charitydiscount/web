@@ -40,9 +40,8 @@ export function computeProductUrl(affUrl: string) {
         throw Error('User not logged in'); //TODO: this error should be nice treated
     }
 
-    const baseUrl = affUrl;
-    const tag = '&st=' + auth.currentUser.uid;
-    return baseUrl + tag;
+    // Product URLs already contain the program unique code
+    return computeUrl(affUrl, '', '');
 }
 
 export const spinnerCss = css`

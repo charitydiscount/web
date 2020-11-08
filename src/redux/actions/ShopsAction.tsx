@@ -6,7 +6,7 @@ import { ThunkDispatch } from 'redux-thunk';
 import { AnyAction } from 'redux';
 import { getLocalStorage, setLocalStorage } from '../../helper/StorageHelper';
 import { StorageKey } from '../../helper/Constants';
-import { fetchConfigInfo } from "../../rest/ConfigService";
+import { fetchConfigInfo } from '../../rest/ConfigService';
 
 export const ShopsActions = {
     setShops: (shops: Array<ShopDto>) =>
@@ -16,7 +16,9 @@ export const ShopsActions = {
     setCurrentPage: (currentPage: number) =>
         createAction(ShopsActionTypes.SET_CURRENT_PAGE_ACTION, currentPage),
     shopsLoaded: (shops: ShopDto[]) =>
-        createAction(ShopsActionTypes.SHOPS_LOADED, shops)
+        createAction(ShopsActionTypes.SHOPS_LOADED, shops),
+    setSelectedShop: (shop: ShopDto) =>
+        createAction(ShopsActionTypes.SET_SELECTED_SHOP, shop),
 };
 
 export function setShops(shops: Array<ShopDto>): any {
@@ -43,7 +45,9 @@ export function setCurrentPage(currentPage: number): any {
     }
 }
 
-export const loadShops = () => async (dispatch: ThunkDispatch<{}, {}, AnyAction>) => {
+export const loadShops = () => async (
+    dispatch: ThunkDispatch<{}, {}, AnyAction>
+) => {
     let shops: ShopDto[];
     try {
         await fetchConfigInfo();

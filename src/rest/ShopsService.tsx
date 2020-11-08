@@ -1,7 +1,7 @@
 import { auth, DB } from '../index';
 import { getLocalStorage, setLocalStorage } from '../helper/StorageHelper';
 import { FirebaseTable, StorageKey } from '../helper/Constants';
-import { roundCommission, } from '../helper/AppHelper';
+import { roundCommission } from '../helper/AppHelper';
 import { getPercentage } from './ConfigService';
 import { firestore } from 'firebase/app';
 
@@ -35,8 +35,8 @@ export interface ShopDto {
     uniqueCode: string;
     averagePaymentTime: number;
     sellingCountries: SellingCountriesDto[];
-    commissionMin: string,
-    commissionMax: string,
+    commissionMin: string;
+    commissionMax: string;
 
     //reviews
     totalReviews: number;
@@ -74,10 +74,8 @@ export async function fetchFavoriteShops(allShops: ShopDto[]) {
         (favoriteShopsDoc.data() as FavoriteShopsDto).programs
     );
 
-    let favShopsId = favoriteShops.map(value => value.id);
-    favoriteShops = allShops.filter(value =>
-        favShopsId.includes(value.id)
-    );
+    const favShopsId = favoriteShops.map((value) => value.id.toString());
+    favoriteShops = allShops.filter((value) => favShopsId.includes(value.id.toString()));
     setLocalStorage(StorageKey.FAVORITE_SHOPS, JSON.stringify(favoriteShops));
 
     return favoriteShops;
@@ -87,7 +85,7 @@ export function verifyInFavoriteShops(shopId: number) {
     const favoriteShops = getLocalStorage(StorageKey.FAVORITE_SHOPS);
     if (favoriteShops) {
         let favShops = JSON.parse(favoriteShops) as ShopDto[];
-        let shopFound = favShops.find(value => value.id === shopId);
+        let shopFound = favShops.find((value) => value.id === shopId);
         if (shopFound) {
             return true;
         }
@@ -117,17 +115,15 @@ export async function updateFavoriteShops(shop: ShopDto, remove: boolean) {
             return docRef.set({
                 userId: auth.currentUser.uid,
                 programs: {
-                    [`${shop.uniqueCode}`]: shop
-                }
+                    [`${shop.uniqueCode}`]: shop,
+                },
             });
         }
     }
 }
 
 export const fetchPrograms = async (): Promise<ShopDto[]> => {
-    const snap = await DB.collection(FirebaseTable.SHOPS)
-        .doc('all')
-        .get();
+    const snap = await DB.collection(FirebaseTable.SHOPS).doc('all').get();
 
     if (!snap.exists) {
         return [];
@@ -151,18 +147,23 @@ export const fetchPrograms = async (): Promise<ShopDto[]> => {
             } else if (p2.mainOrder) {
                 return p1.order - p2.mainOrder;
             } else {
-                return p1.order - p2.order
+                return p1.order - p2.order;
             }
         });
 };
 
-
-export function getProgramCommission(program: ShopDto, normalCommission: boolean) {
+export function getProgramCommission(
+    program: ShopDto,
+    normalCommission: boolean
+) {
     let commission = '';
     let percent = getPercentage();
-    if (program.defaultSaleCommissionRate && program.defaultSaleCommissionType) {
+    if (
+        program.defaultSaleCommissionRate &&
+        program.defaultSaleCommissionType
+    ) {
         switch (program.defaultSaleCommissionType) {
-            case "fixed" : {
+            case 'fixed': {
                 commission =
                     roundCommission(
                         parseFloat(program.defaultSaleCommissionRate) * percent
@@ -171,23 +172,32 @@ export function getProgramCommission(program: ShopDto, normalCommission: boolean
                     program.currency;
                 return commission;
             }
-            case "variable":
-                if (!normalCommission && program.commissionMin && program.commissionMax) {
-                    commission = roundCommission(
-                        parseFloat(program.commissionMin) * percent
-                    ) + ' - ' + roundCommission(
-                        parseFloat(program.commissionMax) * percent
-                    ) + ' %';
+            case 'variable':
+                if (
+                    !normalCommission &&
+                    program.commissionMin &&
+                    program.commissionMax
+                ) {
+                    commission =
+                        roundCommission(
+                            parseFloat(program.commissionMin) * percent
+                        ) +
+                        ' - ' +
+                        roundCommission(
+                            parseFloat(program.commissionMax) * percent
+                        ) +
+                        ' %';
                 } else {
                     commission =
                         (normalCommission ? '' : '~ ') +
                         roundCommission(
-                            parseFloat(program.defaultSaleCommissionRate) * percent
+                            parseFloat(program.defaultSaleCommissionRate) *
+                                percent
                         ) +
                         ' %';
                 }
                 return commission;
-            case "percent":
+            case 'percent':
                 commission =
                     roundCommission(
                         parseFloat(program.defaultSaleCommissionRate) * percent
@@ -197,29 +207,42 @@ export function getProgramCommission(program: ShopDto, normalCommission: boolean
         }
     }
 
-    if (program.defaultLeadCommissionAmount && program.defaultLeadCommissionType ) {
+    if (
+        program.defaultLeadCommissionAmount &&
+        program.defaultLeadCommissionType
+    ) {
         switch (program.defaultLeadCommissionType) {
-            case "variable":
-                if (!normalCommission && program.commissionMin && program.commissionMax) {
-                    commission = roundCommission(
-                        parseFloat(program.commissionMin) * percent
-                    ) + ' - ' + roundCommission(
-                        parseFloat(program.commissionMax) * percent
-                    ) + ' %';
+            case 'variable':
+                if (
+                    !normalCommission &&
+                    program.commissionMin &&
+                    program.commissionMax
+                ) {
+                    commission =
+                        roundCommission(
+                            parseFloat(program.commissionMin) * percent
+                        ) +
+                        ' - ' +
+                        roundCommission(
+                            parseFloat(program.commissionMax) * percent
+                        ) +
+                        ' %';
                 } else {
                     commission =
                         (normalCommission ? '' : '~ ') +
                         roundCommission(
                             parseFloat(program.defaultLeadCommissionAmount) *
-                            percent
-                        ) + ' ' + program.currency;
+                                percent
+                        ) +
+                        ' ' +
+                        program.currency;
                 }
                 break;
-            case "fixed":
+            case 'fixed':
                 commission =
                     roundCommission(
                         parseFloat(program.defaultLeadCommissionAmount) *
-                        percent
+                            percent
                     ) +
                     ' ' +
                     program.currency;

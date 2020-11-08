@@ -20,7 +20,7 @@ export interface ProductTotal {
 export interface ProductResponse {
     aff_code: string;
     brand: string;
-    campaign_id: number;
+    campaign_id: string;
     campaign_name: string;
     category: string;
     image_urls: any;
@@ -30,6 +30,7 @@ export interface ProductResponse {
     product_id: string;
     title: string;
     url: string;
+    affiliate_url: string;
 }
 
 export interface ProductDTO {
@@ -40,7 +41,7 @@ export interface ProductDTO {
     category: string;
     url: string;
     shopName: string;
-    shopId: number;
+    shopId: string;
     commission?: string;
 }
 
@@ -69,7 +70,7 @@ export async function getFeaturedProducts(): Promise<ProductDTO[]> {
         return [];
     }
 
-    return responseData.hits.map(hit => toProductDTO(hit));
+    return responseData.hits.map((hit) => toProductDTO(hit));
 }
 
 export async function searchProduct(
@@ -100,7 +101,7 @@ export async function searchProduct(
     }
 
     return {
-        products: responseData.hits.map(hit => toProductDTO(hit)),
+        products: responseData.hits.map((hit) => toProductDTO(hit)),
         total: responseData.total.value,
     };
 }
@@ -151,7 +152,7 @@ function toProductDTO(productResponse: ProductWrapper): ProductDTO {
             : productResponse._source.image_urls
         ).replace(/^http:/, 'https:'),
         category: productResponse._source.category,
-        url: computeProductUrl(productResponse._source.aff_code),
+        url: computeProductUrl(productResponse._source.affiliate_url),
         shopName: productResponse._source.campaign_name,
         shopId: productResponse._source.campaign_id,
     };

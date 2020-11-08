@@ -8,12 +8,12 @@ import { AppState } from '../../redux/reducer/RootReducer';
 import { connect } from 'react-redux';
 import { getLocalStorage } from '../../helper/StorageHelper';
 import { computeUrl } from '../../helper/AppHelper';
-import { clickSaveAndRedirect } from "../../rest/ClickService";
-import RedirectModal from "../shops/RedirectModal";
+import { clickSaveAndRedirect } from '../../rest/ClickService';
+import RedirectModal from '../shops/RedirectModal';
 
 interface PromotionElementProps {
-    promotion: PromotionDto,
-    allShops: ShopDto[],
+    promotion: PromotionDto;
+    shop: ShopDto;
     onCloseModal?: () => void;
     intl: IntlShape;
 }
@@ -22,42 +22,39 @@ interface PromotionElementState {
     redirectModalVisible: boolean;
 }
 
-class PromotionElement extends React.Component<PromotionElementProps, PromotionElementState> {
-
+class PromotionElement extends React.Component<
+    PromotionElementProps,
+    PromotionElementState
+> {
     constructor(props: PromotionElementProps) {
         super(props);
         this.state = {
-            redirectModalVisible: false
+            redirectModalVisible: false,
         };
     }
 
     openRedirectModal = () => {
         this.setState({
-            redirectModalVisible: true
+            redirectModalVisible: true,
         });
     };
 
     closeRedirectModal = () => {
         this.setState({
-            redirectModalVisible: false
+            redirectModalVisible: false,
         });
     };
 
     public render() {
-        let accessButton;
-        let shop = this.props.allShops.find(
-            shop => shop.id === this.props.promotion.program.id
+        const cashbackUrl = computeUrl(
+            this.props.promotion.affiliateUrl,
+            this.props.shop.uniqueCode,
+            this.props.promotion.landingPageLink
         );
-        let cashbackUrl;
-        if (shop) {
-            cashbackUrl = computeUrl(
-                this.props.promotion.affiliateUrl,
-                shop.uniqueCode,
-                this.props.promotion.landingPageLink
-            );
-        }
 
-        let redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
+        const redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
+
+        let accessButton;
         if (redirectStorageKey && redirectStorageKey === 'true') {
             accessButton = (
                 <a
@@ -66,7 +63,11 @@ class PromotionElement extends React.Component<PromotionElementProps, PromotionE
                     rel="noopener noreferrer"
                     className="main_btn"
                     onClick={(event) => {
-                        clickSaveAndRedirect(event, this.props.promotion.program.id, cashbackUrl)
+                        clickSaveAndRedirect(
+                            event,
+                            this.props.promotion.program.id,
+                            cashbackUrl
+                        );
                     }}
                 >
                     <FormattedMessage
@@ -92,25 +93,27 @@ class PromotionElement extends React.Component<PromotionElementProps, PromotionE
         }
 
         let promotionEnd = new Date(this.props.promotion.promotionEnd);
-        let Difference_In_Days = Math.ceil((promotionEnd.getTime() - Date.now()) / (1000 * 3600 * 24));
+        let Difference_In_Days = Math.ceil(
+            (promotionEnd.getTime() - Date.now()) / (1000 * 3600 * 24)
+        );
 
         return (
             <React.Fragment>
                 <RedirectModal
                     visible={this.state.redirectModalVisible}
-                    programId={this.props.promotion.program.id}
+                    programId={this.props.promotion.program.id.toString()}
                     onCloseModal={this.closeRedirectModal}
                     cashbackUrl={cashbackUrl}
                 />
                 <div className="text-center p-4">
-                    <div style={{textAlign: 'right'}}>
+                    <div style={{ textAlign: 'right' }}>
                         <i
                             onClick={this.props.onCloseModal}
                             className="fa fa-times"
                         />
                     </div>
 
-                    <h4 className="cashback-text" style={{marginBottom: 15}}>
+                    <h4 className="cashback-text" style={{ marginBottom: 15 }}>
                         <FormattedMessage
                             id={'promotions.expires.in'}
                             defaultMessage="Expira in"
@@ -120,7 +123,7 @@ class PromotionElement extends React.Component<PromotionElementProps, PromotionE
                             id={'promotions.expires.in.days'}
                             defaultMessage=" zile"
                         />
-                        <br/>
+                        <br />
                     </h4>
                     <img
                         src={this.props.promotion.campaignLogo}
@@ -131,18 +134,28 @@ class PromotionElement extends React.Component<PromotionElementProps, PromotionE
                         }}
                     />
                     <div className="blog_details">
-                        <h4 style={{maxWidth: 300, maxHeight: 150}}>{this.props.promotion.name}</h4>
-                        <h6 style={{maxWidth: 300, maxHeight: 250, overflow: 'auto'}}>
+                        <h4 style={{ maxWidth: 300, maxHeight: 150 }}>
+                            {this.props.promotion.name}
+                        </h4>
+                        <h6
+                            style={{
+                                maxWidth: 300,
+                                maxHeight: 250,
+                                overflow: 'auto',
+                            }}
+                        >
                             {this.props.promotion.description}
                         </h6>
                         <div
                             className="s_product_text"
-                            style={{marginTop: 20, marginBottom: 20}}
+                            style={{ marginTop: 20, marginBottom: 20 }}
                         >
-                            <div className="card_area p_20"
-                                 style={{
-                                     marginLeft: 15
-                                 }}>
+                            <div
+                                className="card_area p_20"
+                                style={{
+                                    marginLeft: 15,
+                                }}
+                            >
                                 {accessButton}
                             </div>
                         </div>
@@ -153,10 +166,8 @@ class PromotionElement extends React.Component<PromotionElementProps, PromotionE
     }
 }
 
-const mapStateToProps = (state: AppState) => {
-    return {
-        allShops: state.shops.allShops
-    };
-};
+const mapStateToProps = (state: AppState) => ({
+    shop: state.shops.selectedShop as ShopDto,
+});
 
 export default connect(mapStateToProps)(injectIntl(PromotionElement));
