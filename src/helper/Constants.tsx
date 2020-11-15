@@ -21,6 +21,7 @@ export enum FirebaseTable {
     OTP_REQUESTS = 'otp-requests',
     OTPS = 'otps',
     PROMOTIONS = 'promotions',
+    ACHIEVEMENTS = 'achievements',
     ACCOUNTS = 'accounts',
 }
 
@@ -33,7 +34,8 @@ export enum TableDocument {
 
 export enum StorageRef {
     PROFILE_PHOTOS = 'profilePhotos/',
-    ICONS = 'icons/'
+    ICONS = 'icons/',
+    BADGES = 'badges/'
 }
 
 export enum TxType {

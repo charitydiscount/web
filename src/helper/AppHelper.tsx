@@ -58,6 +58,11 @@ export const emptyBackgroundCss = css`
     height: 0px !important;
 `;
 
+export const tableRowSpinnerCss = css`
+    display: block;
+    margin: auto;
+`;
+
 export function isEmptyString(field) {
     return !!field && field.trim().length;
 }

@@ -24,6 +24,7 @@ import { FadeLoader } from "react-spinners";
 import { spinnerCss } from "../../helper/AppHelper";
 import Promotions from "../promotions/Promotions";
 import { clearStorage } from "../../helper/StorageHelper";
+import Achievements from "../achievements/Achievements";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -134,6 +135,11 @@ const PageLayout = (props: PageLayoutProps) => {
                             exact={true}
                             path={Routes.AUTH}
                             component={ExternalAccess}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.ACHIEVEMENTS}
+                            component={Achievements}
                         />
                         <Route render={() => <Redirect to={Routes.SHOPS}/>}/>
                     </Switch>
