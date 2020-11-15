@@ -13,19 +13,19 @@ import RedirectModal from '../shops/RedirectModal';
 
 interface PromotionElementProps {
     promotion: PromotionDto;
-    shop: ShopDto;
     onCloseModal?: () => void;
     intl: IntlShape;
+
+    //global state
+    shops: ShopDto[];
 }
 
 interface PromotionElementState {
     redirectModalVisible: boolean;
 }
 
-class PromotionElement extends React.Component<
-    PromotionElementProps,
-    PromotionElementState
-> {
+class PromotionElement extends React.Component<PromotionElementProps,
+    PromotionElementState> {
     constructor(props: PromotionElementProps) {
         super(props);
         this.state = {
@@ -46,9 +46,12 @@ class PromotionElement extends React.Component<
     };
 
     public render() {
+        let shop = this.props.shops.find(
+            shop => shop.id === this.props.promotion.program.id
+        ) as ShopDto;
         const cashbackUrl = computeUrl(
             this.props.promotion.affiliateUrl,
-            this.props.shop.uniqueCode,
+            shop.uniqueCode,
             this.props.promotion.landingPageLink
         );
 
@@ -106,14 +109,14 @@ class PromotionElement extends React.Component<
                     cashbackUrl={cashbackUrl}
                 />
                 <div className="text-center p-4">
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{textAlign: 'right'}}>
                         <i
                             onClick={this.props.onCloseModal}
                             className="fa fa-times"
                         />
                     </div>
 
-                    <h4 className="cashback-text" style={{ marginBottom: 15 }}>
+                    <h4 className="cashback-text" style={{marginBottom: 15}}>
                         <FormattedMessage
                             id={'promotions.expires.in'}
                             defaultMessage="Expira in"
@@ -123,7 +126,7 @@ class PromotionElement extends React.Component<
                             id={'promotions.expires.in.days'}
                             defaultMessage=" zile"
                         />
-                        <br />
+                        <br/>
                     </h4>
                     <img
                         src={this.props.promotion.campaignLogo}
@@ -134,7 +137,7 @@ class PromotionElement extends React.Component<
                         }}
                     />
                     <div className="blog_details">
-                        <h4 style={{ maxWidth: 300, maxHeight: 150 }}>
+                        <h4 style={{maxWidth: 300, maxHeight: 150}}>
                             {this.props.promotion.name}
                         </h4>
                         <h6
@@ -148,7 +151,7 @@ class PromotionElement extends React.Component<
                         </h6>
                         <div
                             className="s_product_text"
-                            style={{ marginTop: 20, marginBottom: 20 }}
+                            style={{marginTop: 20, marginBottom: 20}}
                         >
                             <div
                                 className="card_area p_20"
@@ -167,7 +170,7 @@ class PromotionElement extends React.Component<
 }
 
 const mapStateToProps = (state: AppState) => ({
-    shop: state.shops.selectedShop as ShopDto,
+    shops: state.shops.allShops
 });
 
 export default connect(mapStateToProps)(injectIntl(PromotionElement));
