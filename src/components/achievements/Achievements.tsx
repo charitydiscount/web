@@ -1,15 +1,18 @@
 import React from "react";
 import { spinnerCss } from "../../helper/AppHelper";
 import { FadeLoader } from "react-spinners";
-import { AchievementDto, getAchievements } from "../../rest/AchievementsService";
+import { getAchievements, UserAchievementDto } from "../../rest/AchievementsService";
 import AchievementElement from "./AchievementElement";
+import { store } from "../../index";
+import { NavigationsAction } from "../../redux/actions/NavigationsAction";
+import { Stages } from "../helper/Stages";
 
 interface AchievementsProps {
 
 }
 
 interface AchievementsState {
-    achievements: AchievementDto[],
+    achievements: UserAchievementDto[],
     isLoading: boolean
 }
 
@@ -24,11 +27,12 @@ class Achievements extends React.Component<AchievementsProps, AchievementsState>
     }
 
     async componentDidMount() {
+        store.dispatch(NavigationsAction.setStageAction(Stages.ACHIEVEMENTS));
         try {
             let response = await getAchievements();
             if (response) {
                 this.setState({
-                    achievements: response as AchievementDto[],
+                    achievements: response as UserAchievementDto[],
                     isLoading: false
                 });
             }
@@ -39,11 +43,11 @@ class Achievements extends React.Component<AchievementsProps, AchievementsState>
 
     public render() {
         let achievementList = this.state.achievements && this.state.achievements.length > 0 ?
-            this.state.achievements.map((achievement) => {
+            this.state.achievements.map((userAchievement) => {
                 return (
                     <AchievementElement
-                        key={'list' + achievement.id}
-                        achievement={achievement}
+                        key={'list' + userAchievement.achievement.id}
+                        userAchievement={userAchievement}
                     />
                 );
             }) : [];
@@ -57,8 +61,7 @@ class Achievements extends React.Component<AchievementsProps, AchievementsState>
                             color={'#e31f29'}
                             css={spinnerCss}
                         />
-                        <div
-                            className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
+                        <div className="row">
                             {!this.state.isLoading && (
                                 <React.Fragment>
                                     {achievementList}

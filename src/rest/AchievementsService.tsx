@@ -1,9 +1,20 @@
-import { DB } from "../index";
+import { auth, DB } from "../index";
 import { FirebaseTable } from "../helper/Constants";
 
 export interface Languages {
     en: string,
     ro: string
+}
+
+export interface UserAchievementWrapper {
+    [id: string]: UserAchievementDto
+}
+
+export interface UserAchievementDto {
+    achieved: boolean,
+    userId: string,
+    achievement: AchievementDto,
+    currentCount: number
 }
 
 export interface AchievementDto {
@@ -14,30 +25,54 @@ export interface AchievementDto {
 }
 
 export const getAchievements = async () => {
-    let achievements;
-    achievements = await DB.collection(FirebaseTable.ACHIEVEMENTS)
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
+    }
+
+    const userId = auth.currentUser.uid;
+    let userAchievements = [] as UserAchievementDto[];
+    userAchievements = await DB.collection(FirebaseTable.USER_ACHIEVEMENTS)
+        .doc(userId)
         .get()
-        .then(querySnapshot => {
-                if (querySnapshot.docs.length > 0) {
-                    let result = [] as AchievementDto[];
-                    querySnapshot.docs.forEach(doc => {
-                        result.push({
-                            ...doc.data() as AchievementDto,
-                            id: doc.id,
-                        });
-                    });
-                    return result;
+        .then(doc => {
+                if (doc.exists) {
+                    return (Object.entries(doc.data() as UserAchievementWrapper)
+                            .filter(([key, achievemnt]) => key !== 'userId')
+                            .map(([key, achievemnt]) => achievemnt)
+                    ) as UserAchievementDto[];
                 } else {
                     return [];
                 }
             }
         );
 
-    //concat user -achivements
+    if (userAchievements.length > 0) {
+        userAchievements = userAchievements.sort(function (x, y) {
+            // true values first
+            return (x.achieved === y.achieved) ? 0 : x.achieved ? -1 : 1;
+        });
+    }
+    await DB.collection(FirebaseTable.ACHIEVEMENTS)
+        .get()
+        .then(querySnapshot => {
+                if (querySnapshot.docs.length > 0) {
+                    querySnapshot.docs.forEach(doc => {
+                        let alreadyExist = userAchievements.find((value) => value.achievement.id === doc.id);
+                        if (!alreadyExist) {
+                            userAchievements.push({
+                                achieved: false,
+                                userId: "",
+                                achievement: {
+                                    ...doc.data() as AchievementDto,
+                                    id: doc.id
+                                },
+                                currentCount: 0,
+                            });
+                        }
+                    });
+                }
+            }
+        );
 
-    return achievements;
-};
-
-const snapToList = (snap: { [achievementId: number]: AchievementDto }) => {
-    return Object.values(snap);
+    return userAchievements;
 };

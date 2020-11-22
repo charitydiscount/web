@@ -357,7 +357,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                             to={Routes.ACHIEVEMENTS}
                                                             className="icons"
                                                         >
-                                                            <i className="fa fa-table"/>
+                                                            <i className="fa fa-trophy"/>
                                                         </Link>
                                                     </li>
                                                     <li className="nav-item">

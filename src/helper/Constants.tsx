@@ -22,6 +22,7 @@ export enum FirebaseTable {
     OTPS = 'otps',
     PROMOTIONS = 'promotions',
     ACHIEVEMENTS = 'achievements',
+    USER_ACHIEVEMENTS = 'user-achievements',
     ACCOUNTS = 'accounts',
 }
 
