@@ -5,6 +5,7 @@ import { AppState } from "../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import { setAchievementModalVisible } from "../../redux/actions/AchivementsAction";
 import { Slider } from "@material-ui/core";
+import { dateOptions } from "../../helper/AppHelper";
 
 export interface AchievementModalProps {
 
@@ -44,6 +45,8 @@ class AchievementModal extends React.Component<AchievementModalProps, Achievemen
         let achievementDescription;
         let sliderTarget;
         let marks;
+        let imageCssClass;
+        let bottomPart;
         if (this.props.achievementModalVisible) {
             if (this.props.currentLocale === "ro") {
                 achievementName = this.props.achievementModal.achievement.name.ro;
@@ -66,8 +69,34 @@ class AchievementModal extends React.Component<AchievementModalProps, Achievemen
                     },
                 ];
             }
-        }
 
+            if (!this.props.achievementModal.achieved) {
+                imageCssClass = "grayscale_img";
+            }
+
+            if (this.props.achievementModal.achieved) {
+                bottomPart =
+                    <React.Fragment>
+                        {this.props.achievementModal.achievedAt
+                            .toDate()
+                            .toLocaleDateString('ro-RO', dateOptions) + " "}
+                        <i className="fa fa-check"/>
+                    </React.Fragment>
+            } else {
+                if (sliderTarget > 1) {
+                    bottomPart = <Slider
+                        defaultValue={this.props.achievementModal.currentCount}
+                        getAriaValueText={this.valueText}
+                        aria-labelledby="discrete-slider-custom"
+                        valueLabelDisplay="auto"
+                        marks={marks}
+                        min={0}
+                        max={sliderTarget}
+                        disabled
+                    />
+                }
+            }
+        }
 
         return (
             <Modal
@@ -93,6 +122,7 @@ class AchievementModal extends React.Component<AchievementModalProps, Achievemen
                         <img
                             src={this.props.achievementModal.achievement.badgeUrl}
                             alt=""
+                            className={imageCssClass}
                             style={{
                                 maxWidth: 200,
                                 maxHeight: 200,
@@ -111,18 +141,7 @@ class AchievementModal extends React.Component<AchievementModalProps, Achievemen
                             >
                                 {achievementDescription}
                             </h6>
-                            {sliderTarget > 1 &&
-                            <Slider
-                                defaultValue={this.props.achievementModal.currentCount}
-                                getAriaValueText={this.valueText}
-                                aria-labelledby="discrete-slider-custom"
-                                valueLabelDisplay="auto"
-                                marks={marks}
-                                min={0}
-                                max={sliderTarget}
-                                disabled
-                            />
-                            }
+                            {bottomPart}
                         </div>
                     </div>
                 </React.Fragment>

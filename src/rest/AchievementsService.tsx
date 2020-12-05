@@ -1,5 +1,6 @@
 import { auth, DB } from "../index";
 import { FirebaseTable } from "../helper/Constants";
+import { firestore } from "firebase";
 
 export interface Languages {
     en: string,
@@ -13,6 +14,7 @@ export interface UserAchievementWrapper {
 export interface UserAchievementDto {
     achieved: boolean,
     userId: string,
+    achievedAt: firestore.Timestamp,
     achievement: AchievementDto,
     currentCount: number
 }
@@ -75,6 +77,7 @@ export const getAchievements = async () => {
                             userAchievements.push({
                                 achieved: false,
                                 userId: "",
+                                achievedAt: null,
                                 achievement: {
                                     ...doc.data() as AchievementDto,
                                     id: doc.id
