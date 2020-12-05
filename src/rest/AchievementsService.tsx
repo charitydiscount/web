@@ -21,7 +21,7 @@ export interface AchievementDto {
     id: string,
     name: Languages,
     description: Languages,
-    badge: string,
+    badgeUrl: string,
 }
 
 export const getAchievements = async () => {

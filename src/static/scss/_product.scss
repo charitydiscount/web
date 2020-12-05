@@ -232,6 +232,44 @@ Generics */
     }
 }
 
+.achievements {
+    display: flex;
+    flex-flow: row wrap;
+    .achievement-container {
+        padding: 0 5px;
+        .achievement_no_image {
+            margin: 20px 0 !important;
+            border-radius: 5px;
+            box-shadow: 0px 0px 3px 2px rgba(153, 153, 153, 0.1);
+            height: 160px;
+            &:hover {
+                box-shadow: 0px 0px 8px 3px rgba(0, 0, 0, 0.1);
+            }
+            width: 100%;
+            .achievement-image-container {
+                display: inline-block;
+                height: 64px;
+                margin-top: 10px;
+                .achievement-image {
+                    display: inline-block;
+                    height: 64px;
+                    width: 64px;
+                    background: transparent no-repeat center;
+                    background-size: contain;
+                }
+            }
+            .achievement-description-container {
+                padding: 5px;
+                .description {
+                    font-size: 1.2rem;
+                    font-family: Arial, Helvetica, sans-serif;
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}
+
 /* End Feature Product Area css
 ============================================================================================ */
 

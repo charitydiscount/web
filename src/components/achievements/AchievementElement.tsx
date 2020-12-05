@@ -1,50 +1,25 @@
 import React from "react";
 import { UserAchievementDto } from "../../rest/AchievementsService";
-import { StorageRef } from "../../helper/Constants";
-import { storage } from "../../index";
-import {
-    achievementPhotoLoading,
-} from "../../helper/AppHelper";
-import { FadeLoader } from "react-spinners";
 import { connect } from "react-redux";
+import { setAchievementModal } from "../../redux/actions/AchivementsAction";
+import AchievementModal from "./AchivementModal";
 
 interface AchievementElementProps {
     userAchievement: UserAchievementDto;
 
     //global state
-    currentLocale: string
+    currentLocale: string,
+    setAchievementModal: (achievement) => void
 }
 
 interface AchievementElementState {
-    achievementUrl: string,
-    isLoadingPhoto: boolean
 }
 
 class AchievementElement extends React.Component<AchievementElementProps, AchievementElementState> {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            achievementUrl: '',
-            isLoadingPhoto: false
-        }
-    }
-
-    async componentDidMount() {
-        try {
-            const response = await storage
-                .ref(StorageRef.BADGES + this.props.userAchievement.achievement.badge)
-                .getDownloadURL();
-            this.setState({
-                achievementUrl: response as string,
-                isLoadingPhoto: false
-            });
-        } catch (error) {
-            this.setState({
-                isLoadingPhoto: false
-            });
-        }
-    }
+    openModal = () => {
+        this.props.setAchievementModal(this.props.userAchievement);
+    };
 
     public render() {
         let imageCssClass = "";
@@ -60,32 +35,23 @@ class AchievementElement extends React.Component<AchievementElementProps, Achiev
 
         return (
             <React.Fragment>
+                <AchievementModal/>
                 <div
-                    className="col-md-2"
-                    onClick={() => {
-                    }}
+                    className="col-md-2 col-xl-2 achievement-container"
+                    onClick={this.openModal}
                     style={{cursor: 'pointer'}}
                 >
-                    <div className="f_p_item">
-                        <FadeLoader
-                            loading={this.state.isLoadingPhoto}
-                            color={'#e31f29'}
-                            css={achievementPhotoLoading}
-                        />
-                        {!this.state.isLoadingPhoto &&
-                        <img
-                            className={imageCssClass}
-                            style={{
-                                width: 64,
-                                height: 64
-                            }}
-                            src={this.state.achievementUrl} alt=""
-                        />
-                        }
-                        <div style={{marginTop: 5}}>
-                            <h6>
+                    <div className="f_p_item achievement_no_image">
+                        <div className="achievement-image-container">
+                            <img
+                                className={"achievement-image " + imageCssClass}
+                                src={this.props.userAchievement.achievement.badgeUrl} alt=""
+                            />
+                        </div>
+                        <div className="achievement-description-container">
+                            <div className="description">
                                 {achievementName}
-                            </h6>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -100,4 +66,12 @@ const mapStateToProps = (state: any) => {
     }
 };
 
-export default connect(mapStateToProps)(AchievementElement);
+const
+    mapDispatchToProps = (dispatch: any) => {
+        return {
+            setAchievementModal: (achievement: UserAchievementDto) =>
+                dispatch(setAchievementModal(achievement))
+        };
+    };
+
+export default connect(mapStateToProps, mapDispatchToProps)(AchievementElement);

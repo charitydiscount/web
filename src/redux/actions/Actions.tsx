@@ -33,3 +33,8 @@ export enum AdBlockActionTypes {
 export enum UserActionTypes {
     SET_USER = 'SET_USER',
 }
+
+export enum AchievementActionTypes {
+    SET_ACHIEVEMENT_MODAL_VISIBLE_ACTION = 'SET_ACHIEVEMENT_MODAL_VISIBLE_ACTION',
+    SET_ACHIEVEMENT_MODAL_ACTION = 'SET_ACHIEVEMENT_MODAL_ACTION'
+}

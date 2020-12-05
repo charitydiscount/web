@@ -61,7 +61,7 @@ class Achievements extends React.Component<AchievementsProps, AchievementsState>
                             color={'#e31f29'}
                             css={spinnerCss}
                         />
-                        <div className="row">
+                        <div className="row achievements">
                             {!this.state.isLoading && (
                                 <React.Fragment>
                                     {achievementList}
