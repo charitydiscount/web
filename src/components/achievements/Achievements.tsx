@@ -6,6 +6,7 @@ import AchievementElement from "./AchievementElement";
 import { store } from "../../index";
 import { NavigationsAction } from "../../redux/actions/NavigationsAction";
 import { Stages } from "../helper/Stages";
+import AchievementModal from "./AchivementModal";
 
 interface AchievementsProps {
 
@@ -54,6 +55,7 @@ class Achievements extends React.Component<AchievementsProps, AchievementsState>
 
         return (
             <React.Fragment>
+                <AchievementModal/>
                 <section className="product_description_area section_gap">
                     <div className="container">
                         <FadeLoader

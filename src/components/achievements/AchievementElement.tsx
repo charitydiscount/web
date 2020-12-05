@@ -2,7 +2,6 @@ import React from "react";
 import { UserAchievementDto } from "../../rest/AchievementsService";
 import { connect } from "react-redux";
 import { setAchievementModal } from "../../redux/actions/AchivementsAction";
-import AchievementModal from "./AchivementModal";
 
 interface AchievementElementProps {
     userAchievement: UserAchievementDto;
@@ -35,7 +34,6 @@ class AchievementElement extends React.Component<AchievementElementProps, Achiev
 
         return (
             <React.Fragment>
-                <AchievementModal/>
                 <div
                     className="col-md-2 col-xl-2 achievement-container"
                     onClick={this.openModal}
