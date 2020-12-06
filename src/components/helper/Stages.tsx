@@ -8,6 +8,7 @@ export enum Stages {
     PROMOTIONS = "stage-promotions",
     PRODUCTS = "stage-products",
     ACHIEVEMENTS = "stage-achievements",
+    LEADERBOARD = "stage-leaderboard",
     TOS = "stage-tos",
     REVIEW = "stage-review",
     PRIVACY = "stage-privacy",

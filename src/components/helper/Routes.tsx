@@ -4,6 +4,7 @@ export enum Routes {
     CONTACT = "/contact",
     USER = "/user",
     ACHIEVEMENTS = "/achievements",
+    LEADERBOARD = "/leaderboard",
     UNSUBSCRIBE_MAIL_NEWSLETTER = "/unsubscribe",
     SHOPS = "/shops",
     SHOP = "/shop",

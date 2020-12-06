@@ -354,6 +354,14 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                 <React.Fragment>
                                                     <li className="nav-item">
                                                         <Link
+                                                            to={Routes.LEADERBOARD}
+                                                            className="icons"
+                                                        >
+                                                            <i className="fa fa-table"/>
+                                                        </Link>
+                                                    </li>
+                                                    <li className="nav-item">
+                                                        <Link
                                                             to={Routes.ACHIEVEMENTS}
                                                             className="icons"
                                                         >
