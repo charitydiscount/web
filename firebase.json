@@ -24,7 +24,7 @@
       "redirects": [
         {
           "source": "/",
-          "destination": "/landing-ro.html",
+          "destination": "/shops",
           "type": 301
         }
       ],
@@ -47,7 +47,7 @@
         },
         {
           "source": "/",
-          "destination": "/landing-ro.html"
+          "destination": "/shops"
         },
         {
           "source": "/link/**",
