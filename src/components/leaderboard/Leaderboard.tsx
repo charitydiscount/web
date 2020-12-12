@@ -64,12 +64,6 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
                                         {tableRow}
                                         {tableRow}
                                         {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
                                     </div>
                                 </div>
                             </div>

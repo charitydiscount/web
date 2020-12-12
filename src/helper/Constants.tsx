@@ -15,6 +15,7 @@ export enum FirebaseTable {
     SHOPS = 'programs',
     CASES = 'cases',
     USERS = 'users',
+    LEADERBOARD = 'leaderboard',
     POINTS = 'points',
     COMMISSIONS = 'commissions',
     REQUESTS = 'requests',
