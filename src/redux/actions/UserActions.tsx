@@ -5,7 +5,7 @@ import { auth } from '../..';
 import { getUserInfo, UserInfoDto } from "../../components/login/AuthHelper";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
-import { facebookPictureKey, noImagePath, profilePictureSuffix, StorageKey } from "../../helper/Constants";
+import { noImagePath, StorageKey } from "../../helper/Constants";
 import { fetchProfilePhoto } from "../../rest/StorageService";
 import { setLocalStorage } from "../../helper/StorageHelper";
 import { CategoriesAction } from "./CategoriesAction";
@@ -57,11 +57,6 @@ export const loadUserData = () => async (
                 currentUser.photoURL = response as string;
             } catch (error) {
                 currentUser.photoURL = noImagePath;
-            }
-        } else {
-            if (currentUser.photoURL && currentUser.photoURL.includes(facebookPictureKey)
-                && !currentUser.photoURL.includes(profilePictureSuffix)) {
-                currentUser.photoURL = currentUser.photoURL + profilePictureSuffix;
             }
         }
     }

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { doLogoutAction } from '../../redux/actions/UserActions';
 import { setShops } from '../../redux/actions/ShopsAction';
 import { getLocalStorage } from '../../helper/StorageHelper';
-import { emptyHrefLink, StorageKey } from '../../helper/Constants';
+import { emptyHrefLink, facebookPictureKey, profilePictureSuffix, StorageKey } from '../../helper/Constants';
 import { ShopDto } from '../../rest/ShopsService';
 import {
     setCurrentCategory,
@@ -415,7 +415,9 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                             {this.props.userInfo && this.props.userInfo.photoURL &&
                                             <img className="photo"
                                                  alt="Missing"
-                                                 src={this.props.userInfo.photoURL}
+                                                 src={ this.props.userInfo.photoURL.includes(facebookPictureKey) ?
+                                                     this.props.userInfo.photoURL + profilePictureSuffix :
+                                                     this.props.userInfo.photoURL}
                                                  onError={addDefaultImgSrc}/>
                                             }
                                         </ul>

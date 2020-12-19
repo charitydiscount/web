@@ -3,8 +3,8 @@ import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import * as React from 'react';
 import {
-    emptyHrefLink,
-    profilePictureDefaultName,
+    emptyHrefLink, facebookPictureKey,
+    profilePictureDefaultName, profilePictureSuffix,
     StorageRef,
 } from '../../helper/Constants';
 import { doLogoutAction, updateUserPhoto } from '../../redux/actions/UserActions';
@@ -275,7 +275,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                 <img
                                                     className="author_img rounded-circle"
                                                     src={
-                                                        this.props.userInfo.photoURL
+                                                        this.props.userInfo.photoURL.includes(facebookPictureKey) ?
+                                                            this.props.userInfo.photoURL + profilePictureSuffix :
+                                                            this.props.userInfo.photoURL
                                                     }
                                                     alt="Missing"
                                                     width={200}

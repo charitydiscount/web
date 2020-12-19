@@ -13,6 +13,7 @@ import {
 } from '../../rest/ReferralService';
 import { UserInfoDto } from "../login/AuthHelper";
 import { connect } from "react-redux";
+import { facebookPictureKey, profilePictureSuffix } from "../../helper/Constants";
 
 interface ReferralsState {
     referrals: ReferralDto[];
@@ -91,7 +92,9 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                                 <div className="col-md-3 d-flex">
                                     <img
                                         className="author_img rounded-circle m-auto"
-                                        src={this.props.userInfo.photoURL}
+                                        src={ this.props.userInfo.photoURL.includes(facebookPictureKey) ?
+                                            this.props.userInfo.photoURL + profilePictureSuffix :
+                                            this.props.userInfo.photoURL}
                                         alt="Missing"
                                         width={150}
                                         height={150}
