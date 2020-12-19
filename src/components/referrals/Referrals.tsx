@@ -2,9 +2,8 @@ import React from 'react';
 import { store } from '../../index';
 import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
-import { loadCurrentUserPhoto, UserPhotoState } from '../login/UserPhotoHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
-import { smallerSpinnerCss } from '../../helper/AppHelper';
+import { addDefaultImgSrc, smallerSpinnerCss } from '../../helper/AppHelper';
 import { FormattedMessage, IntlShape, injectIntl } from 'react-intl';
 import ReferralRow from './ReferralRow';
 import {
@@ -12,9 +11,10 @@ import {
     ReferralDto,
     buildDynamicLink,
 } from '../../rest/ReferralService';
-import { noImagePath } from '../../helper/Constants';
+import { UserInfoDto } from "../login/AuthHelper";
+import { connect } from "react-redux";
 
-interface ReferralsState extends UserPhotoState {
+interface ReferralsState {
     referrals: ReferralDto[];
     isLoadingReferrals: boolean;
     referralLink: string;
@@ -22,14 +22,13 @@ interface ReferralsState extends UserPhotoState {
 
 interface ReferralsProps {
     intl: IntlShape;
+    userInfo: UserInfoDto
 }
 
 class Referrals extends React.Component<ReferralsProps, ReferralsState> {
     constructor(props: ReferralsProps) {
         super(props);
         this.state = {
-            photoURL: '',
-            isLoadingPhoto: false,
             isLoadingReferrals: true,
             referrals: [],
             referralLink: '',
@@ -40,7 +39,7 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
         store.dispatch(NavigationsAction.setStageAction(Stages.FRIENDS));
         try {
             const referralLink = await buildDynamicLink(
-                this.props.intl.formatMessage({ id: 'referral.meta.title' }),
+                this.props.intl.formatMessage({id: 'referral.meta.title'}),
                 this.props.intl.formatMessage({
                     id: 'referral.meta.description',
                 })
@@ -51,7 +50,6 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
         } catch (error) {
             console.log(error);
         }
-        await loadCurrentUserPhoto(this);
         try {
             let response = await fetchReferrals();
             if (response) {
@@ -80,8 +78,8 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
         const referralList =
             this.state.referrals && this.state.referrals.length > 0
                 ? this.state.referrals.map((referral, index) => {
-                      return <ReferralRow key={index} referral={referral} />;
-                  })
+                    return <ReferralRow key={index} referral={referral}/>;
+                })
                 : null;
 
         return (
@@ -91,29 +89,18 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                         <div className={'tab-content'}>
                             <div className="row">
                                 <div className="col-md-3 d-flex">
-                                    <FadeLoader
-                                        loading={this.state.isLoadingPhoto}
-                                        color={'#e31f29'}
-                                        css={smallerSpinnerCss}
+                                    <img
+                                        className="author_img rounded-circle m-auto"
+                                        src={this.props.userInfo.photoURL}
+                                        alt="Missing"
+                                        width={150}
+                                        height={150}
+                                        onError={addDefaultImgSrc}
                                     />
-                                    {!this.state.isLoadingPhoto && (
-                                        <img
-                                            className="author_img rounded-circle m-auto"
-                                            src={this.state.photoURL}
-                                            alt="Missing"
-                                            width={150}
-                                            height={150}
-                                            onError={() =>
-                                                this.setState({
-                                                    photoURL: noImagePath,
-                                                })
-                                            }
-                                        />
-                                    )}
                                 </div>
                                 <div className="col-md-9 mt-sm-20 left-align-p">
-                                    <br />
-                                    <br />
+                                    <br/>
+                                    <br/>
                                     <h5>
                                         <FormattedMessage
                                             id="referral.title.message"
@@ -145,16 +132,16 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
                             css={smallerSpinnerCss}
                         />
                         {!this.state.isLoadingReferrals &&
-                            referralList &&
-                            referralList.length > 0 && (
-                                <React.Fragment>
-                                    <div className={'tab-content'}>
-                                        <div className={'row'}>
-                                            {referralList}
-                                        </div>
+                        referralList &&
+                        referralList.length > 0 && (
+                            <React.Fragment>
+                                <div className={'tab-content'}>
+                                    <div className={'row'}>
+                                        {referralList}
                                     </div>
-                                </React.Fragment>
-                            )}
+                                </div>
+                            </React.Fragment>
+                        )}
                     </div>
                 </section>
             </React.Fragment>
@@ -162,4 +149,10 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
     }
 }
 
-export default injectIntl(Referrals);
+const mapStateToProps = (state: any) => {
+    return {
+        userInfo: state.user.userInfo
+    };
+};
+
+export default connect(mapStateToProps, null)(injectIntl(Referrals));

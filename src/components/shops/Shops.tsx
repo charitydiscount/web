@@ -34,7 +34,7 @@ import {
 } from '../../helper/StorageHelper';
 import { StorageKey } from '../../helper/Constants';
 import ShopModalElement from './ShopModalElement';
-import { AuthActions } from "../login/UserActions";
+import { AuthActions } from "../../redux/actions/UserActions";
 import { parseAndSaveUser } from "../login/AuthHelper";
 
 interface IShopsProps {

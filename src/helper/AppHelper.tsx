@@ -3,7 +3,7 @@ import { getLocalStorage, setLocalStorage } from './StorageHelper';
 import {
     StorageKey,
     PROGRAM_LINK_PLACEHOLDER,
-    USER_LINK_PLACEHOLDER,
+    USER_LINK_PLACEHOLDER, noImagePath,
 } from './Constants';
 import { css } from '@emotion/core';
 import { store, auth } from '../index';
@@ -15,7 +15,7 @@ import { setLangResources } from '../redux/actions/LocaleAction';
  * @param uniqueCode - shop unique code
  * @param redirectUrl - the program url where the user should be redirected
  */
-export function computeUrl(affiliateUrl:string, uniqueCode: string, redirectUrl: string) {
+export function computeUrl(affiliateUrl: string, uniqueCode: string, redirectUrl: string) {
     if (!auth.currentUser || !auth.currentUser.uid) {
         throw Error('User not logged in'); //TODO: this error should be nice treated
     }
@@ -102,3 +102,7 @@ export const dateOptions = {
 };
 
 export const emailRegexp = new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+
+export function addDefaultImgSrc(ev) {
+    ev.target.src = noImagePath;
+}

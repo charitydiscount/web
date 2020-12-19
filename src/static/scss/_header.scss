@@ -43,6 +43,13 @@
                 background: #e4e4e4;
             }
         }
+        .header_area .navbar .photo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin-left: 10px;
+            margin-top: 15px;
+        }
         .nav {
             @media (max-width: 992px) {
                 float: left;
@@ -168,6 +175,14 @@
                     line-height: 50px;
                     min-width: 50px;
                     min-height: 50px;
+                }
+
+                .header_area .navbar .photo {
+                    width: 48px;
+                    height: 48px;
+                    border-radius: 50%;
+                    margin-left: 10px;
+                    margin-top: 0;
                 }
             }
         }

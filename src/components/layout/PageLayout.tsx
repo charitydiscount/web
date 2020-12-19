@@ -24,10 +24,12 @@ import { FadeLoader } from "react-spinners";
 import { spinnerCss } from "../../helper/AppHelper";
 import Promotions from "../promotions/Promotions";
 import { clearStorage } from "../../helper/StorageHelper";
+import { loadUserData } from "../../redux/actions/UserActions";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
     shopsLoaded: boolean;
+    loadUserData: Function;
     loadShops: Function;
 }
 
@@ -37,6 +39,12 @@ const PageLayout = (props: PageLayoutProps) => {
         if (!props.shopsLoaded) {
             clearStorage();
             props.loadShops();
+        }
+    });
+
+    useEffect(() => {
+        if (props.isLoggedIn) {
+            props.loadUserData();
         }
     });
 
@@ -210,4 +218,4 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-export default connect(mapStateToProps, {loadShops})(PageLayout);
+export default connect(mapStateToProps, {loadShops, loadUserData})(PageLayout);

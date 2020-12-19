@@ -3,7 +3,7 @@ import { auth, store } from '../../index';
 import { Redirect } from 'react-router';
 import LoginComponent from '../login/LoginComponent';
 import { getUrlParameter, spinnerCss } from '../../helper/AppHelper';
-import { AuthActions } from '../login/UserActions';
+import { AuthActions } from '../../redux/actions/UserActions';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { parseAndSaveUser } from '../login/AuthHelper';
 

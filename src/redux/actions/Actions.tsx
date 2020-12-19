@@ -6,6 +6,7 @@ export enum NavigationActionTypes {
 
 export enum LoginActionTypes {
     SET_LOGGED_USER_ACTION = 'SET_LOGGED_USER_ACTION',
+    LOAD_USER_DATA_ACTION = 'LOAD_USER_DATA_ACTION',
     RESET_LOGGED_USER_ACTION = 'RESET_LOGGED_USER_ACTION',
 }
 

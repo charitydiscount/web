@@ -6,7 +6,7 @@ import { auth } from "./index";
 import { TextField } from "@material-ui/core";
 import { emailRegexp } from "./helper/AppHelper";
 import InfoModal from "./components/modals/InfoModal";
-import { doLogoutAction } from "./components/login/UserActions";
+import { doLogoutAction } from "./redux/actions/UserActions";
 import { connect } from "react-redux";
 import {
     getUserDbInfo,

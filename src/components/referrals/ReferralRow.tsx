@@ -1,14 +1,17 @@
 import { injectIntl, IntlShape } from 'react-intl';
 import * as React from 'react';
 import { ReferralDto } from '../../rest/ReferralService';
-import { loadUserIdPhoto, UserPhotoState } from '../login/UserPhotoHelper';
+import { loadUserIdPhoto } from '../login/UserPhotoHelper';
 import {
     getNotPaidSumForReferralId,
     getPaidSumForReferralId,
 } from '../../rest/WalletService';
 import { noImagePath } from "../../helper/Constants";
 
-interface ReferralRowState extends UserPhotoState {
+interface ReferralRowState {
+    photoURL: string,
+    userId: string,
+    isLoadingPhoto: boolean;
     referralPaidSum: number;
     referralNotPaidSum: number;
 }

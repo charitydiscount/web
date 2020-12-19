@@ -4,17 +4,15 @@ import { Stages } from '../helper/Stages';
 import * as React from 'react';
 import {
     emptyHrefLink,
-    noImagePath,
     profilePictureDefaultName,
     StorageRef,
 } from '../../helper/Constants';
-import { doLogoutAction } from './UserActions';
+import { doLogoutAction, updateUserPhoto } from '../../redux/actions/UserActions';
 import { connect } from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { smallerSpinnerCss, spinnerCss } from '../../helper/AppHelper';
+import { addDefaultImgSrc, spinnerCss } from '../../helper/AppHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
-import { loadCurrentUserPhoto, UserPhotoState } from './UserPhotoHelper';
 import { Routes } from '../helper/Routes';
 import { Link } from 'react-router-dom';
 import InfoModal from '../modals/InfoModal';
@@ -25,16 +23,18 @@ import {
 } from '../../rest/UserService';
 import { FormControlLabel } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
-import { getUserId } from './AuthHelper';
+import { getUserId, UserInfoDto } from './AuthHelper';
 import OtpModal from "../modals/OtpModal";
 import { createOtpRequest, validateOtpCode } from "../../rest/WalletService";
 
 interface IUserInfoProps {
     intl: IntlShape;
     logout: () => void;
+    updateUserPhoto: () => void;
+    userInfo: UserInfoDto
 }
 
-interface IUserInfoState extends UserPhotoState {
+interface IUserInfoState {
     infoModalVisible: boolean;
     infoModalMessage: string;
     confirmModalVisible: boolean;
@@ -51,20 +51,14 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     constructor(props: IUserInfoProps) {
         super(props);
         this.state = {
-            photoURL: '',
-            displayName: '',
-            email: '',
-            userId: '',
             infoModalVisible: false,
             infoModalMessage: '',
             confirmModalVisible: false,
             confirmModalMessage: '',
             otpModalVisible: false,
-            normalUser: false,
             isLoading: false,
             deleteAccount: false,
             accountDeleted: false,
-            isLoadingPhoto: false,
             disableMailNotification: false
         };
     }
@@ -80,7 +74,6 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     async componentDidMount() {
         document.addEventListener('keydown', this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
-        await loadCurrentUserPhoto(this);
 
         let response = await getDisableMailNotification(getUserId());
         if (response) {
@@ -191,8 +184,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             confirmModalVisible: false,
             isLoading: true,
         });
-        if (this.state.email) {
-            auth.sendPasswordResetEmail(this.state.email)
+        if (this.props.userInfo.email) {
+            auth.sendPasswordResetEmail(this.props.userInfo.email)
                 .then(
                     () => this.showPasswordResetResult(true) // Password reset email sent.
                 )
@@ -221,18 +214,16 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     handleUploadSuccess = async () => {
         this.setState({
             infoModalVisible: true,
-            isLoadingPhoto: false,
             infoModalMessage: this.props.intl.formatMessage({
                 id: 'userInfo.profile.picture.uploaded',
             }),
         });
-        await loadCurrentUserPhoto(this);
+        this.props.updateUserPhoto();
     };
 
     handleUploadError = () => {
         this.setState({
             infoModalVisible: true,
-            isLoadingPhoto: false,
             infoModalMessage: this.props.intl.formatMessage({
                 id: 'userInfo.profile.picture.error',
             }),
@@ -281,34 +272,20 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                     <div className="s_product_img">
                                         <div className="blog_right_sidebar">
                                             <aside className="single_sidebar_widget author_widget">
-                                                <FadeLoader
-                                                    loading={
-                                                        this.state
-                                                            .isLoadingPhoto
+                                                <img
+                                                    className="author_img rounded-circle"
+                                                    src={
+                                                        this.props.userInfo.photoURL
                                                     }
-                                                    color={'#e31f29'}
-                                                    css={smallerSpinnerCss}
+                                                    alt="Missing"
+                                                    width={200}
+                                                    height={200}
+                                                    onError={addDefaultImgSrc}
                                                 />
-                                                {!this.state.isLoadingPhoto && (
-                                                    <img
-                                                        className="author_img rounded-circle"
-                                                        src={
-                                                            this.state.photoURL
-                                                        }
-                                                        alt="Missing"
-                                                        width={200}
-                                                        height={200}
-                                                        onError={() =>
-                                                            this.setState({
-                                                                photoURL: noImagePath,
-                                                            })
-                                                        }
-                                                    />
-                                                )}
                                                 <h4>
-                                                    {this.state.displayName}
+                                                    {this.props.userInfo.displayName}
                                                 </h4>
-                                                <p>{this.state.email}</p>
+                                                <p>{this.props.userInfo.email}</p>
                                                 <div className="br"/>
                                                 <h4>
                                                     <FormattedMessage
@@ -346,7 +323,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                 >
                                     <div className="blog_right_sidebar">
                                         <aside className="single_sidebar_widget popular_post_widget">
-                                            {this.state.normalUser && (
+                                            {this.props.userInfo.normalUser && (
                                                 <div>
                                                     <div className="col-md-12 text-center p_05">
                                                         <a
@@ -375,19 +352,12 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                     }
                                                                     storageRef={storage.ref(
                                                                         StorageRef.PROFILE_PHOTOS +
-                                                                        this
-                                                                            .state
-                                                                            .userId
+                                                                        this.props.userInfo.uid
                                                                     )}
                                                                     onUploadError={this.handleUploadError}
                                                                     onUploadSuccess={this.handleUploadSuccess}
-                                                                    onUploadStart={() =>
-                                                                        this.setState(
-                                                                            {
-                                                                                isLoadingPhoto: true,
-                                                                            }
-                                                                        )
-                                                                    }
+                                                                    onUploadStart={() => {
+                                                                    }}
                                                                 />
                                                             </label>
                                                         </a>
@@ -502,10 +472,18 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     }
 }
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapStateToProps = (state: any) => {
     return {
-        logout: () => dispatch(doLogoutAction()),
+        userInfo: state.user.userInfo
     };
 };
 
-export default connect(null, mapDispatchToProps)(injectIntl(UserInfo));
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        logout: () => dispatch(doLogoutAction()),
+        updateUserPhoto: () => dispatch(updateUserPhoto())
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(UserInfo));
