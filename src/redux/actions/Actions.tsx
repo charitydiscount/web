@@ -25,6 +25,7 @@ export enum ShopsActionTypes {
 export enum CategoryActionTypes {
     SET_CURRENT_CATEGORY_ACTION = 'SET_CURRENT_CATEGORY_ACTION',
     SET_SELECTIONS_ACTION = 'SET_SELECTIONS_ACTION',
+    RESET_CATEGORIES = 'RESET_CATEGORIES'
 }
 
 export enum AdBlockActionTypes {

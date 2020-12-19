@@ -26,6 +26,8 @@ export default function(
                 ...state,
                 selections: action.payload,
             };
+        case CategoryActionTypes.RESET_CATEGORIES:
+            return {...initialState};
         default:
             return state;
     }
