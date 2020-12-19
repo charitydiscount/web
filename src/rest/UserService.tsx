@@ -60,9 +60,7 @@ export async function updateLeaderboardAnonym(anonym: boolean) {
     if (leaderboardEntryRef.exists) {
         await leaderboardDocRef.set(
             {
-                user: {
-                    anonym: anonym
-                }
+                anonym: anonym
             },
             {merge: true}
         );
