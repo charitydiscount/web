@@ -8,6 +8,7 @@ import { AnyAction } from "redux";
 import { facebookPictureKey, noImagePath, profilePictureSuffix, StorageKey } from "../../helper/Constants";
 import { fetchProfilePhoto } from "../../rest/StorageService";
 import { setLocalStorage } from "../../helper/StorageHelper";
+import { CategoriesAction } from "./CategoriesAction";
 
 export const AuthActions = {
     setLoggedUserAction: (loginInfo: UserInfoDto | null) =>
@@ -21,6 +22,7 @@ export type AuthActions = ActionTypesUnion<typeof AuthActions>;
 
 export const doLogoutAction = () => async (dispatch: any) => {
     await auth.signOut();
+    dispatch(CategoriesAction.resetCategories());
     dispatch(AuthActions.resetLoggedUserAction());
 };
 

@@ -1,10 +1,11 @@
-import {createAction} from "../helper/ActionHelper";
-import {CategoryActionTypes} from "./Actions";
-import {ActionTypesUnion} from "../helper/TypesHelper";
+import { createAction } from "../helper/ActionHelper";
+import { CategoryActionTypes } from "./Actions";
+import { ActionTypesUnion } from "../helper/TypesHelper";
 
 export const CategoriesAction = {
     setCurrentCategory: (currentCategory: String) => createAction(CategoryActionTypes.SET_CURRENT_CATEGORY_ACTION, currentCategory),
-    setSelections: (selections: boolean[]) => createAction(CategoryActionTypes.SET_SELECTIONS_ACTION, selections)
+    setSelections: (selections: boolean[]) => createAction(CategoryActionTypes.SET_SELECTIONS_ACTION, selections),
+    resetCategories: () => createAction(CategoryActionTypes.RESET_CATEGORIES)
 };
 
 export function setCurrentCategory(currentCategory: String): any {

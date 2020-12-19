@@ -12,6 +12,7 @@ import {
 import GenericInput from '../input/GenericInput';
 import ReactPaginate from 'react-paginate';
 import {
+    CategoriesAction,
     setCurrentCategory,
     setSelections,
 } from '../../redux/actions/CategoriesAction';
@@ -261,6 +262,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
 
     public componentWillUnmount() {
         store.dispatch(NavigationsAction.resetStageAction(Stages.SHOPS));
+        store.dispatch(CategoriesAction.resetCategories());
     }
 
     public updatePageNumber(data) {
