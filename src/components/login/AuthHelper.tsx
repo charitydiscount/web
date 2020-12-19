@@ -1,14 +1,15 @@
 import * as firebase from "firebase";
 import { getLocalStorage, setLocalStorage } from "../../helper/StorageHelper";
 import { StorageKey } from "../../helper/Constants";
-import { AuthActions } from "./UserActions";
+import { AuthActions } from "../../redux/actions/UserActions";
 import { store } from "../../index";
 
-export interface LoginDto {
-    uid: string;
-    photoURL: string | null;
-    displayName: string;
-    email: string;
+export interface UserInfoDto {
+    photoURL: string,
+    displayName: string,
+    email: string,
+    uid: string,
+    normalUser: boolean,
     creationTime: string
 }
 
@@ -20,13 +21,18 @@ export const LoginMapper = {
 };
 
 export function parseAndSaveUser(user: firebase.User) {
+    let alreadyExistingUserInfo = getUserInfo();
     let objectMapper = require('object-mapper');
     let parsedUser = objectMapper(
         user,
         LoginMapper
-    ) as LoginDto;
+    ) as UserInfoDto;
     if (user.metadata.creationTime) {
         parsedUser.creationTime = user.metadata.creationTime;
+    }
+    if (alreadyExistingUserInfo) {
+        parsedUser.photoURL = alreadyExistingUserInfo.photoURL;
+        parsedUser.normalUser = alreadyExistingUserInfo.normalUser;
     }
     setLocalStorage(StorageKey.USER, JSON.stringify(parsedUser));
     return parsedUser;
@@ -39,7 +45,7 @@ export function getUserId() {
         if (user.includes('uid')) {
             let parsedUser;
             try {
-                parsedUser = JSON.parse(user) as LoginDto;
+                parsedUser = JSON.parse(user) as UserInfoDto;
                 return parsedUser.uid;
             } catch (e) {
                 //something went wrong
@@ -56,7 +62,7 @@ export function getUserInfo() {
         if (user.includes('uid')) {
             let parsedUser;
             try {
-                parsedUser = JSON.parse(user) as LoginDto;
+                parsedUser = JSON.parse(user) as UserInfoDto;
                 return parsedUser;
             } catch (e) {
                 //something went wrong

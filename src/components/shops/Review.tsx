@@ -6,7 +6,7 @@ import {
     profilePictureSuffix,
 } from '../../helper/Constants';
 import { ReviewDto } from "../../rest/ReviewService";
-import { dateOptions } from "../../helper/AppHelper";
+import { addDefaultImgSrc, dateOptions } from "../../helper/AppHelper";
 
 interface IReviewState {
     photoURL: string;
@@ -83,11 +83,7 @@ class Review extends React.Component<IReviewProps, IReviewState> {
                                 width={80}
                                 height={80}
                                 style={{ borderRadius: 70 }}
-                                onError={() =>
-                                    this.setState({
-                                        photoURL: noImagePath
-                                    })
-                                }
+                                onError={addDefaultImgSrc}
                             />
                         </div>
                         <div className="media-body">

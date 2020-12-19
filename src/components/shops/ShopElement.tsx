@@ -17,7 +17,7 @@ import { AppState } from '../../redux/reducer/RootReducer';
 import { connect } from 'react-redux';
 import RedirectModal from './RedirectModal';
 import { getLocalStorage } from '../../helper/StorageHelper';
-import { computeUrl } from '../../helper/AppHelper';
+import { addDefaultImgSrc, computeUrl } from '../../helper/AppHelper';
 import { clickSaveAndRedirect } from "../../rest/ClickService";
 import InfoModal from "../modals/InfoModal";
 import { store } from '../..';
@@ -286,11 +286,12 @@ class ShopElement extends React.Component<IShopElementProps,
                     </h6>
                     <img
                         src={this.props.shop.logoPath}
-                        alt=""
+                        alt="Missing"
                         style={{
                             maxWidth: 200,
                             maxHeight: 200,
                         }}
+                        onError={addDefaultImgSrc}
                     />
                     <div className="blog_details">
                         <h6

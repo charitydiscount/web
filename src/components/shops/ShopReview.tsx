@@ -17,7 +17,7 @@ import FadeLoader from 'react-spinners/FadeLoader';
 import ShopElement from './ShopElement';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducer/RootReducer';
-import { getUserInfo } from '../login/AuthHelper';
+import { UserInfoDto } from '../login/AuthHelper';
 import InfoModal from '../modals/InfoModal';
 
 interface IProductReviewState {
@@ -36,16 +36,14 @@ interface IProductReviewState {
 interface IProductReviewProps {
     match: any;
     intl: IntlShape;
-    shops: ShopDto[];
 
-    // global state
-    setCurrentShop: any;
+    //global state
+    userInfo: UserInfoDto
+    shops: ShopDto[];
 }
 
-class ShopReview extends React.Component<
-    IProductReviewProps,
-    IProductReviewState
-> {
+class ShopReview extends React.Component<IProductReviewProps,
+    IProductReviewState> {
     constructor(props: IProductReviewProps) {
         super(props);
         this.state = {
@@ -61,18 +59,13 @@ class ShopReview extends React.Component<
             reviews: [],
             reviewsLoading: true,
         };
-        this.updateCurrentReview = this.updateCurrentReview.bind(this);
-        this.handleStarFocusEnter = this.handleStarFocusEnter.bind(this);
-        this.handleStarFocusRemove = this.handleStarFocusRemove.bind(this);
-        this.handleShowModalMessage = this.handleShowModalMessage.bind(this);
-        this.escFunction = this.escFunction.bind(this);
     }
 
-    escFunction(event) {
+    escFunction = (event) => {
         if (event.keyCode === 27) {
             this.closeModal();
         }
-    }
+    };
 
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.REVIEW));
@@ -95,31 +88,30 @@ class ShopReview extends React.Component<
         store.dispatch(NavigationsAction.resetStageAction(Stages.REVIEW));
     }
 
-    closeModal() {
+    closeModal = () => {
         this.setState({
             modalVisible: false,
         });
-    }
+    };
 
-    openModal() {
+    openModal = () => {
         this.setState({
             modalVisible: true,
         });
-    }
+    };
 
-    async updateCurrentReview() {
+    updateCurrentReview = async () => {
         if (this.state.rating > 0) {
-            let currentUser = getUserInfo();
             try {
                 await saveReview(
                     this.state.shop.uniqueCode,
                     this.state.rating,
                     this.state.description,
                     {
-                        userId: currentUser.uid,
+                        userId: this.props.userInfo.uid,
                         name:
-                            currentUser.displayName || currentUser.email || '-',
-                        photoUrl: currentUser.photoURL || '',
+                            this.props.userInfo.displayName || this.props.userInfo.email || '-',
+                        photoUrl: this.props.userInfo.photoURL || '',
                     }
                 );
                 removeLocalStorage(StorageKey.REVIEWS_RATINGS);
@@ -146,13 +138,13 @@ class ShopReview extends React.Component<
             }
         } else {
             this.handleShowModalMessage(
-                this.props.intl.formatMessage({ id: 'review.error.message' }),
+                this.props.intl.formatMessage({id: 'review.error.message'}),
                 null
             );
         }
     }
 
-    handleShowModalMessage(message, favShop) {
+    handleShowModalMessage = (message, favShop) => {
         if (favShop !== null) {
             this.setState({
                 modalMessage: message,
@@ -163,15 +155,15 @@ class ShopReview extends React.Component<
             });
         }
         this.openModal();
-    }
+    };
 
-    handleStarClicked(event, starLevel: number) {
+    handleStarClicked = (event, starLevel: number) => {
         this.setState({
             rating: starLevel,
         });
-    }
+    };
 
-    handleStarFocusEnter(event, starLevel) {
+    handleStarFocusEnter = (event, starLevel) => {
         for (let i = 1; i <= starLevel; i++) {
             const element = document.getElementById('star-' + i);
             if (element) {
@@ -180,9 +172,9 @@ class ShopReview extends React.Component<
                 }
             }
         }
-    }
+    };
 
-    handleStarFocusRemove(event, starLevel) {
+    handleStarFocusRemove = (event, starLevel) => {
         for (let i = 1; i <= starLevel; i++) {
             let element = document.getElementById('star-' + i);
             if (element) {
@@ -191,14 +183,14 @@ class ShopReview extends React.Component<
                 }
             }
         }
-    }
+    };
 
     public render() {
         const reviewsList =
             this.state.reviews && this.state.reviews.length > 0 ? (
                 this.state.reviews.map((review) => {
                     return (
-                        <Review key={review.reviewer.name} review={review} />
+                        <Review key={review.reviewer.name} review={review}/>
                     );
                 })
             ) : (
@@ -251,7 +243,7 @@ class ShopReview extends React.Component<
                 />
                 <section className={'product_description_area'}>
                     <div className={'container'}>
-                        <div className="row" style={{ marginTop: 70 }}>
+                        <div className="row" style={{marginTop: 70}}>
                             <div className="col-lg-6">
                                 <ShopElement
                                     key={this.state.shop.name}
@@ -279,11 +271,11 @@ class ShopReview extends React.Component<
                                                 onChange={(event) =>
                                                     this.setState({
                                                         description:
-                                                            event.target.value,
+                                                        event.target.value,
                                                     })
                                                 }
                                                 placeholder={this.props.intl.formatMessage(
-                                                    { id: 'review.placeholder' }
+                                                    {id: 'review.placeholder'}
                                                 )}
                                             ></textarea>
                                         </div>
@@ -310,7 +302,7 @@ class ShopReview extends React.Component<
                                             css={spinnerCss}
                                         />
                                         {!this.state.reviewsLoading &&
-                                            reviewsList}
+                                        reviewsList}
                                     </div>
                                 </div>
                             </div>
@@ -325,6 +317,7 @@ class ShopReview extends React.Component<
 const mapStateToProps = (state: AppState) => {
     return {
         shops: state.shops.allShops,
+        userInfo: state.user.userInfo
     };
 };
 

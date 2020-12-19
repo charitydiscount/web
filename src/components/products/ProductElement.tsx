@@ -8,6 +8,7 @@ import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import RedirectModal from '../shops/RedirectModal';
 import { getLocalStorage } from '../../helper/StorageHelper';
 import { clickSaveAndRedirect } from "../../rest/ClickService";
+import { addDefaultImgSrc } from "../../helper/AppHelper";
 
 interface ProductElementProps {
     intl: IntlShape;
@@ -149,6 +150,7 @@ class ProductElement extends React.Component<
                         alt={this.props.intl.formatMessage({
                             id: 'products.image.missing',
                         })}
+                        onError={addDefaultImgSrc}
                     />
                     <div className="blog_details">
                         <h4 style={{ maxWidth: 300 }}>

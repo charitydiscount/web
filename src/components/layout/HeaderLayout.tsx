@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Stages } from '../helper/Stages';
 import { connect } from 'react-redux';
-import { doLogoutAction } from '../login/UserActions';
+import { doLogoutAction } from '../../redux/actions/UserActions';
 import { setShops } from '../../redux/actions/ShopsAction';
 import { getLocalStorage } from '../../helper/StorageHelper';
 import { emptyHrefLink, StorageKey } from '../../helper/Constants';
@@ -13,12 +13,13 @@ import {
 import { Routes } from '../helper/Routes';
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
-import { onLanguageChange, redirectToAbout } from '../../helper/AppHelper';
+import { addDefaultImgSrc, onLanguageChange, redirectToAbout } from '../../helper/AppHelper';
 import { Link } from 'react-router-dom';
+import { UserInfoDto } from "../login/AuthHelper";
 
 type IHeaderLayoutProps = {
     isLoggedIn?: boolean;
-    userInfo: firebase.User;
+    userInfo: UserInfoDto;
     logout: () => void;
     view?: string;
 
@@ -411,6 +412,12 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                             </li>
                                             }
                                             <hr/>
+                                            {this.props.userInfo && this.props.userInfo.photoURL &&
+                                            <img className="photo"
+                                                 alt="Missing"
+                                                 src={this.props.userInfo.photoURL}
+                                                 onError={addDefaultImgSrc}/>
+                                            }
                                         </ul>
                                     </div>
                                 </div>

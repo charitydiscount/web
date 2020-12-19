@@ -14,14 +14,14 @@ import 'firebase/firestore';
 import 'firebase/performance';
 import 'firebase/storage';
 import 'firebase/remote-config';
-import { AuthActions } from './components/login/UserActions';
+import { AuthActions } from './redux/actions/UserActions';
 import I18nApp from './I18nApp';
 import { getLocalStorage } from './helper/StorageHelper';
 import { StorageKey } from './helper/Constants';
-import { LoginDto } from './components/login/AuthHelper';
+import { UserInfoDto } from './components/login/AuthHelper';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '2.6.3';
+export const appVersion = '2.6.4';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};
@@ -59,7 +59,7 @@ if (user && user.length > 0) {
     if (user.includes('uid')) {
         let parsedUser;
         try {
-            parsedUser = JSON.parse(user) as LoginDto;
+            parsedUser = JSON.parse(user) as UserInfoDto;
             store.dispatch(AuthActions.setLoggedUserAction(parsedUser));
         } catch (e) {
             store.dispatch(AuthActions.resetLoggedUserAction());
@@ -76,3 +76,6 @@ ReactDOM.render(
     </Provider>,
     document.getElementById('root')
 );
+
+//force unregister of old service workers
+navigator.serviceWorker.getRegistrations().then( function(registrations) { for(let registration of registrations) { registration.unregister(); } });
