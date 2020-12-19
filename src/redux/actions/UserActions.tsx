@@ -58,10 +58,6 @@ export const loadUserData = () => async (
             } catch (error) {
                 currentUser.photoURL = noImagePath;
             }
-        } else {
-            if (currentUser.photoURL && currentUser.photoURL.includes(facebookPictureKey)) {
-                currentUser.photoURL = currentUser.photoURL + profilePictureSuffix;
-            }
         }
     }
 
