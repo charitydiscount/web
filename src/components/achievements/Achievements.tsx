@@ -7,6 +7,7 @@ import { store } from "../../index";
 import { NavigationsAction } from "../../redux/actions/NavigationsAction";
 import { Stages } from "../helper/Stages";
 import AchievementModal from "./AchivementModal";
+import { FormattedMessage } from "react-intl";
 
 interface AchievementsProps {
 
@@ -58,6 +59,12 @@ class Achievements extends React.Component<AchievementsProps, AchievementsState>
                 <AchievementModal/>
                 <section className="product_description_area section_gap">
                     <div className="container">
+                        <h3 style={{textAlign: "center"}}>
+                            <FormattedMessage
+                                id="achievements.page.title"
+                                defaultMessage="Achievements"
+                            />
+                        </h3>
                         <FadeLoader
                             loading={this.state.isLoading}
                             color={'#e31f29'}

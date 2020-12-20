@@ -2,13 +2,16 @@ import React from "react";
 import { store } from "../../index";
 import { NavigationsAction } from "../../redux/actions/NavigationsAction";
 import { Stages } from "../helper/Stages";
+import { FormattedMessage } from "react-intl";
+import { getLeaderboard, LeaderboardEntryDto } from "../../rest/AchievementsService";
 
 interface LeaderboardProps {
 
 }
 
 interface LeaderboardState {
-
+    isLoading: boolean,
+    leaderboardEntries: LeaderboardEntryDto[]
 }
 
 class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
@@ -16,34 +19,54 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
-            achievements: []
+            isLoading: true,
+            leaderboardEntries: []
         }
     }
 
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.LEADERBOARD));
-
+        try {
+            let response = await getLeaderboard();
+            this.setState({
+                leaderboardEntries: response as LeaderboardEntryDto[],
+                isLoading: false
+            })
+        } catch (e) {
+            //leaderboard entries not loaded
+        }
     }
 
     public render() {
-        let tableRow = <div className="table-row">
-            <div className="serial">01</div>
-            <div className="country">
-                645032
-                <i className="fa fa-heart" style={{
-                    marginLeft: "7px",
-                    color: "red"
-                }}/>
-            </div>
-            <div className="percentage" style={{overflow: "auto"}}>Lucian Davidescu</div>
-        </div>;
-
+        let leaderboard;
+        if (this.state.leaderboardEntries && this.state.leaderboardEntries.length > 0) {
+            leaderboard = this.state.leaderboardEntries.map(entry => {
+                return <div className="table-row">
+                    <div className="serial">01</div>
+                    <div className="country">
+                        {entry.points}
+                        <i className="fa fa-heart" style={{
+                            marginLeft: "7px",
+                            color: "red"
+                        }}/>
+                    </div>
+                    <div className="percentage" style={{overflow: "auto"}}>
+                        {entry.anonym ? 'Anonym' : entry.name}
+                    </div>
+                </div>;
+            });
+        }
 
         return (
             <React.Fragment>
                 <section className="product_description_area section_gap">
                     <div className="container">
+                        <h3 style={{textAlign: "center"}}>
+                            <FormattedMessage
+                                id="leaderboard.page.title"
+                                defaultMessage="Leaderboard"
+                            />
+                        </h3>
                         <div className="row">
                             <div className="col-md-3"/>
                             <div className="col-md-4">
@@ -51,19 +74,15 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
                                     <div className="progress-table">
                                         <div className="table-head">
                                             <div className="serial">#</div>
-                                            <div className="country">Score</div>
-                                            <div className="percentage">Name</div>
+                                            <div className="country">Charity Points</div>
+                                            <div className="percentage">
+                                                <FormattedMessage
+                                                    id="leaderboard.table.name"
+                                                    defaultMessage="Name"
+                                                />
+                                            </div>
                                         </div>
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
-                                        {tableRow}
+                                        {leaderboard}
                                     </div>
                                 </div>
                             </div>

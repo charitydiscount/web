@@ -21,10 +21,6 @@ class AchievementElement extends React.Component<AchievementElementProps, Achiev
     };
 
     public render() {
-        let imageCssClass = "";
-        if (!this.props.userAchievement.achieved) {
-            imageCssClass = "grayscale_img";
-        }
         let achievementName;
         if (this.props.currentLocale === "ro") {
             achievementName = this.props.userAchievement.achievement.name.ro;
@@ -42,7 +38,7 @@ class AchievementElement extends React.Component<AchievementElementProps, Achiev
                     <div className="f_p_item achievement_no_image">
                         <div className="achievement-image-container">
                             <img
-                                className={"achievement-image " + imageCssClass}
+                                className={"achievement-image"}
                                 src={this.props.userAchievement.achievement.badgeUrl} alt=""
                             />
                         </div>
@@ -51,6 +47,9 @@ class AchievementElement extends React.Component<AchievementElementProps, Achiev
                                 {achievementName}
                             </div>
                         </div>
+                        {this.props.userAchievement.achieved &&
+                            <i className="fa fa-check"/>
+                        }
                     </div>
                 </div>
             </React.Fragment>

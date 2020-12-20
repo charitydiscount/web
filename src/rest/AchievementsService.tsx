@@ -29,7 +29,7 @@ export interface AchievementDto {
 }
 
 export interface Reward {
-    amount: string,
+    amount: number,
     unit: string
 }
 
@@ -38,6 +38,18 @@ export interface Condition {
     target: string,
     unit: string
 }
+
+export interface LeaderboardEntryDto {
+    userId: string;
+    name: string;
+    photoUrl: string;
+    points: number;
+    updatedAt: firestore.Timestamp | firestore.FieldValue;
+    isStaff: boolean;
+    achievementsCount: number;
+    anonym: boolean;
+}
+
 
 export const getAchievements = async () => {
     if (!auth.currentUser) {
@@ -90,5 +102,32 @@ export const getAchievements = async () => {
             }
         );
 
-    return userAchievements;
+    return userAchievements
+        .sort((a, b) => {
+            return a.achievement.reward.amount - b.achievement.reward.amount;
+        });
 };
+
+export const getLeaderboard = async () => {
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
+    }
+
+    let result = [] as LeaderboardEntryDto[];
+    await DB.collection(FirebaseTable.LEADERBOARD)
+        .get()
+        .then(querySnapshot => {
+                if (querySnapshot.docs.length > 0) {
+                    let result = [] as LeaderboardEntryDto[];
+                    querySnapshot.docs.forEach(doc => {
+                            result.push(doc.data() as LeaderboardEntryDto);
+                        }
+                    );
+                }
+            }
+        );
+    return result;
+};
+
+
+

@@ -204,5 +204,8 @@
   "promotions.expires.in.days": " days",
   "promotions.filter.sort.by.expiry.date.ascending": "Expiry date ↑",
   "promotions.filter.sort.by.expiry.date.descending": "Expiry date ↓",
-  "user.info.delete.otp.mail.mesasge": "A mail was sent with the code to validate account deletion."
+  "user.info.delete.otp.mail.mesasge": "A mail was sent with the code to validate account deletion.",
+  "achievements.page.title": "Achievements",
+  "leaderboard.page.title": "Leaderboard",
+  "leaderboard.table.name": "Name"
 }

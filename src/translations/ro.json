@@ -204,5 +204,8 @@
   "promotions.expires.in.days": " zile",
   "promotions.filter.sort.by.expiry.date.ascending": "Data de expirare ↑",
   "promotions.filter.sort.by.expiry.date.descending": "Data de expirare ↓",
-  "user.info.delete.otp.mail.mesasge": "A fost trimis pe mail-ul tău codul de validare pentru ștergerea contului."
+  "user.info.delete.otp.mail.mesasge": "A fost trimis pe mail-ul tău codul de validare pentru ștergerea contului.",
+  "achievements.page.title": "Insigne",
+  "leaderboard.page.title": "Clasament",
+  "leaderboard.table.name": "Nume"
 }
