@@ -205,7 +205,7 @@
   "promotions.filter.sort.by.expiry.date.ascending": "Data de expirare ↑",
   "promotions.filter.sort.by.expiry.date.descending": "Data de expirare ↓",
   "user.info.delete.otp.mail.mesasge": "A fost trimis pe mail-ul tău codul de validare pentru ștergerea contului.",
-  "achievements.page.title": "Insigne",
+  "achievements.page.title": "Realizări",
   "leaderboard.page.title": "Clasament",
   "leaderboard.table.name": "Nume"
 }

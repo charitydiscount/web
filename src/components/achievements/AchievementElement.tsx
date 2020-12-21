@@ -2,6 +2,7 @@ import React from "react";
 import { UserAchievementDto } from "../../rest/AchievementsService";
 import { connect } from "react-redux";
 import { setAchievementModal } from "../../redux/actions/AchivementsAction";
+import { Badge } from "@material-ui/core";
 
 interface AchievementElementProps {
     userAchievement: UserAchievementDto;
@@ -37,10 +38,12 @@ class AchievementElement extends React.Component<AchievementElementProps, Achiev
                 >
                     <div className="f_p_item achievement_no_image">
                         <div className="achievement-image-container">
-                            <img
-                                className={"achievement-image"}
-                                src={this.props.userAchievement.achievement.badgeUrl} alt=""
-                            />
+                            <Badge color="primary" badgeContent={this.props.userAchievement.achievement.reward.amount}>
+                                <img
+                                    className={"achievement-image"}
+                                    src={this.props.userAchievement.achievement.badgeUrl} alt=""
+                                />
+                            </Badge>
                         </div>
                         <div className="achievement-description-container">
                             <div className="description">
@@ -48,7 +51,7 @@ class AchievementElement extends React.Component<AchievementElementProps, Achiev
                             </div>
                         </div>
                         {this.props.userAchievement.achieved &&
-                            <i className="fa fa-check"/>
+                        <i className="fa fa-check"/>
                         }
                     </div>
                 </div>
