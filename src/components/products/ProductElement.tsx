@@ -9,11 +9,15 @@ import RedirectModal from '../shops/RedirectModal';
 import { getLocalStorage } from '../../helper/StorageHelper';
 import { clickSaveAndRedirect } from "../../rest/ClickService";
 import { addDefaultImgSrc } from "../../helper/AppHelper";
+import { AppState } from "../../redux/reducer/RootReducer";
+import { connect } from "react-redux";
+import { ShopDto } from "../../rest/ShopsService";
 
 interface ProductElementProps {
     intl: IntlShape;
     product: ProductDTO;
     onCloseModal: () => void;
+    allShops: ShopDto[]
 }
 
 interface ProductElementState {
@@ -21,10 +25,8 @@ interface ProductElementState {
     redirectModalVisible: boolean;
 }
 
-class ProductElement extends React.Component<
-    ProductElementProps,
-    ProductElementState
-> {
+class ProductElement extends React.Component<ProductElementProps,
+    ProductElementState> {
     constructor(props: Readonly<ProductElementProps>) {
         super(props);
 
@@ -71,7 +73,9 @@ class ProductElement extends React.Component<
                     href={emptyHrefLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    onClick={(event) => {clickSaveAndRedirect(event, this.props.product.shopId, this.props.product.url)}}
+                    onClick={(event) => {
+                        clickSaveAndRedirect(event, this.props.product.shopId, this.props.product.url)
+                    }}
                     className="main_btn"
                 >
                     <FormattedMessage
@@ -96,6 +100,14 @@ class ProductElement extends React.Component<
             );
         }
 
+        let shopFound = this.props.allShops.find((shop) =>
+            shop.id === Number(this.props.product.shopId)
+        );
+        let shopLogo;
+        if (shopFound) {
+            shopLogo = shopFound.logoPath;
+        }
+
         return (
             <React.Fragment>
                 {this.renderRedirect()}
@@ -106,17 +118,38 @@ class ProductElement extends React.Component<
                     cashbackUrl={this.props.product.url}
                 />
                 <div className="text-center p-4">
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{textAlign: 'right'}}>
                         <i
                             onClick={this.props.onCloseModal}
                             className="fa fa-times"
                         />
                     </div>
-                    {this.props.product.price && (
-                        <h6 className="product-price blue-color">
-                            {this.props.product.price} lei
-                        </h6>
-                    )}
+                    <div style={{
+                        display: 'flex',
+                        width: '100%',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginTop: 5,
+                        marginBottom: 7
+                    }}>
+                        {this.props.product.price && (
+                            <h6 className="font-style" style={{marginBottom: 0}}>
+                                {this.props.product.price} lei
+                            </h6>
+                        )}
+                        {shopLogo &&
+                        <img
+                            style={{
+                                maxWidth: 64,
+                                maxHeight: 45,
+                                marginLeft: 25
+                            }}
+                            src={shopLogo}
+                            alt=''
+                            onError={addDefaultImgSrc}
+                        />
+                        }
+                    </div>
                     <h6>
                         <FormattedMessage
                             id={'product.shop'}
@@ -125,7 +158,7 @@ class ProductElement extends React.Component<
                         <a
                             href={emptyHrefLink}
                             onClick={this.setRedirect}
-                            style={{ color: '#e31f29' }}
+                            style={{color: '#e31f29'}}
                         >
                             {this.props.product.shopName}
                         </a>
@@ -135,9 +168,11 @@ class ProductElement extends React.Component<
                             id={'product.cashback.money'}
                             defaultMessage="Saved money: "
                         />
+                        <span className="font-style">
                         {this.props.product.commission} lei
+                        </span>
                     </h6>
-                    <h6 style={{ maxWidth: 300 }}>
+                    <h6 style={{maxWidth: 300}}>
                         <FormattedMessage
                             id={'shop.category'}
                             defaultMessage="Category: "
@@ -145,7 +180,7 @@ class ProductElement extends React.Component<
                         {this.props.product.category}
                     </h6>
                     <img
-                        style={{ maxWidth: 300, maxHeight: 300 }}
+                        style={{maxWidth: 300, maxHeight: 300}}
                         src={this.props.product.imageUrl}
                         alt={this.props.intl.formatMessage({
                             id: 'products.image.missing',
@@ -153,7 +188,7 @@ class ProductElement extends React.Component<
                         onError={addDefaultImgSrc}
                     />
                     <div className="blog_details">
-                        <h4 style={{ maxWidth: 300 }}>
+                        <h4 style={{maxWidth: 300}}>
                             {' '}
                             {this.props.product.title}
                         </h4>
@@ -173,4 +208,10 @@ class ProductElement extends React.Component<
     }
 }
 
-export default injectIntl(ProductElement);
+const mapStateToProps = (state: AppState) => {
+    return {
+        allShops: state.shops.allShops
+    };
+};
+
+export default connect(mapStateToProps)(injectIntl(ProductElement));

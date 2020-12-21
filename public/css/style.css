@@ -6056,6 +6056,12 @@ h6 {
 .blue-color{
     color: #3447ff !important;
 }
+
+.font-style {
+    font-size: 1.2rem;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 700;
+}
 /*---------------------------------------------------- */
 
 /*# sourceMappingURL=style.css.map */

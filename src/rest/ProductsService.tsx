@@ -61,7 +61,7 @@ export async function getFeaturedProducts(): Promise<ProductDTO[]> {
     )}/search/products/featured`;
 
     const response = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {Authorization: `Bearer ${token}`},
     });
 
     const responseData: RequestResponse = response.data;
@@ -90,7 +90,7 @@ export async function searchProduct(
     const token = await auth.currentUser.getIdToken();
     const url = buildSearchUrl(query, sort, minPrice, maxPrice, currentPage);
     const response = await axios.get(url, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {Authorization: `Bearer ${token}`},
     });
     const responseData: RequestResponse = response.data;
     if (!responseData.hits) {
@@ -127,7 +127,8 @@ function buildSearchUrl(
             if (minP > 0) {
                 url += '&min=' + minP;
             }
-        } catch (e) {}
+        } catch (e) {
+        }
     }
 
     if (maxPrice) {
@@ -136,7 +137,8 @@ function buildSearchUrl(
             if (maxP > 0) {
                 url += '&max=' + maxP;
             }
-        } catch (e) {}
+        } catch (e) {
+        }
     }
 
     return url;
@@ -148,12 +150,12 @@ function toProductDTO(productResponse: ProductWrapper): ProductDTO {
         id: productResponse._source.product_id,
         price: productResponse._source.price,
         imageUrl: (productResponse._source.image_urls.toString().includes(',')
-            ? productResponse._source.image_urls.toString().split(',')[0]
-            : productResponse._source.image_urls
+                ? productResponse._source.image_urls.toString().split(',')[0]
+                : productResponse._source.image_urls
         ).replace(/^http:/, 'https:'),
         category: productResponse._source.category,
         url: computeProductUrl(productResponse._source.affiliate_url),
         shopName: productResponse._source.campaign_name,
-        shopId: productResponse._source.campaign_id,
+        shopId: productResponse._source.campaign_id
     };
 }

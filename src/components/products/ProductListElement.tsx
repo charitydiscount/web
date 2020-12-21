@@ -3,6 +3,10 @@ import { ProductDTO } from '../../rest/ProductsService';
 import Modal from 'react-awesome-modal';
 import ProductElement from './ProductElement';
 import { injectIntl, IntlShape } from 'react-intl';
+import { addDefaultImgSrc } from "../../helper/AppHelper";
+import { AppState } from "../../redux/reducer/RootReducer";
+import { connect } from "react-redux";
+import { ShopDto } from "../../rest/ShopsService";
 
 interface ProductListElementState {
     visible: boolean;
@@ -11,7 +15,8 @@ interface ProductListElementState {
 interface ProductListElementProps {
     intl: IntlShape;
     keyElement: string;
-    product: ProductDTO;
+    product: ProductDTO,
+    allShops: ShopDto[]
 }
 
 class ProductListElement extends React.Component<ProductListElementProps,
@@ -43,6 +48,13 @@ class ProductListElement extends React.Component<ProductListElementProps,
     };
 
     public render() {
+        let shopFound = this.props.allShops.find((shop) =>
+            shop.id === Number(this.props.product.shopId)
+        );
+        let shopLogo;
+        if (shopFound) {
+            shopLogo = shopFound.logoPath;
+        }
         return (
             <React.Fragment>
                 <Modal
@@ -62,11 +74,32 @@ class ProductListElement extends React.Component<ProductListElementProps,
                     style={{cursor: 'pointer'}}
                 >
                     <div className="f_p_item shop" style={{height: 230}}>
-                        {this.props.product.price && (
-                            <h6 className="comission blue-color" style={{marginTop: 5}}>
-                                {this.props.product.price} lei
-                            </h6>
-                        )}
+                        <div style={{
+                            display: 'flex',
+                            width: '100%',
+                            alignItems: 'center',
+                            justifyContent: 'space-evenly',
+                            marginTop: 5,
+                            marginBottom: 5
+                        }}>
+                            {this.props.product.price && (
+                                <h6 className="font-style" style={{marginBottom: 0, padding: 5}}>
+                                    {this.props.product.price} lei
+                                </h6>
+                            )}
+                            {shopLogo &&
+                            <img
+                                style={{
+                                    maxWidth: 64,
+                                    maxHeight: 45,
+                                    marginLeft: 25
+                                }}
+                                src={shopLogo}
+                                alt=''
+                                onError={addDefaultImgSrc}
+                            />
+                            }
+                        </div>
                         <div className="shop-image-container" style={{marginBottom: 0, padding: 0}}>
                             <div
                                 className="shop-image"
@@ -74,8 +107,8 @@ class ProductListElement extends React.Component<ProductListElementProps,
                             />
                         </div>
                         <div className="shop-description-container"
-                             style={{overflow: 'auto', padding: 0, maxHeight: 90}}>
-                            <h4 className="comission">
+                             style={{overflow: 'auto', padding: "0px 30px 0px 30px", maxHeight: 90}}>
+                            <h4>
                                 {this.props.product.title}
                             </h4>
                         </div>
@@ -86,4 +119,11 @@ class ProductListElement extends React.Component<ProductListElementProps,
     }
 }
 
-export default injectIntl(ProductListElement);
+const mapStateToProps = (state: AppState) => {
+    return {
+        allShops: state.shops.allShops
+    };
+};
+
+export default connect(mapStateToProps)(injectIntl(ProductListElement));
+
