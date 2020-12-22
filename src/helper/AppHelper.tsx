@@ -106,3 +106,15 @@ export const emailRegexp = new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
 export function addDefaultImgSrc(ev) {
     ev.target.src = noImagePath;
 }
+
+export function add3Dots(string, limit)
+{
+    var dots = "...";
+    if(string.length > limit)
+    {
+        // you can also use substr instead of substring
+        string = string.substring(0,limit) + dots;
+    }
+
+    return string;
+}

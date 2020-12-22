@@ -3,7 +3,7 @@ import { ProductDTO } from '../../rest/ProductsService';
 import Modal from 'react-awesome-modal';
 import ProductElement from './ProductElement';
 import { injectIntl, IntlShape } from 'react-intl';
-import { addDefaultImgSrc } from "../../helper/AppHelper";
+import { add3Dots, addDefaultImgSrc } from "../../helper/AppHelper";
 import { AppState } from "../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import { ShopDto } from "../../rest/ShopsService";
@@ -109,7 +109,7 @@ class ProductListElement extends React.Component<ProductListElementProps,
                         <div className="shop-description-container"
                              style={{overflow: 'auto', padding: "0px 30px 0px 30px", maxHeight: 90}}>
                             <h4>
-                                {this.props.product.title}
+                                {add3Dots(this.props.product.title,50)}
                             </h4>
                         </div>
                     </div>

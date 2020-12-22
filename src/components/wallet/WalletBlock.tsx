@@ -136,6 +136,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         this.setState({
             cashoutVisible: true,
             donateVisible: false,
+            amount: roundMoney(this.props.approved) + ''
         });
     };
 
