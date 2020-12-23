@@ -207,5 +207,7 @@
   "user.info.delete.otp.mail.mesasge": "A fost trimis pe mail-ul tău codul de validare pentru ștergerea contului.",
   "achievements.page.title": "Realizări",
   "leaderboard.page.title": "Clasament",
-  "leaderboard.table.name": "Nume"
+  "leaderboard.table.name": "Utilizator",
+  "leaderboard.table.achievements": "Realizări",
+  "leaderboard.table.staff.member": "Membru din staff"
 }

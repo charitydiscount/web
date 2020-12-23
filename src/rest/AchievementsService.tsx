@@ -118,7 +118,6 @@ export const getLeaderboard = async () => {
         .get()
         .then(querySnapshot => {
                 if (querySnapshot.docs.length > 0) {
-                    let result = [] as LeaderboardEntryDto[];
                     querySnapshot.docs.forEach(doc => {
                             result.push(doc.data() as LeaderboardEntryDto);
                         }
@@ -126,7 +125,13 @@ export const getLeaderboard = async () => {
                 }
             }
         );
-    return result;
+
+    result = result.filter(value => {
+        return value.points
+    }).sort((entry1, entry2) => {
+        return entry2.points - entry1.points;
+    });
+    return result.slice(0, 10); //show only first 10 entries
 };
 
 

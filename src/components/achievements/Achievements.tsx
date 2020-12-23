@@ -23,7 +23,7 @@ class Achievements extends React.Component<AchievementsProps, AchievementsState>
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
+            isLoading: true,
             achievements: []
         }
     }
@@ -59,24 +59,33 @@ class Achievements extends React.Component<AchievementsProps, AchievementsState>
                 <AchievementModal/>
                 <section className="product_description_area section_gap">
                     <div className="container">
-                        <h3 style={{textAlign: "center"}}>
-                            <FormattedMessage
-                                id="achievements.page.title"
-                                defaultMessage="Achievements"
-                            />
-                        </h3>
                         <FadeLoader
                             loading={this.state.isLoading}
                             color={'#e31f29'}
                             css={spinnerCss}
                         />
-                        <div className="row achievements">
-                            {!this.state.isLoading && (
-                                <React.Fragment>
-                                    {achievementList}
-                                </React.Fragment>
-                            )}
-                        </div>
+                        {!this.state.isLoading &&
+                        <React.Fragment>
+                            <h3 style={{textAlign: "center"}}>
+                                <FormattedMessage
+                                    id="achievements.page.title"
+                                    defaultMessage="Achievements"
+                                />
+                            </h3>
+                            <FadeLoader
+                                loading={this.state.isLoading}
+                                color={'#e31f29'}
+                                css={spinnerCss}
+                            />
+                            <div className="row achievements">
+                                {!this.state.isLoading && (
+                                    <React.Fragment>
+                                        {achievementList}
+                                    </React.Fragment>
+                                )}
+                            </div>
+                        </React.Fragment>
+                        }
                     </div>
                 </section>
             </React.Fragment>

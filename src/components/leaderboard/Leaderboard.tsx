@@ -4,9 +4,12 @@ import { NavigationsAction } from "../../redux/actions/NavigationsAction";
 import { Stages } from "../helper/Stages";
 import { FormattedMessage } from "react-intl";
 import { getLeaderboard, LeaderboardEntryDto } from "../../rest/AchievementsService";
+import { roundMoney, spinnerCss } from "../../helper/AppHelper";
+import { injectIntl, IntlShape } from 'react-intl';
+import { FadeLoader } from "react-spinners";
 
 interface LeaderboardProps {
-
+    intl: IntlShape;
 }
 
 interface LeaderboardState {
@@ -40,18 +43,40 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
     public render() {
         let leaderboard;
         if (this.state.leaderboardEntries && this.state.leaderboardEntries.length > 0) {
-            leaderboard = this.state.leaderboardEntries.map(entry => {
+            leaderboard = this.state.leaderboardEntries.map((entry, number) => {
                 return <div className="table-row">
-                    <div className="serial">01</div>
+                    <div className="serial">{number + 1}</div>
                     <div className="country">
-                        {entry.points}
                         <i className="fa fa-heart" style={{
-                            marginLeft: "7px",
+                            marginRight: "7px",
                             color: "red"
                         }}/>
+                        {roundMoney(entry.points)}
+                    </div>
+                    <div className="country">
+                        <i className="fa fa-trophy" style={{
+                            marginRight: "7px",
+                            color: "black"
+                        }}/>
+                        {entry.achievementsCount}
                     </div>
                     <div className="percentage" style={{overflow: "auto"}}>
-                        {entry.anonym ? 'Anonym' : entry.name}
+                        {number == 0 &&
+                        <i className="fa fa-graduation-cap" style={{
+                            marginRight: "7px",
+                            color: "black"
+                        }}/>
+                        }
+                        {entry.anonym || !entry.name ? 'Anonym' : entry.name}
+                        {entry.isStaff && <i className="fa fa-user-plus"
+                                             title={this.props.intl.formatMessage({
+                                                 id: 'leaderboard.table.staff.member'
+                                             })}
+                                             style={{
+                                                 marginLeft: "7px",
+                                                 color: "black"
+                                             }}/>
+                        }
                     </div>
                 </div>;
             });
@@ -61,32 +86,47 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
             <React.Fragment>
                 <section className="product_description_area section_gap">
                     <div className="container">
-                        <h3 style={{textAlign: "center"}}>
-                            <FormattedMessage
-                                id="leaderboard.page.title"
-                                defaultMessage="Leaderboard"
-                            />
-                        </h3>
-                        <div className="row">
-                            <div className="col-md-3"/>
-                            <div className="col-md-4">
-                                <div className="progress-table-wrap">
-                                    <div className="progress-table">
-                                        <div className="table-head">
-                                            <div className="serial">#</div>
-                                            <div className="country">Charity Points</div>
-                                            <div className="percentage">
-                                                <FormattedMessage
-                                                    id="leaderboard.table.name"
-                                                    defaultMessage="Name"
-                                                />
+                        <FadeLoader
+                            loading={this.state.isLoading}
+                            color={'#e31f29'}
+                            css={spinnerCss}
+                        />
+                        {!this.state.isLoading &&
+                        <React.Fragment>
+                            <h3 style={{textAlign: "center"}}>
+                                <FormattedMessage
+                                    id="leaderboard.page.title"
+                                    defaultMessage="Leaderboard"
+                                />
+                            </h3>
+                            <div className="row">
+                                <div className="col-md-2"/>
+                                <div className="col-md-4">
+                                    <div className="progress-table-wrap">
+                                        <div className="progress-table">
+                                            <div className="table-head">
+                                                <div className="serial">#</div>
+                                                <div className="country">Charity Points</div>
+                                                <div className="country">
+                                                    <FormattedMessage
+                                                        id="leaderboard.table.achievements"
+                                                        defaultMessage="Realizari"
+                                                    />
+                                                </div>
+                                                <div className="percentage">
+                                                    <FormattedMessage
+                                                        id="leaderboard.table.name"
+                                                        defaultMessage="Utilizator"
+                                                    />
+                                                </div>
                                             </div>
+                                            {leaderboard}
                                         </div>
-                                        {leaderboard}
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </React.Fragment>
+                        }
                     </div>
                 </section>
             </React.Fragment>
@@ -94,4 +134,4 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
     }
 }
 
-export default Leaderboard;
+export default injectIntl(Leaderboard);

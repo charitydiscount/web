@@ -207,5 +207,7 @@
   "user.info.delete.otp.mail.mesasge": "A mail was sent with the code to validate account deletion.",
   "achievements.page.title": "Achievements",
   "leaderboard.page.title": "Leaderboard",
-  "leaderboard.table.name": "Name"
+  "leaderboard.table.name": "User",
+  "leaderboard.table.achievements": "Achievements",
+  "leaderboard.table.staff.member": "Staff member"
 }
