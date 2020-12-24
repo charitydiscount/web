@@ -7,6 +7,7 @@ import { getLeaderboard, LeaderboardEntryDto } from "../../rest/AchievementsServ
 import { roundMoney, spinnerCss } from "../../helper/AppHelper";
 import { injectIntl, IntlShape } from 'react-intl';
 import { FadeLoader } from "react-spinners";
+import { getUserId } from "../login/AuthHelper";
 
 interface LeaderboardProps {
     intl: IntlShape;
@@ -67,7 +68,8 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
                             color: "black"
                         }}/>
                         }
-                        {entry.anonym || !entry.name ? 'Anonym' : entry.name}
+                        <span
+                            style={entry.userId === getUserId() ? {color: "red"} : {}}>{entry.anonym || !entry.name ? 'Anonym' : entry.name}</span>
                         {entry.isStaff && <i className="fa fa-user-plus"
                                              title={this.props.intl.formatMessage({
                                                  id: 'leaderboard.table.staff.member'
