@@ -54,8 +54,19 @@ export const smallerSpinnerCss = css`
     margin: 50px auto;
 `;
 
+export const achievementPhotoLoading = css`
+    display: block;
+    margin: 0px auto;
+    left: 25px;
+`;
+
 export const emptyBackgroundCss = css`
     height: 0px !important;
+`;
+
+export const tableRowSpinnerCss = css`
+    display: block;
+    margin: auto;
 `;
 
 export function isEmptyString(field) {

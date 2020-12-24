@@ -15,12 +15,15 @@ export enum FirebaseTable {
     SHOPS = 'programs',
     CASES = 'cases',
     USERS = 'users',
+    LEADERBOARD = 'leaderboard',
     POINTS = 'points',
     COMMISSIONS = 'commissions',
     REQUESTS = 'requests',
     OTP_REQUESTS = 'otp-requests',
     OTPS = 'otps',
     PROMOTIONS = 'promotions',
+    ACHIEVEMENTS = 'achievements',
+    USER_ACHIEVEMENTS = 'user-achievements',
     ACCOUNTS = 'accounts',
 }
 
@@ -33,7 +36,8 @@ export enum TableDocument {
 
 export enum StorageRef {
     PROFILE_PHOTOS = 'profilePhotos/',
-    ICONS = 'icons/'
+    ICONS = 'icons/',
+    BADGES = 'badges/'
 }
 
 export enum TxType {

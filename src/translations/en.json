@@ -1,7 +1,7 @@
 {
   "navigation.wallet": "Wallet",
   "navigation.causes": "Causes",
-  "navigation.referral": "Refer a friend",
+  "navigation.referral": "Friends",
   "navigation.shops": "Shops",
   "navigation.welcome": "CharityDiscount",
   "navigation.logout": "Logout",
@@ -179,8 +179,11 @@
   "user.redirect.message3": "Initially, the cashback will be in a pending state for a few days (usually between 14 and 60) and after that, if you haven't returned the products, it will become available",
   "user.redirect.checkbox": "I don't need to see this again",
   "user.disable.mail.notification": "Email notification",
+  "user.leaderboard.anonym": "Leaderboard anonym",
   "user.disable.mail.notification.success.true": "Email notifications are disabled",
   "user.disable.mail.notification.success.false": "Email notifications are enabled",
+  "user.leaderboard.anonym.success.true": "You're data will not be public in leaderboard",
+  "user.leaderboard.anonym.success.false": "You're data will be public in leaderboard",
   "user.disable.mail.notification.error": "Something went wrong, please try again",
   "user.marketing.title": "Marketing agreement",
   "unsubscribe.mail.deactivate": "You are unsubscribed from mail newsletter",
@@ -204,5 +207,10 @@
   "promotions.expires.in.days": " days",
   "promotions.filter.sort.by.expiry.date.ascending": "Expiry date ↑",
   "promotions.filter.sort.by.expiry.date.descending": "Expiry date ↓",
-  "user.info.delete.otp.mail.mesasge": "A mail was sent with the code to validate account deletion."
+  "user.info.delete.otp.mail.mesasge": "A mail was sent with the code to validate account deletion.",
+  "achievements.page.title": "Achievements",
+  "leaderboard.page.title": "Leaderboard",
+  "leaderboard.table.name": "User",
+  "leaderboard.table.achievements": "Achievements",
+  "leaderboard.table.staff.member": "Staff member"
 }

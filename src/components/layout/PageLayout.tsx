@@ -25,6 +25,8 @@ import { spinnerCss } from "../../helper/AppHelper";
 import Promotions from "../promotions/Promotions";
 import { clearStorage } from "../../helper/StorageHelper";
 import { loadUserData } from "../../redux/actions/UserActions";
+import Achievements from "../achievements/Achievements";
+import Leaderboard from "../leaderboard/Leaderboard";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -142,6 +144,16 @@ const PageLayout = (props: PageLayoutProps) => {
                             exact={true}
                             path={Routes.AUTH}
                             component={ExternalAccess}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.ACHIEVEMENTS}
+                            component={Achievements}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.LEADERBOARD}
+                            component={Leaderboard}
                         />
                         <Route render={() => <Redirect to={Routes.SHOPS}/>}/>
                     </Switch>

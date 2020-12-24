@@ -18,8 +18,8 @@ import { Link } from 'react-router-dom';
 import InfoModal from '../modals/InfoModal';
 import ConfirmModal from '../modals/ConfimModal';
 import {
-    getDisableMailNotification,
-    updateDisableMailNotification,
+    getUserDbInfo,
+    updateDisableMailNotification, updateLeaderboardAnonym, UserDto,
 } from '../../rest/UserService';
 import { FormControlLabel } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -44,6 +44,7 @@ interface IUserInfoState {
     accountDeleted: boolean;
     isLoading: boolean;
     disableMailNotification: Boolean;
+    anonym: boolean;
 }
 
 class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
@@ -59,7 +60,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             isLoading: false,
             deleteAccount: false,
             accountDeleted: false,
-            disableMailNotification: false
+            disableMailNotification: false,
+            anonym: false
         };
     }
 
@@ -75,13 +77,36 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         document.addEventListener('keydown', this.escFunction, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
 
-        let response = await getDisableMailNotification(getUserId());
+        let response = await getUserDbInfo(getUserId()) as UserDto;
         if (response) {
             this.setState({
-                disableMailNotification: response
+                disableMailNotification: response.disableMailNotification,
+                anonym: response.anonym
             });
         }
     }
+
+    updateLeaderboardAnonym = async (event) => {
+        let checked = event.target.checked;
+        await updateLeaderboardAnonym(checked)
+            .then(() => {
+                this.setState({
+                    anonym: checked,
+                    infoModalVisible: true,
+                    infoModalMessage: this.props.intl.formatMessage({
+                        id: checked
+                            ? 'user.leaderboard.anonym.success.true'
+                            : 'user.leaderboard.anonym.success.false',
+                    }),
+                });
+            })
+            .catch((error) => {
+                this.setState({
+                    infoModalVisible: true,
+                    infoModalMessage: this.props.intl.formatMessage({id: 'user.disable.mail.notification.error'})
+                });
+            });
+    };
 
     updateMailNotification = async (event) => {
         let checked = event.target.checked;
@@ -288,6 +313,24 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     {this.props.userInfo.displayName}
                                                 </h4>
                                                 <p>{this.props.userInfo.email}</p>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            checked={
+                                                                this.state.anonym
+                                                            }
+                                                            onChange={this.updateLeaderboardAnonym}
+                                                            name="redirectChecked"
+                                                            color="secondary"
+                                                        />
+                                                    }
+                                                    label={this.props.intl.formatMessage(
+                                                        {
+                                                            id:
+                                                                'user.leaderboard.anonym',
+                                                        }
+                                                    )}
+                                                />
                                                 <div className="br"/>
                                                 <h4>
                                                     <FormattedMessage

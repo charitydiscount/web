@@ -1,7 +1,7 @@
 {
   "navigation.wallet": "Portofel",
   "navigation.causes": "Caritate",
-  "navigation.referral": "Invită un prieten",
+  "navigation.referral": "Prieteni",
   "navigation.shops": "Magazine",
   "navigation.welcome": "CharityDiscount",
   "navigation.logout": "Delogare",
@@ -179,8 +179,11 @@
   "user.redirect.message3": "În prima fază, cashback-ul va fi în așteptare, iar după un anumit număr de zile(între 14 și 60 cel mai des), dacă nu ai returnat produsele, va fi disponibil",
   "user.redirect.checkbox": "Nu mai afișa acest mesaj",
   "user.disable.mail.notification": "Notificări pe mail",
+  "user.leaderboard.anonym": "Anonim în clasament",
   "user.disable.mail.notification.success.true": "Notificările pe mail au fost oprite",
   "user.disable.mail.notification.success.false": "Notificările pe mail au fost pornite",
+  "user.leaderboard.anonym.success.true": "Vei apărea ca anonim în clasement",
+  "user.leaderboard.anonym.success.false": "Numele tău va apărea în clasement",
   "user.disable.mail.notification.error": "Eroare, te rugăm să încerci din nou",
   "user.marketing.title": "Acord de marketing",
   "unsubscribe.mail.deactivate": "Ai fost dezabonat",
@@ -204,5 +207,10 @@
   "promotions.expires.in.days": " zile",
   "promotions.filter.sort.by.expiry.date.ascending": "Data de expirare ↑",
   "promotions.filter.sort.by.expiry.date.descending": "Data de expirare ↓",
-  "user.info.delete.otp.mail.mesasge": "A fost trimis pe mail-ul tău codul de validare pentru ștergerea contului."
+  "user.info.delete.otp.mail.mesasge": "A fost trimis pe mail-ul tău codul de validare pentru ștergerea contului.",
+  "achievements.page.title": "Realizări",
+  "leaderboard.page.title": "Clasament",
+  "leaderboard.table.name": "Utilizator",
+  "leaderboard.table.achievements": "Realizări",
+  "leaderboard.table.staff.member": "Membru din staff"
 }
