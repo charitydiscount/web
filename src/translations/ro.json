@@ -108,6 +108,8 @@
   "wallet.cashout.name.error": "Introdu un nume",
   "wallet.cashout.iban.error": "Introdu un IBAN valid",
   "wallet.cashout.amount.error": "Alege o sumă corectă, suma minimă este 50 RON",
+  "wallet.donate.thanks.message": "Donația ta a fost primită. Educația din România îți mulțumește!!!",
+  "wallet.cashout.thanks.message": "Cererea de retragere a fost trimisă. Banii vor fi transferați între 2-4 zile lucrătoare. Spor la cashback !!!",
   "wallet.cashout.no.amount.error": "Nu ai suficienți bani",
   "wallet.donate.amount.error": "Alege o sumă, suma minimă este de 1 RON",
   "wallet.donate.cause.error": "Alege o cauză",

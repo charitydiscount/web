@@ -45,7 +45,7 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
         let leaderboard;
         if (this.state.leaderboardEntries && this.state.leaderboardEntries.length > 0) {
             leaderboard = this.state.leaderboardEntries.map((entry, number) => {
-                return <div className="table-row">
+                return <div className="table-row" key={number}>
                     <div className="serial">{number + 1}</div>
                     <div className="country">
                         <i className="fa fa-heart" style={{
@@ -62,7 +62,7 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
                         {entry.achievementsCount}
                     </div>
                     <div className="percentage" style={{overflow: "auto"}}>
-                        {number == 0 &&
+                        {number === 0 &&
                         <i className="fa fa-graduation-cap" style={{
                             marginRight: "7px",
                             color: "black"

@@ -98,11 +98,11 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                         return t;
                     }
                 }),
-                isLoading: false,
+                isLoading: false
             });
         } catch (error) {
             this.setState({
-                isLoading: false,
+                isLoading: false
             });
         }
     }

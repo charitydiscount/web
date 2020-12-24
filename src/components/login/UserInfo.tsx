@@ -57,7 +57,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             confirmModalVisible: false,
             confirmModalMessage: '',
             otpModalVisible: false,
-            isLoading: false,
+            isLoading: true,
             deleteAccount: false,
             accountDeleted: false,
             disableMailNotification: false,
@@ -81,7 +81,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         if (response) {
             this.setState({
                 disableMailNotification: response.disableMailNotification,
-                anonym: response.anonym
+                anonym: response.anonym,
+                isLoading: false
             });
         }
     }

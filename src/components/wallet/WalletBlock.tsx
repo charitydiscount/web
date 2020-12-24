@@ -36,6 +36,7 @@ interface IWalletBlockState {
     txType: string;
     otpCode?: number;
 
+    txCompleted: boolean
     infoModalVisible: boolean,
     infoModalMessage: string,
 
@@ -73,6 +74,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
             donateVisible: false,
             otpRequestVisible: false,
             otpRequestValidateVisible: false,
+            txCompleted: false,
             infoModalMessage: '',
             infoModalVisible: false,
             txType: '',
@@ -115,9 +117,13 @@ class WalletBlock extends React.Component<IWalletBlockProps,
     };
 
     closeInfoModal = () => {
+        if (this.state.txCompleted && this.props.onTxCompleted) {
+            this.props.onTxCompleted();
+        }
         this.setState({
-            infoModalVisible: false
-        })
+            infoModalVisible: false,
+            txCompleted: false
+        });
     };
 
     openCashoutModal = async () => {
@@ -221,7 +227,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         target: { id: string; name: string }
     ) => {
         this.setState({
-            faderVisible: true,
+            faderVisible: true
         });
         if (txType === 'DONATION') {
             removeLocalStorage(StorageKey.CAUSES);
@@ -238,10 +244,14 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                 this.closeModal();
                 this.setState({
                     faderVisible: false,
+                    txCompleted: true,
+                    infoModalVisible: true,
+                    infoModalMessage: txType === 'DONATION' ? this.props.intl.formatMessage({
+                        id: 'wallet.donate.thanks.message'
+                    }) : this.props.intl.formatMessage({
+                        id: 'wallet.cashout.thanks.message'
+                    })
                 });
-                if (this.props.onTxCompleted) {
-                    this.props.onTxCompleted();
-                }
             }
         });
     };
@@ -365,7 +375,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
             );
         } catch (error) {
             this.setState({
-                faderVisible: false,
+                faderVisible: false
             });
             //nothing happens, DB not working
         }

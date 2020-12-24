@@ -108,6 +108,8 @@
   "wallet.cashout.name.error": "Please enter a name",
   "wallet.cashout.iban.error": "Please enter a valid bank account",
   "wallet.cashout.amount.error": "Please select a correct amount, minimum is 50 RON",
+  "wallet.donate.thanks.message": "Donation received. Romania's education system thanks you!!!",
+  "wallet.cashout.thanks.message": "Cashout request sent. Money will be received between 2-4 working days. Happy cashback !!!",
   "wallet.cashout.no.amount.error": "You don't have enough money",
   "wallet.donate.amount.error": "Please select an amount, minimum is 1 RON",
   "wallet.donate.cause.error": "Please select a cause",
