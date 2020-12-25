@@ -8,7 +8,8 @@ export interface UserDto {
     userId: string;
     disableMailNotification: boolean,
     needsMailConfirmation: boolean,
-    anonym: boolean
+    privateName: boolean,
+    privatePhoto: boolean
 }
 
 export interface AccountDto {
@@ -48,27 +49,28 @@ export function updateDisableMailNotification(disableMailNotification: boolean) 
         );
 }
 
-export async function updateLeaderboardAnonym(anonym: boolean) {
+export async function updateUserPrivateName(privateName: boolean) {
     if (!auth.currentUser) {
         throw Error('User not logged in');
     }
 
-    const leaderboardDocRef = await DB
-        .collection('leaderboard')
-        .doc(auth.currentUser.uid);
-    const leaderboardEntryRef = await leaderboardDocRef.get();
-    if (leaderboardEntryRef.exists) {
-        await leaderboardDocRef.set(
-            {
-                anonym: anonym
-            },
-            {merge: true}
-        );
-    }
     return DB.collection(FirebaseTable.USERS)
         .doc(auth.currentUser.uid)
         .set(
-            {anonym: anonym},
+            {privateName: privateName},
+            {merge: true}
+        );
+}
+
+export async function updateUserPrivatePhoto(privatePhoto: boolean) {
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
+    }
+
+    return DB.collection(FirebaseTable.USERS)
+        .doc(auth.currentUser.uid)
+        .set(
+            {privatePhoto: privatePhoto},
             {merge: true}
         );
 }

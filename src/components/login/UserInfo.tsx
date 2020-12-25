@@ -19,7 +19,7 @@ import InfoModal from '../modals/InfoModal';
 import ConfirmModal from '../modals/ConfimModal';
 import {
     getUserDbInfo,
-    updateDisableMailNotification, updateLeaderboardAnonym, UserDto,
+    updateDisableMailNotification, updateUserPrivateName, updateUserPrivatePhoto, UserDto,
 } from '../../rest/UserService';
 import { FormControlLabel } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -44,7 +44,8 @@ interface IUserInfoState {
     accountDeleted: boolean;
     isLoading: boolean;
     disableMailNotification: Boolean;
-    anonym: boolean;
+    privateName: boolean;
+    privatePhoto: boolean
 }
 
 class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
@@ -61,7 +62,8 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             deleteAccount: false,
             accountDeleted: false,
             disableMailNotification: false,
-            anonym: false
+            privateName: false,
+            privatePhoto: false
         };
     }
 
@@ -81,23 +83,46 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         if (response) {
             this.setState({
                 disableMailNotification: response.disableMailNotification,
-                anonym: response.anonym,
+                privateName: response.privateName,
+                privatePhoto: response.privatePhoto,
                 isLoading: false
             });
         }
     }
 
-    updateLeaderboardAnonym = async (event) => {
+    updatePrivateName = async (event) => {
         let checked = event.target.checked;
-        await updateLeaderboardAnonym(checked)
+        await updateUserPrivateName(checked)
             .then(() => {
                 this.setState({
-                    anonym: checked,
+                    privateName: checked,
                     infoModalVisible: true,
                     infoModalMessage: this.props.intl.formatMessage({
                         id: checked
-                            ? 'user.leaderboard.anonym.success.true'
-                            : 'user.leaderboard.anonym.success.false',
+                            ? 'user.private.name.success.true'
+                            : 'user.private.name.success.false',
+                    }),
+                });
+            })
+            .catch((error) => {
+                this.setState({
+                    infoModalVisible: true,
+                    infoModalMessage: this.props.intl.formatMessage({id: 'user.disable.mail.notification.error'})
+                });
+            });
+    };
+
+    updatePrivatePhoto = async (event) => {
+        let checked = event.target.checked;
+        await updateUserPrivatePhoto(checked)
+            .then(() => {
+                this.setState({
+                    privatePhoto: checked,
+                    infoModalVisible: true,
+                    infoModalMessage: this.props.intl.formatMessage({
+                        id: checked
+                            ? 'user.private.photo.success.true'
+                            : 'user.private.photo.success.false',
                     }),
                 });
             })
@@ -318,9 +343,9 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     control={
                                                         <Checkbox
                                                             checked={
-                                                                this.state.anonym
+                                                                this.state.privateName
                                                             }
-                                                            onChange={this.updateLeaderboardAnonym}
+                                                            onChange={this.updatePrivateName}
                                                             name="redirectChecked"
                                                             color="secondary"
                                                         />
@@ -328,7 +353,25 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     label={this.props.intl.formatMessage(
                                                         {
                                                             id:
-                                                                'user.leaderboard.anonym',
+                                                                'user.private.name',
+                                                        }
+                                                    )}
+                                                />
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            checked={
+                                                                this.state.privatePhoto
+                                                            }
+                                                            onChange={this.updatePrivatePhoto}
+                                                            name="redirectChecked"
+                                                            color="secondary"
+                                                        />
+                                                    }
+                                                    label={this.props.intl.formatMessage(
+                                                        {
+                                                            id:
+                                                                'user.private.photo',
                                                         }
                                                     )}
                                                 />
