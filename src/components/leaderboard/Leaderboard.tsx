@@ -4,11 +4,10 @@ import { NavigationsAction } from "../../redux/actions/NavigationsAction";
 import { Stages } from "../helper/Stages";
 import { FormattedMessage } from "react-intl";
 import { getLeaderboard, LeaderboardEntryDto } from "../../rest/AchievementsService";
-import { addDefaultImgSrc, roundMoney, spinnerCss } from "../../helper/AppHelper";
+import { spinnerCss } from "../../helper/AppHelper";
 import { injectIntl, IntlShape } from 'react-intl';
 import { FadeLoader } from "react-spinners";
-import { getUserId } from "../login/AuthHelper";
-import { noImagePath } from "../../helper/Constants";
+import LeaderboardEntry from "./LeaderboardEntry";
 
 interface LeaderboardProps {
     intl: IntlShape;
@@ -42,64 +41,11 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
         }
     }
 
-    showLeaderboardNumber(position: number) {
-        if (position === 0) {
-            return <i className="fa fa-trophy fa-2x" style={{color: "gold", fontSize: 25}}/>;
-        } else if (position === 1) {
-            return <i className="fa fa-trophy" style={{color: "silver", fontSize: 25}}/>;
-        } else if (position === 2) {
-            return <i className="fa fa-trophy" style={{color: "#cd7f32", fontSize: 25}}/>;
-        }
-
-        return position + 1;
-    }
-
     public render() {
         let leaderboard;
         if (this.state.leaderboardEntries && this.state.leaderboardEntries.length > 0) {
             leaderboard = this.state.leaderboardEntries.map((entry, position) => {
-                return <div className="table-row" key={position}>
-                    <div className="serial">
-                        {this.showLeaderboardNumber(position)}
-                    </div>
-                    <div className="country" style={{width: "20%"}}>
-                        <i className="fa fa-heart" style={{
-                            marginRight: "7px",
-                            marginLeft: "15px",
-                            fontSize: 20,
-                            color: "red"
-                        }}/>
-                        {roundMoney(entry.points)}
-                    </div>
-                    <div className="country" style={{width: "14%"}}>
-                        <i className="fa fa-trophy" style={{
-                            marginRight: "7px",
-                            marginLeft: "15px",
-                            color: "black"
-                        }}/>
-                        {entry.achievementsCount}
-                    </div>
-                    <div className="percentage" style={{overflow: "auto", maxWidth: 320}}>
-                        <img style={{borderRadius: 50, marginRight: 5}}
-                             src={entry.photoUrl ? entry.photoUrl : noImagePath}
-                             width={40}
-                             alt="Missing"
-                             height={40}
-                             onError={addDefaultImgSrc}>
-                        </img>
-                        <span
-                            style={entry.userId === getUserId() ? {color: "red"} : {}}>{!entry.name ? 'Anonym' : entry.name}</span>
-                        {entry.isStaff && <i className="fa fa-user-plus"
-                                             title={this.props.intl.formatMessage({
-                                                 id: 'leaderboard.table.staff.member'
-                                             })}
-                                             style={{
-                                                 marginLeft: "7px",
-                                                 color: "black"
-                                             }}/>
-                        }
-                    </div>
-                </div>;
+                return <LeaderboardEntry key={"key" + position} entry={entry} position={position}/>
             });
         }
 
@@ -127,7 +73,9 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
                                         <div className="progress-table">
                                             <div className="table-head">
                                                 <div className="serial" style={{fontSize: 14}}>#</div>
-                                                <div className="country" style={{width: "20%", fontSize: 14}}>Charity Points</div>
+                                                <div className="country" style={{width: "20%", fontSize: 14}}>Charity
+                                                    Points
+                                                </div>
                                                 <div className="country" style={{width: "14%", fontSize: 14}}>
                                                     <FormattedMessage
                                                         id="leaderboard.table.achievements"
