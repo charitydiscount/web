@@ -3,7 +3,7 @@ import { getLocalStorage, setLocalStorage } from './StorageHelper';
 import {
     StorageKey,
     PROGRAM_LINK_PLACEHOLDER,
-    USER_LINK_PLACEHOLDER, noImagePath,
+    USER_LINK_PLACEHOLDER, noImagePath, facebookPictureKey, profilePictureSuffix,
 } from './Constants';
 import { css } from '@emotion/core';
 import { store, auth } from '../index';
@@ -118,14 +118,22 @@ export function addDefaultImgSrc(ev) {
     ev.target.src = noImagePath;
 }
 
-export function add3Dots(string, limit)
-{
+export function add3Dots(string, limit) {
     var dots = "...";
-    if(string.length > limit)
-    {
+    if (string.length > limit) {
         // you can also use substr instead of substring
-        string = string.substring(0,limit) + dots;
+        string = string.substring(0, limit) + dots;
     }
 
     return string;
+}
+
+export function getImagePath(photoUrl) {
+    if (photoUrl) {
+        return photoUrl.includes(facebookPictureKey) ?
+            photoUrl + profilePictureSuffix :
+            photoUrl;
+    } else {
+        return noImagePath;
+    }
 }

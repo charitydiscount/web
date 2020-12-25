@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { doLogoutAction } from '../../redux/actions/UserActions';
 import { setShops } from '../../redux/actions/ShopsAction';
 import { getLocalStorage } from '../../helper/StorageHelper';
-import { emptyHrefLink, facebookPictureKey, profilePictureSuffix, StorageKey } from '../../helper/Constants';
+import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import { ShopDto } from '../../rest/ShopsService';
 import {
     setCurrentCategory,
@@ -13,7 +13,7 @@ import {
 import { Routes } from '../helper/Routes';
 import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
-import { addDefaultImgSrc, onLanguageChange, redirectToAbout } from '../../helper/AppHelper';
+import { addDefaultImgSrc, getImagePath, onLanguageChange, redirectToAbout } from '../../helper/AppHelper';
 import { Link } from 'react-router-dom';
 import { UserInfoDto } from "../login/AuthHelper";
 
@@ -431,9 +431,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                             {this.props.userInfo && this.props.userInfo.photoURL &&
                                             <img className="photo"
                                                  alt="Missing"
-                                                 src={ this.props.userInfo.photoURL.includes(facebookPictureKey) ?
-                                                     this.props.userInfo.photoURL + profilePictureSuffix :
-                                                     this.props.userInfo.photoURL}
+                                                 src={getImagePath(this.props.userInfo.photoURL)}
                                                  onError={addDefaultImgSrc}/>
                                             }
                                         </ul>

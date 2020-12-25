@@ -21,7 +21,6 @@ export const LoginMapper = {
 };
 
 export function parseAndSaveUser(user: firebase.User) {
-    let alreadyExistingUserInfo = getUserInfo();
     let objectMapper = require('object-mapper');
     let parsedUser = objectMapper(
         user,
@@ -30,10 +29,7 @@ export function parseAndSaveUser(user: firebase.User) {
     if (user.metadata.creationTime) {
         parsedUser.creationTime = user.metadata.creationTime;
     }
-    if (alreadyExistingUserInfo) {
-        parsedUser.photoURL = alreadyExistingUserInfo.photoURL;
-        parsedUser.normalUser = alreadyExistingUserInfo.normalUser;
-    }
+    parsedUser.normalUser = user.providerData[0].providerId === "password";
     setLocalStorage(StorageKey.USER, JSON.stringify(parsedUser));
     return parsedUser;
 }

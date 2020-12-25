@@ -5,7 +5,6 @@ import { Stages } from '../helper/Stages';
 import { spinnerCss } from '../../helper/AppHelper';
 import { emptyHrefLink, StorageKey } from '../../helper/Constants';
 import { ShopDto } from '../../rest/ShopsService';
-import Review from './Review';
 import { fetchReviews, ReviewDto, saveReview } from '../../rest/ReviewService';
 import { FormattedMessage } from 'react-intl';
 import { injectIntl, IntlShape } from 'react-intl';
@@ -19,6 +18,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducer/RootReducer';
 import { UserInfoDto } from '../login/AuthHelper';
 import InfoModal from '../modals/InfoModal';
+import { Review } from "./Review";
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -111,7 +111,7 @@ class ShopReview extends React.Component<IProductReviewProps,
                         userId: this.props.userInfo.uid,
                         name:
                             this.props.userInfo.displayName || this.props.userInfo.email || '-',
-                        photoUrl: this.props.userInfo.photoURL || '',
+                        photoUrl: this.props.userInfo.photoURL
                     }
                 );
                 removeLocalStorage(StorageKey.REVIEWS_RATINGS);
@@ -188,9 +188,9 @@ class ShopReview extends React.Component<IProductReviewProps,
     public render() {
         const reviewsList =
             this.state.reviews && this.state.reviews.length > 0 ? (
-                this.state.reviews.map((review) => {
+                this.state.reviews.map((review, position) => {
                     return (
-                        <Review key={review.reviewer.name} review={review}/>
+                        <Review key={"key" + position} review={review}/>
                     );
                 })
             ) : (

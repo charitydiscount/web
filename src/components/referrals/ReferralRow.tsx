@@ -1,17 +1,13 @@
 import { injectIntl, IntlShape } from 'react-intl';
 import * as React from 'react';
 import { ReferralDto } from '../../rest/ReferralService';
-import { loadUserIdPhoto } from '../login/UserPhotoHelper';
 import {
     getNotPaidSumForReferralId,
     getPaidSumForReferralId,
 } from '../../rest/WalletService';
-import { noImagePath } from "../../helper/Constants";
+import { addDefaultImgSrc, getImagePath } from "../../helper/AppHelper";
 
 interface ReferralRowState {
-    photoURL: string,
-    userId: string,
-    isLoadingPhoto: boolean;
     referralPaidSum: number;
     referralNotPaidSum: number;
 }
@@ -25,20 +21,12 @@ class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
     constructor(props: ReferralRowProps) {
         super(props);
         this.state = {
-            photoURL: '',
-            userId: '',
             referralPaidSum: 0,
-            referralNotPaidSum: 0,
-            isLoadingPhoto: false,
+            referralNotPaidSum: 0
         };
     }
 
     async componentDidMount() {
-        await loadUserIdPhoto(
-            this,
-            this.props.referral.photoUrl,
-            this.props.referral.userId
-        );
         try {
             let paidResponse = await getPaidSumForReferralId(
                 this.props.referral.userId
@@ -70,20 +58,14 @@ class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
                             : '-'}
                     </h6>
                     <div className="f_p_img d-flex">
-                        {!this.state.isLoadingPhoto && (
-                            <img
-                                className="author_img rounded-circle"
-                                src={this.state.photoURL}
-                                alt=""
-                                height={95}
-                                width={95}
-                                onError={() =>
-                                    this.setState({
-                                        photoURL: noImagePath
-                                    })
-                                }
-                            />
-                        )}
+                        <img
+                            className="author_img rounded-circle"
+                            src={getImagePath(this.props.referral.photoUrl)}
+                            alt="Missing"
+                            height={95}
+                            width={95}
+                            onError={addDefaultImgSrc}
+                        />
                     </div>
                     <h4>{this.props.referral.name}</h4>
                 </div>

@@ -3,15 +3,13 @@ import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import * as React from 'react';
 import {
-    emptyHrefLink, facebookPictureKey,
-    profilePictureDefaultName, profilePictureSuffix,
-    StorageRef,
+    emptyHrefLink, profilePictureDefaultName, StorageRef,
 } from '../../helper/Constants';
 import { doLogoutAction, updateUserPhoto } from '../../redux/actions/UserActions';
 import { connect } from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { addDefaultImgSrc, spinnerCss } from '../../helper/AppHelper';
+import { addDefaultImgSrc, getImagePath, spinnerCss } from '../../helper/AppHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { Routes } from '../helper/Routes';
 import { Link } from 'react-router-dom';
@@ -19,18 +17,19 @@ import InfoModal from '../modals/InfoModal';
 import ConfirmModal from '../modals/ConfimModal';
 import {
     getUserDbInfo,
-    updateDisableMailNotification, updateUserPrivateName, updateUserPrivatePhoto, UserDto,
+    updateDisableMailNotification, updateUserPhotoUrl, updateUserPrivateName, updateUserPrivatePhoto, UserDto,
 } from '../../rest/UserService';
 import { FormControlLabel } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { getUserId, UserInfoDto } from './AuthHelper';
 import OtpModal from "../modals/OtpModal";
 import { createOtpRequest, validateOtpCode } from "../../rest/WalletService";
+import { fetchProfilePhoto } from "../../rest/StorageService";
 
 interface IUserInfoProps {
     intl: IntlShape;
     logout: () => void;
-    updateUserPhoto: () => void;
+    updateUserPhoto: (photoUrl: string) => void,
     userInfo: UserInfoDto
 }
 
@@ -263,13 +262,21 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     };
 
     handleUploadSuccess = async () => {
+        const response = await fetchProfilePhoto(getUserId());
+        //update in auth
+        await auth.currentUser.updateProfile(
+            {photoURL: response as string}
+        );
+        //update in users
+        await updateUserPhotoUrl(response as string);
+
         this.setState({
             infoModalVisible: true,
             infoModalMessage: this.props.intl.formatMessage({
                 id: 'userInfo.profile.picture.uploaded',
             }),
         });
-        this.props.updateUserPhoto();
+        this.props.updateUserPhoto(response as string);
     };
 
     handleUploadError = () => {
@@ -325,11 +332,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                             <aside className="single_sidebar_widget author_widget">
                                                 <img
                                                     className="author_img rounded-circle"
-                                                    src={
-                                                        this.props.userInfo.photoURL.includes(facebookPictureKey) ?
-                                                            this.props.userInfo.photoURL + profilePictureSuffix :
-                                                            this.props.userInfo.photoURL
-                                                    }
+                                                    src={getImagePath(this.props.userInfo.photoURL)}
                                                     alt="Missing"
                                                     width={200}
                                                     height={200}
@@ -412,45 +415,45 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                 >
                                     <div className="blog_right_sidebar">
                                         <aside className="single_sidebar_widget popular_post_widget">
-                                            {this.props.userInfo.normalUser && (
-                                                <div>
-                                                    <div className="col-md-12 text-center p_05">
-                                                        <a
-                                                            href={emptyHrefLink}
-                                                            className="btn submit_btn userInfo_btn genric-btn circle"
+                                            <div>
+                                                <div className="col-md-12 text-center p_05">
+                                                    <a
+                                                        href={emptyHrefLink}
+                                                        className="btn submit_btn userInfo_btn genric-btn circle"
+                                                    >
+                                                        <label
+                                                            style={{
+                                                                marginBottom: 0,
+                                                                minWidth:
+                                                                    '100%',
+                                                                borderRadius: 20,
+                                                                cursor:
+                                                                    'pointer',
+                                                            }}
                                                         >
-                                                            <label
-                                                                style={{
-                                                                    marginBottom: 0,
-                                                                    minWidth:
-                                                                        '100%',
-                                                                    borderRadius: 20,
-                                                                    cursor:
-                                                                        'pointer',
+                                                            <FormattedMessage
+                                                                id="userinfo.upload.button"
+                                                                defaultMessage="Upload photo"
+                                                            />
+                                                            <FileUploader
+                                                                hidden
+                                                                accept="image/*"
+                                                                filename={
+                                                                    profilePictureDefaultName
+                                                                }
+                                                                storageRef={storage.ref(
+                                                                    StorageRef.PROFILE_PHOTOS +
+                                                                    this.props.userInfo.uid
+                                                                )}
+                                                                onUploadError={this.handleUploadError}
+                                                                onUploadSuccess={this.handleUploadSuccess}
+                                                                onUploadStart={() => {
                                                                 }}
-                                                            >
-                                                                <FormattedMessage
-                                                                    id="userinfo.upload.button"
-                                                                    defaultMessage="Upload photo"
-                                                                />
-                                                                <FileUploader
-                                                                    hidden
-                                                                    accept="image/*"
-                                                                    filename={
-                                                                        profilePictureDefaultName
-                                                                    }
-                                                                    storageRef={storage.ref(
-                                                                        StorageRef.PROFILE_PHOTOS +
-                                                                        this.props.userInfo.uid
-                                                                    )}
-                                                                    onUploadError={this.handleUploadError}
-                                                                    onUploadSuccess={this.handleUploadSuccess}
-                                                                    onUploadStart={() => {
-                                                                    }}
-                                                                />
-                                                            </label>
-                                                        </a>
-                                                    </div>
+                                                            />
+                                                        </label>
+                                                    </a>
+                                                </div>
+                                                {this.props.userInfo.normalUser && (
                                                     <div className="col-md-12 text-center p_05">
                                                         <a
                                                             href={emptyHrefLink}
@@ -471,9 +474,10 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                             />
                                                         </a>
                                                     </div>
-                                                    <div className="br"/>
-                                                </div>
-                                            )}
+                                                )}
+                                                <div className="br"/>
+                                            </div>
+
                                             <div className="col-md-12 text-center p_05">
                                                 <Link
                                                     to={Routes.CONTACT}
@@ -571,7 +575,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         logout: () => dispatch(doLogoutAction()),
-        updateUserPhoto: () => dispatch(updateUserPhoto())
+        updateUserPhoto: (photoUrl) => dispatch(updateUserPhoto(photoUrl))
     };
 };
 
