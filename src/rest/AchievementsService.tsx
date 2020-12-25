@@ -115,6 +115,8 @@ export const getLeaderboard = async () => {
 
     let result = [] as LeaderboardEntryDto[];
     await DB.collection(FirebaseTable.LEADERBOARD)
+        .orderBy('points', 'desc')
+        .limit(10)
         .get()
         .then(querySnapshot => {
                 if (querySnapshot.docs.length > 0) {
@@ -126,12 +128,7 @@ export const getLeaderboard = async () => {
             }
         );
 
-    result = result.filter(value => {
-        return value.points
-    }).sort((entry1, entry2) => {
-        return entry2.points - entry1.points;
-    });
-    return result.slice(0, 10); //show only first 10 entries
+    return result;
 };
 
 

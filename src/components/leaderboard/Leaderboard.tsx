@@ -62,12 +62,6 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
                         {entry.achievementsCount}
                     </div>
                     <div className="percentage" style={{overflow: "auto"}}>
-                        {number === 0 &&
-                        <i className="fa fa-graduation-cap" style={{
-                            marginRight: "7px",
-                            color: "black"
-                        }}/>
-                        }
                         <span
                             style={entry.userId === getUserId() ? {color: "red"} : {}}>{entry.anonym || !entry.name ? 'Anonym' : entry.name}</span>
                         {entry.isStaff && <i className="fa fa-user-plus"
