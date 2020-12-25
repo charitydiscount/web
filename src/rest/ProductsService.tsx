@@ -33,7 +33,7 @@ export interface ProductResponse {
     affiliate_url: string;
 }
 
-export interface ProductDTO {
+export interface Product {
     price: number;
     title: string;
     imageUrl: string;
@@ -46,11 +46,11 @@ export interface ProductDTO {
 }
 
 export interface ProductResult {
-    products: ProductDTO[];
+    products: Product[];
     total: number;
 }
 
-export async function getFeaturedProducts(): Promise<ProductDTO[]> {
+export async function getFeaturedProducts(): Promise<Product[]> {
     if (!auth.currentUser) {
         return [];
     }
@@ -79,7 +79,7 @@ export async function searchProduct(
     maxPrice: string,
     sort: string,
     currentPage: number
-): Promise<{ products: ProductDTO[]; total: number }> {
+): Promise<{ products: Product[]; total: number }> {
     if (!auth.currentUser) {
         return {
             products: [],
@@ -144,7 +144,7 @@ function buildSearchUrl(
     return url;
 }
 
-function toProductDTO(productResponse: ProductWrapper): ProductDTO {
+function toProductDTO(productResponse: ProductWrapper): Product {
     return {
         title: productResponse._source.title,
         id: productResponse._source.product_id,

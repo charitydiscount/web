@@ -148,6 +148,7 @@
   "products.filters.sorting": "Sorting",
   "products.filters.sorting.ascending": "Ascending",
   "products.filters.sorting.descending": "Descending",
+  "product.element.more.details": "More details...",
   "shops.filters.sorting.ascending": "Reviews number ↑",
   "shops.filters.sorting.descending": "Reviews number ↓",
   "sort.key": "Sort",

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ProductDTO } from '../../rest/ProductsService';
+import { Product } from '../../rest/ProductsService';
 import Modal from 'react-awesome-modal';
 import ProductElement from './ProductElement';
 import { injectIntl, IntlShape } from 'react-intl';
@@ -13,9 +13,9 @@ interface ProductListElementState {
 }
 
 interface ProductListElementProps {
-    intl: IntlShape;
-    keyElement: string;
-    product: ProductDTO,
+    intl: IntlShape,
+    keyElement: string,
+    product: Product,
     allShops: ShopDto[]
 }
 
@@ -64,6 +64,7 @@ class ProductListElement extends React.Component<ProductListElementProps,
                 >
                     <ProductElement
                         key={'element' + this.props.keyElement}
+                        productInfo={false}
                         onCloseModal={this.closeModal}
                         product={this.props.product}
                     />
@@ -109,7 +110,7 @@ class ProductListElement extends React.Component<ProductListElementProps,
                         <div className="shop-description-container"
                              style={{overflow: 'auto', padding: "0px 30px 0px 30px", maxHeight: 90}}>
                             <h4>
-                                {add3Dots(this.props.product.title,50)}
+                                {add3Dots(this.props.product.title, 50)}
                             </h4>
                         </div>
                     </div>

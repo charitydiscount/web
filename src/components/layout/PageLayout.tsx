@@ -27,6 +27,7 @@ import { clearStorage } from "../../helper/StorageHelper";
 import { loadUserData } from "../../redux/actions/UserActions";
 import Achievements from "../achievements/Achievements";
 import Leaderboard from "../leaderboard/Leaderboard";
+import ProductInfo from "../products/ProductInfo";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -64,6 +65,11 @@ const PageLayout = (props: PageLayoutProps) => {
                             exact={true}
                             path={Routes.SHOPS + '/:favShops'}
                             component={Shops}
+                        />
+                        <Route
+                            exact={true}
+                            path={Routes.PRODUCT_INFO}
+                            component={ProductInfo}
                         />
                         <Route
                             exact={true}
