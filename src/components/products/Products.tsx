@@ -9,7 +9,7 @@ import GenericInput from '../input/GenericInput';
 import { FadeLoader } from 'react-spinners';
 import {
     getFeaturedProducts,
-    ProductDTO,
+    Product,
     ProductResult,
     searchProduct,
 } from '../../rest/ProductsService';
@@ -32,7 +32,7 @@ interface ProductsProps {
 
 interface ProductsState {
     isLoading: boolean;
-    products: Array<ProductDTO>;
+    products: Array<Product>;
     currentPage: number;
     total: number;
 }
@@ -54,7 +54,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
         super(props);
         this.state = {
             isLoading: false,
-            products: {} as Array<ProductDTO>,
+            products: {} as Array<Product>,
             currentPage: 0,
             total: 50,
         };
@@ -89,7 +89,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
             let response = await getFeaturedProducts();
             if (response) {
                 this.setState({
-                    products: response as Array<ProductDTO>,
+                    products: response as Array<Product>,
                     isLoading: false,
                 });
             } else {
@@ -142,7 +142,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                 let response = await getFeaturedProducts();
                 if (response) {
                     this.setState({
-                        products: response as Array<ProductDTO>,
+                        products: response as Array<Product>,
                         isLoading: false,
                     });
                 } else {

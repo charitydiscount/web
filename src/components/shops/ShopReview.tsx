@@ -142,7 +142,7 @@ class ShopReview extends React.Component<IProductReviewProps,
                 null
             );
         }
-    }
+    };
 
     handleShowModalMessage = (message, favShop) => {
         if (favShop !== null) {

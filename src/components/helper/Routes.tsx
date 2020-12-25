@@ -8,6 +8,7 @@ export enum Routes {
     UNSUBSCRIBE_MAIL_NEWSLETTER = "/unsubscribe",
     SHOPS = "/shops",
     SHOP = "/shop",
+    PRODUCT_INFO = "/product-info",
     CAUSES = "/causes",
     WALLET = "/wallet",
     REVIEW = "/review",
