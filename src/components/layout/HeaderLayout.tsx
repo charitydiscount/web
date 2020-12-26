@@ -358,7 +358,7 @@ class HeaderLayout extends React.Component<IHeaderLayoutProps,
                                                             to={Routes.LEADERBOARD}
                                                             className="icons"
                                                         >
-                                                            <i className="fa fa-table"/>
+                                                            <i className="fa fa-cubes"/>
                                                         </Link>
                                                     </li>
                                                     <li className="nav-item">

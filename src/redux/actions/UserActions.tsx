@@ -23,9 +23,16 @@ export const doLogoutAction = () => async (dispatch: any) => {
     dispatch(AuthActions.resetLoggedUserAction());
 };
 
-export const updateUserPhoto = (photoUrl) => async (dispatch: any) => {
+export const updateUserPhotoInState = (photoUrl) => async (dispatch: any) => {
     let currentUser = getUserInfo();
     currentUser.photoURL = photoUrl;
+    setLocalStorage(StorageKey.USER, JSON.stringify(currentUser));
+    return dispatch(AuthActions.loadUserData(currentUser));
+};
+
+export const updateUserNameInState = (name) => async (dispatch: any) => {
+    let currentUser = getUserInfo();
+    currentUser.displayName = name;
     setLocalStorage(StorageKey.USER, JSON.stringify(currentUser));
     return dispatch(AuthActions.loadUserData(currentUser));
 };

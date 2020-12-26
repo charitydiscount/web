@@ -2,14 +2,14 @@ import React from 'react';
 import Modal from 'react-awesome-modal';
 import { emptyHrefLink, logoPath } from "../../helper/Constants";
 
-export interface ModalProps {
+export interface ConfirmModalProps {
     visible: boolean;
     message: string;
     onClose: () => void;
     onSave: () => void;
 }
 
-export const ConfirmModal: React.FunctionComponent<ModalProps> = props => {
+const ConfirmModal: React.FunctionComponent<ConfirmModalProps> = props => {
     return (
         <Modal
             visible={props.visible}

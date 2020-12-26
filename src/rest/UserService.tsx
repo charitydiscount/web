@@ -62,6 +62,25 @@ export async function updateUserPrivateName(privateName: boolean) {
         );
 }
 
+export async function updateUserName(name: string) {
+    if (!auth.currentUser) {
+        throw Error('User not logged in');
+    }
+
+    //update in auth
+    await auth.currentUser.updateProfile(
+        {displayName: name}
+    );
+
+    //update in users table
+    return DB.collection(FirebaseTable.USERS)
+        .doc(auth.currentUser.uid)
+        .set(
+            {name: name},
+            {merge: true}
+        );
+}
+
 export async function updateUserPhotoUrl(photoUrl: string) {
     if (!auth.currentUser) {
         throw Error('User not logged in');

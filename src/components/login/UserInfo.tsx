@@ -5,7 +5,7 @@ import * as React from 'react';
 import {
     emptyHrefLink, profilePictureDefaultName, StorageRef,
 } from '../../helper/Constants';
-import { doLogoutAction, updateUserPhoto } from '../../redux/actions/UserActions';
+import { doLogoutAction, updateUserNameInState, updateUserPhotoInState } from '../../redux/actions/UserActions';
 import { connect } from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
@@ -17,7 +17,12 @@ import InfoModal from '../modals/InfoModal';
 import ConfirmModal from '../modals/ConfimModal';
 import {
     getUserDbInfo,
-    updateDisableMailNotification, updateUserPhotoUrl, updateUserPrivateName, updateUserPrivatePhoto, UserDto,
+    updateDisableMailNotification,
+    updateUserName,
+    updateUserPhotoUrl,
+    updateUserPrivateName,
+    updateUserPrivatePhoto,
+    UserDto,
 } from '../../rest/UserService';
 import { FormControlLabel } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -25,11 +30,13 @@ import { getUserId, UserInfoDto } from './AuthHelper';
 import OtpModal from "../modals/OtpModal";
 import { createOtpRequest, validateOtpCode } from "../../rest/WalletService";
 import { fetchProfilePhoto } from "../../rest/StorageService";
+import UserUpdateModal from "../modals/UserUpdateModal";
 
 interface IUserInfoProps {
     intl: IntlShape;
     logout: () => void;
-    updateUserPhoto: (photoUrl: string) => void,
+    updateUserPhotoInState: (photoUrl: string) => void,
+    updateUserNameInState: (name: string) => void,
     userInfo: UserInfoDto
 }
 
@@ -39,6 +46,7 @@ interface IUserInfoState {
     confirmModalVisible: boolean;
     confirmModalMessage: string;
     otpModalVisible: boolean,
+    userNameModalVisible: boolean,
     deleteAccount: boolean;
     accountDeleted: boolean;
     isLoading: boolean;
@@ -62,6 +70,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             accountDeleted: false,
             disableMailNotification: false,
             privateName: false,
+            userNameModalVisible: false,
             privatePhoto: false
         };
     }
@@ -106,7 +115,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             .catch((error) => {
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({id: 'user.disable.mail.notification.error'})
+                    infoModalMessage: this.props.intl.formatMessage({id: 'user.update.general.error'})
                 });
             });
     };
@@ -128,7 +137,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             .catch((error) => {
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({id: 'user.disable.mail.notification.error'})
+                    infoModalMessage: this.props.intl.formatMessage({id: 'user.update.general.error'})
                 });
             });
     };
@@ -150,7 +159,27 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
             .catch((error) => {
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({id: 'user.disable.mail.notification.error'})
+                    infoModalMessage: this.props.intl.formatMessage({id: 'user.update.general.error'})
+                });
+            });
+    };
+
+    updateUserInfoName = async (name) => {
+        await updateUserName(name)
+            .then(() => {
+                this.props.updateUserNameInState(name);
+                this.setState({
+                    infoModalVisible: true,
+                    infoModalMessage: this.props.intl.formatMessage({
+                        id: 'user.update.name.success'
+                    }),
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+                this.setState({
+                    infoModalVisible: true,
+                    infoModalMessage: this.props.intl.formatMessage({id: 'user.update.general.error'})
                 });
             });
     };
@@ -251,6 +280,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
 
     closeInfoModal = () => {
         this.setState({
+            userNameModalVisible: false,
             infoModalVisible: false
         });
     };
@@ -258,6 +288,12 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
     closeOtpModal = () => {
         this.setState({
             otpModalVisible: false
+        });
+    };
+
+    closeUserUpdateModal = () => {
+        this.setState({
+            userNameModalVisible: false
         });
     };
 
@@ -276,7 +312,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                 id: 'userInfo.profile.picture.uploaded',
             }),
         });
-        this.props.updateUserPhoto(response as string);
+        this.props.updateUserPhotoInState(response as string);
     };
 
     handleUploadError = () => {
@@ -300,6 +336,10 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                     loading={this.state.isLoading}
                     color={'#e31f29'}
                     css={spinnerCss}
+                />
+                <UserUpdateModal visible={this.state.userNameModalVisible}
+                                 onClose={this.closeUserUpdateModal}
+                                 onValidate={this.updateUserInfoName}
                 />
                 <OtpModal visible={this.state.otpModalVisible}
                           onValidate={this.onOtpValidate}
@@ -453,6 +493,24 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                         </label>
                                                     </a>
                                                 </div>
+                                                <div className="col-md-12 text-center p_05">
+                                                    <a
+                                                        href={emptyHrefLink}
+                                                        onClick={
+                                                            () => {
+                                                                this.setState({
+                                                                    userNameModalVisible: true
+                                                                });
+                                                            }
+                                                        }
+                                                        className="btn submit_btn userInfo_btn genric-btn circle"
+                                                    >
+                                                        <FormattedMessage
+                                                            id="user.update.name.button"
+                                                            defaultMessage="Schimba numele"
+                                                        />
+                                                    </a>
+                                                </div>
                                                 {this.props.userInfo.normalUser && (
                                                     <div className="col-md-12 text-center p_05">
                                                         <a
@@ -470,7 +528,7 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                                                         >
                                                             <FormattedMessage
                                                                 id="userinfo.change.password.button"
-                                                                defaultMessage="Change password"
+                                                                defaultMessage="Schimba parola"
                                                             />
                                                         </a>
                                                     </div>
@@ -575,7 +633,8 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         logout: () => dispatch(doLogoutAction()),
-        updateUserPhoto: (photoUrl) => dispatch(updateUserPhoto(photoUrl))
+        updateUserPhotoInState: (photoUrl) => dispatch(updateUserPhotoInState(photoUrl)),
+        updateUserNameInState: (name) => dispatch(updateUserNameInState(name))
     };
 };
 

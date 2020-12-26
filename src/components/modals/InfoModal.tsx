@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-awesome-modal';
 import { emptyHrefLink, logoPath } from "../../helper/Constants";
 
-export interface ModalProps {
+interface InfoModalProps {
     visible: boolean;
     message: string;
     categoriesCashback ?: boolean;
@@ -10,7 +10,7 @@ export interface ModalProps {
     maxWidth?: number
 }
 
-export const InfoModal: React.FunctionComponent<ModalProps> = props => {
+const InfoModal: React.FunctionComponent<InfoModalProps> = props => {
     return (
         <Modal
             visible={props.visible}

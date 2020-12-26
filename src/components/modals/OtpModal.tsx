@@ -6,14 +6,14 @@ import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import Button from '@material-ui/core/Button';
 
-export interface ModalProps {
+interface OtpModalProps {
     visible: boolean,
     onValidate: (otpCode) => void,
     onClose: () => void,
     intl: IntlShape
 }
 
-export const OtpModal: React.FunctionComponent<ModalProps> = props => {
+const OtpModal: React.FunctionComponent<OtpModalProps> = props => {
 
     const [otpCode, setOtpCode] = useState('');
 
