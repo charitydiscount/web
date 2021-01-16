@@ -293,6 +293,9 @@ class ShopElement extends React.Component<IShopElementProps,
                         }}
                         onError={addDefaultImgSrc}
                     />
+                    <h4 style={{marginTop: 5}}>
+                        {this.props.shop.name}
+                    </h4>
                     <div className="blog_details">
                         <h6
                             style={
@@ -379,11 +382,12 @@ class ShopElement extends React.Component<IShopElementProps,
                                 >
                                     <a
                                         href={emptyHrefLink}
-                                        onClick={() =>
+                                        onClick={(event) => {
+                                            event.preventDefault();
                                             this.updateFavoriteShops(
                                                 this.state.favShop
                                             )
-                                        }
+                                        }}
                                     >
                                         <i
                                             className={

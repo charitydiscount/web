@@ -58,9 +58,10 @@ class ShopListElement extends React.Component<
                                         'url(' + this.props.shop.logoPath + ')',
                                 }}
                             />
+                            <h5>{this.props.shop.name}</h5>
                         </div>
                         <div className="shop-description-container">
-                            <h6 className="comission">
+                            <h6 className="comission" style={{marginTop:8}}>
                                 {this.props.shop.uiCommission}
                             </h6>
                         </div>

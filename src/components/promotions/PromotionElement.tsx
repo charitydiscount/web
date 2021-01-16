@@ -136,6 +136,9 @@ class PromotionElement extends React.Component<PromotionElementProps,
                             maxHeight: 200,
                         }}
                     />
+                    <h4 style={{marginTop: 10}}>
+                        {this.props.promotion.campaignName}
+                    </h4>
                     <div className="blog_details">
                         <h4 style={{maxWidth: 300, maxHeight: 150}}>
                             {this.props.promotion.name}
