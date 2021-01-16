@@ -131,6 +131,8 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
         }
         if (shopToShow) {
             this.findShopAndOpen(shopToShow);
+        } else {
+            this.props.setCurrentPage(0);
         }
         //--------------------------------------------------------------------------------------------------------------
 

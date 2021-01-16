@@ -4600,6 +4600,7 @@ h6 {
     text-align: center;
     padding-top: 20px;
     padding-bottom: 20px;
+    height: 100%;
 }
 
 .product_description_area .tab-content .total_rate .box_total h4 {

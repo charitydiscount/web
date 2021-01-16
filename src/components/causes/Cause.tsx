@@ -77,6 +77,7 @@ class Cause extends React.Component<ICauseProps, ICauseState> {
                             <img
                                 src={this.props.cause.details.images[0].url}
                                 alt=""
+                                style={{height:300}}
                                 className="img-fluid"
                             />
                             }
