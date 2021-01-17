@@ -18,7 +18,7 @@ interface ProductElementProps {
     intl: IntlShape;
     product: Product;
     productInfo: boolean;
-    onCloseModal: () => void;
+    onCloseModal?: () => void;
     allShops: ShopDto[],
     setCurrentProduct: Function
 }
@@ -151,11 +151,18 @@ class ProductElement extends React.Component<ProductElementProps,
                         marginTop: 5,
                         marginBottom: 7
                     }}>
-                        {this.props.product.price && (
-                            <h6 className="font-style" style={{marginBottom: 0}}>
-                                {this.props.product.price} lei
-                            </h6>
-                        )}
+                        <div>
+                            {this.props.product.old_price && (
+                                <h6 style={{marginBottom: 0, textDecoration: "line-through"}}>
+                                    {this.props.product.old_price} lei
+                                </h6>
+                            )}
+                            {this.props.product.price && (
+                                <h6 className="font-style" style={{marginBottom: 0}}>
+                                    {this.props.product.price} lei
+                                </h6>
+                            )}
+                        </div>
                         {shopLogo &&
                         <img
                             style={{

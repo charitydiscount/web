@@ -25,7 +25,7 @@ export interface ProductResponse {
     category: string;
     image_urls: any;
     image_url: any;
-    old_price: string;
+    old_price: number;
     price: number;
     product_id: string;
     title: string;
@@ -41,6 +41,7 @@ export interface Product {
     category: string;
     url: string;
     shopName: string;
+    old_price: number;
     shopId: string;
     commission?: string;
 }
@@ -49,6 +50,29 @@ export interface ProductResult {
     products: Product[];
     total: number;
 }
+
+export async function getProductPriceHistory(productId) {
+    if (!auth.currentUser) {
+        return [];
+    }
+
+    const token = await auth.currentUser.getIdToken();
+    const url = `${remoteConfig.getString('search_endpoint')}/search/products/history?from=0`;
+
+    const response = await axios.post(url,
+        {
+            'query': productId
+        },
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json',
+                'Accept': 'application/json',
+            },
+        });
+    console.log(response.data);
+}
+
 
 export async function getFeaturedProducts(): Promise<Product[]> {
     if (!auth.currentUser) {
@@ -149,6 +173,7 @@ function toProductDTO(productResponse: ProductWrapper): Product {
         title: productResponse._source.title,
         id: productResponse._source.product_id,
         price: productResponse._source.price,
+        old_price: productResponse._source.old_price,
         imageUrl: (productResponse._source.image_urls.toString().includes(',')
                 ? productResponse._source.image_urls.toString().split(',')[0]
                 : productResponse._source.image_urls
