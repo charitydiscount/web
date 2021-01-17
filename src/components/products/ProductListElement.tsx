@@ -83,11 +83,23 @@ class ProductListElement extends React.Component<ProductListElementProps,
                             marginTop: 5,
                             marginBottom: 5
                         }}>
-                            {this.props.product.price && (
-                                <h6 className="font-style" style={{marginBottom: 0, padding: 5}}>
-                                    {this.props.product.price} lei
-                                </h6>
-                            )}
+                            <div>
+                                {this.props.product.old_price && (
+                                    <h6 style={{marginBottom: 0, textDecoration: "line-through"}}>
+                                        {this.props.product.old_price} lei
+                                    </h6>
+                                )}
+                                {this.props.product.price && (
+                                    <h6 className="font-style" style={{
+                                        marginBottom: 0,
+                                        padding: this.props.product.old_price ?
+                                            "0px 5px 5px 5px" :
+                                            5
+                                    }}>
+                                        {this.props.product.price} lei
+                                    </h6>
+                                )}
+                            </div>
                             {shopLogo &&
                             <img
                                 style={{
