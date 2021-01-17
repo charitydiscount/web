@@ -4,7 +4,7 @@ import { getProductPriceHistory, Product } from "../../rest/ProductsService";
 import { AppState } from "../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import { injectIntl, IntlShape } from "react-intl";
-
+import { ResponsiveLine } from '@nivo/line'
 
 interface ProductInfoProps {
     product: Product,
@@ -32,7 +32,85 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
                                                 productInfo={true}/>
                             </div>
                             <div className="col-lg-6">
-
+                                <ResponsiveLine
+                                    data={[
+                                        {
+                                            "id": "japan",
+                                            "color": "hsl(5, 70%, 50%)",
+                                            "data": [
+                                                {
+                                                    "x": "plane",
+                                                    "y": 292
+                                                },
+                                                {
+                                                    "x": "helicopter",
+                                                    "y": 298
+                                                },
+                                                {
+                                                    "x": "boat",
+                                                    "y": 54
+                                                },
+                                                {
+                                                    "x": "train",
+                                                    "y": 93
+                                                },
+                                                {
+                                                    "x": "subway",
+                                                    "y": 200
+                                                },
+                                                {
+                                                    "x": "bus",
+                                                    "y": 139
+                                                },
+                                                {
+                                                    "x": "car",
+                                                    "y": 266
+                                                },
+                                                {
+                                                    "x": "moto",
+                                                    "y": 146
+                                                },
+                                                {
+                                                    "x": "bicycle",
+                                                    "y": 220
+                                                },
+                                                {
+                                                    "x": "horse",
+                                                    "y": 246
+                                                },
+                                                {
+                                                    "x": "skateboard",
+                                                    "y": 30
+                                                },
+                                                {
+                                                    "x": "others",
+                                                    "y": 94
+                                                }
+                                            ]
+                                        }
+                                    ]}
+                                    margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+                                    xScale={{ type: 'point' }}
+                                    yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+                                    yFormat=" >-.2f"
+                                    axisTop={null}
+                                    enableGridX={false}
+                                    axisRight={null}
+                                    axisBottom={{
+                                        orient: 'bottom',
+                                        tickSize: 5,
+                                        tickPadding: 5,
+                                        tickRotation: 0,
+                                    }}
+                                    axisLeft={{
+                                        orient: 'left',
+                                        tickSize: 5,
+                                        tickPadding: 5,
+                                        tickRotation: 0,
+                                    }}
+                                    enablePoints={false}
+                                    useMesh={false}
+                                />
                             </div>
                         </div>
                     </div>
