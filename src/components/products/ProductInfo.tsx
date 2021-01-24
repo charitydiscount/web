@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { FormattedMessage, injectIntl, IntlShape } from "react-intl";
 import { ResponsiveLine } from '@nivo/line'
 import { Link } from "react-router-dom";
+import { FadeLoader } from "react-spinners";
+import { spinnerCss } from "../../helper/AppHelper";
 
 interface ProductInfoProps {
     product: Product,
@@ -13,7 +15,8 @@ interface ProductInfoProps {
 }
 
 interface ProductInfoState {
-    chartData: ProductHistoryScale[]
+    chartData: ProductHistoryScale[],
+    isLoadingHistory: boolean
 }
 
 class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
@@ -22,7 +25,8 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
     constructor(props: ProductInfoProps) {
         super(props);
         this.state = {
-            chartData: []
+            chartData: [],
+            isLoadingHistory: true
         }
     }
 
@@ -31,11 +35,19 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
             let response = await getProductPriceHistory(this.props.product.aff_code);
             if (response) {
                 this.setState({
-                    chartData: response as ProductHistoryScale[]
+                    chartData: response as ProductHistoryScale[],
+                    isLoadingHistory: false
                 })
+            } else {
+                this.setState({
+                    isLoadingHistory: false
+                });
             }
         } catch (e) {
             //no chart data
+            this.setState({
+                isLoadingHistory: false
+            });
         }
     }
 
@@ -74,51 +86,60 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
                                         />
                                     </h3>
                                 </div>
-                                {this.state.chartData && this.state.chartData.length > 0 ?
-                                    <ResponsiveLine
-                                        data={[
-                                            {
-                                                "id": "product_history",
-                                                "color": "hsl(5, 70%, 50%)",
-                                                "data": this.state.chartData
-                                            }
-                                        ]}
-                                        margin={{top: 10, right: 50, bottom: 80, left: 50}}
-                                        xScale={{format: "%Y-%m-%dT%H:%M:%S.%L%Z", type: "time"}}
-                                        yScale={{
-                                            type: 'linear',
-                                            min: 0,
-                                            max: maxYScaleValue,
-                                            stacked: true,
-                                            reverse: false
-                                        }}
-                                        xFormat="time:%Y-%m-%d"
-                                        yFormat=" >-.2f"
-                                        axisTop={null}
-                                        enableGridX={false}
-                                        axisRight={null}
-                                        axisBottom={{
-                                            tickValues: "every 8 days",
-                                            tickRotation: 45,
-                                            tickSize: 5,
-                                            tickPadding: 5,
-                                            format: "%Y-%m-%d"
-                                        }}
-                                        axisLeft={{
-                                            orient: 'left',
-                                            tickSize: 5,
-                                            tickPadding: 5,
-                                            tickRotation: 0,
-                                        }}
-                                        enablePoints={false}
-                                        useMesh={false}
-                                    />
-                                    : <div style={{padding: 30}}>
-                                        <FormattedMessage
-                                            id={'product.info.history.price.no.data.available'}
-                                            defaultMessage="Nu sunt date"
+                                <FadeLoader
+                                    loading={this.state.isLoadingHistory}
+                                    color={'#e31f29'}
+                                    css={spinnerCss}
+                                />
+                                {!this.state.isLoadingHistory &&
+                                <React.Fragment>
+                                    {this.state.chartData && this.state.chartData.length > 0 ?
+                                        <ResponsiveLine
+                                            data={[
+                                                {
+                                                    "id": "product_history",
+                                                    "color": "hsl(5, 70%, 50%)",
+                                                    "data": this.state.chartData
+                                                }
+                                            ]}
+                                            margin={{top: 10, right: 50, bottom: 80, left: 50}}
+                                            xScale={{format: "%Y-%m-%dT%H:%M:%S.%L%Z", type: "time"}}
+                                            yScale={{
+                                                type: 'linear',
+                                                min: 0,
+                                                max: maxYScaleValue,
+                                                stacked: true,
+                                                reverse: false
+                                            }}
+                                            xFormat="time:%Y-%m-%d"
+                                            yFormat=" >-.2f"
+                                            axisTop={null}
+                                            enableGridX={false}
+                                            axisRight={null}
+                                            axisBottom={{
+                                                tickValues: "every 8 days",
+                                                tickRotation: 45,
+                                                tickSize: 5,
+                                                tickPadding: 5,
+                                                format: "%Y-%m-%d"
+                                            }}
+                                            axisLeft={{
+                                                orient: 'left',
+                                                tickSize: 5,
+                                                tickPadding: 5,
+                                                tickRotation: 0,
+                                            }}
+                                            enablePoints={false}
+                                            useMesh={false}
                                         />
-                                    </div>
+                                        : <div style={{padding: 30}}>
+                                            <FormattedMessage
+                                                id={'product.info.history.price.no.data.available'}
+                                                defaultMessage="Nu sunt date"
+                                            />
+                                        </div>
+                                    }
+                                </React.Fragment>
                                 }
                             </div>
                         </div>

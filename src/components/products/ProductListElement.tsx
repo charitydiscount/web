@@ -84,7 +84,7 @@ class ProductListElement extends React.Component<ProductListElementProps,
                             marginBottom: 5
                         }}>
                             <div>
-                                {this.props.product.old_price && (
+                                {this.props.product.old_price && this.props.product.old_price > 0 && (
                                     <h6 style={{marginBottom: 0, textDecoration: "line-through"}}>
                                         {this.props.product.old_price} lei
                                     </h6>
