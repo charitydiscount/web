@@ -148,6 +148,7 @@
   "products.filters.sorting": "Sorting",
   "products.filters.sorting.ascending": "Ascending",
   "products.filters.sorting.descending": "Descending",
+  "product.element.more.details": "Chek price history...",
   "shops.filters.sorting.ascending": "Reviews number ↑",
   "shops.filters.sorting.descending": "Reviews number ↓",
   "sort.key": "Sort",
@@ -220,5 +221,7 @@
   "leaderboard.page.title": "Leaderboard",
   "leaderboard.table.name": "User",
   "leaderboard.table.achievements": "Achievements",
-  "leaderboard.table.staff.member": "Staff member"
+  "leaderboard.table.staff.member": "Staff member",
+  "product.info.history.price.title": "Price history",
+  "product.info.history.price.no.data.available" : "No data available"
 }

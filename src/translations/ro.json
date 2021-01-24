@@ -148,6 +148,7 @@
   "products.filters.sorting": "Sortare",
   "products.filters.sorting.ascending": "Crescător",
   "products.filters.sorting.descending": "Descrescător",
+  "product.element.more.details": "Vezi evoluția prețului...",
   "shops.filters.sorting.ascending": "Nr. de review-uri ↑",
   "shops.filters.sorting.descending": "Nr. de review-uri ↓",
   "sort.key": "Sortează",
@@ -220,5 +221,7 @@
   "leaderboard.page.title": "Clasament",
   "leaderboard.table.name": "Utilizator",
   "leaderboard.table.achievements": "Realizări",
-  "leaderboard.table.staff.member": "Membru din staff"
+  "leaderboard.table.staff.member": "Membru din staff",
+  "product.info.history.price.title": "Evoluția prețului",
+  "product.info.history.price.no.data.available": "Nu avem date"
 }

@@ -6089,6 +6089,13 @@ h6 {
     filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
 }
 
+.increase_clickable_area {
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    padding: 1em;
+    margin: -1em;
+}
 /*---------------------------------------------------- */
 
 /*# sourceMappingURL=style.css.map */

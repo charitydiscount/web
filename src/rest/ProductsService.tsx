@@ -8,6 +8,16 @@ export interface RequestResponse {
     total: ProductTotal;
 }
 
+export interface ProductHistoryScale {
+    x: any
+    y: string
+    oldPrice: string
+}
+
+export interface ProductHistoryWrapper {
+    _source: any;
+}
+
 export interface ProductWrapper {
     _source: ProductResponse;
 }
@@ -25,7 +35,7 @@ export interface ProductResponse {
     category: string;
     image_urls: any;
     image_url: any;
-    old_price: string;
+    old_price: number;
     price: number;
     product_id: string;
     title: string;
@@ -33,24 +43,57 @@ export interface ProductResponse {
     affiliate_url: string;
 }
 
-export interface ProductDTO {
+export interface Product {
     price: number;
     title: string;
     imageUrl: string;
+    affiliate_url: string;
+    aff_code: string;
     id: string;
     category: string;
     url: string;
     shopName: string;
+    old_price: number;
     shopId: string;
     commission?: string;
 }
 
 export interface ProductResult {
-    products: ProductDTO[];
+    products: Product[];
     total: number;
 }
 
-export async function getFeaturedProducts(): Promise<ProductDTO[]> {
+export async function getProductPriceHistory(productId) {
+    if (!auth.currentUser) {
+        return [];
+    }
+
+    const token = await auth.currentUser.getIdToken();
+    const url = `${remoteConfig.getString('search_endpoint')}/search/products/history?from=0`;
+
+    const response = await axios.post(url,
+        {
+            'query': productId
+        },
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json',
+                'Accept': 'application/json',
+            },
+        });
+
+    const responseData: RequestResponse = response.data;
+
+    if (!responseData.hits) {
+        return [];
+    }
+
+    return responseData.hits.map((hit) => toProductHistoryDto(hit));
+}
+
+
+export async function getFeaturedProducts(): Promise<Product[]> {
     if (!auth.currentUser) {
         return [];
     }
@@ -79,7 +122,7 @@ export async function searchProduct(
     maxPrice: string,
     sort: string,
     currentPage: number
-): Promise<{ products: ProductDTO[]; total: number }> {
+): Promise<{ products: Product[]; total: number }> {
     if (!auth.currentUser) {
         return {
             products: [],
@@ -144,16 +187,27 @@ function buildSearchUrl(
     return url;
 }
 
-function toProductDTO(productResponse: ProductWrapper): ProductDTO {
+function toProductHistoryDto(productHistoryResponse: ProductHistoryWrapper) {
+    return {
+        x: productHistoryResponse._source["@timestamp"],
+        y: productHistoryResponse._source["price"],
+        oldPrice: productHistoryResponse._source["old_price"]
+    } as ProductHistoryScale;
+}
+
+function toProductDTO(productResponse: ProductWrapper): Product {
     return {
         title: productResponse._source.title,
         id: productResponse._source.product_id,
         price: productResponse._source.price,
+        old_price: productResponse._source.old_price,
         imageUrl: (productResponse._source.image_urls.toString().includes(',')
                 ? productResponse._source.image_urls.toString().split(',')[0]
                 : productResponse._source.image_urls
         ).replace(/^http:/, 'https:'),
         category: productResponse._source.category,
+        affiliate_url: productResponse._source.affiliate_url,
+        aff_code: productResponse._source.aff_code,
         url: computeProductUrl(productResponse._source.affiliate_url),
         shopName: productResponse._source.campaign_name,
         shopId: productResponse._source.campaign_id

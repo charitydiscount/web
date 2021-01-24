@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { injectIntl, IntlShape } from 'react-intl';
-import { ProductDTO } from '../../rest/ProductsService';
+import { Product } from '../../rest/ProductsService';
 import { Redirect } from 'react-router';
 import { Routes } from '../helper/Routes';
 import { emptyHrefLink, StorageKey } from '../../helper/Constants';
@@ -12,16 +12,20 @@ import { addDefaultImgSrc } from "../../helper/AppHelper";
 import { AppState } from "../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import { ShopDto } from "../../rest/ShopsService";
+import { ProductActions } from "../../redux/actions/ProductsAction";
 
 interface ProductElementProps {
     intl: IntlShape;
-    product: ProductDTO;
-    onCloseModal: () => void;
-    allShops: ShopDto[]
+    product: Product;
+    productInfo: boolean;
+    onCloseModal?: () => void;
+    allShops: ShopDto[],
+    setCurrentProduct: Function
 }
 
 interface ProductElementState {
     redirect: boolean;
+    productInfoRedirect: boolean;
     redirectModalVisible: boolean;
 }
 
@@ -32,7 +36,8 @@ class ProductElement extends React.Component<ProductElementProps,
 
         this.state = {
             redirect: false,
-            redirectModalVisible: false,
+            productInfoRedirect: false,
+            redirectModalVisible: false
         };
     }
 
@@ -47,6 +52,17 @@ class ProductElement extends React.Component<ProductElementProps,
             return (
                 <Redirect
                     to={Routes.SHOP + '/' + this.props.product.shopName}
+                />
+            );
+        }
+    };
+
+    renderProductInfoRedirect = () => {
+        if (this.state.productInfoRedirect) {
+            this.props.setCurrentProduct(this.props.product);
+            return (
+                <Redirect
+                    to={Routes.PRODUCT_INFO}
                 />
             );
         }
@@ -111,6 +127,7 @@ class ProductElement extends React.Component<ProductElementProps,
         return (
             <React.Fragment>
                 {this.renderRedirect()}
+                {this.renderProductInfoRedirect()}
                 <RedirectModal
                     visible={this.state.redirectModalVisible}
                     programId={this.props.product.shopId}
@@ -118,12 +135,14 @@ class ProductElement extends React.Component<ProductElementProps,
                     cashbackUrl={this.props.product.url}
                 />
                 <div className="text-center p-4">
+                    {!this.props.productInfo &&
                     <div style={{textAlign: 'right'}}>
                         <i
                             onClick={this.props.onCloseModal}
                             className="fa fa-times"
                         />
                     </div>
+                    }
                     <div style={{
                         display: 'flex',
                         width: '100%',
@@ -132,11 +151,18 @@ class ProductElement extends React.Component<ProductElementProps,
                         marginTop: 5,
                         marginBottom: 7
                     }}>
-                        {this.props.product.price && (
-                            <h6 className="font-style" style={{marginBottom: 0}}>
-                                {this.props.product.price} lei
-                            </h6>
-                        )}
+                        <div>
+                            {this.props.product.old_price && this.props.product.old_price > 0 &&(
+                                <h6 style={{marginBottom: 0, textDecoration: "line-through"}}>
+                                    {this.props.product.old_price} lei
+                                </h6>
+                            )}
+                            {this.props.product.price && (
+                                <h6 className="font-style" style={{marginBottom: 0}}>
+                                    {this.props.product.price} lei
+                                </h6>
+                            )}
+                        </div>
                         {shopLogo &&
                         <img
                             style={{
@@ -172,7 +198,12 @@ class ProductElement extends React.Component<ProductElementProps,
                         {this.props.product.commission} lei
                         </span>
                     </h6>
-                    <h6 style={{maxWidth: 300}}>
+                    <h6
+                        style={
+                            this.props.productInfo
+                                ? {}
+                                : {maxWidth: 300}
+                        }>
                         <FormattedMessage
                             id={'shop.category'}
                             defaultMessage="Category: "
@@ -188,7 +219,12 @@ class ProductElement extends React.Component<ProductElementProps,
                         onError={addDefaultImgSrc}
                     />
                     <div className="blog_details">
-                        <h4 style={{maxWidth: 300}}>
+                        <h4
+                            style={
+                                this.props.productInfo
+                                    ? {}
+                                    : {maxWidth: 300}
+                            }>
                             {' '}
                             {this.props.product.title}
                         </h4>
@@ -199,6 +235,24 @@ class ProductElement extends React.Component<ProductElementProps,
                                 marginTop: 30,
                             }}
                         >
+                            {!this.props.productInfo &&
+                            <div className="card_area" style={{marginBottom: 15}}>
+                                <a href={emptyHrefLink} onClick={(event) => {
+                                    event.preventDefault();
+                                    this.setState({
+                                        productInfoRedirect: true
+                                    })
+                                }}
+                                >
+                                    <i className="fa fa-info-circle" aria-hidden="true"
+                                       style={{marginRight: 5}}/>
+                                    <FormattedMessage
+                                        id={'product.element.more.details'}
+                                        defaultMessage="Mai multe detali..."
+                                    />
+                                </a>
+                            </div>
+                            }
                             <div className="card_area">{accessButton}</div>
                         </div>
                     </div>
@@ -208,10 +262,18 @@ class ProductElement extends React.Component<ProductElementProps,
     }
 }
 
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        setCurrentProduct: (currentProduct: Product) =>
+            dispatch(ProductActions.setCurrentProduct(currentProduct))
+    };
+};
+
 const mapStateToProps = (state: AppState) => {
     return {
         allShops: state.shops.allShops
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(ProductElement));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ProductElement));

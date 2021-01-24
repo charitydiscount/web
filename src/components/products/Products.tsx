@@ -9,7 +9,7 @@ import GenericInput from '../input/GenericInput';
 import { FadeLoader } from 'react-spinners';
 import {
     getFeaturedProducts,
-    ProductDTO,
+    Product,
     ProductResult,
     searchProduct,
 } from '../../rest/ProductsService';
@@ -24,27 +24,33 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
 import { AppState } from '../../redux/reducer/RootReducer';
 import { ShopDto } from '../../rest/ShopsService';
+import { ProductSearch } from "../../redux/reducer/ProductReducer";
+import { ProductActions } from "../../redux/actions/ProductsAction";
 
 interface ProductsProps {
-    intl: IntlShape;
-    shops: ShopDto[];
+    intl: IntlShape,
+    shops: ShopDto[],
+
+    backProduct: boolean,
+    productSearch: ProductSearch,
+    setProductSearch: (productSearch: ProductSearch) => void
+    resetSearchParams: () =>void
 }
 
 interface ProductsState {
-    isLoading: boolean;
-    products: Array<ProductDTO>;
-    currentPage: number;
-    total: number;
+    isLoading: boolean
+    products: Array<Product>
+    currentPage: number
+    total: number
+    searchTerm: string
+    minPrice: string
+    maxPrice: string
+    sort: string
 }
 
 const pageLimit = 50; // products per page
 
 class Products extends React.Component<ProductsProps, ProductsState> {
-    private searchTerm: string = '';
-    private minPrice: string = '';
-    private maxPrice: string = '';
-    private sort: string = '';
-
     private oldSearchTerm: string = '';
     private oldMinPrice: string = '';
     private oldMaxPrice: string = '';
@@ -54,9 +60,13 @@ class Products extends React.Component<ProductsProps, ProductsState> {
         super(props);
         this.state = {
             isLoading: false,
-            products: {} as Array<ProductDTO>,
+            products: {} as Array<Product>,
             currentPage: 0,
             total: 50,
+            searchTerm: '',
+            sort: '',
+            minPrice: '',
+            maxPrice: ''
         };
         document.addEventListener('keydown', this.searchFunction, false);
     }
@@ -72,10 +82,10 @@ class Products extends React.Component<ProductsProps, ProductsState> {
         });
         this.searchProducts(
             data.selected,
-            this.searchTerm,
-            this.minPrice,
-            this.maxPrice,
-            this.sort
+            this.state.searchTerm,
+            this.state.minPrice,
+            this.state.maxPrice,
+            this.state.sort
         );
     };
 
@@ -85,22 +95,42 @@ class Products extends React.Component<ProductsProps, ProductsState> {
             isLoading: true,
         });
 
-        try {
-            let response = await getFeaturedProducts();
-            if (response) {
+        if (this.props.backProduct && this.props.productSearch) {
+            this.setState({
+                maxPrice: this.props.productSearch.maxPrice,
+                minPrice: this.props.productSearch.minPrice,
+                searchTerm: this.props.productSearch.searchTerm,
+                sort: this.props.productSearch.sort,
+                currentPage: this.props.productSearch.currentPage
+
+            })
+            this.searchProducts(this.props.productSearch.currentPage, this.props.productSearch.searchTerm,
+                this.props.productSearch.minPrice, this.props.productSearch.maxPrice,
+                this.props.productSearch.sort);
+        } else {
+            try {
+                let response = await getFeaturedProducts();
+                if (response) {
+                    this.props.resetSearchParams();
+                    this.setState({
+                        products: response as Array<Product>,
+                        isLoading: false,
+                        currentPage: 0,
+                        searchTerm: '',
+                        sort: '',
+                        minPrice: '',
+                        maxPrice: ''
+                    });
+                } else {
+                    this.setState({
+                        isLoading: false
+                    });
+                }
+            } catch (error) {
                 this.setState({
-                    products: response as Array<ProductDTO>,
-                    isLoading: false,
-                });
-            } else {
-                this.setState({
-                    isLoading: false,
+                    isLoading: false
                 });
             }
-        } catch (error) {
-            this.setState({
-                isLoading: false,
-            });
         }
     }
 
@@ -108,28 +138,35 @@ class Products extends React.Component<ProductsProps, ProductsState> {
         store.dispatch(NavigationsAction.resetStageAction(Stages.PRODUCTS));
     }
 
-    searchProducts = async (pageNumber, title, minPrice, maxPrice, sort) => {
+    searchProducts = async (pageNumber, searchTerm, minPrice, maxPrice, sort) => {
         this.oldMaxPrice = maxPrice;
         this.oldMinPrice = minPrice;
         this.oldSort = sort;
-        this.oldSearchTerm = title;
+        this.oldSearchTerm = searchTerm;
         this.setState({
-            isLoading: true,
+            isLoading: true
         });
-        if (this.searchTerm && this.searchTerm.length > 0) {
+        if (searchTerm && searchTerm.length > 0) {
             try {
                 let response = (await searchProduct(
-                    title,
+                    searchTerm,
                     minPrice ? minPrice : '0',
                     maxPrice ? maxPrice : '0',
                     sort,
                     pageNumber
                 )) as ProductResult;
                 if (response) {
+                    this.props.setProductSearch({
+                        minPrice: minPrice,
+                        maxPrice: maxPrice,
+                        currentPage: pageNumber,
+                        sort: sort,
+                        searchTerm: searchTerm
+                    });
                     this.setState({
                         products: response.products,
                         total: response.total,
-                        isLoading: false,
+                        isLoading: false
                     });
                 }
             } catch (e) {
@@ -141,18 +178,24 @@ class Products extends React.Component<ProductsProps, ProductsState> {
             try {
                 let response = await getFeaturedProducts();
                 if (response) {
+                    this.props.resetSearchParams();
                     this.setState({
-                        products: response as Array<ProductDTO>,
+                        products: response as Array<Product>,
                         isLoading: false,
+                        currentPage: 0,
+                        searchTerm: '',
+                        sort: '',
+                        minPrice: '',
+                        maxPrice: ''
                     });
                 } else {
                     this.setState({
-                        isLoading: false,
+                        isLoading: false
                     });
                 }
             } catch (error) {
                 this.setState({
-                    isLoading: false,
+                    isLoading: false
                 });
                 //feature product not loaded, site will keep working
             }
@@ -167,10 +210,10 @@ class Products extends React.Component<ProductsProps, ProductsState> {
 
     startSearch = async () => {
         if (
-            this.oldSearchTerm !== this.searchTerm ||
-            this.oldSort !== this.sort ||
-            this.oldMinPrice !== this.minPrice ||
-            this.oldMaxPrice !== this.maxPrice
+            this.oldSearchTerm !== this.state.searchTerm ||
+            this.oldSort !== this.state.sort ||
+            this.oldMinPrice !== this.state.minPrice ||
+            this.oldMaxPrice !== this.state.maxPrice
         ) {
             this.setState({
                 currentPage: 0,
@@ -178,10 +221,10 @@ class Products extends React.Component<ProductsProps, ProductsState> {
 
             this.searchProducts(
                 0,
-                this.searchTerm,
-                this.minPrice,
-                this.maxPrice,
-                this.sort
+                this.state.searchTerm,
+                this.state.minPrice,
+                this.state.maxPrice,
+                this.state.sort
             );
         }
     };
@@ -213,15 +256,15 @@ class Products extends React.Component<ProductsProps, ProductsState> {
         let productsList =
             productsState && productsState.length > 0
                 ? productsState.map((product, index) => {
-                      //check if active
-                      return (
-                          <ProductListElement
-                              key={'list' + index}
-                              keyElement={'list' + index}
-                              product={product}
-                          />
-                      );
-                  })
+                    //check if active
+                    return (
+                        <ProductListElement
+                            key={'list' + index}
+                            keyElement={'list' + index}
+                            product={product}
+                        />
+                    );
+                })
                 : null;
 
         return (
@@ -269,15 +312,17 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                                             lei
                                                         </InputAdornment>
                                                     }
+                                                    value={this.state.minPrice}
                                                     onChange={(event) => {
-                                                        this.minPrice =
-                                                            event.target.value;
+                                                        this.setState({
+                                                            minPrice: event.target.value
+                                                        })
                                                     }}
                                                     labelWidth={60}
                                                 />
                                             </FormControl>
-                                            <br />
-                                            <br />
+                                            <br/>
+                                            <br/>
                                             <FormControl
                                                 fullWidth
                                                 variant="outlined"
@@ -297,9 +342,11 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                                             lei
                                                         </InputAdornment>
                                                     }
+                                                    value={this.state.maxPrice}
                                                     onChange={(event) => {
-                                                        this.maxPrice =
-                                                            event.target.value;
+                                                        this.setState({
+                                                            maxPrice: event.target.value
+                                                        })
                                                     }}
                                                     labelWidth={60}
                                                 />
@@ -328,11 +375,11 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                                     }}
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
-                                                    value={this.sort}
+                                                    value={this.state.sort}
                                                     onChange={(event) => {
-                                                        this.sort = event.target
-                                                            .value as string;
-                                                        this.startSearch();
+                                                        this.setState({
+                                                            sort: event.target.value as string
+                                                        })
                                                     }}
                                                 >
                                                     <MenuItem value="">
@@ -370,12 +417,15 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                         id={'search'}
                                         className={'single-input'}
                                         placeholder={this.props.intl.formatMessage(
-                                            { id: 'products.search' }
+                                            {id: 'products.search'}
                                         )}
-                                        onKeyUp={(event) => {
-                                            this.searchTerm =
-                                                event.target.value;
+                                        value={this.state.searchTerm}
+                                        handleChange={(event) => {
+                                            this.setState({
+                                                searchTerm: event.target.value
+                                            })
                                         }}
+
                                     />
                                 </div>
                                 <div className="product_top_bar">
@@ -432,7 +482,8 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                     color={'#e31f29'}
                                     css={spinnerCss}
                                 />
-                                <div className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
+                                <div
+                                    className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
                                     {!this.state.isLoading && (
                                         <React.Fragment>
                                             {productsList}
@@ -444,7 +495,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
 
                         <div className="row">
                             <nav
-                                style={{ marginTop: 30 }}
+                                style={{marginTop: 30}}
                                 className="cat_page mx-auto"
                                 aria-label="Page navigation example"
                             >
@@ -487,7 +538,19 @@ class Products extends React.Component<ProductsProps, ProductsState> {
 const mapStateToProps = (state: AppState) => {
     return {
         shops: state.shops.allShops,
+        productSearch: state.product.productSearch,
+        backProduct: state.product.backProduct
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(Products));
+const
+    mapDispatchToProps = (dispatch: any) => {
+        return {
+            setProductSearch: (productSearch: ProductSearch) =>
+                dispatch(ProductActions.setProductSearch(productSearch)),
+            resetSearchParams: () =>
+                dispatch(ProductActions.resetSearchParams())
+        };
+    };
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Products));

@@ -7,6 +7,7 @@ import CategoryReducer, { ICategoryState } from './CategoryReducer';
 import LocaleReducer, { ILocaleState } from './LocaleReducer';
 import AdBlockReducer, { IAdBlockState } from "./AdBlockReducer";
 import AchievementReducer, { IAchievementState } from "./AchievementReducer";
+import ProductReducer, { IProductState } from "./ProductReducer";
 
 export interface AppState {
     router: any;
@@ -15,7 +16,8 @@ export interface AppState {
     shops: IShopsState;
     achievement: IAchievementState;
     category: ICategoryState;
-    adBlock: IAdBlockState
+    adBlock: IAdBlockState;
+    product: IProductState
     locale: ILocaleState;
 }
 
@@ -27,6 +29,7 @@ export default (history: any) =>
         user: UserReducer,
         shops: ShopsReducer,
         achievement: AchievementReducer,
+        product: ProductReducer,
         category: CategoryReducer,
         locale: LocaleReducer,
         adBlock: AdBlockReducer
