@@ -8,6 +8,16 @@ export interface RequestResponse {
     total: ProductTotal;
 }
 
+export interface ProductHistoryScale {
+    x: any
+    y: string
+    oldPrice: string
+}
+
+export interface ProductHistoryWrapper {
+    _source: any;
+}
+
 export interface ProductWrapper {
     _source: ProductResponse;
 }
@@ -37,6 +47,8 @@ export interface Product {
     price: number;
     title: string;
     imageUrl: string;
+    affiliate_url: string;
+    aff_code: string;
     id: string;
     category: string;
     url: string;
@@ -70,7 +82,14 @@ export async function getProductPriceHistory(productId) {
                 'Accept': 'application/json',
             },
         });
-    console.log(response.data);
+
+    const responseData: RequestResponse = response.data;
+
+    if (!responseData.hits) {
+        return [];
+    }
+
+    return responseData.hits.map((hit) => toProductHistoryDto(hit));
 }
 
 
@@ -168,6 +187,14 @@ function buildSearchUrl(
     return url;
 }
 
+function toProductHistoryDto(productHistoryResponse: ProductHistoryWrapper) {
+    return {
+        x: productHistoryResponse._source["@timestamp"],
+        y: productHistoryResponse._source["price"],
+        oldPrice: productHistoryResponse._source["old_price"]
+    } as ProductHistoryScale;
+}
+
 function toProductDTO(productResponse: ProductWrapper): Product {
     return {
         title: productResponse._source.title,
@@ -179,6 +206,8 @@ function toProductDTO(productResponse: ProductWrapper): Product {
                 : productResponse._source.image_urls
         ).replace(/^http:/, 'https:'),
         category: productResponse._source.category,
+        affiliate_url: productResponse._source.affiliate_url,
+        aff_code: productResponse._source.aff_code,
         url: computeProductUrl(productResponse._source.affiliate_url),
         shopName: productResponse._source.campaign_name,
         shopId: productResponse._source.campaign_id
