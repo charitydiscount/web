@@ -237,7 +237,8 @@ class ProductElement extends React.Component<ProductElementProps,
                         >
                             {!this.props.productInfo &&
                             <div className="card_area" style={{marginBottom: 15}}>
-                                <a href={emptyHrefLink} onClick={() => {
+                                <a href={emptyHrefLink} onClick={(event) => {
+                                    event.preventDefault();
                                     this.setState({
                                         productInfoRedirect: true
                                     })
