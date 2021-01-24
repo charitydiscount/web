@@ -5,6 +5,7 @@ import { AppState } from "../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import { injectIntl, IntlShape } from "react-intl";
 import { ResponsiveLine } from '@nivo/line'
+import {Link} from "react-router-dom";
 
 interface ProductInfoProps {
     product: Product,
@@ -18,7 +19,7 @@ interface ProductInfoState {
 class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
 
     async componentDidMount() {
-        await getProductPriceHistory(this.props.product.id);
+        await getProductPriceHistory(this.props.product.url);
     }
 
     public render() {
@@ -27,11 +28,16 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
                 <section className={'product_description_area'}>
                     <div className={'container'}>
                         <div className="row" style={{marginTop: 70}}>
-                            <div className="col-lg-6">
+                            <div className="col-lg-1" style={{maxWidth: 1}}>
+                                <Link to={"/products"} className="increase_clickable_area" >
+                                    <i className="fa fa-arrow-left" style={{marginTop:30, fontSize:30}}/>
+                                </Link>
+                            </div>
+                            <div className="col-lg-5">
                                 <ProductElement product={this.props.product}
                                                 productInfo={true}/>
                             </div>
-                            <div className="col-lg-6">
+                            <div className="col-lg-6" style={{maxHeight: 400}}>
                                 <ResponsiveLine
                                     data={[
                                         {
@@ -89,9 +95,9 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
                                             ]
                                         }
                                     ]}
-                                    margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-                                    xScale={{ type: 'point' }}
-                                    yScale={{ type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false }}
+                                    margin={{top: 50, right: 50, bottom: 50, left: 50}}
+                                    xScale={{type: 'point'}}
+                                    yScale={{type: 'linear', min: 'auto', max: 'auto', stacked: true, reverse: false}}
                                     yFormat=" >-.2f"
                                     axisTop={null}
                                     enableGridX={false}
