@@ -34,7 +34,6 @@ interface ProductsProps {
     backProduct: boolean,
     productSearch: ProductSearch,
     setProductSearch: (productSearch: ProductSearch) => void
-    resetSearchParams: () =>void
 }
 
 interface ProductsState {
@@ -92,7 +91,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
     async componentDidMount() {
         store.dispatch(NavigationsAction.setStageAction(Stages.PRODUCTS));
         this.setState({
-            isLoading: true,
+            isLoading: true
         });
 
         if (this.props.backProduct && this.props.productSearch) {
@@ -101,36 +100,13 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                 minPrice: this.props.productSearch.minPrice,
                 searchTerm: this.props.productSearch.searchTerm,
                 sort: this.props.productSearch.sort,
-                currentPage: this.props.productSearch.currentPage
-
+                currentPage: this.props.productSearch.currentPage,
+                products: this.props.productSearch.products,
+                total: this.props.productSearch.total,
+                isLoading: false
             })
-            this.searchProducts(this.props.productSearch.currentPage, this.props.productSearch.searchTerm,
-                this.props.productSearch.minPrice, this.props.productSearch.maxPrice,
-                this.props.productSearch.sort);
         } else {
-            try {
-                let response = await getFeaturedProducts();
-                if (response) {
-                    this.props.resetSearchParams();
-                    this.setState({
-                        products: response as Array<Product>,
-                        isLoading: false,
-                        currentPage: 0,
-                        searchTerm: '',
-                        sort: '',
-                        minPrice: '',
-                        maxPrice: ''
-                    });
-                } else {
-                    this.setState({
-                        isLoading: false
-                    });
-                }
-            } catch (error) {
-                this.setState({
-                    isLoading: false
-                });
-            }
+            await this.handleFeaturedProduct();
         }
     }
 
@@ -161,7 +137,9 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                         maxPrice: maxPrice,
                         currentPage: pageNumber,
                         sort: sort,
-                        searchTerm: searchTerm
+                        searchTerm: searchTerm,
+                        products: response.products,
+                        total: response.total
                     });
                     this.setState({
                         products: response.products,
@@ -175,32 +153,45 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                 });
             }
         } else {
-            try {
-                let response = await getFeaturedProducts();
-                if (response) {
-                    this.props.resetSearchParams();
-                    this.setState({
-                        products: response as Array<Product>,
-                        isLoading: false,
-                        currentPage: 0,
-                        searchTerm: '',
-                        sort: '',
-                        minPrice: '',
-                        maxPrice: ''
-                    });
-                } else {
-                    this.setState({
-                        isLoading: false
-                    });
-                }
-            } catch (error) {
+            await this.handleFeaturedProduct();
+        }
+    };
+
+    handleFeaturedProduct = async () => {
+        try {
+            let response = await getFeaturedProducts();
+            if (response) {
+                this.props.setProductSearch({
+                    minPrice: '',
+                    maxPrice: '',
+                    currentPage: 0,
+                    sort: '',
+                    searchTerm: '',
+                    products: response as Array<Product>,
+                    total: 50
+                });
+                this.setState({
+                    products: response as Array<Product>,
+                    isLoading: false,
+                    currentPage: 0,
+                    total: 50,
+                    searchTerm: '',
+                    sort: '',
+                    minPrice: '',
+                    maxPrice: ''
+                });
+            } else {
                 this.setState({
                     isLoading: false
                 });
-                //feature product not loaded, site will keep working
             }
+        } catch (error) {
+            this.setState({
+                isLoading: false
+            });
+            //feature product not loaded, site will keep working
         }
-    };
+    }
 
     searchFunction = (event) => {
         if (event.keyCode === 13) {
@@ -547,9 +538,7 @@ const
     mapDispatchToProps = (dispatch: any) => {
         return {
             setProductSearch: (productSearch: ProductSearch) =>
-                dispatch(ProductActions.setProductSearch(productSearch)),
-            resetSearchParams: () =>
-                dispatch(ProductActions.resetSearchParams())
+                dispatch(ProductActions.setProductSearch(productSearch))
         };
     };
 

@@ -70,7 +70,7 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
                         <div className="row" style={{marginTop: 70}}>
                             <div className="col-lg-1" style={{maxWidth: 1}}>
                                 <Link to={"/products"} className="increase_clickable_area">
-                                    <i className="fa fa-arrow-left" style={{marginTop: 30, fontSize: 30}}/>
+                                    <i className="fa fa-arrow-left" style={{marginTop: 30, fontSize: 30, color: "red"}}/>
                                 </Link>
                             </div>
                             <div className="col-lg-5">

@@ -7,7 +7,9 @@ export interface ProductSearch {
     minPrice: string,
     maxPrice: string,
     sort: string,
-    currentPage: number
+    currentPage: number,
+    products: Product[],
+    total: number
 }
 
 export interface IProductState {
@@ -24,6 +26,8 @@ const initialState: IProductState = {
         maxPrice: '',
         sort: '',
         currentPage: 0,
+        products: [],
+        total: 50
     },
     backProduct: false
 };

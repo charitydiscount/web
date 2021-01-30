@@ -70,7 +70,7 @@ class Leaderboard extends React.Component<LeaderboardProps, LeaderboardState> {
                                 <div className="col-md-3"/>
                                 <div className="col-md-3">
                                     <div className="progress-table-wrap">
-                                        <div className="progress-table">
+                                        <div className="progress-table" style={{textAlign: "center"}}>
                                             <div className="table-head">
                                                 <div className="serial" style={{fontSize: 14}}>#</div>
                                                 <div className="country" style={{width: "20%", fontSize: 14}}>Charity
