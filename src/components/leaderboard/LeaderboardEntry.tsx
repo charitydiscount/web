@@ -36,7 +36,6 @@ const LeaderboardEntry: React.FunctionComponent<LeaderboardEntryProps> = props =
                 <div className="country" style={{width: "20%"}}>
                     <i className="fa fa-heart" style={{
                         marginRight: "7px",
-                        marginLeft: "15px",
                         fontSize: 20,
                         color: "red"
                     }}/>
@@ -45,7 +44,6 @@ const LeaderboardEntry: React.FunctionComponent<LeaderboardEntryProps> = props =
                 <div className="country" style={{width: "14%"}}>
                     <i className="fa fa-trophy" style={{
                         marginRight: "7px",
-                        marginLeft: "15px",
                         color: "black"
                     }}/>
                     {props.entry.achievementsCount}

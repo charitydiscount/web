@@ -272,7 +272,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
 
                                 {commissionsHistory &&
                                 commissionsHistory.length > 0 && (
-                                    <div className={'tab-content'}>
+                                    <div className={'tab-content'} style={{textAlign: "center"}}>
                                         <h3 className="mb-30 title_color">
                                             <FormattedMessage
                                                 id="wallet.cashback.history"
@@ -415,7 +415,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
 
                                 {transactionsHistory &&
                                 transactionsHistory.length > 0 && (
-                                    <div className={'tab-content'}>
+                                    <div className={'tab-content'} style={{textAlign: "center"}}>
                                         <h3 className="mb-30 title_color">
                                             <FormattedMessage
                                                 id="wallet.history"
