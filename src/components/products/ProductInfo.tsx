@@ -1,6 +1,6 @@
 import React from "react";
 import ProductElement from "./ProductElement";
-import { getProductPriceHistory, Product, ProductHistoryScale } from "../../rest/ProductsService";
+import { Product, ProductHistoryScale } from "../../rest/ProductsService";
 import { AppState } from "../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import { FormattedMessage, injectIntl, IntlShape } from "react-intl";
@@ -8,54 +8,27 @@ import { ResponsiveLine } from '@nivo/line'
 import { Link } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
 import { spinnerCss } from "../../helper/AppHelper";
+import { ShopDto } from "../../rest/ShopsService";
+import { filterProducts } from "./ProductHelper";
 
 interface ProductInfoProps {
-    product: Product,
-    intl: IntlShape;
-}
-
-interface ProductInfoState {
+    product: Product
+    intl: IntlShape
+    shops: ShopDto[],
     chartData: ProductHistoryScale[],
-    isLoadingHistory: boolean
+    similarProducts: Product[],
+    isLoadingHistory: boolean,
+    isLoadingSimilar: boolean
 }
 
-class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
-
-
-    constructor(props: ProductInfoProps) {
-        super(props);
-        this.state = {
-            chartData: [],
-            isLoadingHistory: true
-        }
-    }
-
-    async componentDidMount() {
-        try {
-            let response = await getProductPriceHistory(this.props.product.aff_code);
-            if (response) {
-                this.setState({
-                    chartData: response as ProductHistoryScale[],
-                    isLoadingHistory: false
-                })
-            } else {
-                this.setState({
-                    isLoadingHistory: false
-                });
-            }
-        } catch (e) {
-            //no chart data
-            this.setState({
-                isLoadingHistory: false
-            });
-        }
-    }
+class ProductInfo extends React.Component<ProductInfoProps> {
 
     public render() {
+        window.scrollTo(0, 0);
         let maxYScaleValue = 0;
-        if (this.state.chartData && this.state.chartData.length > 0) {
+        if (this.props.chartData && this.props.chartData.length > 0) {
             let max = 0;
-            this.state.chartData.forEach(value => {
+            this.props.chartData.forEach(value => {
                 if (Number(value.y) > max) {
                     max = Number(value.y)
                 }
@@ -63,6 +36,12 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
             max = max + (max * 50) / 100;
             maxYScaleValue = max;
         }
+
+        let productsList;
+        if (this.props.similarProducts && this.props.similarProducts.length > 0) {
+            productsList = filterProducts(this.props.similarProducts, this.props.shops);
+        }
+
         return (
             <React.Fragment>
                 <section className={'product_description_area'}>
@@ -70,7 +49,8 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
                         <div className="row" style={{marginTop: 70}}>
                             <div className="col-lg-1" style={{maxWidth: 1}}>
                                 <Link to={"/products"} className="increase_clickable_area">
-                                    <i className="fa fa-arrow-left" style={{marginTop: 30, fontSize: 30, color: "red"}}/>
+                                    <i className="fa fa-arrow-left"
+                                       style={{marginTop: 30, fontSize: 30, color: "red"}}/>
                                 </Link>
                             </div>
                             <div className="col-lg-5">
@@ -87,19 +67,19 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
                                     </h3>
                                 </div>
                                 <FadeLoader
-                                    loading={this.state.isLoadingHistory}
+                                    loading={this.props.isLoadingHistory}
                                     color={'#e31f29'}
                                     css={spinnerCss}
                                 />
-                                {!this.state.isLoadingHistory &&
+                                {!this.props.isLoadingHistory &&
                                 <React.Fragment>
-                                    {this.state.chartData && this.state.chartData.length > 0 ?
+                                    {this.props.chartData && this.props.chartData.length > 0 ?
                                         <ResponsiveLine
                                             data={[
                                                 {
                                                     "id": "product_history",
                                                     "color": "hsl(5, 70%, 50%)",
-                                                    "data": this.state.chartData
+                                                    "data": this.props.chartData
                                                 }
                                             ]}
                                             margin={{top: 10, right: 50, bottom: 80, left: 50}}
@@ -143,6 +123,29 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
                                 }
                             </div>
                         </div>
+                        <div className="row">
+                            <FadeLoader
+                                loading={this.props.isLoadingSimilar}
+                                color={'#e31f29'}
+                                css={spinnerCss}
+                            />
+                            {!this.props.isLoadingSimilar &&
+                            <React.Fragment>
+                                <div className="text-center" style={{padding: "30px 30px 0px 30px"}}>
+                                    <h3>
+                                        <FormattedMessage
+                                            id={'product.info.similar.products.title'}
+                                            defaultMessage="Produse similare"
+                                        />
+                                    </h3>
+                                </div>
+                                <div
+                                    className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
+                                    {productsList}
+                                </div>
+                            </React.Fragment>
+                            }
+                        </div>
                     </div>
                 </section>
             </React.Fragment>
@@ -152,7 +155,12 @@ class ProductInfo extends React.Component<ProductInfoProps, ProductInfoState> {
 
 const mapStateToProps = (state: AppState) => {
     return {
-        product: state.product.currentProduct
+        product: state.product.currentProduct,
+        shops: state.shops.allShops,
+        chartData: state.product.productHistory,
+        similarProducts: state.product.similarProducts,
+        isLoadingHistory: state.product.historyLoading,
+        isLoadingSimilar: state.product.similarLoading
     };
 };
 

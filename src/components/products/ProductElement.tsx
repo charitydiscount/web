@@ -12,7 +12,7 @@ import { addDefaultImgSrc } from "../../helper/AppHelper";
 import { AppState } from "../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import { ShopDto } from "../../rest/ShopsService";
-import { ProductActions } from "../../redux/actions/ProductsAction";
+import { setCurrentProduct } from "../../redux/actions/ProductsAction";
 
 interface ProductElementProps {
     intl: IntlShape;
@@ -266,7 +266,7 @@ class ProductElement extends React.Component<ProductElementProps,
 const mapDispatchToProps = (dispatch: any) => {
     return {
         setCurrentProduct: (currentProduct: Product) =>
-            dispatch(ProductActions.setCurrentProduct(currentProduct))
+            dispatch(setCurrentProduct(currentProduct))
     };
 };
 

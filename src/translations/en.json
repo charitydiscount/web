@@ -148,7 +148,7 @@
   "products.filters.sorting": "Sorting",
   "products.filters.sorting.ascending": "Ascending",
   "products.filters.sorting.descending": "Descending",
-  "product.element.more.details": "Chek price history...",
+  "product.element.more.details": "Chek price history and similar products...",
   "shops.filters.sorting.ascending": "Reviews number ↑",
   "shops.filters.sorting.descending": "Reviews number ↓",
   "sort.key": "Sort",
@@ -223,5 +223,6 @@
   "leaderboard.table.achievements": "Achievements",
   "leaderboard.table.staff.member": "Staff member",
   "product.info.history.price.title": "Price history",
+  "product.info.similar.products.title": "Similar products",
   "product.info.history.price.no.data.available" : "No data available"
 }

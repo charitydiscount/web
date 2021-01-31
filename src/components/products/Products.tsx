@@ -4,7 +4,7 @@ import { store } from '../../index';
 import { NavigationsAction } from '../../redux/actions/NavigationsAction';
 import { Stages } from '../helper/Stages';
 import ReactPaginate from 'react-paginate';
-import { roundCommission, spinnerCss } from '../../helper/AppHelper';
+import { spinnerCss } from '../../helper/AppHelper';
 import GenericInput from '../input/GenericInput';
 import { FadeLoader } from 'react-spinners';
 import {
@@ -13,7 +13,6 @@ import {
     ProductResult,
     searchProduct,
 } from '../../rest/ProductsService';
-import ProductListElement from './ProductListElement';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -26,6 +25,7 @@ import { AppState } from '../../redux/reducer/RootReducer';
 import { ShopDto } from '../../rest/ShopsService';
 import { ProductSearch } from "../../redux/reducer/ProductReducer";
 import { ProductActions } from "../../redux/actions/ProductsAction";
+import { filterProducts } from "./ProductHelper";
 
 interface ProductsProps {
     intl: IntlShape,
@@ -221,42 +221,10 @@ class Products extends React.Component<ProductsProps, ProductsState> {
     };
 
     public render() {
-        let productsState;
-        //filter after active products, product's shop present in our shops list
+        let productsList;
         if (this.state.products && this.state.products.length > 0) {
-            productsState = this.state.products
-                .filter(
-                    (product) =>
-                        this.props.shops.find(
-                            (shop) => shop.id.toString() === product.shopId
-                        ) !== undefined
-                )
-                .map((product) => {
-                    let shop = this.props.shops.find(
-                        (shop) => shop.id.toString() === product.shopId
-                    );
-                    if (shop) {
-                        product.commission = roundCommission(
-                            (product.price * parseFloat(shop.commission)) / 100
-                        );
-                    }
-                    return product;
-                });
+            productsList = filterProducts(this.state.products, this.props.shops);
         }
-
-        let productsList =
-            productsState && productsState.length > 0
-                ? productsState.map((product, index) => {
-                    //check if active
-                    return (
-                        <ProductListElement
-                            key={'list' + index}
-                            keyElement={'list' + index}
-                            product={product}
-                        />
-                    );
-                })
-                : null;
 
         return (
             <React.Fragment>
