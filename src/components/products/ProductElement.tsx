@@ -211,7 +211,7 @@ class ProductElement extends React.Component<ProductElementProps,
                         {this.props.product.category}
                     </h6>
                     <img
-                        style={{maxWidth: 300, maxHeight: 300}}
+                        style={{maxWidth: 300, maxHeight: 250}}
                         src={this.props.product.imageUrl}
                         alt={this.props.intl.formatMessage({
                             id: 'products.image.missing',
