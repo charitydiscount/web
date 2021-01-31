@@ -92,6 +92,35 @@ export async function getProductPriceHistory(productId) {
     return responseData.hits.map((hit) => toProductHistoryDto(hit));
 }
 
+export async function getSimilarProducts(productId) {
+    if (!auth.currentUser) {
+        return [];
+    }
+
+    const token = await auth.currentUser.getIdToken();
+    const url = `${remoteConfig.getString('search_endpoint')}/search/products/similar?from=0`;
+
+    const response = await axios.post(url,
+        {
+            'query': productId
+        },
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json',
+                'Accept': 'application/json',
+            },
+        });
+
+    const responseData: RequestResponse = response.data;
+
+    if (!responseData.hits) {
+        return [];
+    }
+
+    return responseData.hits.map((hit) => toProductDTO(hit));
+}
+
 
 export async function getFeaturedProducts(): Promise<Product[]> {
     if (!auth.currentUser) {
