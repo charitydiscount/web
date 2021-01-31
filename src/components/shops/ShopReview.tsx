@@ -19,6 +19,7 @@ import { AppState } from '../../redux/reducer/RootReducer';
 import { UserInfoDto } from '../login/AuthHelper';
 import InfoModal from '../modals/InfoModal';
 import { Review } from "./Review";
+import { Link } from "react-router-dom";
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -244,7 +245,12 @@ class ShopReview extends React.Component<IProductReviewProps,
                 <section className={'product_description_area'}>
                     <div className={'container'}>
                         <div className="row" style={{marginTop: 70}}>
-                            <div className="col-lg-6">
+                            <div className="col-lg-1" style={{maxWidth: 1}}>
+                                <Link to={"/shops"} className="increase_clickable_area">
+                                    <i className="fa fa-arrow-left" style={{marginTop: 30, fontSize: 30, color: "red"}}/>
+                                </Link>
+                            </div>
+                            <div className="col-lg-5">
                                 <ShopElement
                                     key={this.state.shop.name}
                                     shop={this.state.shop}
