@@ -11,7 +11,7 @@ export enum Routes {
     PRODUCT_INFO = "/product-info",
     CAUSES = "/causes",
     WALLET = "/wallet",
-    REVIEW = "/review",
+    SHOP_INFO = "/shop-info",
     REFERRALS = "/referrals",
     TOS = "/tos", //terms of agreement
     FAQ = "/faq", //frequently asked questions

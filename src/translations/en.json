@@ -224,5 +224,6 @@
   "leaderboard.table.staff.member": "Staff member",
   "product.info.history.price.title": "Price history",
   "product.info.similar.products.title": "Similar products",
-  "product.info.history.price.no.data.available" : "No data available"
+  "product.info.history.price.no.data.available" : "No data available",
+  "shop.info.products": "Products"
 }

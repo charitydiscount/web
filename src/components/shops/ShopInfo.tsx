@@ -20,6 +20,10 @@ import { UserInfoDto } from '../login/AuthHelper';
 import InfoModal from '../modals/InfoModal';
 import { Review } from "./Review";
 import { Link } from "react-router-dom";
+import {getProductsForProgram, Product} from "../../rest/ProductsService";
+import {filterProducts} from "../products/ProductHelper";
+import {ProductActions} from "../../redux/actions/ProductsAction";
+import {Routes} from "../helper/Routes";
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -32,18 +36,24 @@ interface IProductReviewState {
     rating: number;
     reviews: Array<ReviewDto>;
     reviewsLoading: boolean;
+
+    //products for program
+    productsFromProgram: Product[],
+    productsLoading: boolean
 }
 
 interface IProductReviewProps {
     match: any;
     intl: IntlShape;
 
+    setBackLink: (backLink:string) => void
+
     //global state
     userInfo: UserInfoDto
     shops: ShopDto[];
 }
 
-class ShopReview extends React.Component<IProductReviewProps,
+class ShopInfo extends React.Component<IProductReviewProps,
     IProductReviewState> {
     constructor(props: IProductReviewProps) {
         super(props);
@@ -59,6 +69,8 @@ class ShopReview extends React.Component<IProductReviewProps,
             rating: 0,
             reviews: [],
             reviewsLoading: true,
+            productsFromProgram: [],
+            productsLoading: true
         };
     }
 
@@ -82,6 +94,25 @@ class ShopReview extends React.Component<IProductReviewProps,
             this.setState({
                 reviewsLoading: false,
             });
+        }
+        try {
+            let response = await getProductsForProgram(this.state.shop.name);
+            if (response) {
+                this.setState({
+                    productsFromProgram: response,
+                    productsLoading: false
+                });
+                this.props.setBackLink(Routes.SHOP_INFO + '/' + this.state.shop.id);
+            } else {
+                this.setState({
+                    productsLoading: false
+                })
+            }
+        } catch (e) {
+            //products for program not loaded
+            this.setState({
+                productsLoading: false
+            })
         }
     }
 
@@ -235,6 +266,11 @@ class ShopReview extends React.Component<IProductReviewProps,
             </li>
         ));
 
+        let productsList;
+        if (this.state.productsFromProgram && this.state.productsFromProgram.length > 0) {
+            productsList = filterProducts(this.state.productsFromProgram, this.props.shops, true);
+        }
+
         return (
             <React.Fragment>
                 <InfoModal
@@ -250,14 +286,35 @@ class ShopReview extends React.Component<IProductReviewProps,
                                     <i className="fa fa-arrow-left" style={{marginTop: 30, fontSize: 30, color: "red"}}/>
                                 </Link>
                             </div>
-                            <div className="col-lg-5">
+                            <div className="col-lg-6">
                                 <ShopElement
                                     key={this.state.shop.name}
                                     shop={this.state.shop}
                                     comingFromShopReview={true}
                                 />
+                                <FadeLoader
+                                    loading={this.state.productsLoading}
+                                    color={'#e31f29'}
+                                    css={spinnerCss}
+                                />
+                                {!this.state.productsLoading &&
+                                <React.Fragment>
+                                    <div className="text-center" style={{padding: "30px 30px 0px 30px"}}>
+                                        <h3>
+                                            <FormattedMessage
+                                                id={'shop.info.products'}
+                                                defaultMessage="Produse"
+                                            />
+                                        </h3>
+                                    </div>
+                                    <div
+                                        className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
+                                        {productsList}
+                                    </div>
+                                </React.Fragment>
+                                }
                             </div>
-                            <div className="col-lg-6">
+                            <div className="col-lg-5">
                                 <div
                                     className="tab-pane fade show active p_20"
                                     id="review"
@@ -327,4 +384,12 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-export default connect(mapStateToProps, null)(injectIntl(ShopReview));
+const
+    mapDispatchToProps = (dispatch: any) => {
+        return {
+            setBackLink: (backLink: string) =>
+                dispatch(ProductActions.setBackLink(backLink))
+        };
+    };
+
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ShopInfo));

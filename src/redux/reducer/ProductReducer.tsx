@@ -1,6 +1,7 @@
 import { Product, ProductHistoryScale } from "../../rest/ProductsService";
 import { ProductsActionTypes } from "../actions/Actions";
 import { ProductActions } from "../actions/ProductsAction";
+import {Routes} from "../../components/helper/Routes";
 
 export interface ProductSearch {
     searchTerm: string,
@@ -18,8 +19,8 @@ export interface IProductState {
     similarProducts: Product[],
     similarLoading: boolean
     productHistory: ProductHistoryScale[],
+    backLink: string,
     historyLoading: boolean
-    backProduct: boolean
 }
 
 const initialState: IProductState = {
@@ -28,6 +29,7 @@ const initialState: IProductState = {
     productHistory: [],
     historyLoading: true,
     similarLoading: true,
+    backLink: Routes.PRODUCTS,
     productSearch: {
         searchTerm: '',
         minPrice: '',
@@ -36,8 +38,7 @@ const initialState: IProductState = {
         currentPage: 0,
         products: [],
         total: 50
-    },
-    backProduct: false
+    }
 };
 
 export default function (
@@ -48,8 +49,12 @@ export default function (
         case ProductsActionTypes.SET_CURRENT_PRODUCT_ACTION:
             return {
                 ...state,
-                currentProduct: action.payload,
-                backProduct: true
+                currentProduct: action.payload
+            };
+        case ProductsActionTypes.SET_BACK_LINK_ACTION:
+            return {
+                ...state,
+                backLink: action.payload
             };
         case ProductsActionTypes.SET_CURRENT_PRODUCT_HISTORY_ACTION:
             return {
@@ -77,8 +82,7 @@ export default function (
         case ProductsActionTypes.SET_CURRENT_SEARCH_PARAMS:
             return {
                 ...state,
-                productSearch: action.payload,
-                backProduct: false
+                productSearch: action.payload
             };
         case ProductsActionTypes.RESET_SEARCH_PARAMS:
             return {...initialState};

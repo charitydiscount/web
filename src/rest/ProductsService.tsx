@@ -121,6 +121,36 @@ export async function getSimilarProducts(productId) {
     return responseData.hits.map((hit) => toProductDTO(hit));
 }
 
+export async function getProductsForProgram(programName) {
+    if (!auth.currentUser) {
+        return [];
+    }
+
+    const token = await auth.currentUser.getIdToken();
+
+    let url = `${remoteConfig.getString('search_endpoint')}/search/programs/`;
+    url += programName + "/similar?from=0"
+
+    const response = await axios.post(url,
+        {
+            'query': programName
+        },
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-type': 'application/json',
+                'Accept': 'application/json',
+            },
+        });
+
+    const responseData: RequestResponse = response.data;
+
+    if (!responseData.hits) {
+        return [];
+    }
+
+    return responseData.hits.map((hit) => toProductDTO(hit));
+}
 
 export async function getFeaturedProducts(): Promise<Product[]> {
     if (!auth.currentUser) {

@@ -9,7 +9,7 @@ import Causes from '../causes/Causes';
 import Wallet from '../wallet/Wallet';
 import Tos from '../tos/Tos';
 import Privacy from '../privacy/Privacy';
-import ShopReview from '../shops/ShopReview';
+import ShopReview from '../shops/ShopInfo';
 import Products from '../products/Products';
 import ExternalAccess from '../external/ExternalAccess';
 import Faq from '../faq/Faq';
@@ -115,7 +115,7 @@ const PageLayout = (props: PageLayoutProps) => {
                         />
                         <Route
                             exact={true}
-                            path={Routes.REVIEW + '/:id'}
+                            path={Routes.SHOP_INFO + '/:id'}
                             component={ShopReview}
                         />
                         <Route

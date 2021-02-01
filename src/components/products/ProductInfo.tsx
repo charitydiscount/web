@@ -18,7 +18,8 @@ interface ProductInfoProps {
     chartData: ProductHistoryScale[],
     similarProducts: Product[],
     isLoadingHistory: boolean,
-    isLoadingSimilar: boolean
+    isLoadingSimilar: boolean,
+    backLink: string
 }
 
 class ProductInfo extends React.Component<ProductInfoProps> {
@@ -39,7 +40,7 @@ class ProductInfo extends React.Component<ProductInfoProps> {
 
         let productsList;
         if (this.props.similarProducts && this.props.similarProducts.length > 0) {
-            productsList = filterProducts(this.props.similarProducts, this.props.shops);
+            productsList = filterProducts(this.props.similarProducts, this.props.shops, false);
         }
 
         return (
@@ -48,7 +49,7 @@ class ProductInfo extends React.Component<ProductInfoProps> {
                     <div className={'container'}>
                         <div className="row" style={{marginTop: 70}}>
                             <div className="col-lg-1" style={{maxWidth: 1}}>
-                                <Link to={"/products"} className="increase_clickable_area">
+                                <Link to={this.props.backLink} className="increase_clickable_area">
                                     <i className="fa fa-arrow-left"
                                        style={{marginTop: 30, fontSize: 30, color: "red"}}/>
                                 </Link>
@@ -160,7 +161,8 @@ const mapStateToProps = (state: AppState) => {
         chartData: state.product.productHistory,
         similarProducts: state.product.similarProducts,
         isLoadingHistory: state.product.historyLoading,
-        isLoadingSimilar: state.product.similarLoading
+        isLoadingSimilar: state.product.similarLoading,
+        backLink: state.product.backLink
     };
 };
 
