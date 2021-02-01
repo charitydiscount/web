@@ -16,7 +16,8 @@ interface ProductListElementProps {
     intl: IntlShape,
     keyElement: string,
     product: Product,
-    allShops: ShopDto[]
+    allShops: ShopDto[],
+    comingFromShop: boolean
 }
 
 class ProductListElement extends React.Component<ProductListElementProps,
@@ -70,7 +71,7 @@ class ProductListElement extends React.Component<ProductListElementProps,
                     />
                 </Modal>
                 <div
-                    className="col-md-4 shop-container"
+                    className={this.props.comingFromShop ? "col-md-6 shop-container" : "col-md-4 shop-container"}
                     onClick={this.openModal}
                     style={{cursor: 'pointer'}}
                 >
@@ -122,7 +123,7 @@ class ProductListElement extends React.Component<ProductListElementProps,
                         <div className="shop-description-container"
                              style={{overflow: 'auto', padding: "0px 30px 0px 30px", maxHeight: 90}}>
                             <h4>
-                                {add3Dots(this.props.product.title, 50)}
+                                {add3Dots(this.props.product.title, 35)}
                             </h4>
                         </div>
                     </div>

@@ -26,14 +26,15 @@ import { ShopDto } from '../../rest/ShopsService';
 import { ProductSearch } from "../../redux/reducer/ProductReducer";
 import { ProductActions } from "../../redux/actions/ProductsAction";
 import { filterProducts } from "./ProductHelper";
+import {Routes} from "../helper/Routes";
 
 interface ProductsProps {
     intl: IntlShape,
     shops: ShopDto[],
 
-    backProduct: boolean,
     productSearch: ProductSearch,
     setProductSearch: (productSearch: ProductSearch) => void
+    setBackLink: (backLink: string) => void
 }
 
 interface ProductsState {
@@ -94,7 +95,9 @@ class Products extends React.Component<ProductsProps, ProductsState> {
             isLoading: true
         });
 
-        if (this.props.backProduct && this.props.productSearch) {
+        this.props.setBackLink(Routes.PRODUCTS);
+
+        if (this.props.productSearch && this.props.productSearch.products.length > 0) {
             this.setState({
                 maxPrice: this.props.productSearch.maxPrice,
                 minPrice: this.props.productSearch.minPrice,
@@ -223,7 +226,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
     public render() {
         let productsList;
         if (this.state.products && this.state.products.length > 0) {
-            productsList = filterProducts(this.state.products, this.props.shops);
+            productsList = filterProducts(this.state.products, this.props.shops, false);
         }
 
         return (
@@ -497,8 +500,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
 const mapStateToProps = (state: AppState) => {
     return {
         shops: state.shops.allShops,
-        productSearch: state.product.productSearch,
-        backProduct: state.product.backProduct
+        productSearch: state.product.productSearch
     };
 };
 
@@ -506,7 +508,9 @@ const
     mapDispatchToProps = (dispatch: any) => {
         return {
             setProductSearch: (productSearch: ProductSearch) =>
-                dispatch(ProductActions.setProductSearch(productSearch))
+                dispatch(ProductActions.setProductSearch(productSearch)),
+            setBackLink: (backLink: string) =>
+                dispatch(ProductActions.setBackLink(backLink))
         };
     };
 

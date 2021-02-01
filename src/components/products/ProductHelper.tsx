@@ -7,7 +7,7 @@ import { Product } from "../../rest/ProductsService";
 /**
  * Filter after active products, product's shop present in our shops list
  */
-export function filterProducts(products: Product[], shops: ShopDto[]) {
+export function filterProducts(products: Product[], shops: ShopDto[], comingFromShop: boolean) {
     let productsState;
     productsState = products
         .filter(
@@ -35,6 +35,7 @@ export function filterProducts(products: Product[], shops: ShopDto[]) {
                     key={'list' + index}
                     keyElement={'list' + index}
                     product={product}
+                    comingFromShop={comingFromShop}
                 />
             );
         })

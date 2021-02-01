@@ -224,5 +224,6 @@
   "leaderboard.table.staff.member": "Membru din staff",
   "product.info.history.price.title": "Evoluția prețului",
   "product.info.similar.products.title": "Produse similare",
-  "product.info.history.price.no.data.available": "Nu avem date"
+  "product.info.history.price.no.data.available": "Nu avem date",
+  "shop.info.products": "Produse"
 }

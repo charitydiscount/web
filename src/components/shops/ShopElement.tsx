@@ -335,7 +335,7 @@ class ShopElement extends React.Component<IShopElementProps,
                                 <Link
                                     to={
                                         this.props.isLoggedIn ?
-                                            Routes.REVIEW + '/' + this.props.shop.id
+                                            Routes.SHOP_INFO + '/' + this.props.shop.id
                                             :
                                             Routes.LOGIN
                                     }
@@ -354,7 +354,7 @@ class ShopElement extends React.Component<IShopElementProps,
                                 <Link
                                     to={
                                         this.props.isLoggedIn ?
-                                            Routes.REVIEW + '/' + this.props.shop.id
+                                            Routes.SHOP_INFO + '/' + this.props.shop.id
                                             :
                                             Routes.LOGIN
                                     }

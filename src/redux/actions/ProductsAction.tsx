@@ -8,6 +8,7 @@ import { AnyAction } from "redux";
 
 export const ProductActions = {
     setCurrentProduct: (currentProduct: Product) => createAction(ProductsActionTypes.SET_CURRENT_PRODUCT_ACTION, currentProduct),
+    setBackLink: (backLink: string) => createAction(ProductsActionTypes.SET_BACK_LINK_ACTION, backLink),
     setCurrentProductHistory: (productHistory: ProductHistoryScale[]) => createAction(ProductsActionTypes.SET_CURRENT_PRODUCT_HISTORY_ACTION, productHistory),
     setHistoryLoading: (historyLoading: boolean) => createAction(ProductsActionTypes.SET_PRODUCT_HISTORY_LOADING, historyLoading),
     setSimilarLoading: (similarLoading: boolean) => createAction(ProductsActionTypes.SET_PRODUCT_SIMILAR_LOADING, similarLoading),
