@@ -225,5 +225,7 @@
   "product.info.history.price.title": "Price history",
   "product.info.similar.products.title": "Similar products",
   "product.info.history.price.no.data.available" : "No data available",
-  "shop.info.products": "Products"
+  "shop.info.products": "Products",
+  "shop.element.more.details" : "More details here...",
+  "shop.info.products.empty" : "No data available..."
 }

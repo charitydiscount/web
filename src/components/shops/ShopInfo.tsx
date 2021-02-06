@@ -290,7 +290,7 @@ class ShopInfo extends React.Component<IProductReviewProps,
                                 <ShopElement
                                     key={this.state.shop.name}
                                     shop={this.state.shop}
-                                    comingFromShopReview={true}
+                                    comingFromShopInfo={true}
                                 />
                                 <FadeLoader
                                     loading={this.state.productsLoading}
@@ -309,7 +309,15 @@ class ShopInfo extends React.Component<IProductReviewProps,
                                     </div>
                                     <div
                                         className="latest_product_inner row d-flex align-items-stretch shops-container shade-container">
-                                        {productsList}
+                                        {productsList && productsList.length > 0 ?
+                                            productsList :
+                                            <div>
+                                                <FormattedMessage
+                                                    id={'shop.info.products.empty'}
+                                                    defaultMessage="Nu avem date..."
+                                                />
+                                            </div>
+                                        }
                                     </div>
                                 </React.Fragment>
                                 }
