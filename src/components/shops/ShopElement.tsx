@@ -27,7 +27,7 @@ interface IShopElementProps {
     shop: ShopDto;
     allShops: ShopDto[];
     isLoggedIn: boolean;
-    comingFromShopReview?: boolean;
+    comingFromShopInfo?: boolean;
     onCloseModal?: () => void;
     intl: IntlShape;
 }
@@ -143,7 +143,7 @@ class ShopElement extends React.Component<IShopElementProps,
                             key={promotion.id}
                             promotion={promotion}
                             comingFromShopReview={
-                                this.props.comingFromShopReview
+                                this.props.comingFromShopInfo
                             }
                         />
                     );
@@ -233,7 +233,7 @@ class ShopElement extends React.Component<IShopElementProps,
                     cashbackUrl={cashbackUrl}
                 />
                 <div className="text-center p-4">
-                    {!this.props.comingFromShopReview && (
+                    {!this.props.comingFromShopInfo && (
                         <div style={{textAlign: 'right'}}>
                             <i
                                 onClick={this.props.onCloseModal}
@@ -299,7 +299,7 @@ class ShopElement extends React.Component<IShopElementProps,
                     <div className="blog_details">
                         <h6
                             style={
-                                this.props.comingFromShopReview
+                                this.props.comingFromShopInfo
                                     ? {}
                                     : {maxWidth: 300}
                             }
@@ -312,7 +312,7 @@ class ShopElement extends React.Component<IShopElementProps,
                         </h6>
                         <h5
                             style={
-                                this.props.comingFromShopReview
+                                this.props.comingFromShopInfo
                                     ? {}
                                     : {maxWidth: 300}
                             }
@@ -348,7 +348,7 @@ class ShopElement extends React.Component<IShopElementProps,
                                         </span>
                                     </span>
                                 </Link>
-                            ) : this.props.comingFromShopReview ? (
+                            ) : this.props.comingFromShopInfo ? (
                                 ''
                             ) : (
                                 <Link
@@ -373,7 +373,26 @@ class ShopElement extends React.Component<IShopElementProps,
                             className="s_product_text"
                             style={{marginTop: 20, marginBottom: 20, marginLeft: !this.props.isLoggedIn ? 0 : -15}}
                         >
-                            <div className="card_area p_20">
+                            {!this.props.comingFromShopInfo &&
+                            <div className="card_area">
+                                <Link
+                                    to={
+                                        this.props.isLoggedIn ?
+                                            Routes.SHOP_INFO + '/' + this.props.shop.id
+                                            :
+                                            Routes.LOGIN
+                                    }
+                                >
+                                    <i className="fa fa-info-circle" aria-hidden="true"
+                                       style={{marginRight: 5}}/>
+                                    <FormattedMessage
+                                        id={'shop.element.more.details'}
+                                        defaultMessage="Mai multe detali aici..."
+                                    />
+                                </Link>
+                            </div>
+                            }
+                            <div className="card_area" style={{padding: "10px 20px 20px 20px"}}>
                                 {accessButton}
                                 {this.props.isLoggedIn &&
                                 <div
@@ -415,7 +434,7 @@ class ShopElement extends React.Component<IShopElementProps,
                                     <div
                                         className="table-responsive"
                                         style={
-                                            !this.props.comingFromShopReview
+                                            !this.props.comingFromShopInfo
                                                 ? {
                                                     overflowY: 'auto',
                                                     maxHeight: 150,
@@ -426,7 +445,7 @@ class ShopElement extends React.Component<IShopElementProps,
                                         <table
                                             className="table"
                                             style={
-                                                !this.props.comingFromShopReview
+                                                !this.props.comingFromShopInfo
                                                     ? {
                                                         maxWidth: 300,
                                                     }

@@ -21,7 +21,7 @@ import { StorageKey } from './helper/Constants';
 import { UserInfoDto } from './components/login/AuthHelper';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
-export const appVersion = '2.7.7';
+export const appVersion = '2.7.8';
 
 // REDUX----------------------------------------------------------------------------------------------------------------
 const initialState = {};
