@@ -16,12 +16,6 @@ export function setAchievementModalVisible(modalVisible: boolean): any {
     }
 }
 
-export function setAchievementModal(achivement: UserAchievementDto): any {
-    return (dispatch: any) => {
-        dispatch(AchievementActions.setAchievementModal(achivement));
-    }
-}
-
 export type AchievementActionsType = ActionTypesUnion<typeof AchievementActions>;
 
 

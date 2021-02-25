@@ -24,7 +24,7 @@ import { FadeLoader } from "react-spinners";
 import { spinnerCss } from "../../helper/AppHelper";
 import Promotions from "../promotions/Promotions";
 import { clearStorage } from "../../helper/StorageHelper";
-import Achievements from "../achievements/Achievements";
+import Achievements from "../pages/achievements/Achievements";
 import Leaderboard from "../leaderboard/Leaderboard";
 import ProductInfo from "../products/ProductInfo";
 

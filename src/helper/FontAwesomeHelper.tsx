@@ -1,0 +1,1 @@
+export const ftAwCheck = "fa fa-check";

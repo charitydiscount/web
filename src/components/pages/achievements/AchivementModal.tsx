@@ -1,11 +1,11 @@
 import React from 'react';
 import Modal from 'react-awesome-modal';
-import { UserAchievementDto } from "../../rest/AchievementsService";
-import { AppState } from "../../redux/reducer/RootReducer";
+import { UserAchievementDto } from "../../../rest/AchievementsService";
+import { AppState } from "../../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
-import { setAchievementModalVisible } from "../../redux/actions/AchivementsAction";
+import { setAchievementModalVisible } from "../../../redux/actions/AchivementsAction";
 import { Slider } from "@material-ui/core";
-import { dateOptions } from "../../helper/AppHelper";
+import { dateOptions } from "../../../helper/AppHelper";
 
 export interface AchievementModalProps {
 

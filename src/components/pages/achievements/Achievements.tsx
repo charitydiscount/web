@@ -1,11 +1,11 @@
 import React from "react";
-import { spinnerCss } from "../../helper/AppHelper";
+import { spinnerCss } from "../../../helper/AppHelper";
 import { FadeLoader } from "react-spinners";
-import { getAchievements, UserAchievementDto } from "../../rest/AchievementsService";
-import AchievementElement from "./AchievementElement";
-import { store } from "../../index";
-import { NavigationsAction } from "../../redux/actions/NavigationsAction";
-import { Stages } from "../helper/Stages";
+import { getAchievements, UserAchievementDto } from "../../../rest/AchievementsService";
+import AchievementElement from "./AchievementRow";
+import { store } from "../../../index";
+import { NavigationsAction } from "../../../redux/actions/NavigationsAction";
+import { Stages } from "../../helper/Stages";
 import AchievementModal from "./AchivementModal";
 import { FormattedMessage } from "react-intl";
 
