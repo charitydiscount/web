@@ -6,72 +6,55 @@ import Cause from './Cause';
 import { CauseDto, fetchCauses } from '../../../rest/CauseService';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { spinnerCss } from '../../../helper/AppHelper';
+import { useEffect, useState } from "react";
 
-interface ICausesProps {
-}
+const Causes = () => {
 
-interface ICausesState {
-    causes: CauseDto[];
-    isLoading: boolean;
-}
+    const [causes, setCauses] = useState<CauseDto[]>([]);
+    const [isLoading, setLoading] = useState<boolean>(true);
 
-class Causes extends React.Component<ICausesProps, ICausesState> {
-    constructor(props: ICausesProps) {
-        super(props);
-        this.state = {
-            causes: [],
-            isLoading: true,
-        };
-    }
+    useEffect(() => {
+        store.dispatch(NavigationsAction.setStageAction(Stages.CAUSES));
+        populateCauses();
+    }, []);
 
-    async componentDidMount() {
+    const populateCauses = async () => {
         try {
             let response = await fetchCauses();
-            if (response) {
-                this.setState({
-                    causes: response as CauseDto[],
-                    isLoading: false,
-                });
-            }
+            setCauses(response as CauseDto[]);
+            setLoading(false);
         } catch (error) {
+            setLoading(false);
             //causes not loaded
         }
-
-        store.dispatch(NavigationsAction.setStageAction(Stages.CAUSES));
     }
 
-    public componentWillUnmount() {
-        store.dispatch(NavigationsAction.resetStageAction(Stages.CAUSES));
-    }
+    let causesList = causes
+        ? causes.map((cause) => {
+            return <Cause key={cause.id} cause={cause}/>;
+        })
+        : null;
 
-    public render() {
-        const causesList = this.state.causes
-            ? this.state.causes.map((cause) => {
-                return <Cause key={cause.id} cause={cause}/>;
-            })
-            : null;
-
-        return (
-            <React.Fragment>
-                <FadeLoader
-                    loading={this.state.isLoading}
-                    color={'#e31f29'}
-                    css={spinnerCss}
-                />
-                {!this.state.isLoading && (
-                    <section className="product_description_area">
-                        <div className="container">
-                            <section className="hot_deals_area section_gap">
-                                <div className="container-fluid">
-                                    <div className="row">{causesList}</div>
-                                </div>
-                            </section>
-                        </div>
-                    </section>
-                )}
-            </React.Fragment>
-        );
-    }
+    return (
+        <React.Fragment>
+            <FadeLoader
+                loading={isLoading}
+                color={'#e31f29'}
+                css={spinnerCss}
+            />
+            {!isLoading && (
+                <section className="product_description_area">
+                    <div className="container">
+                        <section className="hot_deals_area section_gap">
+                            <div className="container-fluid">
+                                <div className="row">{causesList}</div>
+                            </div>
+                        </section>
+                    </div>
+                </section>
+            )}
+        </React.Fragment>
+    );
 }
 
 export default Causes;

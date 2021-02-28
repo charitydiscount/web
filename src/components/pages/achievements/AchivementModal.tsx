@@ -5,7 +5,7 @@ import { AppState } from "../../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import { AchievementActions } from "../../../redux/actions/AchivementsAction";
 import { Slider } from "@material-ui/core";
-import { dateOptions } from "../../../helper/AppHelper";
+import { dateOptions, getImagePath } from "../../../helper/AppHelper";
 import { Languages } from "../../../helper/Constants";
 
 export interface AchievementModalProps {
@@ -106,8 +106,8 @@ const AchievementModal = (props: AchievementModalProps) => {
                         <br/>
                     </h4>
                     <img
-                        src={props.userAchievement.achievement.badgeUrl}
-                        alt=""
+                        src={getImagePath(props.userAchievement.achievement.badgeUrl)}
+                        alt="Missing"
                         className={imageCssClass}
                         style={{
                             maxWidth: 200,

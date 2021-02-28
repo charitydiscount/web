@@ -1,16 +1,11 @@
 import * as React from 'react';
 import { CauseDto } from '../../../rest/CauseService';
 import { Routes } from '../../helper/Routes';
-import { Redirect } from 'react-router';
-import { emptyHrefLink } from '../../../helper/Constants';
 import { FormattedMessage } from 'react-intl';
-import { roundMoney } from "../../../helper/AppHelper";
+import { getImagePath, roundMoney } from "../../../helper/AppHelper";
 import { AppState } from "../../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
-
-interface ICauseState {
-    redirect: boolean;
-}
+import { Link } from 'react-router-dom';
 
 interface ICauseProps {
     cause: CauseDto;
@@ -19,86 +14,53 @@ interface ICauseProps {
     isLoggedIn: boolean
 }
 
-class Cause extends React.Component<ICauseProps, ICauseState> {
-    constructor(props: Readonly<ICauseProps>) {
-        super(props);
-        this.state = {
-            redirect: false,
-        };
-    }
+const Cause = (props: ICauseProps) => {
 
-    setRedirect = () => {
-        this.setState({
-            redirect: true,
-        });
-    };
-
-    renderRedirect = () => {
-        if (this.state.redirect) {
-            if (this.props.isLoggedIn) {
-                return (
-                    <Redirect
-                        to={Routes.WALLET + '/donate/' + this.props.cause.id}
-                    />
-                );
-            } else {
-                return (
-                    <Redirect
-                        to={Routes.LOGIN}
-                    />
-                );
-            }
-        }
-    };
-
-    public render() {
-        return (
-            <React.Fragment>
-                {this.renderRedirect()}
-                <div className="col-lg-6">
-                    <h2>{this.props.cause.details.title}</h2>
-                    {this.props.cause.details.funds && (
-                        <h4>
-                            <FormattedMessage
-                                id="cause.donated"
-                                defaultMessage="Donated: "
-                            />
-                            {roundMoney(this.props.cause.details.funds)} RON
-                        </h4>
-                    )}
-                    <a
-                        className="hot_deal_link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={this.props.cause.details.site}
-                    >
-                        <div className="hot_deal_box">
-                            {this.props.cause.details.images && this.props.cause.details.images[0] && this.props.cause.details.images[0].url &&
-                            <img
-                                src={this.props.cause.details.images[0].url}
-                                alt=""
-                                style={{height:300}}
-                                className="img-fluid"
-                            />
-                            }
-                            <div className="content">Website</div>
-                        </div>
-                    </a>
-                    <br/>
-                    <a
-                        href={emptyHrefLink}
-                        className="btn submit_btn genric-btn circle"
-                        onClick={this.setRedirect}
-                    >
+    return (
+        <React.Fragment>
+            <div className="col-lg-6">
+                <h2>{props.cause.details.title}</h2>
+                {props.cause.details.funds && (
+                    <h4>
                         <FormattedMessage
-                            id="cause.contribute.button"
-                            defaultMessage="Contribute"
+                            id="cause.donated"
+                            defaultMessage="Donated: "
                         />
-                    </a>
-                </div>
-            </React.Fragment>
-        );
-    }
+                        {roundMoney(props.cause.details.funds)} RON
+                    </h4>
+                )}
+                <a
+                    className="hot_deal_link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={props.cause.details.site}
+                >
+                    <div className="hot_deal_box">
+                        {props.cause.details.images && props.cause.details.images[0] && props.cause.details.images[0].url &&
+                        <img
+                            alt="Missing"
+                            src={getImagePath(props.cause.details.images[0].url)}
+                            style={{height: 300}}
+                            className="img-fluid"
+                        />
+                        }
+                        <div className="content">Website</div>
+                    </div>
+                </a>
+                <br/>
+                <Link to={props.isLoggedIn ?
+                    Routes.WALLET + '/donate/' + props.cause.id :
+                    Routes.LOGIN
+                }
+                      className="btn submit_btn genric-btn circle">
+                    <FormattedMessage
+                        id="cause.contribute.button"
+                        defaultMessage="Contribute"
+                    />
+                </Link>
+            </div>
+        </React.Fragment>
+    );
 }
 
 const mapStateToProps = (state: AppState) => {

@@ -5,6 +5,7 @@ import { Badge } from "@material-ui/core";
 import { AchievementActions } from "../../../redux/actions/AchivementsAction";
 import { ftAwCheck } from "../../../helper/FontAwesomeHelper";
 import { Languages } from "../../../helper/Constants";
+import { getImagePath } from "../../../helper/AppHelper";
 
 interface AchievementElementProps {
     userAchievement: UserAchievementDto;
@@ -33,7 +34,8 @@ const AchievementRow = (props: AchievementElementProps) => {
                         <Badge color="primary" badgeContent={props.userAchievement.achievement.reward.amount}>
                             <img
                                 className={"achievement-image"}
-                                src={props.userAchievement.achievement.badgeUrl} alt=""
+                                src={getImagePath(props.userAchievement.achievement.badgeUrl)}
+                                alt="Missing"
                             />
                         </Badge>
                     </div>

@@ -28,6 +28,7 @@ const Achievements = () => {
             //achievements not loaded
         }
     }
+
     let achievementList = achievements && achievements.length > 0 ?
         achievements.map((userAchievement) => {
             return (
