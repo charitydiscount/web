@@ -1,6 +1,6 @@
 import { LoginActionTypes } from '../actions/Actions';
 import { AuthActions } from '../actions/UserActions';
-import { UserInfoDto } from "../../components/login/AuthHelper";
+import { UserInfoDto } from "../../components/pages/login/AuthHelper";
 import { removeLocalStorage } from "../../helper/StorageHelper";
 import { StorageKey } from "../../helper/Constants";
 

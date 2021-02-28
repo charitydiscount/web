@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Badge } from "@material-ui/core";
 import { AchievementActions } from "../../../redux/actions/AchivementsAction";
 import { ftAwCheck } from "../../../helper/FontAwesomeHelper";
+import { Languages } from "../../../helper/Constants";
 
 interface AchievementElementProps {
     userAchievement: UserAchievementDto;
@@ -17,7 +18,7 @@ const AchievementRow = (props: AchievementElementProps) => {
         props.setAchievementModal(props.userAchievement);
     };
 
-    let achievementName = props.currentLocale === "ro"
+    let achievementName = props.currentLocale === Languages.RO
         ? props.userAchievement.achievement.name.ro : props.userAchievement.achievement.name.en
 
     return (
@@ -42,7 +43,7 @@ const AchievementRow = (props: AchievementElementProps) => {
                         </div>
                     </div>
                     {props.userAchievement.achieved &&
-                     <i className={ftAwCheck}/>
+                    <i className={ftAwCheck}/>
                     }
                 </div>
             </div>

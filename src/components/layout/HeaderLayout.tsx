@@ -15,7 +15,7 @@ import { FormattedMessage } from 'react-intl';
 import Select from 'react-select';
 import { addDefaultImgSrc, getImagePath, onLanguageChange, redirectToAbout } from '../../helper/AppHelper';
 import { Link } from 'react-router-dom';
-import { UserInfoDto } from "../login/AuthHelper";
+import { UserInfoDto } from "../pages/login/AuthHelper";
 
 type IHeaderLayoutProps = {
     isLoggedIn?: boolean;

@@ -4,6 +4,11 @@ export enum InputType {
     EMAIL = 'email',
 }
 
+export enum Languages {
+    RO = 'ro',
+    EN = 'en'
+}
+
 export enum FirebaseTable {
     CONTACT = 'contact',
     CLICKS = 'clicks',

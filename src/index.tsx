@@ -18,7 +18,7 @@ import { AuthActions } from './redux/actions/UserActions';
 import I18nApp from './I18nApp';
 import { getLocalStorage } from './helper/StorageHelper';
 import { StorageKey } from './helper/Constants';
-import { UserInfoDto } from './components/login/AuthHelper';
+import { UserInfoDto } from './components/pages/login/AuthHelper';
 
 export const publicUrl = process.env.PUBLIC_URL || '';
 export const appVersion = '2.7.8';

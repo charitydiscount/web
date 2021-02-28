@@ -13,7 +13,7 @@ import {
     updateUserEmail,
     UserDto
 } from "./rest/UserService";
-import { getUserId } from "./components/login/AuthHelper";
+import { getUserId } from "./components/pages/login/AuthHelper";
 
 interface UserMailUpdateProps {
     intl: IntlShape;

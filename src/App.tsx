@@ -7,7 +7,7 @@ import CookieConsent from 'react-cookie-consent';
 import { FormattedMessage } from 'react-intl';
 import ScrollToTop from './components/layout/Scroll';
 import ReactAdBlock from './ReactAdBlock';
-import ReferralUpdate from './components/referrals/ReferralUpdate';
+import ReferralUpdate from './components/pages/referrals/ReferralUpdate';
 import { FadeLoader } from 'react-spinners';
 import { spinnerCss } from './helper/AppHelper';
 import FirstUserInteraction from "./FirstUserInteraction";

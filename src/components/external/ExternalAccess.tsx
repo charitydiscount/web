@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { auth, store } from '../../index';
 import { Redirect } from 'react-router';
-import LoginComponent from '../login/LoginComponent';
+import LoginComponent from '../pages/login/LoginComponent';
 import { getUrlParameter, spinnerCss } from '../../helper/AppHelper';
 import { AuthActions } from '../../redux/actions/UserActions';
 import FadeLoader from 'react-spinners/FadeLoader';
-import { parseAndSaveUser } from '../login/AuthHelper';
+import { parseAndSaveUser } from '../pages/login/AuthHelper';
 
 interface ExternalAccessState {
     page: string;

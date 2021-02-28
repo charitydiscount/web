@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { spinnerCss } from "../../../helper/AppHelper";
 import { FadeLoader } from "react-spinners";
 import { getAchievements, UserAchievementDto } from "../../../rest/AchievementsService";
@@ -9,88 +9,71 @@ import { Stages } from "../../helper/Stages";
 import AchievementModal from "./AchivementModal";
 import { FormattedMessage } from "react-intl";
 
-interface AchievementsProps {
+export const Achievements = () => {
+    const [achievements, setAchievements] = useState<UserAchievementDto[]>([]);
+    const [isLoading, setLoading] = useState<boolean>(true);
 
-}
-
-interface AchievementsState {
-    achievements: UserAchievementDto[],
-    isLoading: boolean
-}
-
-class Achievements extends React.Component<AchievementsProps, AchievementsState> {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoading: true,
-            achievements: []
-        }
-    }
-
-    async componentDidMount() {
+    useEffect(() => {
         store.dispatch(NavigationsAction.setStageAction(Stages.ACHIEVEMENTS));
+        populateAchievements();
+    }, []);
+
+    const populateAchievements = async () => {
         try {
             let response = await getAchievements();
-            if (response) {
-                this.setState({
-                    achievements: response as UserAchievementDto[],
-                    isLoading: false
-                });
-            }
+            setAchievements(response as UserAchievementDto[]);
+            setLoading(false);
         } catch (error) {
+            setLoading(false);
             //achievements not loaded
         }
     }
+    let achievementList = achievements && achievements.length > 0 ?
+        achievements.map((userAchievement) => {
+            return (
+                <AchievementElement
+                    key={'list' + userAchievement.achievement.id}
+                    userAchievement={userAchievement}
+                />
+            );
+        }) : [];
 
-    public render() {
-        let achievementList = this.state.achievements && this.state.achievements.length > 0 ?
-            this.state.achievements.map((userAchievement) => {
-                return (
-                    <AchievementElement
-                        key={'list' + userAchievement.achievement.id}
-                        userAchievement={userAchievement}
+    return (
+        <React.Fragment>
+            <AchievementModal/>
+            <section className="product_description_area section_gap">
+                <div className="container">
+                    <FadeLoader
+                        loading={isLoading}
+                        color={'#e31f29'}
+                        css={spinnerCss}
                     />
-                );
-            }) : [];
-
-        return (
-            <React.Fragment>
-                <AchievementModal/>
-                <section className="product_description_area section_gap">
-                    <div className="container">
+                    {!isLoading &&
+                    <React.Fragment>
+                        <h3 style={{textAlign: "center"}}>
+                            <FormattedMessage
+                                id="achievements.page.title"
+                                defaultMessage="Achievements"
+                            />
+                        </h3>
                         <FadeLoader
-                            loading={this.state.isLoading}
+                            loading={isLoading}
                             color={'#e31f29'}
                             css={spinnerCss}
                         />
-                        {!this.state.isLoading &&
-                        <React.Fragment>
-                            <h3 style={{textAlign: "center"}}>
-                                <FormattedMessage
-                                    id="achievements.page.title"
-                                    defaultMessage="Achievements"
-                                />
-                            </h3>
-                            <FadeLoader
-                                loading={this.state.isLoading}
-                                color={'#e31f29'}
-                                css={spinnerCss}
-                            />
-                            <div className="row achievements">
-                                {!this.state.isLoading && (
-                                    <React.Fragment>
-                                        {achievementList}
-                                    </React.Fragment>
-                                )}
-                            </div>
-                        </React.Fragment>
-                        }
-                    </div>
-                </section>
-            </React.Fragment>
-        )
-    }
+                        <div className="row achievements">
+                            {!isLoading && (
+                                <React.Fragment>
+                                    {achievementList}
+                                </React.Fragment>
+                            )}
+                        </div>
+                    </React.Fragment>
+                    }
+                </div>
+            </section>
+        </React.Fragment>
+    )
 }
 
 export default Achievements;

@@ -2,7 +2,7 @@ import { ActionTypesUnion } from '../helper/TypesHelper';
 import { createAction } from '../helper/ActionHelper';
 import { LoginActionTypes } from './Actions';
 import { auth } from '../..';
-import { getUserInfo, UserInfoDto } from "../../components/login/AuthHelper";
+import { getUserInfo, UserInfoDto } from "../../components/pages/login/AuthHelper";
 import { CategoriesAction } from "./CategoriesAction";
 import { setLocalStorage } from "../../helper/StorageHelper";
 import { StorageKey } from "../../helper/Constants";

@@ -4,7 +4,7 @@ import Modal from 'react-awesome-modal';
 import { auth } from "./index";
 import InfoModal from "./components/modals/InfoModal";
 import { FormattedMessage, IntlShape, injectIntl } from 'react-intl';
-import { getUserId, getUserInfo } from "./components/login/AuthHelper";
+import { getUserId, getUserInfo } from "./components/pages/login/AuthHelper";
 import { FormControlLabel } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { getDisableMailNotification, updateDisableMailNotification } from "./rest/UserService";
