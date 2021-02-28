@@ -9,7 +9,7 @@ import { Stages } from "../../helper/Stages";
 import AchievementModal from "./AchivementModal";
 import { FormattedMessage } from "react-intl";
 
-export const Achievements = () => {
+const Achievements = () => {
     const [achievements, setAchievements] = useState<UserAchievementDto[]>([]);
     const [isLoading, setLoading] = useState<boolean>(true);
 

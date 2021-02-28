@@ -10,12 +10,6 @@ export const AchievementActions = {
         createAction(AchievementActionTypes.SET_ACHIEVEMENT_MODAL_ACTION, achievement),
 };
 
-export function setAchievementModalVisible(modalVisible: boolean): any {
-    return (dispatch: any) => {
-        dispatch(AchievementActions.setAchievementModalVisible(modalVisible));
-    }
-}
-
 export type AchievementActionsType = ActionTypesUnion<typeof AchievementActions>;
 
 

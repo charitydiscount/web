@@ -8,17 +8,17 @@ import { Languages } from "../../../helper/Constants";
 
 interface AchievementElementProps {
     userAchievement: UserAchievementDto;
-    currentLocale: string;
-    setAchievementModal: (achievement) => void;
+    locale: string;
+    setUserAchievement: (achievement) => void;
 }
 
 const AchievementRow = (props: AchievementElementProps) => {
 
     const openModal = () => {
-        props.setAchievementModal(props.userAchievement);
+        props.setUserAchievement(props.userAchievement);
     };
 
-    let achievementName = props.currentLocale === Languages.RO
+    let achievementName = props.locale === Languages.RO
         ? props.userAchievement.achievement.name.ro : props.userAchievement.achievement.name.en
 
     return (
@@ -53,14 +53,14 @@ const AchievementRow = (props: AchievementElementProps) => {
 
 const mapStateToProps = (state: any) => {
     return {
-        currentLocale: state.locale.langResources.language
+        locale: state.locale.langResources.language
     }
 };
 
 const
     mapDispatchToProps = (dispatch: any) => {
         return {
-            setAchievementModal: (achievement: UserAchievementDto) =>
+            setUserAchievement: (achievement: UserAchievementDto) =>
                 dispatch(AchievementActions.setAchievementModal(achievement))
         };
     };
