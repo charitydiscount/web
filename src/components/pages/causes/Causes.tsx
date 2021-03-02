@@ -19,14 +19,14 @@ const Causes = () => {
     }, []);
 
     const populateCauses = async () => {
-        try {
-            let response = await fetchCauses();
-            setCauses(response as CauseDto[]);
-            setLoading(false);
-        } catch (error) {
-            setLoading(false);
-            //causes not loaded
-        }
+        return fetchCauses()
+            .then((response) => {
+                setCauses(response as CauseDto[]);
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+            })
     }
 
     let causesList = causes

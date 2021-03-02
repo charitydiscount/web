@@ -78,7 +78,7 @@ export const getAchievements = async () => {
             return (x.achieved === y.achieved) ? 0 : x.achieved ? -1 : 1;
         });
     }
-    await DB.collection(FirebaseTable.ACHIEVEMENTS)
+    return DB.collection(FirebaseTable.ACHIEVEMENTS)
         .get()
         .then(querySnapshot => {
                 if (querySnapshot.docs.length > 0) {
@@ -98,13 +98,15 @@ export const getAchievements = async () => {
                         }
                     });
                 }
+                return userAchievements
+                    .sort((a, b) => {
+                        return a.achievement.reward.amount - b.achievement.reward.amount;
+                    });
             }
-        );
-
-    return userAchievements
-        .sort((a, b) => {
-            return a.achievement.reward.amount - b.achievement.reward.amount;
-        });
+        )
+        .catch(() => {
+            return userAchievements;
+        })
 };
 
 export const getLeaderboard = async () => {
@@ -112,22 +114,23 @@ export const getLeaderboard = async () => {
         throw Error('User not logged in');
     }
 
-    let result = [] as LeaderboardEntryDto[];
-    await DB.collection(FirebaseTable.LEADERBOARD)
+    return DB.collection(FirebaseTable.LEADERBOARD)
         .orderBy('points', 'desc')
         .limit(10)
         .get()
         .then(querySnapshot => {
+                let result = [] as LeaderboardEntryDto[];
                 if (querySnapshot.docs.length > 0) {
                     querySnapshot.docs.forEach(doc => {
                             result.push(doc.data() as LeaderboardEntryDto);
                         }
                     );
                 }
+                return result;
             }
-        );
-
-    return result;
+        ).catch(() => {
+            return [];
+        })
 };
 
 

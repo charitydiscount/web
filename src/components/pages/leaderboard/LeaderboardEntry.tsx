@@ -14,19 +14,19 @@ interface LeaderboardEntryProps {
     intl: IntlShape;
 }
 
-function showLeaderboardNumber(position: number) {
-    if (position === 0) {
-        return <i className="fa fa-trophy fa-2x" style={{color: "gold", fontSize: 25}}/>;
-    } else if (position === 1) {
-        return <i className="fa fa-trophy" style={{color: "silver", fontSize: 25}}/>;
-    } else if (position === 2) {
-        return <i className="fa fa-trophy" style={{color: "#cd7f32", fontSize: 25}}/>;
+const LeaderboardEntry = (props: LeaderboardEntryProps) => {
+
+    const showLeaderboardNumber = (position: number) => {
+        if (position === 0) {
+            return <i className="fa fa-trophy fa-2x" style={{color: "gold", fontSize: 25}}/>;
+        } else if (position === 1) {
+            return <i className="fa fa-trophy" style={{color: "silver", fontSize: 25}}/>;
+        } else if (position === 2) {
+            return <i className="fa fa-trophy" style={{color: "#cd7f32", fontSize: 25}}/>;
+        }
+        return position + 1;
     }
 
-    return position + 1;
-}
-
-const LeaderboardEntry: React.FunctionComponent<LeaderboardEntryProps> = props => {
     return (
         <React.Fragment>
             <div className="table-row" key={props.position}>
@@ -57,7 +57,9 @@ const LeaderboardEntry: React.FunctionComponent<LeaderboardEntryProps> = props =
                          onError={addDefaultImgSrc}>
                     </img>
                     <span
-                        style={props.entry.userId === getUserId() ? {color: "red"} : {}}>{!props.entry.name ? 'Anonim' : props.entry.name}</span>
+                        style={props.entry.userId === getUserId() ? {color: "red"} : {}}>
+                        {!props.entry.name ? 'Anonim' : props.entry.name}
+                    </span>
                     {props.entry.isStaff && <i className="fa fa-user-plus"
                                                title={props.intl.formatMessage({
                                                    id: 'leaderboard.table.staff.member'

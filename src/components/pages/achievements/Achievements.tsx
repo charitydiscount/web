@@ -19,14 +19,14 @@ const Achievements = () => {
     }, []);
 
     const populateAchievements = async () => {
-        try {
-            let response = await getAchievements();
-            setAchievements(response as UserAchievementDto[]);
-            setLoading(false);
-        } catch (error) {
-            setLoading(false);
-            //achievements not loaded
-        }
+        return getAchievements()
+            .then((response) => {
+                setAchievements(response);
+                setLoading(false);
+            })
+            .catch(() => {
+                setLoading(false);
+            })
     }
 
     let achievementList = achievements && achievements.length > 0 ?

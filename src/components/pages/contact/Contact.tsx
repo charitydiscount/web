@@ -10,220 +10,191 @@ import { isEmptyString } from '../../../helper/AppHelper';
 import { addContactMessageToDb } from '../../../rest/ContactService';
 import InfoModal from "../../modals/InfoModal";
 import { getUserInfo } from "../login/AuthHelper";
+import { useEffect, useState } from "react";
 
 interface IContactProps {
     intl: IntlShape;
 }
 
-interface IContactState {
-    subject: string;
-    message: string;
-    modalVisible: boolean;
-    modalMessage: string;
+interface ContactModal {
+    modalVisible: boolean,
+    modalMessage: string
 }
 
-class Contact extends React.Component<IContactProps, IContactState> {
-    constructor(props: IContactProps) {
-        super(props);
-        this.state = {
-            subject: '',
-            message: '',
-            modalVisible: false,
-            modalMessage: '',
-        };
-        this.handleSendMessage = this.handleSendMessage.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.escFunction = this.escFunction.bind(this);
-    }
+const Contact = (props: IContactProps) => {
 
-    escFunction(event) {
-        if (event.keyCode === 27) {
-            this.closeModal();
-        }
-    }
+    const [modalState, setModalState] = useState<ContactModal>({modalVisible: false, modalMessage: ''});
+    const [message, setMessage] = useState<string>('');
+    const [subject, setSubject] = useState<string>('');
 
-    public componentDidMount() {
-        document.addEventListener('keydown', this.escFunction, false);
+    useEffect(() => {
+        document.addEventListener('keydown', (event) => {
+            if (event.code === "Escape") {
+                closeModal();
+            }
+        }, false);
         store.dispatch(NavigationsAction.setStageAction(Stages.CONTACT));
-    }
+    }, [])
 
-    public componentWillUnmount() {
-        store.dispatch(NavigationsAction.resetStageAction(Stages.CONTACT));
-    }
-
-    public async handleSendMessage(event) {
-        if (!isEmptyString(this.state.subject)) {
-            this.setState({
-                modalVisible: true,
-                modalMessage: this.props.intl.formatMessage({
-                    id: 'contact.subject.wrong',
-                }),
-            });
+    const handleSendMessage = async () => {
+        if (!isEmptyString(subject)) {
+            setModalState(
+                {
+                    modalVisible: true,
+                    modalMessage: props.intl.formatMessage({id: 'contact.subject.wrong'})
+                }
+            )
             return;
         }
-        if (!isEmptyString(this.state.message)) {
-            this.setState({
-                modalVisible: true,
-                modalMessage: this.props.intl.formatMessage({
-                    id: 'contact.message.wrong',
-                }),
-            });
+        if (!isEmptyString(message)) {
+            setModalState(
+                {
+                    modalVisible: true,
+                    modalMessage: props.intl.formatMessage({id: 'contact.message.wrong'})
+                }
+            )
             return;
         }
 
         let currentUser = getUserInfo();
-        await addContactMessageToDb(
-            currentUser.displayName,
-            currentUser.email,
-            currentUser.uid,
-            this.state.message,
-            this.state.subject
-        )
+        return addContactMessageToDb(currentUser.displayName, currentUser.email, currentUser.uid, message, subject)
             .then(() => {
-                this.setState({
-                    modalVisible: true,
-                    modalMessage: this.props.intl.formatMessage({
-                        id: 'contact.sendMessage.ok',
-                    }),
-                    subject: '',
-                    message: '',
-                });
+                setModalState(
+                    {
+                        modalVisible: true,
+                        modalMessage: props.intl.formatMessage({id: 'contact.sendMessage.ok'})
+                    }
+                )
+                setMessage('');
+                setSubject('');
             })
             .catch(() => {
-                this.setState({
-                    modalVisible: true,
-                    modalMessage: this.props.intl.formatMessage({
-                        id: 'contact.sendMessage.not.ok',
-                    }),
-                });
+                setModalState(
+                    {
+                        modalVisible: true,
+                        modalMessage: props.intl.formatMessage({id: 'contact.sendMessage.not.ok'})
+                    }
+                )
             });
-
     }
 
-    public closeModal() {
-        this.setState({
-            modalVisible: false,
-        });
+    const closeModal = () => {
+        setModalState(
+            {
+                modalVisible: false,
+                modalMessage: ''
+            }
+        )
     }
 
-    public render() {
-        return (
-            <React.Fragment>
-                <InfoModal visible={this.state.modalVisible}
-                           message={this.state.modalMessage}
-                           onClose={() => this.closeModal()}/>
-                <section className="contact_area p_90">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-lg-2"/>
-                            <div className="col-lg-3">
-                                <div className="contact_info">
-                                    <div className="info_item">
-                                        <i className="fa fa-envelope"></i>
-                                        <p>
-                                            <FormattedMessage
-                                                id="contact.mail.label"
-                                                defaultMessage="Send us your message anytime!"
-                                            />
-                                        </p>
-                                    </div>
-                                    <div className="info_item">
+    return (
+        <React.Fragment>
+            <InfoModal visible={modalState.modalVisible}
+                       message={modalState.modalMessage}
+                       onClose={closeModal}/>
+            <section className="contact_area p_90">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-2"/>
+                        <div className="col-lg-3">
+                            <div className="contact_info">
+                                <div className="info_item">
+                                    <i className="fa fa-envelope"></i>
+                                    <p>
+                                        <FormattedMessage
+                                            id="contact.mail.label"
+                                            defaultMessage="Send us your message anytime!"
+                                        />
+                                    </p>
+                                </div>
+                                <div className="info_item">
+                                    <a
+                                        href="https://www.facebook.com/charitydiscount"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <i className="fa fa-facebook"></i>
+                                    </a>
+                                    <h6>
                                         <a
                                             href="https://www.facebook.com/charitydiscount"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            <i className="fa fa-facebook"></i>
+                                            Charity Discount Facebook
                                         </a>
-                                        <h6>
-                                            <a
-                                                href="https://www.facebook.com/charitydiscount"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                Charity Discount Facebook
-                                            </a>
-                                        </h6>
-                                    </div>
-                                    <br/>
-                                    <div className="info_item">
+                                    </h6>
+                                </div>
+                                <br/>
+                                <div className="info_item">
+                                    <a
+                                        href="https://www.instagram.com/charitydiscount/"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <i className="fa fa-instagram"></i>
+                                    </a>
+                                    <h6>
                                         <a
                                             href="https://www.instagram.com/charitydiscount/"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
-                                            <i className="fa fa-instagram"></i>
+                                            Charity Discount Instagram
                                         </a>
-                                        <h6>
-                                            <a
-                                                href="https://www.instagram.com/charitydiscount/"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                Charity Discount Instagram
-                                            </a>
-                                        </h6>
-                                    </div>
+                                    </h6>
                                 </div>
                             </div>
-                            <div className="col-lg-6">
-                                <div className="row contact_form">
-                                    <div className="col-md-9">
-                                        <div className="form-group">
-                                            <GenericInput
-                                                className={'form-control'}
-                                                placeholder={this.props.intl.formatMessage(
-                                                    {id: 'contact.subject'}
-                                                )}
-                                                value={this.state.subject}
-                                                type={InputType.TEXT}
-                                                id={'subject'}
-                                                handleChange={event =>
-                                                    this.setState({
-                                                        subject:
-                                                        event.target.value,
-                                                    })
-                                                }
-                                            />
-                                        </div>
-                                        <div className="form-group">
+                        </div>
+                        <div className="col-lg-6">
+                            <div className="row contact_form">
+                                <div className="col-md-9">
+                                    <div className="form-group">
+                                        <GenericInput
+                                            className={'form-control'}
+                                            placeholder={props.intl.formatMessage(
+                                                {id: 'contact.subject'}
+                                            )}
+                                            value={subject}
+                                            type={InputType.TEXT}
+                                            id={'subject'}
+                                            handleChange={event =>
+                                                setSubject(event.target.value)
+                                            }
+                                        />
+                                    </div>
+                                    <div className="form-group">
                                             <textarea
                                                 className="form-control"
                                                 id={'message'}
-                                                value={this.state.message}
-                                                onChange={event =>
-                                                    this.setState({
-                                                        message:
-                                                        event.target.value,
-                                                    })
-                                                }
-                                                placeholder={this.props.intl.formatMessage(
+                                                value={message}
+                                                onChange={event => setMessage(event.target.value)}
+                                                placeholder={props.intl.formatMessage(
                                                     {id: 'contact.message'}
                                                 )}
                                             ></textarea>
-                                        </div>
-                                        <div className="col-md-12 text-right">
-                                            <button
-                                                type="submit"
-                                                value="submit"
-                                                className="btn submit_btn genric-btn circle"
-                                                onClick={this.handleSendMessage}
-                                            >
-                                                <FormattedMessage
-                                                    id="contact.send.message.button"
-                                                    defaultMessage="Send Message"
-                                                />
-                                            </button>
-                                        </div>
+                                    </div>
+                                    <div className="col-md-12 text-right">
+                                        <button
+                                            type="submit"
+                                            value="submit"
+                                            className="btn submit_btn genric-btn circle"
+                                            onClick={handleSendMessage}
+                                        >
+                                            <FormattedMessage
+                                                id="contact.send.message.button"
+                                                defaultMessage="Send Message"
+                                            />
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
-            </React.Fragment>
-        );
-    }
+                </div>
+            </section>
+        </React.Fragment>
+    );
 }
 
 export default injectIntl(Contact);
