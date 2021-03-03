@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { auth, store } from '../../index';
 import { Redirect } from 'react-router';
-import LoginComponent from '../pages/login/LoginComponent';
+import LoginComponent from '../pages/login/Login';
 import { getUrlParameter, spinnerCss } from '../../helper/AppHelper';
 import { AuthActions } from '../../redux/actions/UserActions';
 import FadeLoader from 'react-spinners/FadeLoader';

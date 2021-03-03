@@ -3,7 +3,6 @@ import { Redirect, Route, Switch } from 'react-router';
 import { Routes } from '../helper/Routes';
 import Contact from '../pages/contact/Contact';
 import Shops from '../pages/shops/Shops';
-import LoginActor from '../pages/login/LoginActor';
 import UserInfo from '../pages/login/UserInfo';
 import Causes from '../pages/causes/Causes';
 import Wallet from '../pages/wallet/Wallet';
@@ -18,7 +17,7 @@ import { connect } from 'react-redux';
 import Referrals from '../pages/referrals/Referrals';
 import ReferralLogin from '../pages/referrals/ReferralLogin';
 import { loadShops } from '../../redux/actions/ShopsAction';
-import UnsubscribeFromMailNewsletter from '../pages/login/UnsubscribeFromMailNewsletter';
+import Unsubscribe from '../pages/login/Unsubscribe';
 import ExternalShop from "../pages/shops/ExternalShop";
 import { FadeLoader } from "react-spinners";
 import { spinnerCss } from "../../helper/AppHelper";
@@ -27,6 +26,7 @@ import { clearStorage } from "../../helper/StorageHelper";
 import Achievements from "../pages/achievements/Achievements";
 import Leaderboard from "../pages/leaderboard/Leaderboard";
 import ProductInfo from "../pages/products/ProductInfo";
+import LoginComponent from "../pages/login/Login";
 
 interface PageLayoutProps {
     isLoggedIn: boolean;
@@ -86,7 +86,7 @@ const PageLayout = (props: PageLayoutProps) => {
                         <Route
                             exact={true}
                             path={Routes.LOGIN}
-                            component={LoginActor}
+                            component={LoginComponent}
                         />
                         <Route
                             exact={true}
@@ -111,7 +111,7 @@ const PageLayout = (props: PageLayoutProps) => {
                         <Route
                             exact={true}
                             path={Routes.UNSUBSCRIBE_MAIL_NEWSLETTER + '/:userId'}
-                            component={UnsubscribeFromMailNewsletter}
+                            component={Unsubscribe}
                         />
                         <Route
                             exact={true}
@@ -184,12 +184,12 @@ const PageLayout = (props: PageLayoutProps) => {
                         <Route
                             exact={true}
                             path={Routes.UNSUBSCRIBE_MAIL_NEWSLETTER + '/:userId'}
-                            component={UnsubscribeFromMailNewsletter}
+                            component={Unsubscribe}
                         />
                         <Route
                             exact={true}
                             path={Routes.LOGIN}
-                            component={LoginActor}
+                            component={LoginComponent}
                         />
                         <Route
                             exact={true}
