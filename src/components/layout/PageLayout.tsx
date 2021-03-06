@@ -3,7 +3,7 @@ import { Redirect, Route, Switch } from 'react-router';
 import { Routes } from '../helper/Routes';
 import Contact from '../pages/contact/Contact';
 import Shops from '../pages/shops/Shops';
-import UserInfo from '../pages/login/UserInfo';
+import UserInfo from '../pages/user/User';
 import Causes from '../pages/causes/Causes';
 import Wallet from '../pages/wallet/Wallet';
 import Tos from '../pages/tos/Tos';

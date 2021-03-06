@@ -137,3 +137,19 @@ export function getImagePath(photoUrl) {
         return noImagePath;
     }
 }
+
+export function keyDownEscapeEvent(escapeAction: any) {
+    document.addEventListener('keydown', (event) => {
+        if (event.code === "Escape") {
+            escapeAction();
+        }
+    }, false);
+}
+
+export function keyDownEnterEvent(enterAction: any) {
+    document.addEventListener('keydown', (event) => {
+        if (event.code === "Enter") {
+            enterAction();
+        }
+    }, false);
+}

@@ -1,5 +1,5 @@
 import { roundCommission } from "../../../helper/AppHelper";
-import ProductListElement from "./ProductListElement";
+import ProductList from "./ProductListElement";
 import * as React from "react";
 import { ShopDto } from "../../../rest/ShopsService";
 import { Product } from "../../../rest/ProductsService";
@@ -31,7 +31,7 @@ export function filterProducts(products: Product[], shops: ShopDto[], comingFrom
     return productsState && productsState.length > 0
         ? productsState.map((product, index) => {
             return (
-                <ProductListElement
+                <ProductList
                     key={'list' + index}
                     keyElement={'list' + index}
                     product={product}

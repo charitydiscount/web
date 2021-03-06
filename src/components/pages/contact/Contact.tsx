@@ -6,7 +6,7 @@ import { InputType } from '../../../helper/Constants';
 import GenericInput from '../../input/GenericInput';
 import { FormattedMessage } from 'react-intl';
 import { injectIntl, IntlShape } from 'react-intl';
-import { isEmptyString } from '../../../helper/AppHelper';
+import { isEmptyString, keyDownEscapeEvent } from '../../../helper/AppHelper';
 import { addContactMessageToDb } from '../../../rest/ContactService';
 import InfoModal from "../../modals/InfoModal";
 import { getUserInfo } from "../login/AuthHelper";
@@ -28,11 +28,7 @@ const Contact = (props: IContactProps) => {
     const [subject, setSubject] = useState<string>('');
 
     useEffect(() => {
-        document.addEventListener('keydown', (event) => {
-            if (event.code === "Escape") {
-                closeModal();
-            }
-        }, false);
+        keyDownEscapeEvent(() => closeModal());
         store.dispatch(NavigationsAction.setStageAction(Stages.CONTACT));
     }, [])
 

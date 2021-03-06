@@ -1,54 +1,46 @@
 import * as React from 'react';
-import {store} from '../../../index';
-import {NavigationsAction} from '../../../redux/actions/NavigationsAction';
-import {Stages} from '../../helper/Stages';
-import {FormattedMessage} from 'react-intl';
-import {connect} from "react-redux";
-import PrivacyTextRO from "./PrivacyTextRO";
-import PrivacyTextEN from "./PrivacyTextEN";
+import { store } from '../../../index';
+import { NavigationsAction } from '../../../redux/actions/NavigationsAction';
+import { Stages } from '../../helper/Stages';
+import { FormattedMessage } from 'react-intl';
+import { connect } from "react-redux";
+import PrivacyRO from "./PrivacyRO";
+import PrivacyEN from "./PrivacyEN";
+import { useEffect } from "react";
+import { Languages } from "../../../helper/Constants";
 
-interface IPrivacyProps {
-    currentLocale?: string
-}
+const Privacy = (props: { locale: string }) => {
 
-class Privacy extends React.Component<IPrivacyProps> {
-
-    public componentDidMount() {
+    useEffect(() => {
         store.dispatch(NavigationsAction.setStageAction(Stages.PRIVACY));
-    }
+    }, []);
 
-    public componentWillUnmount() {
-        store.dispatch(NavigationsAction.resetStageAction(Stages.PRIVACY));
-    }
-
-    public render() {
-        return (
-            <React.Fragment>
-                <div className="container p_90">
-                    <div className="p-2 p-md-4">
-                        <h3 className="mb-30 title_color">
-                            <FormattedMessage
-                                id="privacy.title"
-                                defaultMessage="Privacy"
-                            />
-                        </h3>
-                        <div className="mt-sm-20 left-align-p">
-                            {this.props.currentLocale === "ro" ?
-                                <PrivacyTextRO/> :
-                                <PrivacyTextEN/>
-                            }
-                        </div>
+    return (
+        <React.Fragment>
+            <div className="container p_90">
+                <div className="p-2 p-md-4">
+                    <h3 className="mb-30 title_color">
+                        <FormattedMessage
+                            id="privacy.title"
+                            defaultMessage="Privacy"
+                        />
+                    </h3>
+                    <div className="mt-sm-20 left-align-p">
+                        {props.locale === Languages.RO ?
+                            <PrivacyRO/> :
+                            <PrivacyEN/>
+                        }
                     </div>
                 </div>
-            </React.Fragment>
-        );
-    }
+            </div>
+        </React.Fragment>
+    );
 }
 
 const
     mapStateToProps = (state: any) => {
         return {
-            currentLocale: state.locale.langResources.language
+            locale: state.locale.langResources.language
         }
     };
 

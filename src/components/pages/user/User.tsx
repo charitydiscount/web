@@ -9,7 +9,7 @@ import { doLogoutAction, updateUserNameInState, updateUserPhotoInState } from '.
 import { connect } from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
 import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
-import { addDefaultImgSrc, getImagePath, spinnerCss } from '../../../helper/AppHelper';
+import { addDefaultImgSrc, getImagePath, keyDownEscapeEvent, spinnerCss } from '../../../helper/AppHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { Routes } from '../../helper/Routes';
 import { Link } from 'react-router-dom';
@@ -26,7 +26,7 @@ import {
 } from '../../../rest/UserService';
 import { FormControlLabel } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
-import { getUserId, UserInfoDto } from './AuthHelper';
+import { getUserId, UserInfoDto } from '../login/AuthHelper';
 import OtpModal from "../../modals/OtpModal";
 import { createOtpRequest, validateOtpCode } from "../../../rest/WalletService";
 import { fetchProfilePhoto } from "../../../rest/StorageService";
@@ -55,7 +55,7 @@ interface IUserInfoState {
     privatePhoto: boolean
 }
 
-class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
+class User extends React.Component<IUserInfoProps, IUserInfoState> {
 
     constructor(props: IUserInfoProps) {
         super(props);
@@ -75,16 +75,14 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
         };
     }
 
-    escFunction = (event) => {
-        if (event.keyCode === 27) {
-            this.closeInfoModal();
-            this.closeConfirmModal();
-            this.closeOtpModal();
-        }
+    escFunction = () => {
+        this.closeInfoModal();
+        this.closeConfirmModal();
+        this.closeOtpModal();
     };
 
     async componentDidMount() {
-        document.addEventListener('keydown', this.escFunction, false);
+        keyDownEscapeEvent(() => this.escFunction());
         store.dispatch(NavigationsAction.setStageAction(Stages.USER));
 
         let response = await getUserDbInfo(getUserId()) as UserDto;
@@ -183,10 +181,6 @@ class UserInfo extends React.Component<IUserInfoProps, IUserInfoState> {
                 });
             });
     };
-
-    componentWillUnmount() {
-        store.dispatch(NavigationsAction.resetStageAction(Stages.USER));
-    }
 
     sendOtpRequest = async () => {
         this.setState({
@@ -638,4 +632,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(UserInfo));
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(User));

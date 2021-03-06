@@ -4,7 +4,7 @@ import { store } from '../../../index';
 import { NavigationsAction } from '../../../redux/actions/NavigationsAction';
 import { Stages } from '../../helper/Stages';
 import ReactPaginate from 'react-paginate';
-import { spinnerCss } from '../../../helper/AppHelper';
+import { keyDownEnterEvent, spinnerCss } from '../../../helper/AppHelper';
 import GenericInput from '../../input/GenericInput';
 import { FadeLoader } from 'react-spinners';
 import {
@@ -68,7 +68,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
             minPrice: '',
             maxPrice: ''
         };
-        document.addEventListener('keydown', this.searchFunction, false);
+        keyDownEnterEvent(() => this.startSearch());
     }
 
     updatePageNumber = (data) => {
@@ -195,12 +195,6 @@ class Products extends React.Component<ProductsProps, ProductsState> {
             //feature product not loaded, site will keep working
         }
     }
-
-    searchFunction = (event) => {
-        if (event.keyCode === 13) {
-            this.startSearch();
-        }
-    };
 
     startSearch = async () => {
         if (
