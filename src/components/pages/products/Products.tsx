@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { injectIntl, IntlShape } from 'react-intl';
 import { store } from '../../../index';
 import { NavigationsAction } from '../../../redux/actions/NavigationsAction';
 import { Stages } from '../../helper/Stages';
@@ -27,9 +26,9 @@ import { ProductSearch } from "../../../redux/reducer/ProductReducer";
 import { ProductActions } from "../../../redux/actions/ProductsAction";
 import { filterProducts } from "./ProductHelper";
 import {Routes} from "../../helper/Routes";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface ProductsProps {
-    intl: IntlShape,
     shops: ShopDto[],
 
     productSearch: ProductSearch,
@@ -372,7 +371,7 @@ class Products extends React.Component<ProductsProps, ProductsState> {
                                         type={'textfield'}
                                         id={'search'}
                                         className={'single-input'}
-                                        placeholder={this.props.intl.formatMessage(
+                                        placeholder={intl.formatMessage(
                                             {id: 'products.search'}
                                         )}
                                         value={this.state.searchTerm}
@@ -508,4 +507,4 @@ const
         };
     };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Products));
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

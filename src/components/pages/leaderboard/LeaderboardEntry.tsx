@@ -6,12 +6,11 @@ import {
 } from "../../../helper/AppHelper";
 import { noImagePath } from "../../../helper/Constants";
 import { getUserId } from "../login/AuthHelper";
-import { injectIntl, IntlShape } from "react-intl";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface LeaderboardEntryProps {
     entry: LeaderboardEntryDto,
-    position: number,
-    intl: IntlShape;
+    position: number
 }
 
 const LeaderboardEntry = (props: LeaderboardEntryProps) => {
@@ -61,7 +60,7 @@ const LeaderboardEntry = (props: LeaderboardEntryProps) => {
                         {!props.entry.name ? 'Anonim' : props.entry.name}
                     </span>
                     {props.entry.isStaff && <i className="fa fa-user-plus"
-                                               title={props.intl.formatMessage({
+                                               title={intl.formatMessage({
                                                    id: 'leaderboard.table.staff.member'
                                                })}
                                                style={{
@@ -76,4 +75,4 @@ const LeaderboardEntry = (props: LeaderboardEntryProps) => {
 };
 
 
-export default injectIntl(LeaderboardEntry);
+export default LeaderboardEntry;

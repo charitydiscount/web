@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { CmType, CommissionStatus, emptyHrefLink } from '../../../helper/Constants';
-import { injectIntl, IntlShape } from 'react-intl';
 import { CommissionDto } from '../../../rest/WalletService';
 import { dateOptions, roundMoney } from '../../../helper/AppHelper';
 import { connect } from 'react-redux';
 import { AppState } from '../../../redux/reducer/RootReducer';
 import { ShopDto } from '../../../rest/ShopsService';
+import { intl } from "../../../helper/IntlGlobal";
 
 interface IWalletTransactionRowProps {
     commission: CommissionDto;
-    intl: IntlShape;
     shops: ShopDto[];
 }
 
@@ -21,7 +20,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
 
         let source;
         if (this.props.commission.source && this.props.commission.source.localeCompare(CmType.REFERRAL) === 0) {
-            source = <div className="country">{this.props.intl.formatMessage({
+            source = <div className="country">{intl.formatMessage({
                 id: 'wallet.commission.source.friend',
             })}</div>;
         } else {
@@ -40,7 +39,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
             source = commissionStatus !== CommissionStatus.paid && !isShopActive ? (
                 <div className="country">
                     <a
-                        title={this.props.intl.formatMessage({
+                        title={intl.formatMessage({
                             id: 'wallet.commission.shop.inactive',
                         })}
                         href={emptyHrefLink}
@@ -76,7 +75,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                         className="fa fa-money"
                         aria-hidden="true"
                         style={{color: 'green'}}
-                        title={this.props.intl.formatMessage({
+                        title={intl.formatMessage({
                             id: 'wallet.tx.status.paid',
                         })}
                     />
@@ -88,7 +87,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                         className="fa fa-ban"
                         aria-hidden="true"
                         style={{color: 'red'}}
-                        title={this.props.intl.formatMessage({
+                        title={intl.formatMessage({
                             id: 'wallet.tx.status.rejected',
                         })}
                     />
@@ -99,7 +98,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                     <i
                         className="fa fa-clock-o"
                         aria-hidden="true"
-                        title={this.props.intl.formatMessage({
+                        title={intl.formatMessage({
                             id: 'wallet.tx.status.pending',
                         })}
                     />
@@ -120,7 +119,7 @@ class WalletCommissionRow extends React.Component<IWalletTransactionRowProps> {
                     </div>
                     <div className="country">
                         {roundMoney(this.props.commission.amount)}{' '}
-                        {this.props.intl.formatMessage({
+                        {intl.formatMessage({
                             id: this.props.commission.currency,
                         })}
                     </div>
@@ -137,4 +136,4 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(WalletCommissionRow));
+export default connect(mapStateToProps)(WalletCommissionRow);

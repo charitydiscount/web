@@ -3,7 +3,7 @@ import ProductElement from "./ProductElement";
 import { Product, ProductHistoryScale } from "../../../rest/ProductsService";
 import { AppState } from "../../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
-import { FormattedMessage, injectIntl, IntlShape } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { ResponsiveLine } from '@nivo/line'
 import { Link } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
@@ -13,7 +13,6 @@ import { filterProducts } from "./ProductHelper";
 
 interface ProductInfoProps {
     product: Product
-    intl: IntlShape
     shops: ShopDto[],
     chartData: ProductHistoryScale[],
     similarProducts: Product[],
@@ -164,5 +163,5 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-export default connect(mapStateToProps, null)(injectIntl(ProductInfo));
+export default connect(mapStateToProps, null)(ProductInfo);
 

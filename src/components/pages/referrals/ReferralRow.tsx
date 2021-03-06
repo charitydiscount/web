@@ -1,4 +1,3 @@
-import { injectIntl, IntlShape } from 'react-intl';
 import * as React from 'react';
 import { ReferralDto } from '../../../rest/ReferralService';
 import {
@@ -14,7 +13,6 @@ interface ReferralRowState {
 
 interface ReferralRowProps {
     referral: ReferralDto;
-    intl: IntlShape;
 }
 
 class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
@@ -74,4 +72,4 @@ class ReferralRow extends React.Component<ReferralRowProps, ReferralRowState> {
     }
 }
 
-export default injectIntl(ReferralRow);
+export default ReferralRow;

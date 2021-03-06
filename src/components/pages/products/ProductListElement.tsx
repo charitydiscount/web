@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Product } from '../../../rest/ProductsService';
 import Modal from 'react-awesome-modal';
 import ProductElement from './ProductElement';
-import { injectIntl, IntlShape } from 'react-intl';
 import { add3Dots, addDefaultImgSrc, getImagePath, keyDownEscapeEvent } from "../../../helper/AppHelper";
 import { AppState } from "../../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
@@ -10,7 +9,6 @@ import { ShopDto } from "../../../rest/ShopsService";
 import { useEffect, useState } from "react";
 
 interface ProductListElementProps {
-    intl: IntlShape,
     keyElement: string,
     product: Product,
     allShops: ShopDto[],
@@ -113,5 +111,5 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(ProductList));
+export default connect(mapStateToProps)(ProductList);
 

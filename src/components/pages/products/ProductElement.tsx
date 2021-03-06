@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { injectIntl, IntlShape } from 'react-intl';
 import { Product } from '../../../rest/ProductsService';
 import { Routes } from '../../helper/Routes';
 import { emptyHrefLink, StorageKey } from '../../../helper/Constants';
@@ -14,9 +13,9 @@ import { connect } from "react-redux";
 import { ShopDto } from "../../../rest/ShopsService";
 import { setCurrentProduct } from "../../../redux/actions/ProductsAction";
 import { useState } from "react";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface ProductElementProps {
-    intl: IntlShape;
     product: Product;
     productInfo: boolean;
     onCloseModal?: () => void;
@@ -157,7 +156,7 @@ const ProductDetail = (props: ProductElementProps) => {
                 <img
                     style={{maxWidth: 300, maxHeight: 250}}
                     src={props.product.imageUrl}
-                    alt={props.intl.formatMessage({
+                    alt={intl.formatMessage({
                         id: 'products.image.missing',
                     })}
                     onError={addDefaultImgSrc}
@@ -216,4 +215,4 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ProductDetail));
+export default connect(mapStateToProps, mapDispatchToProps)(ProductDetail);

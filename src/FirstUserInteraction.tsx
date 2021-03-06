@@ -3,14 +3,14 @@ import { emptyHrefLink, logoPath } from "./helper/Constants";
 import Modal from 'react-awesome-modal';
 import { auth } from "./index";
 import InfoModal from "./components/modals/InfoModal";
-import { FormattedMessage, IntlShape, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { getUserId, getUserInfo } from "./components/pages/login/AuthHelper";
 import { FormControlLabel } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { getDisableMailNotification, updateDisableMailNotification } from "./rest/UserService";
+import { intl } from "./helper/IntlGlobal";
 
 interface FirstUserInteractionProps {
-    intl: IntlShape;
 }
 
 interface FirstUserInteractionState {
@@ -53,7 +53,7 @@ class FirstUserInteraction extends React.Component<FirstUserInteractionProps, Fi
             .then(() => {
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({id: 'user.first.interaction.success'})
+                    infoModalMessage: intl.formatMessage({id: 'user.first.interaction.success'})
                 });
             })
     }
@@ -93,7 +93,7 @@ class FirstUserInteraction extends React.Component<FirstUserInteractionProps, Fi
                                             color="secondary"
                                         />
                                     }
-                                    label={this.props.intl.formatMessage({id: 'tos.title'})}
+                                    label={intl.formatMessage({id: 'tos.title'})}
                                 />
                                 <FormControlLabel
                                     control={
@@ -104,7 +104,7 @@ class FirstUserInteraction extends React.Component<FirstUserInteractionProps, Fi
                                             color="secondary"
                                         />
                                     }
-                                    label={this.props.intl.formatMessage({id: 'privacy.title'})}
+                                    label={intl.formatMessage({id: 'privacy.title'})}
                                 />
                                 <FormControlLabel
                                     control={
@@ -119,7 +119,7 @@ class FirstUserInteraction extends React.Component<FirstUserInteractionProps, Fi
                                             }}
                                         />
                                     }
-                                    label={this.props.intl.formatMessage({id: 'user.marketing.title'})}
+                                    label={intl.formatMessage({id: 'user.marketing.title'})}
                                 />
                             </div>
                             <div style={{textAlign: 'center', marginTop: 15}}>
@@ -155,5 +155,5 @@ class FirstUserInteraction extends React.Component<FirstUserInteractionProps, Fi
     }
 }
 
-export default injectIntl(FirstUserInteraction);
+export default FirstUserInteraction;
 

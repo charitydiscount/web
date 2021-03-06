@@ -3,7 +3,8 @@ import { ILanguageResource, LocaleActions } from '../actions/LocaleAction';
 import messages_ro from '../../translations/ro.json';
 import messages_en from '../../translations/en.json';
 import { getLocalStorage } from '../../helper/StorageHelper';
-import { StorageKey } from '../../helper/Constants';
+import { Languages, StorageKey } from '../../helper/Constants';
+import { updateIntl } from "../../helper/IntlGlobal";
 
 const messages = {
     ro: messages_ro,
@@ -16,13 +17,13 @@ export interface ILocaleState {
 
 const initialState: ILocaleState = {
     langResources: {
-        language: 'ro',
+        language: Languages.RO,
         resources:
-            messages['ro'],
+            messages[Languages.RO],
     },
 };
 
-export default function(
+export default function (
     state: ILocaleState = initialState,
     action: LocaleActions
 ): ILocaleState {
@@ -37,20 +38,22 @@ export default function(
             if (state) {
                 const lang = getLocalStorage(StorageKey.LANG);
                 if (lang) {
-                    if (lang === 'en' || lang === 'ro') {
+                    if (lang === Languages.EN || lang === Languages.RO) {
                         state.langResources = {
                             language: lang,
                             resources: messages[lang],
                         };
                     } else {
                         state.langResources = {
-                            language: 'ro',
-                            resources: messages['ro'],
+                            language: Languages.RO,
+                            resources: messages[Languages.RO],
                         };
                     }
+
                 }
             }
-            return { ...state };
+            updateIntl(state.langResources.language, state.langResources.resources);
+            return {...state};
         }
     }
 }

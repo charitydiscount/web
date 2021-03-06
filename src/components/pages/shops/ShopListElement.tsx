@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ShopDto } from '../../../rest/ShopsService';
-import { injectIntl, IntlShape } from 'react-intl';
 import ShopModalElement from './ShopModalElement';
 
 interface ShopListElementState {
@@ -9,7 +8,6 @@ interface ShopListElementState {
 
 interface ShopListElementProps {
     shop: ShopDto;
-    intl: IntlShape;
 }
 
 class ShopListElement extends React.Component<
@@ -72,4 +70,4 @@ class ShopListElement extends React.Component<
     }
 }
 
-export default injectIntl(ShopListElement);
+export default ShopListElement;

@@ -1,7 +1,6 @@
 import { emptyHrefLink, StorageKey } from '../../../helper/Constants';
 import * as React from 'react';
 import { ShopDto } from '../../../rest/ShopsService';
-import { injectIntl, IntlShape } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import { PromotionDto } from '../../../rest/DealsService';
 import { AppState } from '../../../redux/reducer/RootReducer';
@@ -14,7 +13,6 @@ import RedirectModal from '../shops/RedirectModal';
 interface PromotionElementProps {
     promotion: PromotionDto;
     onCloseModal?: () => void;
-    intl: IntlShape;
 
     //global state
     shops: ShopDto[];
@@ -176,4 +174,4 @@ const mapStateToProps = (state: AppState) => ({
     shops: state.shops.allShops
 });
 
-export default connect(mapStateToProps)(injectIntl(PromotionElement));
+export default connect(mapStateToProps)(PromotionElement);

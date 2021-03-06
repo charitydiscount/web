@@ -10,25 +10,16 @@ import { connect } from 'react-redux';
 defineMessages(en);
 defineMessages(ro);
 
-interface II18nAppProps {
-    /**
-     * Language resource DTO stored in redux state
-     */
-    langResources: ILanguageResource;
-}
-
-class I18nApp extends React.Component<II18nAppProps> {
-    public render() {
-        return (
-            <IntlProvider
-                textComponent={React.Fragment}
-                locale={this.props.langResources.language}
-                messages={this.props.langResources.resources}
-            >
-                <App />
-            </IntlProvider>
-        );
-    }
+const I18nApp = (props: { langResources: ILanguageResource }) => {
+    return (
+        <IntlProvider
+            textComponent={React.Fragment}
+            locale={props.langResources.language}
+            messages={props.langResources.resources}
+        >
+            <App/>
+        </IntlProvider>
+    );
 }
 
 const mapStateToProps = (state: any) => {

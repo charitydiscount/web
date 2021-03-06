@@ -3,15 +3,14 @@ import { StorageKey, TxType } from '../../../helper/Constants';
 import { getLocalStorage } from '../../../helper/StorageHelper';
 import { CauseDto } from '../../../rest/CauseService';
 import { Routes } from '../../helper/Routes';
-import { injectIntl, IntlShape } from 'react-intl';
 import { dateOptions, roundMoney } from '../../../helper/AppHelper';
 import { TransactionDto } from '../../../rest/WalletService';
 import { Link } from 'react-router-dom';
 import { getUserInfo } from "../login/AuthHelper";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface IWalletTransactionRowProps {
     transaction: TransactionDto;
-    intl: IntlShape;
 }
 
 class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
@@ -38,14 +37,14 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                         className="fa fa-heart"
                         aria-hidden="true"
                         style={{ color: 'red' }}
-                        title={this.props.intl.formatMessage({
+                        title={intl.formatMessage({
                             id: 'wallet.tx.type.donation',
                         })}
                     />
                 );
                 break;
             case TxType.BONUS.toString():
-                target = this.props.intl.formatMessage({
+                target = intl.formatMessage({
                     id: 'wallet.charity.points',
                 });
                 txTitle = (
@@ -53,7 +52,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                         className="fa fa-thumbs-up"
                         aria-hidden="true"
                         style={{ color: 'blue' }}
-                        title={this.props.intl.formatMessage({
+                        title={intl.formatMessage({
                             id: 'wallet.tx.type.bonus',
                         })}
                     />
@@ -70,7 +69,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     <i
                         className="fa fa-money"
                         aria-hidden="true"
-                        title={this.props.intl.formatMessage({
+                        title={intl.formatMessage({
                             id: 'wallet.tx.type.cashout',
                         })}
                     />
@@ -85,7 +84,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                         className="fa fa-money"
                         aria-hidden="true"
                         style={{ color: 'green' }}
-                        title={this.props.intl.formatMessage({
+                        title={intl.formatMessage({
                             id: 'wallet.tx.type.commission',
                         })}
                     />
@@ -106,7 +105,7 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
                     </div>
                     <div className="country">
                         {roundMoney(this.props.transaction.amount)}{' '}
-                        {this.props.intl.formatMessage({
+                        {intl.formatMessage({
                             id: this.props.transaction.currency,
                         })}
                     </div>
@@ -124,4 +123,4 @@ class WalletTransactionRow extends React.Component<IWalletTransactionRowProps> {
     }
 }
 
-export default injectIntl(WalletTransactionRow);
+export default WalletTransactionRow;

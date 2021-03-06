@@ -15,13 +15,13 @@ import { CommissionStatus, emptyHrefLink, TxType } from '../../../helper/Constan
 import WalletCommissionRow from './WalletCommissionRow';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { spinnerCss } from '../../../helper/AppHelper';
-import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { CauseDto, fetchCauses } from '../../../rest/CauseService';
 import WalletTotalHistory from "./WalletTotalHistory";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface IWalletProps {
     match: any;
-    intl: IntlShape;
 }
 
 interface IWalletState {
@@ -232,7 +232,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                 <div className={'tab-content'}>
                                     <div className="row">
                                         <WalletBlock
-                                            title={this.props.intl.formatMessage(
+                                            title={intl.formatMessage(
                                                 {id: 'wallet.cashback'}
                                             )}
                                             approved={
@@ -253,7 +253,7 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
                                             }
                                         />
                                         <WalletBlock
-                                            title={this.props.intl.formatMessage(
+                                            title={intl.formatMessage(
                                                 {
                                                     id:
                                                         'wallet.charity.points',
@@ -564,4 +564,4 @@ class Wallet extends React.Component<IWalletProps, IWalletState> {
     }
 }
 
-export default injectIntl(Wallet);
+export default Wallet;

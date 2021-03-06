@@ -8,7 +8,6 @@ import {
     verifyInFavoriteShops,
     fetchFavoriteShops,
 } from '../../../rest/ShopsService';
-import { injectIntl, IntlShape } from 'react-intl';
 import { FormattedMessage } from 'react-intl';
 import { getPromotions, PromotionDto } from '../../../rest/DealsService';
 import Promotion from '../promotions/ShopPromotion';
@@ -22,6 +21,7 @@ import { clickSaveAndRedirect } from "../../../rest/ClickService";
 import InfoModal from "../../modals/InfoModal";
 import { store } from '../../../index';
 import { ShopsActions } from '../../../redux/actions/ShopsAction';
+import { intl } from "../../../helper/IntlGlobal";
 
 interface IShopElementProps {
     shop: ShopDto;
@@ -29,7 +29,6 @@ interface IShopElementProps {
     isLoggedIn: boolean;
     comingFromShopInfo?: boolean;
     onCloseModal?: () => void;
-    intl: IntlShape;
 }
 
 interface IShopElementState {
@@ -93,7 +92,7 @@ class ShopElement extends React.Component<IShopElementProps,
             );
         } catch (error) {
             alert(
-                this.props.intl.formatMessage({
+                intl.formatMessage({
                     id: 'favorite.shop.failed.to.update',
                 })
             );
@@ -361,7 +360,7 @@ class ShopElement extends React.Component<IShopElementProps,
                                 >
                                     <Button color="secondary">
                                         <span className="text-lowercase">
-                                            {this.props.intl.formatMessage({
+                                            {intl.formatMessage({
                                                 id: 'review.tell.us',
                                             })}
                                         </span>
@@ -472,4 +471,4 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-export default connect(mapStateToProps)(injectIntl(ShopElement));
+export default connect(mapStateToProps)(ShopElement);

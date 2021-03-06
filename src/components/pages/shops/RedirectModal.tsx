@@ -1,16 +1,16 @@
 import React from "react";
 import Modal from 'react-awesome-modal';
-import { FormattedMessage, injectIntl, IntlShape } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import { FormControlLabel } from "@material-ui/core";
 import Checkbox from "@material-ui/core/Checkbox";
 import { setLocalStorage } from "../../../helper/StorageHelper";
 import { emptyHrefLink, StorageKey } from "../../../helper/Constants";
 import { clickSaveAndRedirect } from "../../../rest/ClickService";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface RedirectModalProps {
     cashbackUrl: string,
     programId: string,
-    intl: IntlShape;
     visible: boolean,
     onCloseModal: any
 }
@@ -96,7 +96,7 @@ class RedirectModal extends React.Component<RedirectModalProps, RedirectModalSta
                                             color="secondary"
                                         />
                                     }
-                                    label={this.props.intl.formatMessage({id: 'user.redirect.checkbox'})}
+                                    label={intl.formatMessage({id: 'user.redirect.checkbox'})}
                                 />
                                 <a
                                     href={emptyHrefLink}
@@ -118,4 +118,4 @@ class RedirectModal extends React.Component<RedirectModalProps, RedirectModalSta
     }
 }
 
-export default injectIntl(RedirectModal);
+export default RedirectModal;

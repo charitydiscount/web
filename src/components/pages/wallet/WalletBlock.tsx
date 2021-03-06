@@ -9,7 +9,6 @@ import {
     validateOtpCode,
 } from '../../../rest/WalletService';
 import { FormattedMessage } from 'react-intl';
-import { injectIntl, IntlShape } from 'react-intl';
 import { emptyBackgroundCss, roundMoney } from '../../../helper/AppHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import {
@@ -27,6 +26,7 @@ import iban from 'iban';
 import { removeLocalStorage } from '../../../helper/StorageHelper';
 import InfoModal from "../../modals/InfoModal";
 import { getUserId } from "../login/AuthHelper";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface IWalletBlockState {
     donateVisible: boolean;
@@ -59,7 +59,6 @@ interface IWalletBlockProps {
     money: boolean;
     causes?: CauseDto[];
     openDonateWithCaseId?: string;
-    intl: IntlShape;
     onTxCompleted?: Function;
 }
 
@@ -166,7 +165,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         if (!this.state.otpCode) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({
+                infoModalMessage: intl.formatMessage({
                     id: 'otp.code.empty',
                 })
             });
@@ -206,7 +205,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
             } else {
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({
+                    infoModalMessage: intl.formatMessage({
                         id: 'otp.code.wrong',
                     })
                 });
@@ -214,7 +213,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         } catch (error) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({
+                infoModalMessage: intl.formatMessage({
                     id: 'otp.code.wrong',
                 })
             });
@@ -246,9 +245,9 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                     faderVisible: false,
                     txCompleted: true,
                     infoModalVisible: true,
-                    infoModalMessage: txType === 'DONATION' ? this.props.intl.formatMessage({
+                    infoModalMessage: txType === 'DONATION' ? intl.formatMessage({
                         id: 'wallet.donate.thanks.message'
-                    }) : this.props.intl.formatMessage({
+                    }) : intl.formatMessage({
                         id: 'wallet.cashout.thanks.message'
                     })
                 });
@@ -264,7 +263,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         ) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({
+                infoModalMessage: intl.formatMessage({
                     id: 'wallet.cashout.amount.error',
                 })
             });
@@ -274,7 +273,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         if (parseFloat(this.state.amount) >= this.props.approved) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({
+                infoModalMessage: intl.formatMessage({
                     id: 'wallet.cashout.no.amount.error',
                 })
             });
@@ -284,7 +283,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         if (!this.state.name) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({
+                infoModalMessage: intl.formatMessage({
                     id: 'wallet.cashout.name.error',
                 })
             });
@@ -294,7 +293,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         if (!this.state.iban || !iban.isValid(this.state.iban)) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({
+                infoModalMessage: intl.formatMessage({
                     id: 'wallet.cashout.iban.error',
                 })
             });
@@ -335,7 +334,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         ) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({
+                infoModalMessage: intl.formatMessage({
                     id: 'wallet.donate.amount.error',
                 })
             });
@@ -345,7 +344,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         if (parseFloat(this.state.amount) >= this.props.approved) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({
+                infoModalMessage: intl.formatMessage({
                     id: 'wallet.cashout.no.amount.error',
                 })
             });
@@ -355,7 +354,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
         if (!this.state.targetId) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({
+                infoModalMessage: intl.formatMessage({
                     id: 'wallet.donate.cause.error',
                 })
             });
@@ -460,7 +459,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                                                 id="otpCode"
                                                 variant="filled"
                                                 style={{width: '100%'}}
-                                                label={this.props.intl.formatMessage(
+                                                label={intl.formatMessage(
                                                     {
                                                         id:
                                                             'wallet.block.otp.request.placeholder',
@@ -522,7 +521,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                                             <React.Fragment>
                                                 <TextField
                                                     id={"name" + this.props.title}
-                                                    label={this.props.intl.formatMessage(
+                                                    label={intl.formatMessage(
                                                         {
                                                             id:
                                                                 'wallet.block.cashout.name',
@@ -547,7 +546,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                                                     style={{
                                                         width: '100%',
                                                     }}
-                                                    label={this.props.intl.formatMessage(
+                                                    label={intl.formatMessage(
                                                         {
                                                             id:
                                                                 'wallet.block.cashout.iban',
@@ -596,7 +595,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                                                         min: '50',
                                                         step: '0.01',
                                                     }}
-                                                    label={this.props.intl.formatMessage(
+                                                    label={intl.formatMessage(
                                                         {
                                                             id:
                                                                 'wallet.table.amount',
@@ -683,7 +682,7 @@ class WalletBlock extends React.Component<IWalletBlockProps,
                                                     inputProps={{
                                                         step: '0.01',
                                                     }}
-                                                    label={this.props.intl.formatMessage(
+                                                    label={intl.formatMessage(
                                                         {
                                                             id:
                                                                 'wallet.table.amount',
@@ -809,4 +808,4 @@ class WalletBlock extends React.Component<IWalletBlockProps,
     }
 }
 
-export default connect()(injectIntl(WalletBlock));
+export default connect()(WalletBlock);

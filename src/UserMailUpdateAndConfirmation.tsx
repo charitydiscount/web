@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage, IntlShape, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { emptyHrefLink, logoPath } from "./helper/Constants";
 import Modal from 'react-awesome-modal';
 import { auth } from "./index";
@@ -14,9 +14,9 @@ import {
     UserDto
 } from "./rest/UserService";
 import { getUserId } from "./components/pages/login/AuthHelper";
+import { intl } from "./helper/IntlGlobal";
 
 interface UserMailUpdateProps {
-    intl: IntlShape;
     logout: () => void;
 }
 
@@ -68,7 +68,7 @@ class UserMailUpdateAndConfirmation extends React.Component<UserMailUpdateProps>
         if (!emailRegexp.test(this.state.email)) {
             this.setState({
                 errorMail: true,
-                errorMailMessage: this.props.intl.formatMessage({id: 'user.mail.invalid'})
+                errorMailMessage: intl.formatMessage({id: 'user.mail.invalid'})
             });
         } else {
             if (auth.currentUser) {
@@ -84,7 +84,7 @@ class UserMailUpdateAndConfirmation extends React.Component<UserMailUpdateProps>
                             errorMail: false,
                             errorMailMessage: "",
                             infoModalVisible: true,
-                            infoModalMessage: this.props.intl.formatMessage({id: 'user.mail.update.error'}) + error.message
+                            infoModalMessage: intl.formatMessage({id: 'user.mail.update.error'}) + error.message
                         })
                     });
                 if (dbMailUpdated) {
@@ -103,7 +103,7 @@ class UserMailUpdateAndConfirmation extends React.Component<UserMailUpdateProps>
                             errorMail: false,
                             errorMailMessage: "",
                             infoModalVisible: true,
-                            infoModalMessage: this.props.intl.formatMessage({id: 'user.mail.confirmation.send.success'})
+                            infoModalMessage: intl.formatMessage({id: 'user.mail.confirmation.send.success'})
                         })
                     }
                 ).catch((error) => {
@@ -112,7 +112,7 @@ class UserMailUpdateAndConfirmation extends React.Component<UserMailUpdateProps>
                             errorMailMessage: "",
                             confirmationFailed: true,
                             infoModalVisible: true,
-                            infoModalMessage: this.props.intl.formatMessage({id: 'user.mail.confirmation.send.error'}) + error.message
+                            infoModalMessage: intl.formatMessage({id: 'user.mail.confirmation.send.error'}) + error.message
                         })
                     }
                 )
@@ -243,7 +243,7 @@ class UserMailUpdateAndConfirmation extends React.Component<UserMailUpdateProps>
                                     style={{
                                         width: '100%',
                                     }}
-                                    label={this.props.intl.formatMessage({id: 'user.mail.label'})}
+                                    label={intl.formatMessage({id: 'user.mail.label'})}
                                     error={this.state.errorMail}
                                     helperText={this.state.errorMailMessage}
                                     onChange={event => {
@@ -289,5 +289,5 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(injectIntl(UserMailUpdateAndConfirmation));
+export default connect(null, mapDispatchToProps)(UserMailUpdateAndConfirmation);
 

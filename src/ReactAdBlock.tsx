@@ -1,12 +1,11 @@
 import React, { CSSProperties } from 'react';
-import { injectIntl, IntlShape } from 'react-intl';
 import { connect } from "react-redux";
 import { setAdBlockActive } from "./redux/actions/AdBlockActions";
 import InfoModal from "./components/modals/InfoModal";
+import { intl } from "./helper/IntlGlobal";
 
 interface ReactAdBlockProps {
-    setAdBlock: any,
-    intl: IntlShape;
+    setAdBlock: any
 }
 
 class ReactAdBlock extends React.Component<ReactAdBlockProps> {
@@ -30,7 +29,7 @@ class ReactAdBlock extends React.Component<ReactAdBlockProps> {
         if (this.state.usingAdblock === true) {
             return (
                 <InfoModal visible={true}
-                           message={this.props.intl.formatMessage({
+                           message={intl.formatMessage({
                                id: 'adblock.message',
                            })}
                            onClose={() => window.location.reload()}
@@ -62,4 +61,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(null, mapDispatchToProps)(injectIntl(ReactAdBlock));
+export default connect(null, mapDispatchToProps)(ReactAdBlock);

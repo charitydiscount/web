@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import Modal from 'react-awesome-modal';
 import { emptyHrefLink, logoPath } from "../../helper/Constants";
 import { TextField } from "@material-ui/core";
-import { injectIntl, IntlShape } from 'react-intl';
+import { intl } from "../../helper/IntlGlobal";
 
 interface UserUpdateModalProps {
     visible: boolean,
     onValidate: (userName) => void,
-    onClose: () => void,
-    intl: IntlShape
+    onClose: () => void
 }
 
 const UserUpdateModal: React.FunctionComponent<UserUpdateModalProps> = props => {
@@ -27,7 +26,7 @@ const UserUpdateModal: React.FunctionComponent<UserUpdateModalProps> = props => 
                 </div>
                 <div style={{textAlign: "center", marginTop: 10}}>
                     <TextField id="userName" variant="filled" style={{width: '100%'}}
-                               label={props.intl.formatMessage({id: 'user.update.name.label'})}
+                               label={intl.formatMessage({id: 'user.update.name.label'})}
                                onChange={(event) => {
                                    setUserName(event.target.value)
                                }}
@@ -52,4 +51,4 @@ const UserUpdateModal: React.FunctionComponent<UserUpdateModalProps> = props => 
     );
 };
 
-export default (injectIntl(UserUpdateModal));
+export default UserUpdateModal;

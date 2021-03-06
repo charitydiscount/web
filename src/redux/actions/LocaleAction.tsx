@@ -1,10 +1,12 @@
-import {ActionTypesUnion} from "../helper/TypesHelper";
-import {createAction} from "../helper/ActionHelper";
-import {LocaleActionTypes} from "./Actions";
+import { ActionTypesUnion } from "../helper/TypesHelper";
+import { createAction } from "../helper/ActionHelper";
+import { LocaleActionTypes } from "./Actions";
 import messages_ro from "../../translations/ro.json";
 import messages_en from "../../translations/en.json";
+import { Languages } from "../../helper/Constants";
+import { updateIntl } from "../../helper/IntlGlobal";
 
-const messages = {
+export const messages = {
     'ro': messages_ro,
     'en': messages_en
 };
@@ -21,10 +23,12 @@ export type LocaleActions = ActionTypesUnion<typeof LocaleAction>
 
 export function setLangResources(currentLocale: string): any {
     return (dispatch: any) => {
-        if (currentLocale === "en") {
-            dispatch(LocaleAction.setLangResources({language: "en", resources: messages['en']}))
+        if (currentLocale === Languages.EN) {
+            dispatch(LocaleAction.setLangResources({language: Languages.EN, resources: messages[Languages.EN]}))
+            updateIntl(Languages.EN, messages[Languages.EN]);
         } else {
-            dispatch(LocaleAction.setLangResources({language: "ro", resources: messages['ro']}))
+            dispatch(LocaleAction.setLangResources({language: Languages.RO, resources: messages[Languages.RO]}))
+            updateIntl(Languages.RO, messages[Languages.RO]);
         }
     }
 }

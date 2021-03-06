@@ -21,17 +21,17 @@ const App = () => {
     }, []);
 
     return loading ? (
-        <FadeLoader loading={true} color={'#e31f29'} css={spinnerCss} />
+        <FadeLoader loading={true} color={'#e31f29'} css={spinnerCss}/>
     ) : (
         <React.Fragment>
-            <ReactAdBlock />
+            <ReactAdBlock/>
             <FirstUserInteraction/>
             <UserMailUpdateAndConfirmation/>
-            <ReferralUpdate />
-            <ScrollToTop />
-            <HeaderLayout />
-            <PageLayout />
-            <FooterLayout />
+            <ReferralUpdate/>
+            <ScrollToTop/>
+            <HeaderLayout/>
+            <PageLayout/>
+            <FooterLayout/>
             <CookieConsent
                 cookieName={'CookieCharityDiscount'}
                 buttonText={

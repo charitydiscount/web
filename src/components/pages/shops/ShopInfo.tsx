@@ -7,7 +7,6 @@ import { emptyHrefLink, StorageKey } from '../../../helper/Constants';
 import { ShopDto } from '../../../rest/ShopsService';
 import { fetchReviews, ReviewDto, saveReview } from '../../../rest/ReviewService';
 import { FormattedMessage } from 'react-intl';
-import { injectIntl, IntlShape } from 'react-intl';
 import {
     removeLocalStorage,
     setLocalStorage,
@@ -24,6 +23,7 @@ import {getProductsForProgram, Product} from "../../../rest/ProductsService";
 import {filterProducts} from "../products/ProductHelper";
 import {ProductActions} from "../../../redux/actions/ProductsAction";
 import {Routes} from "../../helper/Routes";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface IProductReviewState {
     modalVisible: boolean;
@@ -44,7 +44,6 @@ interface IProductReviewState {
 
 interface IProductReviewProps {
     match: any;
-    intl: IntlShape;
 
     setBackLink: (backLink:string) => void
 
@@ -149,7 +148,7 @@ class ShopInfo extends React.Component<IProductReviewProps,
                 removeLocalStorage(StorageKey.REVIEWS_RATINGS);
                 removeLocalStorage(StorageKey.SHOPS);
                 this.handleShowModalMessage(
-                    this.props.intl.formatMessage({
+                    intl.formatMessage({
                         id: 'review.update.message',
                     }),
                     null
@@ -162,7 +161,7 @@ class ShopInfo extends React.Component<IProductReviewProps,
                 }
             } catch (error) {
                 this.handleShowModalMessage(
-                    this.props.intl.formatMessage({
+                    intl.formatMessage({
                         id: 'review.failed.to.update.error.message',
                     }),
                     null
@@ -170,7 +169,7 @@ class ShopInfo extends React.Component<IProductReviewProps,
             }
         } else {
             this.handleShowModalMessage(
-                this.props.intl.formatMessage({id: 'review.error.message'}),
+                intl.formatMessage({id: 'review.error.message'}),
                 null
             );
         }
@@ -345,7 +344,7 @@ class ShopInfo extends React.Component<IProductReviewProps,
                                                         event.target.value,
                                                     })
                                                 }
-                                                placeholder={this.props.intl.formatMessage(
+                                                placeholder={intl.formatMessage(
                                                     {id: 'review.placeholder'}
                                                 )}
                                             ></textarea>
@@ -400,4 +399,4 @@ const
         };
     };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(ShopInfo));
+export default connect(mapStateToProps, mapDispatchToProps)(ShopInfo);

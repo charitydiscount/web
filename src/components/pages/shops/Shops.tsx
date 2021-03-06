@@ -20,7 +20,6 @@ import { fetchFavoriteShops, ShopDto } from '../../../rest/ShopsService';
 import { fetchReviewRatings, ReviewRating } from '../../../rest/ReviewService';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { spinnerCss } from '../../../helper/AppHelper';
-import { injectIntl, IntlShape } from 'react-intl';
 import ShopListElement from './ShopListElement';
 import FormControl from '@material-ui/core/FormControl';
 import { FormattedMessage } from 'react-intl';
@@ -37,6 +36,7 @@ import { StorageKey } from '../../../helper/Constants';
 import ShopModalElement from './ShopModalElement';
 import { AuthActions } from "../../../redux/actions/UserActions";
 import { parseAndSaveUser } from "../login/AuthHelper";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface IShopsProps {
     shops: Array<ShopDto>;
@@ -56,8 +56,7 @@ interface IShopsProps {
     //parameters favshops redirect
     match: any;
     favShops: string;
-
-    intl: IntlShape;
+    
     allShops: ShopDto[];
 }
 
@@ -350,7 +349,7 @@ class Shops extends React.Component<IShopsProps, IShopsState> {
                                         type={'textfield'}
                                         id={'search'}
                                         className={'single-input'}
-                                        placeholder={this.props.intl.formatMessage(
+                                        placeholder={intl.formatMessage(
                                             {id: 'shops.search'}
                                         )}
                                         onKeyUp={this.onSearchUpdateEvent}
@@ -522,4 +521,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Shops));
+export default connect(mapStateToProps, mapDispatchToProps)(Shops);

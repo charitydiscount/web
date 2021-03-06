@@ -4,7 +4,7 @@ import { NavigationsAction } from '../../../redux/actions/NavigationsAction';
 import { Stages } from '../../helper/Stages';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { addDefaultImgSrc, getImagePath, smallerSpinnerCss } from '../../../helper/AppHelper';
-import { FormattedMessage, IntlShape, injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import ReferralRow from './ReferralRow';
 import {
     fetchReferrals,
@@ -13,6 +13,7 @@ import {
 } from '../../../rest/ReferralService';
 import { UserInfoDto } from "../login/AuthHelper";
 import { connect } from "react-redux";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface ReferralsState {
     referrals: ReferralDto[];
@@ -21,7 +22,6 @@ interface ReferralsState {
 }
 
 interface ReferralsProps {
-    intl: IntlShape;
     userInfo: UserInfoDto
 }
 
@@ -39,8 +39,8 @@ class Referrals extends React.Component<ReferralsProps, ReferralsState> {
         store.dispatch(NavigationsAction.setStageAction(Stages.FRIENDS));
         try {
             const referralLink = await buildDynamicLink(
-                this.props.intl.formatMessage({id: 'referral.meta.title'}),
-                this.props.intl.formatMessage({
+                intl.formatMessage({id: 'referral.meta.title'}),
+                intl.formatMessage({
                     id: 'referral.meta.description',
                 })
             );
@@ -155,4 +155,4 @@ const mapStateToProps = (state: any) => {
     };
 };
 
-export default connect(mapStateToProps, null)(injectIntl(Referrals));
+export default connect(mapStateToProps, null)(Referrals);

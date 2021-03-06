@@ -8,7 +8,7 @@ import {
 import { doLogoutAction, updateUserNameInState, updateUserPhotoInState } from '../../../redux/actions/UserActions';
 import { connect } from 'react-redux';
 import FileUploader from 'react-firebase-file-uploader';
-import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { addDefaultImgSrc, getImagePath, keyDownEscapeEvent, spinnerCss } from '../../../helper/AppHelper';
 import FadeLoader from 'react-spinners/FadeLoader';
 import { Routes } from '../../helper/Routes';
@@ -31,9 +31,9 @@ import OtpModal from "../../modals/OtpModal";
 import { createOtpRequest, validateOtpCode } from "../../../rest/WalletService";
 import { fetchProfilePhoto } from "../../../rest/StorageService";
 import UserUpdateModal from "../../modals/UserUpdateModal";
+import { intl } from "../../../helper/IntlGlobal";
 
 interface IUserInfoProps {
-    intl: IntlShape;
     logout: () => void;
     updateUserPhotoInState: (photoUrl: string) => void,
     updateUserNameInState: (name: string) => void,
@@ -103,7 +103,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                 this.setState({
                     privateName: checked,
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({
+                    infoModalMessage: intl.formatMessage({
                         id: checked
                             ? 'user.private.name.success.true'
                             : 'user.private.name.success.false',
@@ -113,7 +113,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
             .catch((error) => {
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({id: 'user.update.general.error'})
+                    infoModalMessage: intl.formatMessage({id: 'user.update.general.error'})
                 });
             });
     };
@@ -125,7 +125,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                 this.setState({
                     privatePhoto: checked,
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({
+                    infoModalMessage: intl.formatMessage({
                         id: checked
                             ? 'user.private.photo.success.true'
                             : 'user.private.photo.success.false',
@@ -135,7 +135,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
             .catch((error) => {
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({id: 'user.update.general.error'})
+                    infoModalMessage: intl.formatMessage({id: 'user.update.general.error'})
                 });
             });
     };
@@ -147,7 +147,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                 this.setState({
                     disableMailNotification: !checked,
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({
+                    infoModalMessage: intl.formatMessage({
                         id: !checked
                             ? 'user.disable.mail.notification.success.true'
                             : 'user.disable.mail.notification.success.false',
@@ -157,7 +157,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
             .catch((error) => {
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({id: 'user.update.general.error'})
+                    infoModalMessage: intl.formatMessage({id: 'user.update.general.error'})
                 });
             });
     };
@@ -168,7 +168,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                 this.props.updateUserNameInState(name);
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({
+                    infoModalMessage: intl.formatMessage({
                         id: 'user.update.name.success'
                     }),
                 });
@@ -177,7 +177,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                 console.log(error);
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({id: 'user.update.general.error'})
+                    infoModalMessage: intl.formatMessage({id: 'user.update.general.error'})
                 });
             });
     };
@@ -197,7 +197,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
         if (!otpCode) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({id: 'otp.code.empty'})
+                infoModalMessage: intl.formatMessage({id: 'otp.code.empty'})
             });
             return;
         }
@@ -215,20 +215,20 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                         this.setState({
                             isLoading: false,
                             infoModalVisible: true,
-                            infoModalMessage: this.props.intl.formatMessage({id: 'userInfo.delete.account.not.ok.reason'}) + e.message
+                            infoModalMessage: intl.formatMessage({id: 'userInfo.delete.account.not.ok.reason'}) + e.message
                         });
                     }
                 }
             } else {
                 this.setState({
                     infoModalVisible: true,
-                    infoModalMessage: this.props.intl.formatMessage({id: 'otp.code.wrong'})
+                    infoModalMessage: intl.formatMessage({id: 'otp.code.wrong'})
                 });
             }
         } catch (error) {
             this.setState({
                 infoModalVisible: true,
-                infoModalMessage: this.props.intl.formatMessage({id: 'otp.code.wrong'})
+                infoModalMessage: intl.formatMessage({id: 'otp.code.wrong'})
             });
         }
     };
@@ -243,10 +243,10 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
             isLoading: false,
             infoModalVisible: true,
             infoModalMessage: success
-                ? this.props.intl.formatMessage({
+                ? intl.formatMessage({
                     id: 'userInfo.email.reset.sent',
                 })
-                : this.props.intl.formatMessage({
+                : intl.formatMessage({
                     id: 'userInfo.email.reset.error',
                 }),
         });
@@ -302,7 +302,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
 
         this.setState({
             infoModalVisible: true,
-            infoModalMessage: this.props.intl.formatMessage({
+            infoModalMessage: intl.formatMessage({
                 id: 'userInfo.profile.picture.uploaded',
             }),
         });
@@ -312,7 +312,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
     handleUploadError = () => {
         this.setState({
             infoModalVisible: true,
-            infoModalMessage: this.props.intl.formatMessage({
+            infoModalMessage: intl.formatMessage({
                 id: 'userInfo.profile.picture.error',
             }),
         });
@@ -387,7 +387,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                                                             color="secondary"
                                                         />
                                                     }
-                                                    label={this.props.intl.formatMessage(
+                                                    label={intl.formatMessage(
                                                         {
                                                             id:
                                                                 'user.private.name',
@@ -405,7 +405,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                                                             color="secondary"
                                                         />
                                                     }
-                                                    label={this.props.intl.formatMessage(
+                                                    label={intl.formatMessage(
                                                         {
                                                             id:
                                                                 'user.private.photo',
@@ -431,7 +431,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                 color="secondary"
                                                             />
                                                         }
-                                                        label={this.props.intl.formatMessage(
+                                                        label={intl.formatMessage(
                                                             {
                                                                 id:
                                                                     'user.disable.mail.notification',
@@ -514,7 +514,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                                                                     this.setState({
                                                                         deleteAccount: false,
                                                                         confirmModalVisible: true,
-                                                                        confirmModalMessage: this.props.intl.formatMessage({id: 'userInfo.email.reset.confirm'})
+                                                                        confirmModalMessage: intl.formatMessage({id: 'userInfo.email.reset.confirm'})
                                                                     });
                                                                 }
                                                             }
@@ -581,7 +581,7 @@ class User extends React.Component<IUserInfoProps, IUserInfoState> {
                                                     onClick={() => {
                                                         this.setState({
                                                             confirmModalVisible: true,
-                                                            confirmModalMessage: this.props.intl.formatMessage({id: 'userInfo.delete.account.question'}),
+                                                            confirmModalMessage: intl.formatMessage({id: 'userInfo.delete.account.question'}),
                                                             deleteAccount: true
                                                         });
                                                     }
@@ -632,4 +632,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(User));
+export default connect(mapStateToProps, mapDispatchToProps)(User);

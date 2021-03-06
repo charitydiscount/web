@@ -8,17 +8,17 @@ import { NavigationsAction } from "../../../redux/actions/NavigationsAction";
 import { Stages } from "../../helper/Stages";
 import ReactPaginate from 'react-paginate';
 import GenericInput from '../../input/GenericInput';
-import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { fetchFavoriteShops, ShopDto } from "../../../rest/ShopsService";
 import { AppState } from "../../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
+import { intl } from "../../../helper/IntlGlobal";
 
 
 interface PromotionsProps {
-    intl: IntlShape;
     allShops: ShopDto[];
 }
 
@@ -196,7 +196,7 @@ class Promotions extends React.Component<PromotionsProps, PromotionsState> {
                                 type={'textfield'}
                                 id={'search'}
                                 className={'single-input'}
-                                placeholder={this.props.intl.formatMessage(
+                                placeholder={intl.formatMessage(
                                     {id: 'shops.search'}
                                 )}
                                 onKeyUp={this.onSearchUpdateEvent}
@@ -307,4 +307,4 @@ const mapStateToProps = (state: AppState) => {
 };
 
 
-export default connect(mapStateToProps)(injectIntl(Promotions));
+export default connect(mapStateToProps)(Promotions);

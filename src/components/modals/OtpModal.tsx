@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import Modal from 'react-awesome-modal';
 import { logoPath } from "../../helper/Constants";
 import { TextField } from "@material-ui/core";
-import { FormattedMessage, injectIntl, IntlShape } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import Button from '@material-ui/core/Button';
+import { intl } from "../../helper/IntlGlobal";
 
 interface OtpModalProps {
     visible: boolean,
     onValidate: (otpCode) => void,
-    onClose: () => void,
-    intl: IntlShape
+    onClose: () => void
 }
 
 const OtpModal: React.FunctionComponent<OtpModalProps> = props => {
@@ -35,7 +35,7 @@ const OtpModal: React.FunctionComponent<OtpModalProps> = props => {
                         />
                     </h4>
                     <TextField id="otpCode" variant="filled" style={{width: '100%'}}
-                               label={props.intl.formatMessage({id: 'wallet.block.otp.request.placeholder'})}
+                               label={intl.formatMessage({id: 'wallet.block.otp.request.placeholder'})}
                                onChange={(event) => {setOtpCode(event.target.value)}}
                                value={otpCode}
                     />
@@ -60,4 +60,4 @@ const OtpModal: React.FunctionComponent<OtpModalProps> = props => {
     );
 };
 
-export default (injectIntl(OtpModal));
+export default OtpModal;

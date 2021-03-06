@@ -5,23 +5,19 @@ import { Stages } from '../../helper/Stages';
 import { InputType } from '../../../helper/Constants';
 import GenericInput from '../../input/GenericInput';
 import { FormattedMessage } from 'react-intl';
-import { injectIntl, IntlShape } from 'react-intl';
 import { isEmptyString, keyDownEscapeEvent } from '../../../helper/AppHelper';
 import { addContactMessageToDb } from '../../../rest/ContactService';
 import InfoModal from "../../modals/InfoModal";
 import { getUserInfo } from "../login/AuthHelper";
 import { useEffect, useState } from "react";
-
-interface IContactProps {
-    intl: IntlShape;
-}
+import { intl } from "../../../helper/IntlGlobal";
 
 interface ContactModal {
     modalVisible: boolean,
     modalMessage: string
 }
 
-const Contact = (props: IContactProps) => {
+const Contact = () => {
 
     const [modalState, setModalState] = useState<ContactModal>({modalVisible: false, modalMessage: ''});
     const [message, setMessage] = useState<string>('');
@@ -37,7 +33,7 @@ const Contact = (props: IContactProps) => {
             setModalState(
                 {
                     modalVisible: true,
-                    modalMessage: props.intl.formatMessage({id: 'contact.subject.wrong'})
+                    modalMessage: intl.formatMessage({id: 'contact.subject.wrong'})
                 }
             )
             return;
@@ -46,7 +42,7 @@ const Contact = (props: IContactProps) => {
             setModalState(
                 {
                     modalVisible: true,
-                    modalMessage: props.intl.formatMessage({id: 'contact.message.wrong'})
+                    modalMessage: intl.formatMessage({id: 'contact.message.wrong'})
                 }
             )
             return;
@@ -58,7 +54,7 @@ const Contact = (props: IContactProps) => {
                 setModalState(
                     {
                         modalVisible: true,
-                        modalMessage: props.intl.formatMessage({id: 'contact.sendMessage.ok'})
+                        modalMessage: intl.formatMessage({id: 'contact.sendMessage.ok'})
                     }
                 )
                 setMessage('');
@@ -68,7 +64,7 @@ const Contact = (props: IContactProps) => {
                 setModalState(
                     {
                         modalVisible: true,
-                        modalMessage: props.intl.formatMessage({id: 'contact.sendMessage.not.ok'})
+                        modalMessage: intl.formatMessage({id: 'contact.sendMessage.not.ok'})
                     }
                 )
             });
@@ -148,7 +144,7 @@ const Contact = (props: IContactProps) => {
                                     <div className="form-group">
                                         <GenericInput
                                             className={'form-control'}
-                                            placeholder={props.intl.formatMessage(
+                                            placeholder={intl.formatMessage(
                                                 {id: 'contact.subject'}
                                             )}
                                             value={subject}
@@ -165,7 +161,7 @@ const Contact = (props: IContactProps) => {
                                                 id={'message'}
                                                 value={message}
                                                 onChange={event => setMessage(event.target.value)}
-                                                placeholder={props.intl.formatMessage(
+                                                placeholder={intl.formatMessage(
                                                     {id: 'contact.message'}
                                                 )}
                                             ></textarea>
@@ -193,4 +189,4 @@ const Contact = (props: IContactProps) => {
     );
 }
 
-export default injectIntl(Contact);
+export default Contact;
