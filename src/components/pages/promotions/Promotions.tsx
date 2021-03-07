@@ -2,7 +2,7 @@ import React from "react";
 import { spinnerCss } from "../../../helper/AppHelper";
 import FadeLoader from 'react-spinners/FadeLoader';
 import { getAllPromotions, PromotionDto } from "../../../rest/DealsService";
-import PromotionListElement from "./PromotionListElement";
+import PromotionList from "./PromotionList";
 import { store } from "../../../index";
 import { NavigationsAction } from "../../../redux/actions/NavigationsAction";
 import { Stages } from "../../helper/Stages";
@@ -16,7 +16,6 @@ import { fetchFavoriteShops, ShopDto } from "../../../rest/ShopsService";
 import { AppState } from "../../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import { intl } from "../../../helper/IntlGlobal";
-
 
 interface PromotionsProps {
     allShops: ShopDto[];
@@ -79,10 +78,6 @@ class Promotions extends React.Component<PromotionsProps, PromotionsState> {
                 favoriteShops: favoriteShops
             })
         }
-    }
-
-    public componentWillUnmount() {
-        store.dispatch(NavigationsAction.resetStageAction(Stages.PROMOTIONS));
     }
 
     generalFilter = (event) => {
@@ -172,7 +167,7 @@ class Promotions extends React.Component<PromotionsProps, PromotionsState> {
         let promotionsList = this.state.promotions && this.state.promotions.length > 0 ?
             this.state.promotions.map((promotion) => {
                 return (
-                    <PromotionListElement
+                    <PromotionList
                         key={'list' + promotion.id}
                         promotion={promotion}
                     />
@@ -196,9 +191,7 @@ class Promotions extends React.Component<PromotionsProps, PromotionsState> {
                                 type={'textfield'}
                                 id={'search'}
                                 className={'single-input'}
-                                placeholder={intl.formatMessage(
-                                    {id: 'shops.search'}
-                                )}
+                                placeholder={intl.formatMessage({id: 'shops.search'})}
                                 onKeyUp={this.onSearchUpdateEvent}
                             />
                             <div className="col-lg-3">

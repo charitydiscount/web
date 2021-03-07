@@ -18,54 +18,52 @@ interface StateProps {
 
 type Props = PromotionProps & StateProps;
 
-class ShopPromotion extends React.Component<Props> {
+const ShopPromotion = (props: Props) => {
 
-    public render() {
-        const shop = this.props.shops.find(
-            shop => shop.id.toString() === this.props.promotion.program.id.toString()
-        );
-        let computedPromotionUrl;
-        if (shop && this.props.isLoggedIn) {
-            computedPromotionUrl = computeUrl(this.props.promotion.affiliateUrl, shop.uniqueCode,
-                this.props.promotion.landingPageLink);
-        }
-
-        return (
-            <React.Fragment>
-                <tr>
-                    <td>
-                        {computedPromotionUrl && (
-                            <a
-                                href={emptyHrefLink}
-                                onClick={(event) => {
-                                    clickSaveAndRedirect(event, this.props.promotion.program.id, computedPromotionUrl)
-                                }}
-                                rel="noopener noreferrer"
-                                style={
-                                    !this.props.comingFromShopReview
-                                        ? {maxWidth: 300}
-                                        : {}
-                                }
-                            >
-                                {this.props.promotion.name}
-                            </a>
-                        )}
-                        {!computedPromotionUrl && (
-                            <p
-                                style={
-                                    !this.props.comingFromShopReview
-                                        ? {maxWidth: 300}
-                                        : {}
-                                }
-                            >
-                                {this.props.promotion.name}
-                            </p>
-                        )}
-                    </td>
-                </tr>
-            </React.Fragment>
-        );
+    const shop = props.shops.find(
+        shop => shop.id.toString() === props.promotion.program.id.toString()
+    );
+    let computedPromotionUrl;
+    if (shop && props.isLoggedIn) {
+        computedPromotionUrl = computeUrl(props.promotion.affiliateUrl, shop.uniqueCode,
+            props.promotion.landingPageLink);
     }
+
+    return (
+        <React.Fragment>
+            <tr>
+                <td>
+                    {computedPromotionUrl && (
+                        <a
+                            href={emptyHrefLink}
+                            onClick={(event) => {
+                                clickSaveAndRedirect(event, props.promotion.program.id, computedPromotionUrl)
+                            }}
+                            rel="noopener noreferrer"
+                            style={
+                                !props.comingFromShopReview
+                                    ? {maxWidth: 300}
+                                    : {}
+                            }
+                        >
+                            {props.promotion.name}
+                        </a>
+                    )}
+                    {!computedPromotionUrl && (
+                        <p
+                            style={
+                                !props.comingFromShopReview
+                                    ? {maxWidth: 300}
+                                    : {}
+                            }
+                        >
+                            {props.promotion.name}
+                        </p>
+                    )}
+                </td>
+            </tr>
+        </React.Fragment>
+    );
 }
 
 const mapStateToProps = (state: any) => {

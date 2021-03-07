@@ -9,6 +9,7 @@ import { getLocalStorage } from '../../../helper/StorageHelper';
 import { computeUrl } from '../../../helper/AppHelper';
 import { clickSaveAndRedirect } from '../../../rest/ClickService';
 import RedirectModal from '../shops/RedirectModal';
+import { useState } from "react";
 
 interface PromotionElementProps {
     promotion: PromotionDto;
@@ -18,156 +19,138 @@ interface PromotionElementProps {
     shops: ShopDto[];
 }
 
-interface PromotionElementState {
-    redirectModalVisible: boolean;
-}
+const PromotionElement = (props: PromotionElementProps) => {
 
-class PromotionElement extends React.Component<PromotionElementProps,
-    PromotionElementState> {
-    constructor(props: PromotionElementProps) {
-        super(props);
-        this.state = {
-            redirectModalVisible: false,
-        };
+    const [redirectModalVisible, setRedirectModalVisible] = useState<boolean>(false);
+
+    let shop = props.shops.find(
+        shop => shop.id === props.promotion.program.id
+    ) as ShopDto;
+
+    const cashbackUrl = computeUrl(
+        props.promotion.affiliateUrl,
+        shop.uniqueCode,
+        props.promotion.landingPageLink
+    );
+
+    const redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
+
+    let accessButton;
+    if (redirectStorageKey && redirectStorageKey === 'true') {
+        accessButton = (
+            <a
+                href={emptyHrefLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="main_btn"
+                onClick={(event) => {
+                    clickSaveAndRedirect(
+                        event,
+                        props.promotion.program.id,
+                        cashbackUrl
+                    );
+                }}
+            >
+                <FormattedMessage
+                    id={'shop.access.button'}
+                    defaultMessage="Access"
+                />
+            </a>
+        );
+    } else {
+        accessButton = (
+            <a
+                href={emptyHrefLink}
+                rel="noopener noreferrer"
+                className="main_btn"
+                onClick={() => {
+                    setRedirectModalVisible(true)
+                }}
+            >
+                <FormattedMessage
+                    id={'shop.access.button'}
+                    defaultMessage="Access"
+                />
+            </a>
+        );
     }
 
-    openRedirectModal = () => {
-        this.setState({
-            redirectModalVisible: true,
-        });
-    };
+    let promotionEnd = new Date(props.promotion.promotionEnd);
+    let Difference_In_Days = Math.ceil(
+        (promotionEnd.getTime() - Date.now()) / (1000 * 3600 * 24)
+    );
 
-    closeRedirectModal = () => {
-        this.setState({
-            redirectModalVisible: false,
-        });
-    };
+    return (
+        <React.Fragment>
+            <RedirectModal
+                visible={redirectModalVisible}
+                programId={props.promotion.program.id.toString()}
+                onCloseModal={() => {
+                    setRedirectModalVisible(false)
+                }}
+                cashbackUrl={cashbackUrl}
+            />
+            <div className="text-center p-4">
+                <div style={{textAlign: 'right'}}>
+                    <i
+                        onClick={props.onCloseModal}
+                        className="fa fa-times"
+                    />
+                </div>
 
-    public render() {
-        let shop = this.props.shops.find(
-            shop => shop.id === this.props.promotion.program.id
-        ) as ShopDto;
-        const cashbackUrl = computeUrl(
-            this.props.promotion.affiliateUrl,
-            shop.uniqueCode,
-            this.props.promotion.landingPageLink
-        );
-
-        const redirectStorageKey = getLocalStorage(StorageKey.REDIRECT_MESSAGE);
-
-        let accessButton;
-        if (redirectStorageKey && redirectStorageKey === 'true') {
-            accessButton = (
-                <a
-                    href={emptyHrefLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="main_btn"
-                    onClick={(event) => {
-                        clickSaveAndRedirect(
-                            event,
-                            this.props.promotion.program.id,
-                            cashbackUrl
-                        );
+                <h4 className="cashback-text" style={{marginBottom: 15}}>
+                    <FormattedMessage
+                        id={'promotions.expires.in'}
+                        defaultMessage="Expira in"
+                    />
+                    <span className="blue-color">{Difference_In_Days}</span>
+                    <FormattedMessage
+                        id={'promotions.expires.in.days'}
+                        defaultMessage=" zile"
+                    />
+                    <br/>
+                </h4>
+                <img
+                    src={props.promotion.campaignLogo}
+                    alt=""
+                    style={{
+                        maxWidth: 200,
+                        maxHeight: 200,
                     }}
-                >
-                    <FormattedMessage
-                        id={'shop.access.button'}
-                        defaultMessage="Access"
-                    />
-                </a>
-            );
-        } else {
-            accessButton = (
-                <a
-                    href={emptyHrefLink}
-                    rel="noopener noreferrer"
-                    className="main_btn"
-                    onClick={this.openRedirectModal}
-                >
-                    <FormattedMessage
-                        id={'shop.access.button'}
-                        defaultMessage="Access"
-                    />
-                </a>
-            );
-        }
-
-        let promotionEnd = new Date(this.props.promotion.promotionEnd);
-        let Difference_In_Days = Math.ceil(
-            (promotionEnd.getTime() - Date.now()) / (1000 * 3600 * 24)
-        );
-
-        return (
-            <React.Fragment>
-                <RedirectModal
-                    visible={this.state.redirectModalVisible}
-                    programId={this.props.promotion.program.id.toString()}
-                    onCloseModal={this.closeRedirectModal}
-                    cashbackUrl={cashbackUrl}
                 />
-                <div className="text-center p-4">
-                    <div style={{textAlign: 'right'}}>
-                        <i
-                            onClick={this.props.onCloseModal}
-                            className="fa fa-times"
-                        />
-                    </div>
-
-                    <h4 className="cashback-text" style={{marginBottom: 15}}>
-                        <FormattedMessage
-                            id={'promotions.expires.in'}
-                            defaultMessage="Expira in"
-                        />
-                        <span className="blue-color">{Difference_In_Days}</span>
-                        <FormattedMessage
-                            id={'promotions.expires.in.days'}
-                            defaultMessage=" zile"
-                        />
-                        <br/>
+                <h4 style={{marginTop: 10}}>
+                    {props.promotion.campaignName}
+                </h4>
+                <div className="blog_details">
+                    <h4 style={{maxWidth: 300, maxHeight: 150}}>
+                        {props.promotion.name}
                     </h4>
-                    <img
-                        src={this.props.promotion.campaignLogo}
-                        alt=""
+                    <h6
                         style={{
-                            maxWidth: 200,
-                            maxHeight: 200,
+                            maxWidth: 300,
+                            maxHeight: 250,
+                            overflow: 'auto',
                         }}
-                    />
-                    <h4 style={{marginTop: 10}}>
-                        {this.props.promotion.campaignName}
-                    </h4>
-                    <div className="blog_details">
-                        <h4 style={{maxWidth: 300, maxHeight: 150}}>
-                            {this.props.promotion.name}
-                        </h4>
-                        <h6
+                    >
+                        {props.promotion.description}
+                    </h6>
+                    <div
+                        className="s_product_text"
+                        style={{marginTop: 20, marginBottom: 20}}
+                    >
+                        <div
+                            className="card_area p_20"
                             style={{
-                                maxWidth: 300,
-                                maxHeight: 250,
-                                overflow: 'auto',
+                                marginLeft: 15,
                             }}
                         >
-                            {this.props.promotion.description}
-                        </h6>
-                        <div
-                            className="s_product_text"
-                            style={{marginTop: 20, marginBottom: 20}}
-                        >
-                            <div
-                                className="card_area p_20"
-                                style={{
-                                    marginLeft: 15,
-                                }}
-                            >
-                                {accessButton}
-                            </div>
+                            {accessButton}
                         </div>
                     </div>
                 </div>
-            </React.Fragment>
-        );
-    }
+            </div>
+        </React.Fragment>
+    );
 }
 
 const mapStateToProps = (state: AppState) => ({

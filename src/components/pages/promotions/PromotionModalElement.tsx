@@ -4,8 +4,10 @@ import { AppState } from "../../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import PromotionElement from "./PromotionElement";
 import { PromotionDto } from "../../../rest/DealsService";
+import { keyDownEscapeEvent } from "../../../helper/AppHelper";
+import { useEffect } from "react";
 
-interface PromotionModalElementProps {
+interface PromotionModalProps {
     promotion: PromotionDto,
     modalVisible: boolean,
     onCloseModal: () => void;
@@ -14,40 +16,28 @@ interface PromotionModalElementProps {
     adBlockActive?: boolean
 }
 
-interface PromotionModalElementState {
+const PromotionModal = (props: PromotionModalProps) => {
 
-}
+    useEffect(() => {
+        keyDownEscapeEvent(() => {
+            props.onCloseModal()
+        })
+    }, [props])
 
-class PromotionModalElement extends React.Component<PromotionModalElementProps, PromotionModalElementState> {
-
-    escFunction = (event) => {
-        if (event.keyCode === 27) {
-            this.props.onCloseModal();
-        }
-    };
-
-    componentDidMount() {
-        document.addEventListener('keydown', this.escFunction, false);
-    }
-
-    public render() {
-        return (
-            <React.Fragment>
-                <Modal
-                    visible={!this.props.adBlockActive && this.props.modalVisible}
-                    effect="fadeInUp"
-                    onClickAway={this.props.onCloseModal}
-                >
-                    {this.props.modalVisible && (
-                        <PromotionElement
-                            key={'shop' + this.props.promotion.name}
-                            promotion={this.props.promotion}
-                            onCloseModal={this.props.onCloseModal}/>
-                    )}
-                </Modal>
-            </React.Fragment>
-        );
-    }
+    return (
+        <Modal
+            visible={!props.adBlockActive && props.modalVisible}
+            effect="fadeInUp"
+            onClickAway={props.onCloseModal}
+        >
+            {props.modalVisible && (
+                <PromotionElement
+                    key={'shop' + props.promotion.name}
+                    promotion={props.promotion}
+                    onCloseModal={props.onCloseModal}/>
+            )}
+        </Modal>
+    );
 }
 
 const mapStateToProps = (state: AppState) => {
@@ -56,6 +46,6 @@ const mapStateToProps = (state: AppState) => {
     };
 };
 
-export default connect(mapStateToProps)(PromotionModalElement);
+export default connect(mapStateToProps)(PromotionModal);
 
 
