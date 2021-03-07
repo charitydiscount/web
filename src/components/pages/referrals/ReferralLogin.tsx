@@ -1,26 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Redirect } from "react-router";
 import { Routes } from "../../helper/Routes";
 import { setLocalStorage } from "../../../helper/StorageHelper";
 import { StorageKey } from "../../../helper/Constants";
 
-interface ReferralLoginProps {
-    match: any;
-}
+const ReferralLogin = (props: { match: any }) => {
 
-class ReferralLogin extends React.Component<ReferralLoginProps> {
-
-    componentDidMount() {
-        if (this.props.match.params.key) {
-            setLocalStorage(StorageKey.REFERRAL_KEY, this.props.match.params.key);
+    useEffect(() => {
+        if (props.match.params.key) {
+            setLocalStorage(StorageKey.REFERRAL_KEY, props.match.params.key);
         }
-    }
+    }, [props])
 
-    public render() {
-        return (
-            <Redirect to={Routes.LOGIN}/>
-        )
-    }
+    return (
+        <Redirect to={Routes.LOGIN}/>
+    )
 }
 
 export default ReferralLogin;

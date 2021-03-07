@@ -41,18 +41,22 @@ export const fetchReferrals = async (): Promise<ReferralDto[]> => {
     }
 
     const referralRef = DB.collection(FirebaseTable.REFERRALS);
-    let snap = await referralRef
+    return referralRef
         .where('ownerId', '==', auth.currentUser.uid)
-        .get();
-    if (snap.empty) {
-        return [];
-    }
-
-    let referrals = [] as ReferralDto[];
-    snap.forEach(doc => {
-        referrals.push(doc.data() as ReferralDto);
-    });
-    return referrals;
+        .get()
+        .then((response) => {
+            if (response.empty) {
+                return [];
+            }
+            let referrals = [] as ReferralDto[];
+            response.forEach(doc => {
+                referrals.push(doc.data() as ReferralDto);
+            });
+            return referrals;
+        })
+        .catch(() => {
+            return [];
+        });
 };
 
 let _cachedDynamicLink: string;
@@ -69,7 +73,7 @@ export const buildDynamicLink = async (
         remoteConfig.getString('dynamic_link_target') ||
         'https://charitydiscount.ro';
 
-    const response = await axios.post(
+    return axios.post(
         `https://firebasedynamiclinks.googleapis.com/v1/shortLinks?key=${process.env.REACT_APP_FB_API_KEY}`,
         {
             dynamicLinkInfo: {
@@ -103,8 +107,12 @@ export const buildDynamicLink = async (
                 'Content-Type': 'application/json',
             },
         }
-    );
-
-    _cachedDynamicLink = response.data.shortLink;
-    return _cachedDynamicLink;
+    )
+        .then((response) => {
+            _cachedDynamicLink = response.data.shortLink;
+            return _cachedDynamicLink;
+        })
+        .catch(() => {
+            return '';
+        })
 };

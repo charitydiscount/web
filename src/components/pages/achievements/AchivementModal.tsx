@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from 'react-awesome-modal';
 import { UserAchievementDto } from "../../../rest/AchievementsService";
 import { AppState } from "../../../redux/reducer/RootReducer";
 import { connect } from "react-redux";
 import { AchievementActions } from "../../../redux/actions/AchivementsAction";
 import { Slider } from "@material-ui/core";
-import { dateOptions, getImagePath } from "../../../helper/AppHelper";
+import { dateOptions, getImagePath, keyDownEscapeEvent } from "../../../helper/AppHelper";
 import { Languages } from "../../../helper/Constants";
 
 export interface AchievementModalProps {
@@ -17,6 +17,12 @@ export interface AchievementModalProps {
 }
 
 const AchievementModal = (props: AchievementModalProps) => {
+
+    useEffect(() => {
+        keyDownEscapeEvent(() => {
+            props.setModalVisible(false);
+        })
+    }, [props])
 
     const onClose = () => {
         props.setModalVisible(false);
